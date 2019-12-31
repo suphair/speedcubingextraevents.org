@@ -3,9 +3,9 @@ $start=date("d.m.Y H:i:s");
 
 $userIDs=[];
 DataBaseClass::Query("
-Select UpdateTimestamp,C.ID,C.WID CID from Competitor C  where  C.WID is not null and WCAID='' and TO_DAYS(now()) - TO_DAYS(UpdateTimestamp) < 7
+Select UpdateTimestamp,C.ID,C.WID CID from Competitor C  where  C.WID is not null and WCAID='' and TO_DAYS(now()) - TO_DAYS(UpdateTimestamp) > 7
 union
-Select UpdateTimestamp,C.ID,C.WCAID CID from Competitor C  where  C.WID is null and WCAID!=''  and TO_DAYS(now()) - TO_DAYS(UpdateTimestamp) < 7
+Select UpdateTimestamp,C.ID,C.WCAID CID from Competitor C  where  C.WID is null and WCAID!=''  and TO_DAYS(now()) - TO_DAYS(UpdateTimestamp) > 7
 order by UpdateTimestamp Limit 25");
 
 foreach(DataBaseClass::getRows() as $user){
