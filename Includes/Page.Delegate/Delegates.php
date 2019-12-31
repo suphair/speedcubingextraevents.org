@@ -38,11 +38,10 @@ $Delegate_rows=DataBaseClass::GetRows();
                 <td><?= ml('Judgs.Table.LatestActivity') ?></td>
             <?php } ?>
            <td align="center"><img height="15px"src="Image/Icons/persons.png"></td>
-            <td><?= ml('Judgs.Table.Events') ?></td>
         </tr>
         <?php foreach($Delegate_rows as $delegate){ ?>
             <tr>
-                <td>
+                <td align="right">
                     <?php if($delegate['Avatar']){ ?>
                         <img class="avatar" src="<?= $delegate['Avatar'] ?>">
                     <?php } ?>
@@ -89,25 +88,6 @@ $Delegate_rows=DataBaseClass::GetRows();
 
                 <td class="attempt">
                     <?= $delegate['Count_Competitors'] ?>
-                </td>
-                <td>
-                    <?php DataBaseClass::FromTable("Delegate","ID=".$delegate['ID']);
-                    DataBaseClass::Join_current("CompetitionDelegate");
-                    DataBaseClass::Join_current("Competition");
-                    DataBaseClass::Join_current("Event");
-                    DataBaseClass::Join_current("DisciplineFormat");
-                    DataBaseClass::Join_current("Discipline");
-                    DataBaseClass::OrderClear("Discipline", "Code");
-                    DataBaseClass::Select("Distinct D.*");
-                    $j=0; 
-                    foreach(DataBaseClass::QueryGenerate() as $discipline){ ?>
-                          <a href="<?= LinkDiscipline($discipline['Code']) ?>"><?= ImageEvent($discipline['CodeScript'],30,$discipline['Name']);?></a>
-                          <?php $j++;
-                          if(($j==6 and CheckAccess('Delegates.Statistics')) or $j==12){
-                              $j=0;
-                          echo "<br>";
-                      }
-                    } ?>
                 </td>
             </tr>
         <?php } ?>
