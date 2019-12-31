@@ -10,7 +10,7 @@
            if(isset($text_line[0])){
                $text_new=$text_line[0];
            } ?>
-           <p><?= date_range($news['Date']) ?>: <?= $text_new ?>    
+           <p><b><?= date_range($news['Date']) ?></b>&nbsp;&nbsp;<?= $text_new ?>    
            <?php if($text_new!=$text){ ?>
                <a href='<?= PageIndex()?>News'><?= ml('News.Announce.More') ?></a>
            <?php } ?>
