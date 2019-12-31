@@ -128,7 +128,9 @@
              </table>
         <?php if(CheckAccess('Delegate.Candidate.Vote')){ ?>
                 <form method="POST" action="<?= PageAction('Delegate.Candidate.Vote') ?>">
-                    <?php $vote=0;
+                    <?php 
+                    $vote=0;
+                    $reason='';
                     if(isset($RequestCandidateVote[$RequestCandidate['RequestCandidate_Competitor']][$Delegate['Delegate_ID']])){
                         $vote=$RequestCandidateVote[$RequestCandidate['RequestCandidate_Competitor']][$Delegate['Delegate_ID']];
                         $reason=$RequestCandidateVoteReason[$RequestCandidate['RequestCandidate_Competitor']][$Delegate['Delegate_ID']];
