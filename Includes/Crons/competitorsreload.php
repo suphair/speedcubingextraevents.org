@@ -29,7 +29,7 @@ foreach(DataBaseClass::getRows() as $row){
             AddLog('CompetitorsReload', 'Cron',"Update name {$row['WCAID']}: {$row['Name']}->{$wca_row['name']}");
         }
         
-        DataBaseClass::Query("Update Competitor set Country='{$wca_row['iso2']}', Name='{$wca_row['name']}', UpdateTimestamp=now() where ID='{$row['ID']}'");    
+        DataBaseClass::Query("Update Competitor set Country='{$wca_row['iso2']}', Name='".DataBaseClass::Escape($wca_row['name'])."', UpdateTimestamp=now() where ID='{$row['ID']}'");    
     }else{
         DataBaseClass::Query("Update Competitor set UpdateTimestamp=now()  where ID='{$row['ID']}'");    
     }

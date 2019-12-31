@@ -69,7 +69,6 @@
                 }
                 
                 ?>
-                 <?= ImageCountry($RequestCandidate['Competitor_Country'], 30)?>  
                  <?php if($RequestCandidate['Competitor_Avatar']){?>
                     <img src="<?= $RequestCandidate['Competitor_Avatar'] ?>" valign=top height=30px>
                  <?php } ?>
@@ -82,9 +81,8 @@
                  $('#<?= $RequestCandidate['Competitor_ID'] ?>').hide();
              }
                                     " style=" border-bottom: 1px dotted var(--blue); cursor: pointer">   
-                  <?= $RequestCandidate['Competitor_Name'] ?>
-                 </span>
-                 ▪ <?= CountryName($RequestCandidate['Competitor_Country']) ?> 
+                  <?= $RequestCandidate['Competitor_Name'] ?></span>
+                 <?= ImageCountry($RequestCandidate['Competitor_Country'], 20)?> <?= CountryName($RequestCandidate['Competitor_Country']) ?> 
                  ▪ <?= date_range(date('Y-m-d',strtotime($RequestCandidate['RequestCandidate_Datetime']))); ?>
              </h3>
         <div hidden class="Request_details" id="<?= $RequestCandidate['Competitor_ID'] ?>">  

@@ -1,6 +1,6 @@
 <?php
 
-AddLog('SendSqlErrors', 'Cron','begin');
+AddLog('SendSqlErrors', 'Cron','run');
 
 $errors= file_get_contents('SQLError.txt');
 if(trim($errors)){
