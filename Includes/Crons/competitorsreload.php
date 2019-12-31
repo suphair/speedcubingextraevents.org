@@ -1,6 +1,6 @@
 <?php
 $start=date("H:i:s");
-$limitApi=10;
+$limitApi=50;
 $limitBd=1000;
 $depth=14;
 
