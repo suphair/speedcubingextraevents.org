@@ -3,9 +3,6 @@ ini_set('display_errors', 1);
 error_reporting(E_ALL);
 session_start();
         
-@require( 'Classes/fpdf17/fpdf.php' );
-define('FPDF_FONTPATH','Classes/fpdf17/font');
-
 require_once "file_utils.php";
 RequireDir ("Classes");
 RequireDir ("Functions");

@@ -8,6 +8,7 @@
 *******************************************************************************/
 
 define('FPDF_VERSION','1.7');
+define('FPDF_FONTPATH','Classes/fpdf17/font');
 
 class FPDF
 {
