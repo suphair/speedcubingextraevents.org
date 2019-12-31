@@ -41,6 +41,7 @@ function Competitors_Reload($ID,$userID){
         }       
         return true;
     }else{
+        DataBaseClass::Query("Update Competitor set UpdateTimestamp=now() where ID=$ID");
         return false;
     }
 }

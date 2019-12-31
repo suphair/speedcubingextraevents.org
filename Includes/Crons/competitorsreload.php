@@ -1,5 +1,5 @@
 <?php
-$start=date("d.m.Y H:i:s");
+$start=date("H:i:s");
 
 DataBaseClass::Query(" Select UpdateTimestamp, ID, WID from Competitor  where  WID is not null and WCAID='' and TO_DAYS(now()) - TO_DAYS(UpdateTimestamp) > 7
 order by UpdateTimestamp Limit 10");
@@ -37,7 +37,7 @@ foreach(DataBaseClass::getRows() as $row){
     
 Competitors_RemoveDuplicates();
 
-$end=date("d.m.Y H:i:s");
+$end=date("H:i:s");
 
 
 DataBaseClass::Query(" Select UpdateTimestamp, ID, WID from Competitor  where  WID is not null and WCAID='' and TO_DAYS(now()) - TO_DAYS(UpdateTimestamp) > 7 ");
@@ -58,7 +58,6 @@ $count2T=DataBaseClass::rowsCount();
 DataBaseClass::Query("select ID, WCAID from Competitor where WCAID<>'' and TO_DAYS(now()) - TO_DAYS(UpdateTimestamp) > 7 ");
 $count3=DataBaseClass::rowsCount();
 
-SaveValue('Competitors.Reload',"$start - $end [$count1/$count1t $count2/$count2T $count3]");
-AddLog('CompetitorsReload', 'Cron',"$count1/$count1t $count2/$count2T $count3");
+AddLog('CompetitorsReload', 'Cron',"$count1/$count1t $count2/$count2T $count3 : $start - $end");
 
 exit();  
