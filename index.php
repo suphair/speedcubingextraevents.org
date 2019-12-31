@@ -158,7 +158,8 @@ if(strpos($_SERVER['PHP_SELF'],'/'.GetIni('LOCAL','PageBase').'/')===false){
        </div>         
     
 <?php 
-DataBaseClass::Query("select * from WCAauth where ID in(select min(ID) ID from WCAauth where Timestamp>TIME(DATE_SUB(NOW(), INTERVAL 1 HOUR)) group by WID) order by ID desc limit 30 ");
+DataBaseClass::Query("select Object,Name from WCAauth join Competitor C on C.WID=WCAauth.WID where WCAauth.ID in(select min(ID) ID "
+        . " from WCAauth where Timestamp>TIME(DATE_SUB(NOW(), INTERVAL 1 HOUR)) group by WID) order by WCAauth.ID desc limit 30 ");
 $rows=DataBaseClass::GetRows();
 if(sizeof($rows)){ ?>
     <?= ml('Footer.Authorizations') ?>: <?= sizeof($rows)?>
@@ -166,9 +167,9 @@ if(sizeof($rows)){ ?>
         <?php foreach($rows as $row){
             $user=json_decode($row['Object']);
                 if($user->wca_id){ ?>
-                    <a target="_blank" title="<?= Short_Name($user->name) ?>" href="https://www.worldcubeassociation.org/persons/<?= $user->wca_id ?>">
+                    <a target="_blank" title="<?= $row['Name'] ?>" href="https://www.worldcubeassociation.org/persons/<?= $user->wca_id ?>">
                 <?php }else{ ?>
-                    <span title="<?= Short_Name($user->name) ?>">    
+                    <span title="<?= $row['Name'] ?>">    
                 <?php } ?>       
                 <div style="padding:0px;margin:0px; display: inline-block;">
                     <img src="<?= $user->avatar->thumb_url; ?>"
