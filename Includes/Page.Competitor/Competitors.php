@@ -112,25 +112,6 @@
                 <option value="<?= $competitor['ID'] ?>"> <?= $competitor['WCAID'] ?> &#9642; <?= $competitor['Name'] ?> &#9642; <?= CountryName($competitor['Country']) ?>  </option>    
             <?php } ?>
     </select>
-    
-<?php if(CheckAccess('Competitors.Reload')){     
-    DataBaseClass::Query("Select distinct C.WID from Competitor C  where  C.WID is not null and WCAID=''");         
-    $WithoutWCAID=DataBaseClass::getRows();
-    
-    DataBaseClass::Query("Select * from Competitor C where  C.WID is null and WCAID!=''");
-    $WithoutWID=DataBaseClass::getRows(); ?>
-
-    <?php if(sizeof($WithoutWCAID) or sizeof($WithoutWID)){ ?>
-        <div class="block_comment">
-                <span class="error"><?= sizeof($WithoutWCAID) ?></span>\wca_id
-                &#9642;
-               <span class="error"><?= sizeof($WithoutWID) ?></span>\user_id
-               ▪
-               <?= GetValue('Competitors.Reload'); ?>
-        </div>       
-    <?php } ?>
-               
-<?php } ?>
 
     <table class="Competitors">
     <?php 
