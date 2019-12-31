@@ -217,7 +217,7 @@ DataBaseClass::Where_current("WCA not like 't.%'");
 DataBaseClass::OrderClear('Discipline', 'Name');
 DataBaseClass::SelectPre('distinct D.ID Discipline_ID, '
         . 'D.Status  Discipline_Status, '
-        . 'D.Code Discipline_Code, '
+        . 'D.Code Discipline_Code,D.CodeScript Discipline_CodeScript, '
         . 'D.Name Discipline_Name, '
         . 'D.Competitors Discipline_Competitors ');
 
