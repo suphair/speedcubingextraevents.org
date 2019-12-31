@@ -14,7 +14,7 @@ if(!isset($requests[2]) or !is_numeric($requests[2])){
         . "order by case when Com.Place>0 then Com.Place else 999 end, 1");
         $commands=DataBaseClass::getRows();
 
-    DataBaseClass::Query("select E.vRound,F.Attemption, F.Result, F.ExtResult, C.Name Competition, D.Name Discipline, C.WCA Competition_WCA, D.Code Discipline_Code, D.Competitors Discipline_Competitors from `Format` F "
+    DataBaseClass::Query("select E.vRound,F.Attemption, F.Result, F.ExtResult, C.Name Competition, D.Name Discipline, C.WCA Competition_WCA, D.Code Discipline_Code,D.CodeScript Discipline_CodeScript, D.Competitors Discipline_Competitors from `Format` F "
         . " join `DisciplineFormat` DF on DF.Format=F.ID "
         . " join `Discipline` D on DF.Discipline=D.ID "
         . " join `Event` E on E.DisciplineFormat = DF.ID "

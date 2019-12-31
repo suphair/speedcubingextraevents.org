@@ -44,7 +44,7 @@ if(!isset($requests[2]) or !is_numeric($requests[2])){
     }
     $commands= array_values($commands); 
       
-    DataBaseClass::Query("select  E.vRound, C.Name Competition, D.Name Discipline, C.WCA Competition_WCA, D.Code Discipline_Code, E.Groups from `Discipline` D "
+    DataBaseClass::Query("select  E.vRound, C.Name Competition, D.Name Discipline,D.CodeScript, C.WCA Competition_WCA, D.Code Discipline_Code, E.Groups from `Discipline` D "
     . " join `DisciplineFormat` DF on DF.Discipline = D.ID "
     . " join `Event` E on E.DisciplineFormat = DF.ID "
     ." join Competition C on C.ID=E.Competition where E.ID='$ID'");

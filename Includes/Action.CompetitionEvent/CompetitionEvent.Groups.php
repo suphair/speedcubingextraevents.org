@@ -10,7 +10,7 @@ if(!isset($request[2]) or !is_numeric($request[2])){
 }
 $Event=$request[2];
 
-DataBaseClass::Query("Select E.vRound, D.Name Discipline, C.Name Competition, C.ID Competition_ID,C.WCA Competition_WCA, D.Code Discipline_Code, C.ID CompetitionID, E.ID EventID, E.Groups EventGroups "
+DataBaseClass::Query("Select E.vRound, D.Name Discipline, C.Name Competition, C.ID Competition_ID,C.WCA Competition_WCA, D.Code Discipline_Code,D.CodeScript Discipline_CodeScript, C.ID CompetitionID, E.ID EventID, E.Groups EventGroups "
         . " from `Event` E join DisciplineFormat DF on DF.ID=E.DisciplineFormat"
         . " join  Discipline D on D.ID=DF.Discipline"
         . " join `Competition` C on C.ID=E.Competition Where E.ID='". $Event."'");
