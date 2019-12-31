@@ -14,7 +14,7 @@ if($data['RequestCandidate_ID']){
     DataBaseClass::Query("Update RequestCandidate set Status=1 where ID=$RequestCandidate"); 
     
     DataBaseClass::Query("Insert into Delegate(`Name`,`WCA_ID`,`Status`,`WID`) values"
-            . " ('".$data['Competitor_Name']."','".$data['Competitor_WCAID']."','Junior',".$data['Competitor_WID'].")");    
+            . " ('".$data['Competitor_Name']."','".$data['Competitor_WCAID']."','Trainee',".$data['Competitor_WID'].")");    
     
 }
 
