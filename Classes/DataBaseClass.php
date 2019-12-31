@@ -210,7 +210,7 @@ class DataBaseClass{
             
         }
         if($out){
-            echo $sql;
+            echo "<p>$sql</p>";
         }
     }
     

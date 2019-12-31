@@ -14,14 +14,17 @@ IncluderAction();
 $Competitor=GetCompetitorData();
 $Delegate=CashDelegate(); 
 
-if(CheckAccess('Scripts')){
-    /*if(isset($_GET['Migrator'])){
-        Migrator();
-        exit();
-    }
-    */
-    if(isset($_GET['Load333FT'])){
-        Migrator_Load333FT();
+if(isset($_GET['Script'])){
+    if(CheckAccess('Scripts')){
+        $Script="Script_{$_GET['Script']}";
+        echo "[$Script]";
+        if(function_exists($Script)){
+            echo "Found ";
+            eval("$Script();");
+            echo "Complete ";
+        }else{
+            echo "Not found";
+        }
         exit();
     }
 }
