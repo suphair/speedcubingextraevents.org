@@ -1,0 +1,17 @@
+<?php
+RequestClass::CheckAccessExit(__FILE__, 'aNews');
+CheckPostIsset('anews');
+$Anews= $_POST['anews'];
+foreach($Anews as $c=>$anews){
+    if(DataBaseClass::Escape($anews)){
+        $Anews[$c]=DataBaseClass::Escape($anews);
+    }else{
+        unset($Anews[$c]);
+    }
+}
+
+DataBaseClass::Query("Insert `News` (Date,Text,Delegate)"
+        . " values (now(),'". json_encode($Anews,JSON_UNESCAPED_UNICODE)."',". GetCompetitorData()->id.")");
+
+header('Location: '. PageIndex()."News");
+exit();  

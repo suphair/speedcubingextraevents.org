@@ -1,0 +1,137 @@
+<?php
+
+    function Group_Name($n){
+        $Group_Name=array(-1=>"","A","B","C","D","E","F");
+        return $Group_Name[$n];
+    }
+    
+    function Groups_Name($n){
+        $groups=array();
+        for($i=0;$i<$n;$i++){
+            $groups[]=Group_Name($i);
+        }
+        return implode(", ", $groups).".";
+    }
+
+    
+function CommandDeleter(){
+    DataBaseClass::Query("Delete from Command where ID not in (Select Command from CommandCompetitor)");
+}
+
+
+function Competitors_Reload($ID,$userID){
+    if(!$userID or !$ID)return false;
+    
+    $user_content = file_get_contents_curl("https://www.worldcubeassociation.org/api/v0/users/".$userID); 
+    $user=json_decode($user_content);
+    if($user and isset($user->user)){     
+        DataBaseClass::Query("Update Competitor set "
+       . " Name='". Short_Name(DataBaseClass::Escape($user->user->name))."'"
+       . " ,Country='".$user->user->country_iso2."'"
+       . " ,WID='".$user->user->id."'"
+       .($user->user->wca_id?" , WCAID='".$user->user->wca_id."'":"")
+       . " ,UpdateTimestamp=now() "
+        . " where ID=$ID");
+        
+        DataBaseClass::FromTable("Competitor","ID=$ID");
+        DataBaseClass::Join_current("CommandCompetitor");
+        DataBaseClass::Join_current("Command");
+        foreach(DataBaseClass::QueryGenerate() as $command){
+            CommandUpdate('',$command['Command_ID']);
+        }       
+        return true;
+    }else{
+        return false;
+    }
+}
+
+
+function Competitors_RemoveDuplicates(){
+    DataBaseClass::Query("
+        select count(*),WID from Competitor
+        where WID is not null
+        group by WID
+        having count(*)>1
+    ");
+
+    foreach(DataBaseClass::getRows() as $Double){
+        $WID=$Double['WID'];
+        DataBaseClass::Query("
+            select ID from Competitor
+            where WID = '$WID'
+        ");
+        $Competitors=DataBaseClass::getRows();
+
+        $ID=$Competitors[0]['ID']; 
+        foreach($Competitors as $Competitor){
+            if($ID!=$Competitor['ID']){
+                DataBaseClass::Query("Update CommandCompetitor set Competitor=$ID where Competitor=".$Competitor['ID']);
+                DataBaseClass::Query("Delete from Competitor where ID=".$Competitor['ID']);
+            }
+
+        }
+    }
+}
+
+
+Function CompetitorReplace($user){
+    if(isset($user->email)){
+        $email=$user->email;
+    }else{
+        $email=false;
+    }
+        ;
+        $name=short_Name(DataBaseClass::Escape($user->name));
+        $wcaid=$user->wca_id;
+        if(!is_numeric($user->id)){
+            $wid=false;
+        }else{
+            $wid=$user->id;
+        }
+        $country=$user->country_iso2;
+        $avatar=(!$user->avatar->is_default)?$user->avatar->thumb_url:"";
+        $Language=false;
+    
+        if($wid){
+            DataBaseClass::Query("Update Delegate set Name='$name',WCA_ID='$wcaid' where WID=$wid");    
+            
+            DataBaseClass::FromTable("Competitor","WID='$wid'");
+            foreach(DataBaseClass::QueryGenerate() as $competitor_row){
+                DataBaseClass::Query("Update Competitor set Name='$name',WCAID='$wcaid',Country='$country' ".($email?",Email='$email'":"").",WID=$wid,Avatar='$avatar',UpdateTimestamp=now() where ID=".$competitor_row['Competitor_ID']);    
+                $Language=$competitor_row['Competitor_Language'];
+            }
+        }
+        
+        if($wcaid){
+            DataBaseClass::Query("Update Delegate set Name='$name',WID='$wid' where WCA_ID='$wcaid'");    
+        
+            DataBaseClass::FromTable("Competitor","WCAID='$wcaid'");
+            foreach(DataBaseClass::QueryGenerate() as $competitor_row){
+                DataBaseClass::Query("Update Competitor set Name='$name',WCAID='$wcaid',Country='$country' ".($email?",Email='$email'":"").",WID=".($wid?$wid:'null').",Avatar='$avatar',UpdateTimestamp=now() where ID=".$competitor_row['Competitor_ID']);    
+            }
+        }
+            
+        
+        Competitors_RemoveDuplicates();
+        
+        
+        DataBaseClass::FromTable("Competitor");
+        if($wid){
+            DataBaseClass::Where("WID='$wid'");
+        }else{
+            DataBaseClass::Where("WID is null");
+        }
+        DataBaseClass::Where("WCAID='$wcaid'");
+        
+        $Competitor=DataBaseClass::QueryGenerate(false);
+        
+        if(!$Competitor){
+            DataBaseClass::Query("Insert Into Competitor (WCAID,WID,Country,Name,Email,Avatar) values ('$wcaid',".($wid?$wid:'null').",'$country','$name','$email','$avatar')");    
+            $CompetitorID=DataBaseClass::getID();
+        }else{
+            $CompetitorID=$Competitor['Competitor_ID'];
+            CommandUpdateCompetitor($CompetitorID);
+        }
+        
+        return $CompetitorID;
+}

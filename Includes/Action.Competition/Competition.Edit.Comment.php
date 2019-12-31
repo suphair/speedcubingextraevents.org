@@ -1,0 +1,22 @@
+<?php
+CheckPostIsset('ID','Comment');
+CheckPostNotEmpty('ID');
+CheckPostIsnumeric('ID');
+
+$ID=$_POST['ID'];
+
+RequestClass::CheckAccessExit(__FILE__, "Competition.Settings",$ID);
+
+$Comments= $_POST['Comment'];
+foreach($Comments as $c=>$Comment){
+    if(DataBaseClass::Escape($Comment)){
+        $Comments[$c]=DataBaseClass::Escape($Comment);
+    }else{
+        unset($Comments[$c]);
+    }
+}
+
+DataBaseClass::Query("Update `Competition`set Comment='". json_encode($Comments,JSON_UNESCAPED_UNICODE)."'  where `ID`='$ID'");
+
+header('Location: '.$_SERVER['HTTP_REFERER']);
+exit();  
