@@ -29,7 +29,7 @@
                     <a href="<?= LinkCompetition($row['WCA'])?>/<?=$row['Code']  ?>"><?= $row['WCA']?></a>
                 </td>    
                 <td class="border-left-dotted border-right-dotted">
-                            <?= ImageDiscipline($row['CodeScript'],20)?>
+                            <?= ImageEvent($row['CodeScript'],20)?>
                             <?= $row['Details']?>
                 </td>
                 <td><?= $row['Doing']?></td>

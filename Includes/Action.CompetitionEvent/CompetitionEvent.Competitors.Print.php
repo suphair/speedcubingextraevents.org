@@ -90,8 +90,8 @@ for($p=0;$p<$pages;$p++){
         $pdf->Text(18, 35+$n*8, iconv('utf-8', 'cp1252//TRANSLIT',implode(", ",$names))); 
     }
     
-    if(file_exists("Image/Discipline/".$data['Discipline_CodeScript'].'.jpg')){
-        $pdf->Image("Image/Discipline/".$data['Discipline_CodeScripte'].'.jpg',5,5,20,20,'jpg');
+    if(file_exists(ImageEventFile($data['CodeScript']))){
+        $pdf->Image(ImageEventFile($data['CodeScript']),5,5,20,20,'jpg');
     }
    
         $pdf->Image("Logo/Logo_Black.png",$pdf->w-25,5,20,20,'png');

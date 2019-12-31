@@ -9,7 +9,7 @@ $Competitor=GetCompetitorData(); ?>
 <?php } ?>
     
 <h2>
-    <?= ImageDiscipline($CompetitionEvent['Discipline_CodeScript'],50)?>
+    <?= ImageEvent($CompetitionEvent['Discipline_CodeScript'],50)?>
     <a href="<?= LinkEvent($CompetitionEvent['Event_ID']) ?>"><?= $CompetitionEvent['Discipline_Name'] ?><?= $CompetitionEvent['Event_vRound'] ?></a>
     <?php if($Competition['Competition_Registration']!=0){ ?>
         / <?= ml('Competition_PsychSheet.Register') ?>

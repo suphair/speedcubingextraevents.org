@@ -10,6 +10,6 @@ $disciplines=DataBaseClass::QueryGenerate();
 ?>
 <div class="line">
     <?php foreach($disciplines as $discipline_row){ ?>   
-        <a class="<?= $discipline_row['Discipline_ID']==$Event_line['Discipline_ID']?"line_select":""?>" title="<?= $discipline_row['Discipline_Name'] ?>" href="<?= LinkDiscipline($discipline_row['Discipline_Code']) ?><?= $Settings?"/Settings":"" ?>"><?= ImageDiscipline($discipline_row['Discipline_CodeScript'],50) ?></a> 
+        <a class="<?= $discipline_row['Discipline_ID']==$Event_line['Discipline_ID']?"line_select":""?>" title="<?= $discipline_row['Discipline_Name'] ?>" href="<?= LinkDiscipline($discipline_row['Discipline_Code']) ?><?= $Settings?"/Settings":"" ?>"><?= ImageEvent($discipline_row['Discipline_CodeScript'],50) ?></a> 
     <?php } ?> 
 </div>

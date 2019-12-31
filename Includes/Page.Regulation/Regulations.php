@@ -19,7 +19,7 @@ foreach(DataBaseClass::getRows() as $row){
 $disciplines=DataBaseClass::getRows(); ?>
 <div class="regulation line">
     <?php foreach($disciplines as $discipline_row){ ?>
-        <a href="#<?= $discipline_row['Code'] ?>"><?= ImageDiscipline($discipline_row['CodeScript'],35) ?></a> 
+        <a href="#<?= $discipline_row['Code'] ?>"><?= ImageEvent($discipline_row['CodeScript'],35) ?></a> 
     <?php } ?>
 </div>
 <hr class="hr_round">
@@ -33,7 +33,7 @@ $disciplines=DataBaseClass::getRows(); ?>
 <a name="<?= $discipline_row['Code'] ?>"></a>
 <div class="form">
    <h2>
-        <?= ImageDiscipline($discipline_row['CodeScript'],40) ?>
+        <?= ImageEvent($discipline_row['CodeScript'],40) ?>
         <?= $discipline_row['Name'] ?> 
        <?php if($other_language){ ?>
             <?= ImageCountry($other_language,40); ?>

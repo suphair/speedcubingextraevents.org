@@ -268,7 +268,7 @@ if($FilterResults!='Results'){
     }
 } ?>
 <h1 class="<?= $Event['Discipline_Status'] ?>">
-    <?= ImageDiscipline($Event['Discipline_CodeScript'],50) ?>
+    <?= ImageEvent($Event['Discipline_CodeScript'],50) ?>
     <?= $Event['Discipline_Name'] ?> / <?= ml('Event.Rankings') ?>
 </h1>
 <?php if($Event['Discipline_Status']=='Archive'){ ?>
@@ -479,11 +479,11 @@ $n=0; $fl=false; $prev=0;
                         ?>/<?= $Result['Attempt'] ?>
                     <?php } ?>
                     <?php if($FilterAverage=='Single' and $ID!=$Result['ID']){ ?> 
-                        <?= ImageDiscipline($Result['CodeScript'],20); ?>       
+                        <?= ImageEvent($Result['CodeScript'],20); ?>       
                     <?php } ?>
                 <?php }else{ ?>
                     <?php if($FilterAverage=='Single' and $ID!=$Result['ID']){?>        
-                        <?= ImageDiscipline($Result['CodeScript'],20); ?>       
+                        <?= ImageEvent($Result['CodeScript'],20); ?>       
                     <?php } ?>
                 <?php } ?>    
             </nobr>

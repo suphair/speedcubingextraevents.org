@@ -104,7 +104,7 @@ if($_FILES['file']['error']==0 and $_FILES['file']['type'] == 'application/pdf')
         
         $pdf->AddPage();
 
-        $pdf->Image("Image/Discipline/".$Discipline.'.jpg',5,10,20,20,'jpg');
+        $pdf->Image(ImageEventFile($Discipline),5,10,20,20,'jpg');
         $pdf->Image("Logo/Logo_Color.png",$pdf->w-25,10,20,20,'png');
 
         $pdf->SetFont('Arial','',16);

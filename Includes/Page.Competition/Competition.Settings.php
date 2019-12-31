@@ -80,7 +80,7 @@ foreach($events as $event){
         <table>
             <tr>
                 <td style='border:0px'>
-                    <?= ImageDiscipline($event['Discipline_CodeScript'],40)?>
+                    <?= ImageEvent($event['Discipline_CodeScript'],40)?>
                 </td>
                 <td style='border:0px'>
                     <b><?= $event['Discipline_Name']; ?></b>
@@ -416,7 +416,7 @@ WebSite &#9642; <a href="<?=  $Competition['Competition_WebSite'] ?>"><?=  $Comp
                      </td>      
                 <?php } ?>
             </td>
-            <td><?= ImageDiscipline($row['CodeScript'],25)?> <?= $row['Name'] ?></td>
+            <td><?= ImageEvent($row['CodeScript'],25)?> <?= $row['Name'] ?></td>
             <td><?= $row['vRound'] ?></td>
             <td class="border-right-dotted border-left-dotted"><?= $row['Timestamp'] ?></td>
             <td class="border-right-solid"><?= $row['Delegate'] ?></td>
@@ -458,7 +458,7 @@ WebSite &#9642; <a href="<?=  $Competition['Competition_WebSite'] ?>"><?=  $Comp
                     </span>
                 </td>
                 <td class="border-left-dotted border-right-dotted">
-                            <?= ImageDiscipline($row['CodeScript'],20)?>
+                            <?= ImageEvent($row['CodeScript'],20)?>
                             <?= $row['Details']?>
                 </td>
                 <td><?= $row['Doing']?></td>

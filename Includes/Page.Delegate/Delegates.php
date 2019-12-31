@@ -101,7 +101,7 @@ $Delegate_rows=DataBaseClass::GetRows();
                     DataBaseClass::Select("Distinct D.*");
                     $j=0; 
                     foreach(DataBaseClass::QueryGenerate() as $discipline){ ?>
-                          <a href="<?= LinkDiscipline($discipline['Code']) ?>"><?= ImageDiscipline($discipline['CodeScript'],30,$discipline['Name']);?></a>
+                          <a href="<?= LinkDiscipline($discipline['Code']) ?>"><?= ImageEvent($discipline['CodeScript'],30,$discipline['Name']);?></a>
                           <?php $j++;
                           if(($j==6 and CheckAccess('Delegates.Statistics')) or $j==12){
                               $j=0;

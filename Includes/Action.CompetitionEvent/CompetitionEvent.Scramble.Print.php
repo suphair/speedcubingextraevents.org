@@ -107,8 +107,8 @@ foreach($data as $row){
         }
         
         //Header
-        if(file_exists("Image/Discipline/".$row['Discipline_CodeScript'].'.jpg')){
-            $pdf->Image("Image/Discipline/".$row['Discipline_CodeScript'].'.jpg',5,10,20,20,'jpg');
+        if(file_exists(ImageEventFile($row['Discipline_CodeScript']))){
+            $pdf->Image(ImageEventFile($row['Discipline_CodeScript']),5,10,20,20,'jpg');
         }
         $pdf->Image("Logo/Logo_Color.png",$pdf->w-25,10,20,20,'png');
         $pdf->SetFont('Arial','',16);

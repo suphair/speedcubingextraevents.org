@@ -101,7 +101,7 @@ for($p=0;$p<$pages;$p++){
     
     
     foreach($events as $e=>$event){
-        $pdf->Image("Image/Discipline/$event.jpg",100+$e*10,$dY-5,7,7,'jpg');
+        $pdf->Image(ImageEventFile($event),100+$e*10,$dY-5,7,7,'jpg');
     }
     
 }        

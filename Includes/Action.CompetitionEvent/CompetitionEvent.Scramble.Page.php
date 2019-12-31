@@ -47,7 +47,7 @@ if($Discipline=='9x9' or $Discipline=='8x8'){
 
 <h1><img width="30px" src="<?= PageIndex()?>Logo/Logo_Black.jpg"> Set scrambles</h1>
 <h2><?= $data['Competition_Name']?> ▪ <?= date_range($data['Competition_StartDate'],$data['Competition_EndDate']) ?></h2>
-<h2><img width="30px" align="top" src="<?= PageIndex()?>Image/Discipline/<?= $data['Discipline_CodeScript']?>.jpg"> <?= $data['Discipline_Name']?><?= $data['Event_vRound']?></h2>
+<h2><img width="30px" align="top" src="<?= PageIndex()?><?= ImageEventFile($data['Discipline_CodeScript']) ?>"> <?= $data['Discipline_Name']?><?= $data['Event_vRound']?></h2>
 <h3>Scrambles {<?= $data['Discipline_TNoodle'] ?>} for <?= $data['Event_Groups'] ?> groups (<?= $data['Format_Attemption']."+".$ex?>)</h3>
 
  <center>

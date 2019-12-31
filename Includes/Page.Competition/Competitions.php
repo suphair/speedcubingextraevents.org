@@ -194,7 +194,7 @@ if($My==1 and  !GetCompetitorData()){
                                         class="existsResult"
                                     <?php } ?>
                                 <?php } ?>
-                            ><?= ImageDiscipline($discipline['CodeScript'],25,$discipline['Name']);?></span></a>
+                            ><?= ImageEvent($discipline['CodeScript'],25,$discipline['Name']);?></span></a>
                         <?php $j++;
                         if($j==6){
                             $j=0;

@@ -1,15 +1,17 @@
 <?php
 
-function ImageDiscipline($discipline,$size=100,$name=""){
-    if(!$name)$name=$discipline;
-    $filenameLocal= "./Image/Discipline/".$discipline.".jpg";
-    if(file_exists($filenameLocal)){
-        return  "<img  align='center' title='$name' width='".$size."px' src='".PageIndex()."Image/Discipline/".$discipline.".jpg?".date("YMd")."'>";
+function ImageEvent($event,$size=100,$name=""){
+    if(file_exists($filename= ImageEventFile($event))){
+        return  "<img  align='center' title='$name' width='".$size."px' src='".PageIndex().$filename."?".date("YMd")."'>";
     }else{
         return  svg_red(30);
     }
 }
 
+
+function ImageEventFile($event){     
+    return "Image/Events/$event.jpg";
+}
 
 function ImageCompetition($competition,$size=100,$name=""){
     if(!$name)$name=$competition;

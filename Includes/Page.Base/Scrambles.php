@@ -37,7 +37,7 @@
                      </td>      
                 <?php } ?>
             </td>
-            <td><?= ImageDiscipline($row['CodeScript'],25)?> <?= $row['Name'] ?><?= $row['vRound'] ?></td>
+            <td><?= ImageEvent($row['CodeScript'],25)?> <?= $row['Name'] ?><?= $row['vRound'] ?></td>
             <td class="border-right-dotted border-left-dotted"><?= $row['Timestamp'] ?></td>
             <td class="border-right-solid"><?= $row['Delegate'] ?></td>
             <td><a target="_blank" href="<?= PageIndex()?>Scramble/<?= $row['Secret'] ?>"><?= $row['Action'] ?></a></td>                

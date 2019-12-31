@@ -161,7 +161,7 @@ if($type_filter=='nonwcapuzzle'){
         } ?>
     <tr valign="bottom" >
     <td class="border-right-dotted" style="padding:0; margin:0">
-        <?= ImageDiscipline($discipline['CodeScript'],30,$discipline['Name']) ?>  
+        <?= ImageEvent($discipline['CodeScript'],30,$discipline['Name']) ?>  
 
         <a href="<?= LinkDiscipline($discipline['Code']) ?>">
                 <?= $discipline['Name'] ?>

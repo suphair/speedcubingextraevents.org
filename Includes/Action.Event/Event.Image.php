@@ -10,7 +10,7 @@ $ID=$_POST['ID'];
 if(!$_FILES['uploadfile']['error']){
     DataBaseClass::Query("Select CodeScript from `Discipline` where ID='$ID'");
     $Code=DataBaseClass::getRow()['CodeScript'];
-    $filename= "./Image/Discipline/$Code.jpg";  
+    $filename= ImageEventFile($Code);  
     
     if($_FILES['uploadfile']['type'] == 'image/jpeg'){   
         if (exif_imagetype($_FILES['uploadfile']['tmp_name']) != IMAGETYPE_JPEG) {

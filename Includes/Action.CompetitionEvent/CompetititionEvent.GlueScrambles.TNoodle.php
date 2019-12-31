@@ -35,7 +35,7 @@ if(!$data['Discipline_GlueScrambles'] or !$data['Discipline_TNoodle']){
 </head>
 <h1><img width="30px" src="<?= PageIndex()?>Logo/Logo_Black.jpg"> Set scrambles</h1>
 <h2><?= $data['Competition_Name']?> ▪ <?= date_range($data['Competition_StartDate'],$data['Competition_EndDate']) ?></h2>
-<h2><img width="30px" align="top" src="<?= PageIndex()?>Image/Discipline/<?= $data['Discipline_CodeScript']?>.jpg"> <?= $data['Discipline_Name']?><?= $data['Event_vRound']?></h2>
+<h2><img width="30px" align="top" src="<?= PageIndex()?><?= ImageEventFile($data['Discipline_CodeScript']) ?>"> <?= $data['Discipline_Name']?><?= $data['Event_vRound']?></h2>
     <?php if($data['Format_Attemption']==5){
         $ex=2;
     }else{

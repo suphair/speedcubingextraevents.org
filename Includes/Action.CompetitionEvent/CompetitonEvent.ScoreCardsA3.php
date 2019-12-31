@@ -24,8 +24,8 @@ foreach($commands_group as $group=>$commands){
         for($i=0;$i<2;$i++){
             $point=$points[$i];
  
-            if(file_exists("Image/Discipline/".$data['Discipline_CodeScript'].'.jpg')){
-                $pdf->Image("Image/Discipline/".$data['Discipline_CodeScript'].'.jpg',$point[0],$point[1]+1,10,10,'jpg');
+            if(file_exists(ImageEventFile($data['Discipline_CodeScript']))){
+                $pdf->Image(ImageEventFile($data['Discipline_CodeScript']),$point[0],$point[1]+1,10,10,'jpg');
             }
 
             

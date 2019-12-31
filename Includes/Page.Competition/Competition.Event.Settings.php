@@ -9,7 +9,7 @@ $CompetitionDelegates=ObjectClass::getObject('PageCompetitionDelegates');
 <div class="line discipline_line">
     <?php foreach($CompetitionEvents as $competition_event){?>
         <nobr>
-            <?= ImageDiscipline($competition_event['Discipline_CodeScript'],30) ?>
+            <?= ImageEvent($competition_event['Discipline_CodeScript'],30) ?>
             <?php if($competition_event['Event_ID']==$CompetitionEvent['Event_ID']){ ?>
                 <span class="list_select"><?= $competition_event['Discipline_Name'] ?><?= $competition_event['Event_vRound'] ?></span>
             <?php }else{ ?>
@@ -22,7 +22,7 @@ $CompetitionDelegates=ObjectClass::getObject('PageCompetitionDelegates');
 <h2>
     
     <img style="vertical-align: middle" width="40px" src="<?= PageIndex()?>Image/Icons/settings.png"> <?= ml('*.Settings') ?>:
-    <?= ImageDiscipline($CompetitionEvent['Discipline_CodeScript'],50) ?> 
+    <?= ImageEvent($CompetitionEvent['Discipline_CodeScript'],50) ?> 
     <a href="<?= LinkEvent($CompetitionEvent['Event_ID']) ?>"><?= $CompetitionEvent['Discipline_Name'] ?><?= $CompetitionEvent['Event_vRound'] ?></a></h1>
 </h2>
         

@@ -54,7 +54,7 @@ $CheckHidden=CheckAccess('Competitions.Hidden');
 
                       $j=0; 
                       foreach(DataBaseClass::QueryGenerate() as $discipline){ ?>
-                            <a href="<?= LinkDiscipline($discipline['Code']) ?>"><?= ImageDiscipline($discipline['CodeScript'],30,$discipline['Name']);?></a>
+                            <a href="<?= LinkDiscipline($discipline['Code']) ?>"><?= ImageEvent($discipline['CodeScript'],30,$discipline['Name']);?></a>
                             <?php $j++;
                             if($j==8){
                                 $j=0;

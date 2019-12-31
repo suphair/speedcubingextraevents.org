@@ -151,7 +151,7 @@ if(isset($request[1])){
 
 
 <div class="form">
-    <?= ImageDiscipline($discipline['Discipline_CodeScript']) ?> 
+    <?= ImageEvent($discipline['Discipline_CodeScript']) ?> 
     <form name="LoadDisciplineImage" enctype="multipart/form-data" method="POST" action="<?= PageAction("Event.Image") ?>">           
         <div class="fileinputs">
             <input accept="image/jpeg,image/png" type="file" name="uploadfile" class="file"  onchange="document.forms['LoadDisciplineImage'].submit();"/>

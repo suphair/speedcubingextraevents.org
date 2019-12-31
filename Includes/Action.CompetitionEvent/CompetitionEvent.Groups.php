@@ -43,7 +43,7 @@ RequestClass::CheckAccessExit(__FILE__,'Competition.Event.Settings',$data['Compe
                 <?= $Competition ?>
             </td>
             <td>
-                <?= ImageDiscipline($data['Discipline_CodeScript'],40) ?>   
+                <?= ImageEvent($data['Discipline_CodeScript'],40) ?>   
             </td>
             <td>
                 <?= $Discipline ?><?= $data['vRound'] ?>

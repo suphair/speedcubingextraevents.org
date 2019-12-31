@@ -85,8 +85,8 @@ foreach($disciplines as $n=>$discipline){
     //$competitors=DataBaseClass::QueryGenerate();
 
 
-    if(file_exists("Image/Discipline/".$discipline['CodeScript'].'.jpg')){
-        $pdf->Image("Image/Discipline/".$discipline['CodeScript'].'.jpg',5,$sy+5,$DY-10,$DY-10,'jpg');
+    if(file_exists(ImageEventFile($discipline['CodeScript']))){
+        $pdf->Image(ImageEventFile($discipline['CodeScript']),5,$sy+5,$DY-10,$DY-10,'jpg');
     }  
     if(sizeof($competitors)){
         $place_y=$DY/max(array(sizeof($competitors),3))*0.9;    

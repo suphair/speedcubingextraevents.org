@@ -132,8 +132,8 @@ for($p=0;$p<$pages;$p++){
     //    $pdf->Image("Image/Competition/".$data['Competition_WCA'].'.jpg',5,5,25,25,'jpg');
     //}
     
-    if(file_exists("Image/Discipline/".$data['Discipline_CodeScript'].'.jpg')){
-        $pdf->Image("Image/Discipline/".$data['Discipline_CodeScript'].'.jpg',5,5,20,20,'jpg');
+    if(file_exists(ImageEventFile($data['Discipline_CodeScript']))){
+        $pdf->Image(ImageEventFile($data['Discipline_CodeScript']),5,5,20,20,'jpg');
     }
    
         $pdf->Image("Logo/Logo_Black.png",$pdf->w-25,5,20,20,'png');

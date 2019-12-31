@@ -6,7 +6,7 @@ $CompetitionEvent=ObjectClass::getObject('PageCompetitionEvent');
     <img style="vertical-align: middle" width="20px" src="<?= PageIndex()?>Image/Icons/settings.png"> <a  class='Settings' href="<?= LinkEvent($CompetitionEvent['Event_ID'])?>/Settings"><?= ml('CompetitionEvent.Settings') ?></a>
 <?php } ?>
 <h2>
-    <?= ImageDiscipline($CompetitionEvent['Discipline_CodeScript'],50)?>
+    <?= ImageEvent($CompetitionEvent['Discipline_CodeScript'],50)?>
     <a href="<?= LinkEvent($CompetitionEvent['Event_ID'],$CompetitionEvent['Event_Round']) ?>"><?= $CompetitionEvent['Discipline_Name'] ?><?= $CompetitionEvent['Event_vRound'] ?></a> 
     / <?= ml('Competition_PsychSheet.Results') ?>
         

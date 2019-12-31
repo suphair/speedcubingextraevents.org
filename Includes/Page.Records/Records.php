@@ -58,7 +58,7 @@ $disciplines=DataBaseClass::QueryGenerate(); ?>
 <div class="line">
     <a class="<?= (!$DisciplineCode and !$country_filter)?"line_select":""?>" title="World records" href="<?= PageIndex()?>Records"><?= ImageCountry('', 50); ?></a>
     <?php foreach($disciplines as $discipline_row){ ?>   
-        <a class="<?= strtolower($discipline_row['Discipline_Code'])==$DisciplineCode?"line_select":""?>" title="<?= $discipline_row['Discipline_Name'] ?>" href="<?= PageIndex()?>Records/<?= $continent_filter?"_$continent_filter":$country_filter?>/<?= $discipline_row['Discipline_Code']?>"><?= ImageDiscipline($discipline_row['Discipline_CodeScript'],50) ?></a> 
+        <a class="<?= strtolower($discipline_row['Discipline_Code'])==$DisciplineCode?"line_select":""?>" title="<?= $discipline_row['Discipline_Name'] ?>" href="<?= PageIndex()?>Records/<?= $continent_filter?"_$continent_filter":$country_filter?>/<?= $discipline_row['Discipline_Code']?>"><?= ImageEvent($discipline_row['Discipline_CodeScript'],50) ?></a> 
     <?php } ?>
 </div>
 <hr>
@@ -186,7 +186,7 @@ $disciplines=DataBaseClass::QueryGenerate(); ?>
     </select>   
     <?php if($DisciplineCode){ ?>
         <br>
-        <?= ImageDiscipline($DiscipineFilter['Discipline_CodeScript'],50) ?> 
+        <?= ImageEvent($DiscipineFilter['Discipline_CodeScript'],50) ?> 
         <?=$DiscipineFilter['Discipline_Name']?>
     <?php } ?>            
 </h2>
@@ -219,7 +219,7 @@ $disciplines=DataBaseClass::QueryGenerate(); ?>
                 </td> 
                 <?php if(!$DisciplineCode){ ?>
                 <td>
-                    <?= ImageDiscipline($c['Discipline_CodeScript'],30,$c['Discipline_Name']); ?> 
+                    <?= ImageEvent($c['Discipline_CodeScript'],30,$c['Discipline_Name']); ?> 
                     <a href="<?= LinkDiscipline($c['Discipline_Code']) ?>">
                         <?= $c['Discipline_Name'] ?>
                     </a>

@@ -21,7 +21,7 @@ if(DataBaseClass::rowsCount()==0){
 $event=DataBaseClass::getRow();
 
 ?><head>
-    <link rel="icon" href="<?= PageLocal()?>Image/Discipline/<?= $event['Discipline_CodeScript']?>.jpg" >
+    <link rel="icon" href="<?= PageLocal()?><?= ImageEventFile($event['Discipline_CodeScript'])?>" >
     <title><?= $event['Discipline']?><?= $event['vRound']?></title>
     <link rel="stylesheet" href="<?= PageLocal()?>getStyle.css" type="text/css"/>
     <link rel="stylesheet" href="<?= PageLocal()?>jQuery/chosen_v1/chosen.css" type="text/css"/>
@@ -129,12 +129,12 @@ Find the Competitor using ID on a score card, WCA ID or Name OR choose the Compe
                     <div><nobr>
                             <?php if($discipline['Event_ID']==$event['ID']){ ?>
                                 <span class="SelectEvent">
-                                    <?= ImageDiscipline($discipline['Discipline_CodeScript'],40) ?>
+                                    <?= ImageEvent($discipline['Discipline_CodeScript'],40) ?>
                                 </span>
                             <?php }else{ ?>
                                 <a  href="<?= PageIndex()?>ScoreTaker/<?= $discipline['Event_Secret']?>">
                                     <span class="NonSelectEvent">
-                                        <?= ImageDiscipline($discipline['Discipline_CodeScript'],40) ?>
+                                        <?= ImageEvent($discipline['Discipline_CodeScript'],40) ?>
                                     </span>    
                                 </a>
                             <?php }?>

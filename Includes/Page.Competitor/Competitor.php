@@ -145,7 +145,7 @@ foreach(DataBaseClass::getRows() as $row){
 <?php foreach($events as $code=>$event){ ?>
     <tr>
         <td class='border-right-solid'>
-            <?= ImageDiscipline($event['CodeScript'],20,$event['Name'] ) ?> <a href='<?= PageIndex() ?>Event/<?= $code ?>'><?= $event['Name'] ?></a>
+            <?= ImageEvent($event['CodeScript'],20,$event['Name'] ) ?> <a href='<?= PageIndex() ?>Event/<?= $code ?>'><?= $event['Name'] ?></a>
         </td>
         
         
@@ -252,7 +252,7 @@ $disciplines=DataBaseClass::QueryGenerate(); ?>
 <tr class="no_border">
     <td colspan='<?= $attemption+3+sizeof($types)?>'>
         <br>
-            <?= ImageDiscipline($discipline['Discipline_CodeScript'],30, $discipline['Discipline_Name']) ?>
+            <?= ImageEvent($discipline['Discipline_CodeScript'],30, $discipline['Discipline_Name']) ?>
             <span class="<?= $discipline['Discipline_Status']=='Archive'?'archive':'' ?>">
                 <?= $discipline['Discipline_Name'] ?>
             </span>
