@@ -19,6 +19,7 @@ $Statuses['Middle']=3;
 $Statuses['Junior']=2;
 $Statuses['Trainee']=1;
 $Statuses['Archive']=0;
+$Statuses['?']=-1;
 
 ?>
 <form method="POST" action="<?= PageAction('Delegates.Change.Delete') ?>">
