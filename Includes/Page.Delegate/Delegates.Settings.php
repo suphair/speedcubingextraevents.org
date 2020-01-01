@@ -104,4 +104,12 @@ $status_news=[]; ?>
 </table>
     <input type="submit" value="<?= ml('*.Save',false)?>">
 </form>
+
+<?php if(CheckAccess('Delegate.Settings.Ext')){ ?>
+<form method="POST" action="<?= PageAction('Delegates.Change.DeleteAll') ?>" onsubmit="return confirm('Attention: Confirm <?= ml('Delegate.Settings.DeleteAll',false)?>.')">
+    <input class="delete" type="submit" value="<?= ml('Delegate.Settings.DeleteAll',false)?>">
+</form>
+<?php } ?>
     
+
+<?= mlb('Delegate.Settings.DeleteAll')?>
