@@ -44,48 +44,44 @@
               ?>
              <h3>
                 <?php 
-                $vs=[];
+                if($CheckAccessVote){ ?>
+                [
+                <?php $vs=[];
                 foreach($Seniors as $senior){
+                    $reason='';
+                    $vote=-3;
                     if(isset($RequestCandidateVote[$RequestCandidate['RequestCandidate_Competitor']][$senior['ID']])){ 
-                    $vote=$RequestCandidateVote[$RequestCandidate['RequestCandidate_Competitor']][$senior['ID']]; 
-                    $reason=$RequestCandidateVoteReason[$RequestCandidate['RequestCandidate_Competitor']][$senior['ID']];
-                    ?>
-                        <?php if($vote==1){ 
-                            $v=1; ?>
-                            <?php if($CheckAccessVote){ ?><span class="message"><?= substr($senior['Name'],0,1) ?><?= $reason?'*':'&nbsp;' ?></span><?php } ?>
-                        <?php } ?> 
-                        <?php if($vote==-1){ 
-                            $v=-1; ?>
-                            <?php if($CheckAccessVote){ ?><span class="error"><?= substr($senior['Name'],0,1) ?><?= $reason?'*':'&nbsp;' ?></span><?php } ?>
-                        <?php } ?> 
-                        <?php if($vote==0){ 
-                            $v=0; ?>
-                            <?php if($CheckAccessVote){ ?><span style="color:var(--black)"><?= substr($senior['Name'],0,1) ?><?= $reason?'*':'&nbsp;' ?></span><?php } ?>
-                        <?php } ?> 
-                        <?php if($vote==-2){ 
-                            $v=-2; ?>
-                            <?php if($CheckAccessVote){ ?><span style="color:var(--light_gray)"><?= strtolower(substr($senior['Name'],0,1)) ?><?= $reason?'*':'' ?></span><?php } ?>
-                        <?php } ?>     
-                        
-                    <?php 
-                    if($v!=-2){
-                        $vs[]=$v;
-                    }
+                        $vote=$RequestCandidateVote[$RequestCandidate['RequestCandidate_Competitor']][$senior['ID']]; 
+                        $reason=$RequestCandidateVoteReason[$RequestCandidate['RequestCandidate_Competitor']][$senior['ID']];
+                        if($vote!=-2){
+                            $vs[]=$vote;
+                        }
+                        $reason_out=$reason?'*':'';
+                        if($vote==1){ ?>
+                            <span class="message"><?= substr($senior['Name'],0,1) ?><?= $reason_out ?></span>
+                        <?php } 
+                        if($vote==-1){ ?>
+                            <span class="error"><?= substr($senior['Name'],0,1) ?><?= $reason_out ?></span>
+                        <?php } 
+                        if($vote==0){ ?>
+                            <span style="color:var(--black)"><?= substr($senior['Name'],0,1) ?><?= $reason_out ?></span>
+                        <?php }
+                        if($vote==-2){ ?>
+                            <span style="color:var(--light_gray)"><?= strtolower(substr($senior['Name'],0,1)) ?><?= $reason_out ?></span>
+                        <?php }
                     } ?>
-                <?php } ?>
-                <?php $vs_unique=array_unique($vs);
-                $result=0;
-                if(sizeof($vs)==sizeof($Seniors) and in_array(1,$vs_unique) and !in_array(-1,$vs_unique)){
-                    $result=1;
-                }
-                if(sizeof($vs)==sizeof($Seniors) and  in_array(-1,$vs_unique) and !in_array(1,$vs_unique)){
-                    $result=-1;
-                }
-                
+                    <?php } ?>
+                    <?php $vs_unique=array_unique($vs);
+                    $result=0;
+                    if(sizeof($vs)==sizeof($Seniors) and in_array(1,$vs_unique) and !in_array(-1,$vs_unique)){
+                        $result=1;
+                    }
+                    if(sizeof($vs)==sizeof($Seniors) and  in_array(-1,$vs_unique) and !in_array(1,$vs_unique)){
+                        $result=-1;
+                    } ?>
+                ]
+                <?php }
                 ?>
-                 <?php if($RequestCandidate['Competitor_Avatar']){?>
-                    <img src="<?= $RequestCandidate['Competitor_Avatar'] ?>" valign=top height=30px>
-                 <?php } ?>
                      <span class="<?= $result==1?'message':''  ?>
                                   <?= $result==-1?'error':''  ?>" 
                            onclick="
@@ -211,9 +207,7 @@
             <td><?= ml('Delegate.Candidates.Country') ?></td>
             <td>WCAID</td>
             <td><?= ml('Delegate.Candidates.BlockedUntil') ?></td>
-            <?php if($CheckAccessVote){ ?>
-                <td><?= ml('Delegate.Candidates.Reasons') ?></td>
-            <?php } ?>
+            <td></td>
         </tr>
     <?php foreach($RequestCandidates as $RequestCandidate)if($RequestCandidate['RequestCandidate_Status']==-1){ 
         $ApplictionID=$RequestCandidate['RequestCandidate_ID'];
@@ -264,7 +258,7 @@
                     <?php if($CheckAccessDecline){?>        
                         <form method="POST" action="<?= PageAction('Delegate.Candidate.Return') ?>">
                             <input type='hidden' name="RequestCandidate" value='<?= $ApplictionID ?>'>    
-                            <input type="submit" value="Return">
+                            <input type="submit" value="<?= ml('Delegate.Candidate.Return',false)?>">
                         </form>
                     <?php } ?>
                 </div>
@@ -276,3 +270,4 @@
 <?= mlb('Delegate.Candidate.Decline') ?>
 <?= mlb('Delegate.Candidate.Accept') ?>
 <?= mlb('Delegate.Candidate.Vote') ?>
+<?= mlb('Delegate.Candidate.Return') ?>
