@@ -41,7 +41,7 @@ foreach($Fields as $field=>$value){
 
 if($new){
     SendMail(getini('Seniors','email'), 'New application to become an SEE Delegate',
-            '<pre>'.($competitor->url).'<br>'.$competitor->name.'<hr>'.print_r($Fields,true).'</pre><br>https://funcubing.org/RequestCandidate');
+            '<pre>'.($competitor->url).'<br>'.$competitor->name.'<hr>'.print_r($Fields,true).'</pre><br>https://speedcubingextraevents.org/Delegate/Candidates');
 }
 header('Location: '.$_SERVER['HTTP_REFERER']);
 exit();  
