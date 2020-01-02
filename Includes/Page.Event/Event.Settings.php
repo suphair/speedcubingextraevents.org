@@ -92,7 +92,7 @@ if(isset($request[1])){
         </select>
     </div>    
     
-    <?php $TNoodles=["222","333","333oh","444","555","skewb","pyram","sq1","clock","minx","666","777"] ?>
+    <?php $TNoodles=["222","333","333oh","333bf","444","555","skewb","pyram","sq1","clock","minx","666","777"] ?>
     <div class="form_field">
         TNoodle event
     </div>
