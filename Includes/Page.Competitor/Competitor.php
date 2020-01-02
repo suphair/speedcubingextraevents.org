@@ -18,6 +18,7 @@ DataBaseClass::Query("Select C.ISO2 from Country C"
 foreach(DataBaseClass::getRows() as $row){
     $Continent_Countries[]=$row['ISO2'];
 }
+
 $sql=" 
 select c.Name, c.Code,c.CodeScript, sum(case when al.Al_vOrder is null then 0 else 1 end)+1 Rank, replace(c.Special,'Sum','Best') Special,max(A.vOut) vOut from
 (select min(A.vOrder) vOrder, D.Name,D.Code,D.CodeScript, replace(A.Special,'Mean','Average') Special
@@ -81,7 +82,7 @@ foreach(DataBaseClass::getRows() as $row){
     $ranks[$row['Code']]['Country'][$row['Special']]=['Rank'=>$row['Rank']];
 }
 
-DataBaseClass::Query(str_replace('[ext_where]',"Continent.Code='".$Continent_Code."'",$sql));
+DataBaseClass::Query(str_replace('[ext_where]',"Com.vCountry<>'' and Continent.Code='".$Continent_Code."'",$sql));
 foreach(DataBaseClass::getRows() as $row){
     $ranks[$row['Code']]['Continent'][$row['Special']]=['Rank'=>$row['Rank']];
 }
@@ -152,12 +153,12 @@ foreach(DataBaseClass::getRows() as $row){
         
         <td align='center' width='30px'>
         <?php if($competitor['Competitor_Country']){
-                    if(isset($ranks[$code]['Country']['Best']['Rank'])){ ?>
-                        <?php $r=$ranks[$code]['Country']['Best']['Rank'] ?>
-                        <span class='<?= $r<=10?'PB':'' ?>'><?= $r ?></span>
-                <?php }else{ ?>
-                    -
-                <?php } ?>
+                if(isset($ranks[$code]['Country']['Best']['Rank'])){ ?>
+                    <?php $r=$ranks[$code]['Country']['Best']['Rank'] ?>
+                    <span class='<?= $r<=10?'PB':'' ?>'><?= $r ?></span>
+            <?php }else{ ?>
+                
+            <?php } ?>
         <?php } ?>
         </td>
         <td align='center' width='30px'>
@@ -193,8 +194,6 @@ foreach(DataBaseClass::getRows() as $row){
                 if(isset($ranks[$code]['Country']['Average']['Rank'])){ ?>
                     <?php $r=$ranks[$code]['Country']['Average']['Rank'] ?>
                     <span class='<?= $r<=10?'PB':'' ?>'><?= $r ?></span>
-            <?php }else{ ?>
-                -
             <?php } ?>
         <?php } ?>
         </td>
