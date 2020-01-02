@@ -203,7 +203,6 @@
         <?php }  ?>
         </div>            
 <?php }  ?>  
-<?php if($CheckAccessVote){ ?>
     <hr class="hr_round">
     <h1><?= ml('Delegate.Candidates.Rejected') ?></h1>
     <table>
@@ -212,39 +211,68 @@
             <td><?= ml('Delegate.Candidates.Country') ?></td>
             <td>WCAID</td>
             <td><?= ml('Delegate.Candidates.BlockedUntil') ?></td>
-            <td><?= ml('Delegate.Candidates.Reasons') ?></td>
+            <?php if($CheckAccessVote){ ?>
+                <td><?= ml('Delegate.Candidates.Reasons') ?></td>
+            <?php } ?>
         </tr>
-    <?php foreach($RequestCandidates as $RequestCandidate)if($RequestCandidate['RequestCandidate_Status']==-1){ ?>
+    <?php foreach($RequestCandidates as $RequestCandidate)if($RequestCandidate['RequestCandidate_Status']==-1){ 
+        $ApplictionID=$RequestCandidate['RequestCandidate_ID'];
+                ?>
         <tr>
             <td>
-                <?= $RequestCandidate['Competitor_Name'] ?>
+                <nobr>
+                    <?= $RequestCandidate['Competitor_Name'] ?>
+                </nobr>
             </td>
             <td>
-                <?= ImageCountry($RequestCandidate['Competitor_Country'], 20)?>  
-                <?= CountryName($RequestCandidate['Competitor_Country']) ?> 
+                <nobr>
+                    <?= ImageCountry($RequestCandidate['Competitor_Country'], 20)?>  
+                    <?= CountryName($RequestCandidate['Competitor_Country']) ?> 
+                </nobr>    
             </td>
             <td>
                 <a href="https://www.worldcubeassociation.org/persons/<?= $RequestCandidate['Competitor_WCAID'] ?>"><?= $RequestCandidate['Competitor_WCAID'] ?></a>
             </td>
             <td>
-                <?= date_range(date('Y-m-d',strtotime($RequestCandidate['RequestCandidate_Datetime']." +1 year "))) ?>
+                <nobr>
+                    <?= date_range(date('Y-m-d',strtotime($RequestCandidate['RequestCandidate_Datetime']." +1 year "))) ?>
+                </nobr> 
             </td>    
-            <td  class="border-left-solid">
-                <?php
-                $reasons=[];
-                if(isset($RequestCandidateVoteReasons[$RequestCandidate['RequestCandidate_Competitor']])){
-                    foreach($RequestCandidateVoteReasons[$RequestCandidate['RequestCandidate_Competitor']] as $row){
-                      if($row['Reason'] and $row['Status']=-1){
-                        $reasons[]=  substr($row['Name'],0,1).': '.$row['Reason'];
-                      }
-                    }
-                } ?>
-                <?= implode("; ",$reasons) ?>
+            <td>
+                <a href='#' ID="A_<?=$ApplictionID?>" onclick="$('#A_<?=$ApplictionID?>').hide();$('#Application_<?=$ApplictionID?>').show(); return false;"><?= ml('Delegate.Candidates.Application.View')?></a>
+                <div hidden id="Application_<?=$RequestCandidate['RequestCandidate_ID']?>">
+                    <?php foreach($RequestCandidateFields as $RequestCandidateField){
+                        if($RequestCandidateField['RequestCandidateField_RequestCandidate']==$RequestCandidate['RequestCandidate_ID']){ ?>
+                            <p>[<?= $RequestCandidateField['RequestCandidateField_Field'] ?>]
+                            <?= $RequestCandidateField['RequestCandidateField_Value'] ?></p>
+                        <?php } ?>
+                    <?php } ?>
+                            
+                    <?php if($CheckAccessVote){ ?>
+                            <hr>
+                            <?php
+                            $reasons=[];
+                            if(isset($RequestCandidateVoteReasons[$RequestCandidate['RequestCandidate_Competitor']])){
+                                foreach($RequestCandidateVoteReasons[$RequestCandidate['RequestCandidate_Competitor']] as $row){
+                                  if($row['Reason'] and $row['Status']=-1){ ?>
+                                    <p>[<?= $row['Name'].'] '.$row['Reason'] ?></p>
+                                  <?php }
+                                }
+                            } ?>
+                    <?php } ?>
+                
+                    <?php if($CheckAccessDecline){?>        
+                        <form method="POST" action="<?= PageAction('Delegate.Candidate.Return') ?>">
+                            <input type='hidden' name="RequestCandidate" value='<?= $ApplictionID ?>'>    
+                            <input type="submit" value="Return">
+                        </form>
+                    <?php } ?>
+                </div>
             </td>
+            
         </tr>
     <?php } ?>            
     </table>   
-<?php } ?>
 <?= mlb('Delegate.Candidate.Decline') ?>
 <?= mlb('Delegate.Candidate.Accept') ?>
 <?= mlb('Delegate.Candidate.Vote') ?>
