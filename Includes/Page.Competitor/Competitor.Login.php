@@ -5,22 +5,22 @@ $Delegate=CashDelegate();
 if($Competitor){ ?>
     <?= svg_green(12) ?>
     <?= $Competitor->name ?> <a href="<?= PageIndex() ?>Actions/Competitor.Logout"><font color="red"><?= ml('Competitor.SignOut')?></font></a>
-                &#9642; <a href="<?= PageIndex() ?>Competitor/<?= $Competitor->local_id ?>"><?= ml('Competitor.MyResults') ?></a>
-                &#9642; <a href="<?= PageIndex() ?>Competitions/My"><?= ml('Competitor.MyCompetitions') ?></a>   
-                <?php if($Delegate){ ?>
-                    <nobr>&#9642; <a href="<?= LinkDelegate($Delegate['Delegate_WCA_ID']); ?>">
-                        <?= ml('Competitor.Login.Delegate') ?>
-                    </a></nobr>
-                <?php } ?> 
-                
-                <?php if(CheckAccess('Candidates.Settings')){
-                    DataBaseClass::Query("Select * from RequestCandidate RC "
-                                . " left outer join RequestCandidateVote RCV on RCV.Competitor=RC.Competitor"
-                                . " where RC.Status=0 and RCV.ID is null"); ?>
-                    <?php if(sizeof(DataBaseClass::getRows())){ ?>
-                        &#9642; <a href='<?= LinkDelegate("Candidates") ?>'><?= ml('Competitor.Delegate.Candidates') ?></a> <span class="badge"><?= sizeof(DataBaseClass::getRows());?></span>
-                    <?php } ?> 
-                <?php } ?> 
+        &#9642; <a href="<?= PageIndex() ?>Competitor/<?= $Competitor->local_id ?>"><?= ml('Competitor.MyResults') ?></a>
+        &#9642; <a href="<?= PageIndex() ?>Competitions/My"><?= ml('Competitor.MyCompetitions') ?></a>   
+        <?php if($Delegate){ ?>
+            <nobr>&#9642; <a href="<?= LinkDelegate($Delegate['Delegate_WCA_ID']); ?>">
+                <?= ml('Competitor.Login.Delegate') ?>
+            </a></nobr>
+        <?php } ?> 
+
+        <?php if(CheckAccess('Delegate.Candidate.Vote')){
+            DataBaseClass::Query("Select * from RequestCandidate RC "
+                        . " left outer join RequestCandidateVote RCV on RCV.Competitor=RC.Competitor and RCV.Delegate=".$Delegate['Delegate_ID']
+                        . " where RC.Status=0 and coalesce(RCV.Status,-2)=-2"); ?>
+            <?php if(sizeof(DataBaseClass::getRows())){ ?>
+                &#9642; <a href='<?= LinkDelegate("Candidates") ?>'><?= ml('Competitor.Delegate.Candidates') ?></a> <span class="badge"><?= sizeof(DataBaseClass::getRows());?></span>
+            <?php } ?> 
+        <?php } ?> 
 <?php }else{ ?>
     <?= svg_red(12) ?>
     <?php  $_SESSION['ReferAuth']=$_SERVER['REQUEST_URI']; ?> 

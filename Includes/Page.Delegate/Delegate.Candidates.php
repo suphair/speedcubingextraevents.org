@@ -7,9 +7,15 @@
 <span hidden id="CollapseAll" onclick="$('#CollapseAll').hide(); $('#ExpandAll').show(); $('.Request_details').hide()" style="border-bottom: 1px dotted var(--blue); cursor: pointer">Collapse all</span>
     <hr>
     <?php 
-            DataBaseClass::Query("Select RC.Competitor, RCV.Status,RCV.Delegate,D.Name,RCV.Reason  from RequestCandidate RC "
+        $Delegate= CashDelegate();
+        $CheckAccessVote=CheckAccess('Delegate.Candidate.Vote');
+        $CheckAccessDecline=CheckAccess('Delegate.Candidate.Decline');
+        $CheckAccessAccept=CheckAccess('Delegate.Candidate.Accept');
+                
+            DataBaseClass::Query("Select RC.Competitor, coalesce(RCV.Status,-2) Status ,RCV.Delegate,D.Name,RCV.Reason  from RequestCandidate RC "
              . " join RequestCandidateVote RCV on RCV.Competitor=RC.Competitor"
-             . " join Delegate D on D.ID=RCV.Delegate "); 
+             . " join Delegate D on D.ID=RCV.Delegate ");
+            
             $RequestCandidateVote=[];
             $RequestCandidateVoteReason=[];
             $RequestCandidateVoteReasons=[];
@@ -21,7 +27,7 @@
             DataBaseClass::Query("Select * from Delegate where status='Senior' order by Name");
             $Seniors=DataBaseClass::getRows(); 
 
-        $Delegate= CashDelegate();
+        
           DataBaseClass::FromTable("RequestCandidate");
           DataBaseClass::Join_current("Competitor");
           DataBaseClass::OrderClear("RequestCandidate","Status desc");
@@ -33,7 +39,9 @@
           if(!sizeof($RequestCandidates)){ ?>
              <h2>Empty</h2>
           <?php }
-          foreach($RequestCandidates as $RequestCandidate)if($RequestCandidate['RequestCandidate_Status']==0){ ?>
+          $status_out=-2;
+          foreach($RequestCandidates as $RequestCandidate)if($RequestCandidate['RequestCandidate_Status']==0){
+              ?>
              <h3>
                 <?php 
                 $vs=[];
@@ -44,19 +52,25 @@
                     ?>
                         <?php if($vote==1){ 
                             $v=1; ?>
-                            <?php if(CheckAccess('Delegate.Candidate.Vote')){ ?><span class="message"><?= substr($senior['Name'],0,1) ?><?= $reason?'*':'&nbsp;' ?></span><?php } ?>
+                            <?php if($CheckAccessVote){ ?><span class="message"><?= substr($senior['Name'],0,1) ?><?= $reason?'*':'&nbsp;' ?></span><?php } ?>
                         <?php } ?> 
                         <?php if($vote==-1){ 
                             $v=-1; ?>
-                            <?php if(CheckAccess('Delegate.Candidate.Vote')){ ?><span class="error"><?= substr($senior['Name'],0,1) ?><?= $reason?'*':'&nbsp;' ?></span><?php } ?>
+                            <?php if($CheckAccessVote){ ?><span class="error"><?= substr($senior['Name'],0,1) ?><?= $reason?'*':'&nbsp;' ?></span><?php } ?>
                         <?php } ?> 
                         <?php if($vote==0){ 
                             $v=0; ?>
-                            <?php if(CheckAccess('Delegate.Candidate.Vote')){ ?><span style="color:var(--light_gray)"><?= substr($senior['Name'],0,1) ?><?= $reason?'*':'&nbsp;' ?></span><?php } ?>
+                            <?php if($CheckAccessVote){ ?><span style="color:var(--black)"><?= substr($senior['Name'],0,1) ?><?= $reason?'*':'&nbsp;' ?></span><?php } ?>
                         <?php } ?> 
+                        <?php if($vote==-2){ 
+                            $v=-2; ?>
+                            <?php if($CheckAccessVote){ ?><span style="color:var(--light_gray)"><?= strtolower(substr($senior['Name'],0,1)) ?><?= $reason?'*':'' ?></span><?php } ?>
+                        <?php } ?>     
                         
                     <?php 
-                    $vs[]=$v;
+                    if($v!=-2){
+                        $vs[]=$v;
+                    }
                     } ?>
                 <?php } ?>
                 <?php $vs_unique=array_unique($vs);
@@ -124,10 +138,10 @@
                                     
                   
              </table>
-        <?php if(CheckAccess('Delegate.Candidate.Vote')){ ?>
+        <?php if($CheckAccessVote){ ?>
                 <form method="POST" action="<?= PageAction('Delegate.Candidate.Vote') ?>">
                     <?php 
-                    $vote=0;
+                    $vote=-2;
                     $reason='';
                     if(isset($RequestCandidateVote[$RequestCandidate['RequestCandidate_Competitor']][$Delegate['Delegate_ID']])){
                         $vote=$RequestCandidateVote[$RequestCandidate['RequestCandidate_Competitor']][$Delegate['Delegate_ID']];
@@ -136,13 +150,13 @@
                     } ?>
                      <?= $Delegate['Delegate_Name']?>:
                     <input type='hidden' name="RequestCandidate" value='<?= $RequestCandidate['RequestCandidate_ID']?>'>    
+                    <input type="radio" <?= $vote==-2?'checked':'' ?> name="Status" value="-2"><?= ml('Delegate.Candidate.Vote.Wait') ?>
                     <input type="radio" <?= $vote==1?'checked':'' ?> name="Status" value="1"><?= ml('Delegate.Candidate.Vote.Accept') ?>
                     <input type="radio" <?= $vote==0?'checked':'' ?> name="Status" value="0"><?= ml('Delegate.Candidate.Vote.None') ?>
                     <input type="radio" <?= $vote==-1?'checked':'' ?> name="Status" value="-1"><?= ml('Delegate.Candidate.Vote.Decline') ?>
                     <input type="input" value="<?= $reason ?>" name="Reason">
                     <input type='submit' value='<?= ml('Delegate.Candidate.Vote',false) ?>'>
                 </form>                 
-                <div class="block_comment">    
                 <?php 
                 $reasons=[];
                 if(isset($RequestCandidateVoteReasons[$RequestCandidate['RequestCandidate_Competitor']])){
@@ -158,24 +172,30 @@
                           if($row['Status']==1){
                             $str.= " <span class='message'>[".ml('Delegate.Candidate.Vote.Accept')."]</span>";
                           } 
+                          if($row['Status']==-2){
+                            $str.= " <span>[".ml('Delegate.Candidate.Vote.Wait')."]</span>";
+                          } 
                           if($row['Reason']){
                             $str.= ': '.$row['Reason'];
                           }
                           $reasons[]=$str;
                     }
                 } ?>
-                <?= implode("<br>",$reasons) ?>
-                </div>    
+                <?php if(sizeof($reasons)){ ?>
+                    <div class="block_comment">
+                        <?= implode("<br>",$reasons) ?>
+                    </div>    
+                <?php } ?>                    
         <?php } ?>                    
 
-         <?php if(CheckAccess('Delegate.Candidate.Decline') and $result==-1 ){ ?>
+         <?php if($CheckAccessDecline and $result==-1 ){ ?>
              <form method="POST" action="<?= PageAction('Delegate.Candidate.Decline') ?>" onsubmit="return confirm('Внимание:Подтвердите отказ для <?= $RequestCandidate['Competitor_Name'] ?>.')">
                 <input type='hidden' name="RequestCandidate" value='<?= $RequestCandidate['RequestCandidate_ID']?>'>    
                 <input class='delete' type='submit' value='<?= ml('Delegate.Candidate.Decline',false) ?>'>
             </form>
         <?php ?>
          <?php }  ?>        
-         <?php if(CheckAccess('Delegate.Candidate.Accept') and $result==1 ){ ?>                   
+         <?php if($CheckAccessAccept and $result==1 ){ ?>                   
             <form method="POST" action="<?= PageAction('Delegate.Candidate.Accept') ?>" onsubmit="return confirm('Внимание:Подтвердите принятие <?= $RequestCandidate['Competitor_Name'] ?>.')">
                 <input type='hidden' name="RequestCandidate" value='<?= $RequestCandidate['RequestCandidate_ID']?>'>    
                 <input type='submit' value='<?= ml('Delegate.Candidate.Accept',false) ?>'>
@@ -183,7 +203,7 @@
         <?php }  ?>
         </div>            
 <?php }  ?>  
-<?php if(CheckAccess('Delegate.Candidate.Vote')){ ?>
+<?php if($CheckAccessVote){ ?>
     <hr class="hr_round">
     <h1><?= ml('Delegate.Candidates.Rejected') ?></h1>
     <table>
