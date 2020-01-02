@@ -23,7 +23,7 @@ if($Type=='Competitors'){
         DataBaseClass::Join_current("Event");
         DataBaseClass::Where_current("ID=$EventID");
         DataBaseClass::Join("CommandCompetitor","Competitor");
-        $data=DataBaseClass::QueryGenerate(true,true);
+        $data=DataBaseClass::QueryGenerate(true);
         
         if(DataBaseClass::rowsCount()){
             SetMessageName("ResultsSaveWarning", $data[0]["Competitor_Name"]." already exists");

@@ -5,7 +5,7 @@ if(!isset($request[1])){
 }
 $Secret=$request[1];
 
-DataBaseClass::Query("Select FR.Format FormatResult,DF.ID DisciplineFormat,C.Onsite Competition_Onsite, D.Competitors, C.ID Competition_ID, D.Competitors Discipline_Competitors,D.ID Discipline_ID, E.Round, E.vRound, F.Result, F.ExtResult, F.Attemption, F.Name FormatName, C.Name Competition, D.Name Discipline,C.WCA Competition_WCA, D.Code Discipline_Code, F.ID Format, E.ID, E.CutoffSecond, E.CutoffMinute,E.LimitSecond,E.LimitMinute, E.Cumulative "
+DataBaseClass::Query("Select FR.Format FormatResult,DF.ID DisciplineFormat,C.Onsite Competition_Onsite, D.Competitors, C.ID Competition_ID, D.Competitors Discipline_Competitors,D.ID Discipline_ID, E.Round, E.vRound, F.Result, F.ExtResult, F.Attemption, F.Name FormatName, C.Name Competition, D.Name Discipline,C.WCA Competition_WCA, D.Code Discipline_Code,D.CodeScript Discipline_CodeScript, F.ID Format, E.ID, E.CutoffSecond, E.CutoffMinute,E.LimitSecond,E.LimitMinute, E.Cumulative "
         . "from `Competition` C "
         . "join `Event` E on E.Competition=C.ID "
         . "join `DisciplineFormat` DF on DF.ID=E.DisciplineFormat "
