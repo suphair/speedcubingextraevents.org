@@ -157,19 +157,19 @@ foreach(DataBaseClass::getRows() as $row){
                     <?php $r=$ranks[$code]['Country']['Best']['Rank'] ?>
                     <span class='<?= $r<=10?'PB':'' ?>'><?= $r ?></span>
             <?php }else{ ?>
-                
+                -
             <?php } ?>
         <?php } ?>
         </td>
         <td align='center' width='30px'>
         <?php if($Continent_Code){ ?>
             <?php $r=isset($ranks[$code]['Continent']['Best']['Rank'])?$ranks[$code]['Continent']['Best']['Rank']:'' ?>
-            <span class='<?= $r<=10?'PB':'' ?>'><?= $r ?></span>
+            <span class='<?= ($r and $r<=10)?'PB':'' ?>'><?= $r?$r:'-' ?></span>
         <?php } ?>
         </td>
         <td  align='center' width='30px'>
             <?php $r=$ranks[$code]['All']['Best']['Rank'] ?>
-            <span class='<?= $r<=10?'PB':'' ?>'><?= $r ?></span>
+            <span class='<?= ($r and $r<=10)?'PB':'' ?>'><?= $r?$r:'-' ?></span>
         </td>
         <td align='right' class=' border-left-dotted border-right-solid'>
             <b><?= isset($ranks[$code]['All']['Best']['vOut'])?$ranks[$code]['All']['Best']['vOut']:'' ?></b>
@@ -181,12 +181,12 @@ foreach(DataBaseClass::getRows() as $row){
         </td>
         <td  align='center' width='30px'>
             <?php $r=isset($ranks[$code]['All']['Average']['Rank'])?$ranks[$code]['All']['Average']['Rank']:'' ?>
-            <span class='<?= $r<=10?'PB':'' ?>'><?= $r ?></span>
+            <span class='<?= ($r and $r<=10)?'PB':'' ?>'><?= $r?$r:'-' ?></span>
         </td>
         <td align='center' width='30px'>
         <?php if($Continent_Code){ ?>
                 <?php $r=isset($ranks[$code]['Continent']['Average']['Rank'])?$ranks[$code]['Continent']['Average']['Rank']:'' ?>
-                <span class='<?= $r<=10?'PB':'' ?>'><?= $r ?></span>
+                <span class='<?= ($r and $r<=10)?'PB':'' ?>'><?= $r?$r:'-' ?></span>
         <?php } ?>
             </td>
         <td align='center' width='30px'>
@@ -194,7 +194,8 @@ foreach(DataBaseClass::getRows() as $row){
                 if(isset($ranks[$code]['Country']['Average']['Rank'])){ ?>
                     <?php $r=$ranks[$code]['Country']['Average']['Rank'] ?>
                     <span class='<?= $r<=10?'PB':'' ?>'><?= $r ?></span>
-            <?php } ?>
+            <?php }else{ ?>
+            <?php } ?>        
         <?php } ?>
         </td>
     </tr>
