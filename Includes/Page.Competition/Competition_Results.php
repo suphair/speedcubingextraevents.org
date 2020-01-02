@@ -87,7 +87,8 @@ foreach($formats as $format){
     }
 }
 
-    DataBaseClass::FromTable('Event',"ID='".$CompetitionEvent['Event_ID']."'"); 
+    DataBaseClass::FromTable('Event'); 
+    DataBaseClass::Where_current("ID='".$CompetitionEvent['Event_ID']."'");
     DataBaseClass::Join_current('Command');
     DataBaseClass::Where_current('Decline=0');
     DataBaseClass::Join_current('CommandCompetitor');
@@ -101,7 +102,24 @@ foreach($formats as $format){
         }
     }
     
-    $commands= array_values($commands);?>
+    $commands= array_values($commands);
+    
+    $Next=false;
+    DataBaseClass::Query("Select E.vRound,E.Round, E.Competitors, count(distinct Com.ID) Commands "
+            . " from Event E "
+            . " join DisciplineFormat DF on E.DisciplineFormat=DF.ID "
+            . " left outer join Command Com on Com.Event=E.ID"
+            . "  where Round=".($CompetitionEvent['Event_Round']+1)." and Competition=".$CompetitionEvent['Competition_ID']." and Discipline=".$CompetitionEvent['Discipline_ID']." group by E.ID");
+    if(DataBaseClass::rowsCount()>0){
+        $Next=DataBaseClass::getRow();
+    }
+    if($Next){
+        $commandsWinner=min($Next['Competitors'],floor(sizeof($commands)*0.75));
+    }else{
+        $commandsWinner=3;
+    }
+            
+            ?>
         <table class="competition_result">
             <tr class="tr_title"> 
                 <td><?= ml('Competition_Results.Table.Place') ?></td>
@@ -151,13 +169,17 @@ foreach($formats as $format){
                $attempts[$attempt_row['Special']]= $attempt; 
             }
         }   
-        
-            $class=$command['Command_Place']<=3?"podium":""; ?> 
+            $class=($command['Command_Place']<=$commandsWinner)?"podium":""; ?> 
             <tr class="<?= $class ?>">
-                <td class="number">
+                <td class="number">    
                     <?= $command['Command_Place']?$command['Command_Place']:'' ?>
                 </td>
                 <td class="result_many_rows">
+                <?php if($CompetitionEvent['Discipline_CodeScript']=='cup_team'){ ?>
+                    <div class="competitor_td">
+                        <b><?= $command['Command_Name'] ?></b>  
+                    </div>
+                <?php } ?>
                 <?php 
                  DataBaseClass::Query("select C.* from `Competitor` C "
                          . " join `CommandCompetitor` CC on CC.Competitor=C.ID where CC.Command='".$command['Command_ID']."' order by C.Name");
