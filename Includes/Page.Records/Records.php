@@ -65,7 +65,7 @@ $disciplines=DataBaseClass::QueryGenerate(); ?>
 <?php
     DataBaseClass::FromTable('Competition');   
     DataBaseClass::OrderClear('Competition', 'EndDate');
-    DataBaseClass::Where_current("WCA not like 't.%'");
+    #DataBaseClass::Where_current("WCA not like 't.%'");
     $competitions= DataBaseClass::QueryGenerate();
     $res=array(); 
     $results=array();
@@ -212,7 +212,7 @@ $disciplines=DataBaseClass::QueryGenerate(); ?>
             </tr>
 <?php $record_out=array();
     foreach($results as $date=>$comp){
-        foreach($comp as $ci=>$c){ ?>
+        foreach($comp as $ci=>$c)if(strpos($c['Competition_WCA'],'t.')===false){ ?>
             <tr>
                 <td>
                     <?= date_range($c['Competition_EndDate'],$c['Competition_EndDate']); ?>
