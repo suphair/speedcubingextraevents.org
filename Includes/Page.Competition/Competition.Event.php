@@ -54,8 +54,7 @@ $Competitor=GetCompetitorData();
             
                 <?= ImageEvent($competition_event['Discipline_CodeScript'],30,$competition_event['Discipline_Name']) ?>  
                 <a class="<?= $competition_event['Event_ID']==$CompetitionEvent['Event_ID']?"list_select":""?> "  href="<?= LinkEvent($competition_event['Event_ID'],$competition_event['Event_Round']) ?>">
-                    <?= $competition_event['Discipline_Name'] ?><?= $competition_event['Event_vRound'] ?>
-                </a>
+                    <?= $competition_event['Discipline_Name'] ?><?= $competition_event['Event_vRound'] ?></a>
                 <span class="badge">
                     <?php if($class=='CompetitionRegister'){ ?>
                         <?= svg_blue(10); ?>
