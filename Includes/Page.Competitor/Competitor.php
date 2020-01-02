@@ -195,6 +195,7 @@ foreach(DataBaseClass::getRows() as $row){
                     <?php $r=$ranks[$code]['Country']['Average']['Rank'] ?>
                     <span class='<?= $r<=10?'PB':'' ?>'><?= $r ?></span>
             <?php }else{ ?>
+                    -
             <?php } ?>        
         <?php } ?>
         </td>
