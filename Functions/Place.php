@@ -3,6 +3,7 @@
 
 function SetValueAttempts($ID,$attemption,$result,$ext_result,$values,$amounts){
     
+    DataBaseClass::Query("Update Command set Decline=0 where ID=$ID");
     $dnfcount=0;
     $results=array();
     $minutes=array();
@@ -84,12 +85,21 @@ function SetValueAttempts($ID,$attemption,$result,$ext_result,$values,$amounts){
     
     
     //Sum
-    if($result=='Sum'){                  
-        $minute=(int)($sum/60/100); 
-        $second=(int)($sum/100)-$minute*60; 
-        $milisecond=$sum-$minute*60*100-$second*100;
-               
-        DataBaseClass::Query("Insert into `Attempt` (Command, IsDNF, IsDNS, Minute, Second, Milisecond,Special) values ('$ID',0,0,'$minute','$second','$milisecond','Sum')");     
+    if($result=='Sum'){ 
+        
+        if($attemption==3 and (sizeof($dnfs) or sizeof($results)!=$attemption))   {
+            $minute=0;
+            $second=0;
+            $milisecond=0;
+            $IsDNF=1;
+        }else{
+            $minute=(int)($sum/60/100); 
+            $second=(int)($sum/100)-$minute*60; 
+            $milisecond=$sum-$minute*60*100-$second*100;
+            $IsDNF=0;
+        } 
+        
+        DataBaseClass::Query("Insert into `Attempt` (Command, IsDNF, IsDNS, Minute, Second, Milisecond,Special) values ('$ID',$IsDNF,0,'$minute','$second','$milisecond','Sum')");     
         AttemptUpdater($ID);
         return;
     }
@@ -263,4 +273,5 @@ function Update_Place($event_ID){
 
         DataBaseClass::Query("Update `Command` set Place='$n'  where  ID='".$order['ID']."'");    
     } 
+    
 }

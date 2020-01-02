@@ -100,7 +100,7 @@ $CompetitionDelegates=ObjectClass::getObject('PageCompetitionDelegates');
 </div>
 <?php
 DataBaseClass::Query("select GROUP_CONCAT(C.Name order by C.Name SEPARATOR ', ') vName, Decline, count(A.ID) Attempt,"
-        . "CardID,`Group`,Decline,Com.ID,Video  "
+        . "CardID,`Group`,Decline,Com.ID,Video,Com. Name  "
         . " from Command Com"
         . " join CommandCompetitor CC on CC.Command=Com.ID "
         . " join Competitor C on CC.Competitor=C.ID " 
@@ -163,7 +163,16 @@ if($deleter and sizeof($deleter_names)>0){?>
                 <span class="message">Result</span>
              <?php } ?>
          </td>
-         <td>  
+         <td> 
+             <?php if($CompetitionEvent['Discipline_CodeScript']=='cup_team'){ ?>
+                <div class="competitor_td">
+                    <form action="<?= PageAction('CompetitionEvent.Registration.CommandName')?> "  method="POST">
+                        <input name="CommandName" value="<?= $command['Name'] ?>"/>
+                        <input name="ID" type="hidden" value="<?= $command['ID'] ?>" />
+                        <input class="form_row" type="submit" value="<?= ml('*.Save',false); ?>" style="margin:0px; padding:1px 2px;">
+                    </form>
+                </div>
+            <?php } ?>
             <?php 
             $WCAIDs=array();
             $Countries=array();

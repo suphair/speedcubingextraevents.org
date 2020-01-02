@@ -79,7 +79,7 @@ Function DataBaseInit(){
    DataBaseClass::SetJoin('Event','Competition');
    DataBaseClass::SetJoin('Event','DisciplineFormat');
    
-   DataBaseClass::AddTable('Command','Com',array('ID','Place','CardID','Decline','Event','Group','Event','Secret','vCompetitors','vCountry','Warnings','Onsite','DateCreated','Video'));
+   DataBaseClass::AddTable('Command','Com',array('ID','Place','CardID','Decline','Event','Group','Event','Secret','vCompetitors','vCountry','Warnings','Onsite','DateCreated','Video','Name','Sum333'));
    DataBaseClass::SetJoin('Command','Event');
   
    DataBaseClass::AddTable('CommandCompetitor','CC',array('ID','Command','Competitor','CheckStatus'));

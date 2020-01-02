@@ -83,7 +83,7 @@ $Competitor=GetCompetitorData(); ?>
                 <span class="message"><?= ml('Competition.Registration.Open') ?></span>
         <?php } ?> 
         <?php if($Competitor){
-            DataBaseClass::FromTable("Competitor","Name ='".$Competitor->name."'");
+            DataBaseClass::FromTable("Competitor","WID ='".$Competitor->id."'");
             DataBaseClass::Join_current("CommandCompetitor");
             DataBaseClass::Join_current("Command");
             DataBaseClass::Where_current("Event=".$CompetitionEvent['Event_ID']);
@@ -145,14 +145,13 @@ $Competitor=GetCompetitorData(); ?>
     $types=array('ExtResult'=>$CompetitionEvent['Format_ExtResult'],'Result'=>$CompetitionEvent['Format_Result']);  
     $commandsData=array();
     foreach($commands as $command){
-        $commandsData[$command['Command_ID']]['DateCreated']=$command['Command_DateCreated'];
         foreach($types as $name=>$type){
             $commandsData[$command['Command_ID']][$name]=array(
                 'Competition_Name'=>$CompetitionEvent['Competition_Name'],
                 'Event'=>$CompetitionEvent['Event_ID'],
                 'Out'=>''
             ); 
-            DataBaseClass::Query("Select C.Name from Competitor C join CommandCompetitor CC on CC.Competitor=C.ID"
+            DataBaseClass::Query("Select Com.Name from Competitor C join CommandCompetitor CC on CC.Competitor=C.ID"
                     . " join Command Com on Com.ID=CC.Command "
                     . " where Com.ID=".$command['Command_ID']
                     . " order by C.Name Limit 1");
@@ -180,7 +179,12 @@ $Competitor=GetCompetitorData(); ?>
                 DataBaseClass::Join('Event','Competition');
                 DataBaseClass::Join('Command','Attempt');
                 DataBaseClass::Where_current("Special='$type'");
-                DataBaseClass::OrderClear('Attempt', 'vOrder') ;
+                
+                if(strpos($CompetitionEvent['Discipline_CodeScript'],'cup_')!==false){
+                    DataBaseClass::OrderClear('Attempt', 'vOrder') ;
+                }else{
+                    DataBaseClass::OrderClear('Command', 'Sum333') ;
+                }
                 DataBaseClass::Limit('1');
                 $result=DataBaseClass::QueryGenerate(false);
                 $commandsData[$command['Command_ID']][$name]=array(
@@ -188,7 +192,7 @@ $Competitor=GetCompetitorData(); ?>
                     'Event'=>$result['Event_ID'],
                     'vOut'=>$result['Attempt_vOut'],
                     'vOrder'=>$result['Attempt_vOrder'],
-                    'DateCreated'=>'',
+                    'Sum333'=>$command['Command_Sum333']
                 );
             }
         }
@@ -228,7 +232,13 @@ $Competitor=GetCompetitorData(); ?>
                 <?= ++$n ?>
             <?php } ?>    
             </td>
-            <td><?php   
+            <td>
+              <?php if($CompetitionEvent['Discipline_CodeScript']=='cup_team'){ ?>
+                <div class="competitor_td">
+                    <b><?= $command['Name'] ?></b>  
+                </div>
+            <?php } ?>
+             <?php   
              DataBaseClass::FromTable("Command","ID=".$commandID);
              DataBaseClass::Join_current("CommandCompetitor");
              DataBaseClass::Join_current("Competitor");
@@ -251,6 +261,11 @@ $Competitor=GetCompetitorData(); ?>
                 <?php }
             } ?>
             </td>
+            <?php if(strpos($CompetitionEvent['Discipline_CodeScript'],'cup_')!==false){ ?>
+                <td> 
+                    <?= getTimeStrFromValue($command['Result']['Sum333']); ?>
+                </td>    
+            <?php }else{ ?>
             <td  class="attempt">
                 <?= $command['Result']['vOut']; ?>    
             </td>
@@ -261,6 +276,7 @@ $Competitor=GetCompetitorData(); ?>
                 </a>
                 <?php } ?>
             </td>
+            <?php } ?>
             
             <?php if($CompetitionEvent['Format_ExtResult'] and isset($command['ExtResult']) and !in_array($command['ExtResult']['vOut'],array('DNF','DNS'))){ ?>
                 <td  class="attempt">

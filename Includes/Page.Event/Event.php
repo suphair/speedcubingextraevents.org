@@ -18,6 +18,16 @@ DataBaseClass::Query(""
 
 $Event['MaxAttempt'] = DataBaseClass::getRow()['MaxAttempt'];
 
+DataBaseClass::Query(""
+        . " Select F.ID "
+        . " from Discipline D "
+        . " join DisciplineFormat DF on DF.Discipline=D.ID "
+        . " join Format F on DF.Format=F.ID "
+        . " where D.Code='$Code'"
+        . " and Result='Sum'");
+
+$FormatSum=isset(DataBaseClass::getRow()['ID']);
+
 include "Events_Line.php" ?>
 <hr class="hr_round">
 <?php
@@ -43,7 +53,7 @@ if(isset($request[4])){
 
 $ScrambligCode='all_scr';
 
-if($Code==$ScrambligCode){
+if($FormatSum){
     $FilterAverage ='Sum';
 }
 ?>
@@ -341,17 +351,17 @@ if(sizeof($EventsAll)){ ?>
         <?php foreach($Countries as $countryName=>$countryAttempts){ ?>
         <option value="<?= $countryName ?>" <?= strtolower($countryName)==strtolower($FilterCountry)?'selected':'' ?> >
             <?= $countryAttempts['Name'] ?> 
-            <?php if ($Code!==$ScrambligCode){ ?>
-                 [ <?= $countryAttempts['Average'] ?> / <?= $countryAttempts['Single'] ?> ] 
+            <?php if ($FormatSum){ ?>
+                [ <?= $countryAttempts['Sum'] ?> ]                 
             <?php } else { ?>
-                 [ <?= $countryAttempts['Sum'] ?> ]
+                 [ <?= $countryAttempts['Average'] ?> / <?= $countryAttempts['Single'] ?> ] 
             <?php } ?>
         </option>
         <?php } ?>
     </select>
     &nbsp;&#9642;&nbsp;
 <?php 
-if($Code!==$ScrambligCode){
+if(!$FormatSum){
     foreach(['Average','Single'] as $type){ ?> 
         <input hidden value="<?= $type ?>" type="radio" class='FilterAverage' ID="FilterAverage_<?= $type ?>" name="FilterAverage" <?= $type==$FilterAverage?'checked':'' ?> onchange="reload();">
             <label  onclick="reload();" for="FilterAverage_<?= $type ?>"><span class='badge <?= $type==$FilterAverage?'select':'' ?>'><?= ml('Event.Filter.'.$type) ?></span></label>
@@ -387,7 +397,7 @@ if($Code!==$ScrambligCode){
 <table class='result'>
     <tr class='tr_title'>
         <td/>
-        <td width='100%' ><?= ml('Event.Table.Competitor')?></td>
+        <td><?= ml('Event.Table.Competitor')?></td>
         <td><nobr><?= ml('Event.Table.Country')?></nobr></td>
         <td class='attempt select'><?= ml('Event.Table.'.$FilterAverage); ?></td>
         <td/>
