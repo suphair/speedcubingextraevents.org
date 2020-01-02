@@ -45,7 +45,7 @@
              <h3>
                 <?php 
                 if($CheckAccessVote){ ?>
-                [
+                <div style="width: 100px; display: inline-block; padding:0px; margin:0px">
                 <?php $vs=[];
                 foreach($Seniors as $senior){
                     $reason='';
@@ -79,7 +79,7 @@
                     if(sizeof($vs)==sizeof($Seniors) and  in_array(-1,$vs_unique) and !in_array(1,$vs_unique)){
                         $result=-1;
                     } ?>
-                ]
+                </div>
                 <?php }
                 ?>
                      <span class="<?= $result==1?'message':''  ?>
