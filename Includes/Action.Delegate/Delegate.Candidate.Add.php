@@ -37,7 +37,10 @@ foreach($Fields as $field=>$value){
         DataBaseClass::Query("Insert Into RequestCandidateField (RequestCandidate,Field,Value) values ($Request_ID,'".DataBaseClass::Escape($field)."','".DataBaseClass::Escape($value)."')");
 }
 
-        DataBaseClass::Query("Insert Into RequestCandidateField (RequestCandidate,Field,Value) values ($Request_ID,'wca->email','".DataBaseClass::Escape($competitor->email)."')");
+DataBaseClass::Query("Insert Into RequestCandidateField (RequestCandidate,Field,Value) values ($Request_ID,'wca->email','".DataBaseClass::Escape($competitor->email)."')");
+if($competitor->delegate_status){
+    DataBaseClass::Query("Insert Into RequestCandidateField (RequestCandidate,Field,Value) values ($Request_ID,'wca->delegate','".DataBaseClass::Escape($competitor->delegate_status)."')");
+}
 
 if($new){
     SendMail(getini('Seniors','email'), 'New application to become an SEE Delegate',
