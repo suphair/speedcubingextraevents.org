@@ -108,7 +108,7 @@
                 if($RequestCandidateField['RequestCandidateField_RequestCandidate']==$RequestCandidate['RequestCandidate_ID']){ ?>
                     <tr>
                         <td width="400"><?= $RequestCandidateField['RequestCandidateField_Field'] ?></td>
-                        <td><?= $RequestCandidateField['RequestCandidateField_Value'] ?></td>
+                        <td><?= Str_replace(['\r\n',"\'"],['<br>',"'"],$RequestCandidateField['RequestCandidateField_Value']) ?></td>
                     <tr>
                 <?php }
             } ?>

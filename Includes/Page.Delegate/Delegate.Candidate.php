@@ -22,7 +22,7 @@
             <?php if($competitor->delegate_status){ 
                 $delegate_block= GetBlockText('DelegateWCA.Candidate'); ?>
                     <?php if($delegate_block){ ?>
-                        <div class="form2"><?= $delegate_block ?></div>
+                        <div class="form2"><?= Echo_format($delegate_block,false) ?></div>
                     <?php } ?>
             <?php } ?>
                     

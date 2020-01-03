@@ -10,9 +10,9 @@ foreach($_POST['Fields'] as $field=>$value){
     $Fields[DataBaseClass::Escape($field)]=DataBaseClass::Escape($value);
 }
 $competitor=GetCompetitorData();
-DataBaseClass::FromTable("Competitor","WID=". $competitor->id);
+DataBaseClass::FromTable("Competitor","WID='". $competitor->id."'");
 $competitor_row=DataBaseClass::QueryGenerate(false);
-if(!$competitor_row['Competitor_ID'] or $ID!=$competitor->id){
+if(!$competitor_row['Competitor_ID'] or $ID!=$competitor->id){        
     SetMessageName('RequestCandidateAdd','Wrong Competitor ID');
     HeaderExit();  
 }
@@ -43,7 +43,7 @@ if($competitor->delegate_status){
 }
 
 if($new){
-    SendMail(getini('Seniors','email'), 'New application to become an SEE Delegate',
+    SendMail(getini('Seniors','email'), 'New application to become a SEE Delegate',
             '<pre>'.($competitor->url).'<br>'.$competitor->name.'<hr>'.print_r($Fields,true).'</pre><br>https://speedcubingextraevents.org/Delegate/Candidates');
 }
 header('Location: '.$_SERVER['HTTP_REFERER']);

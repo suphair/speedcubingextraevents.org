@@ -18,7 +18,7 @@ if($Competitor){ ?>
                         . " left outer join RequestCandidateVote RCV on RCV.Competitor=RC.Competitor and RCV.Delegate=".$Delegate['Delegate_ID']
                         . " where RC.Status=0 and coalesce(RCV.Status,-2)=-2"); ?>
             <?php if(sizeof(DataBaseClass::getRows())){ ?>
-                &#9642; <a href='<?= LinkDelegate("Candidates") ?>'><?= ml('Competitor.Delegate.Candidates') ?></a> <span class="badge"><?= sizeof(DataBaseClass::getRows());?></span>
+                <nobr>&#9642; <a href='<?= LinkDelegate("Candidates") ?>'><?= ml('Competitor.Delegate.Candidates') ?></a> <span class="badge"><?= sizeof(DataBaseClass::getRows());?></span></nobr>
             <?php } ?> 
         <?php } ?> 
 <?php }else{ ?>
