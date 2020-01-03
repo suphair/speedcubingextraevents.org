@@ -52,7 +52,7 @@ function Script_Load333FT(){
         DataBaseClass::Query("Select E.ID from Event E "
                 . " where E.Competition ='".$CompetitionID."' "
                 . " and E.DisciplineFormat='".$DisciplineFormat_ID."' ");
-        
+
         $row=DataBaseClass::getrow();
         if(isset($row['ID'])){
             $EventID=$row['ID'];    
@@ -68,6 +68,17 @@ function Script_Load333FT(){
         DataBaseClass::Query("Delete from CommandCompetitor where Command in(select ID from Command where Event=$EventID)");
         DataBaseClass::Query("Delete from Command where Event=$EventID");
 
+        DataBaseClass::Query("Select E.ID from Event E "
+        . " where E.Competition ='".$CompetitionID."' "
+        . " and E.DisciplineFormat=0");
+        
+        foreach(DataBaseClass::getrows() as $row){
+            DataBaseClass::Query("Delete from Attempt where Command in(select ID from Command where Event=".$row['ID'].")");
+            DataBaseClass::Query("Delete from CommandCompetitor where Command in(select ID from Command where Event=".$row['ID'].")");
+            DataBaseClass::Query("Delete from Command where Event=".$row['ID']."");
+            DataBaseClass::Query("Delete from Event where ID=".$row['ID']."");
+        }
+        
         if($competition['Result']=='Average'){
             $Add='and (value4<>0 or (value2<>0 and value3=0))';
         }else{
