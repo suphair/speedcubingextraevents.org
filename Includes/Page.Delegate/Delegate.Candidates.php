@@ -267,6 +267,69 @@
         </tr>
     <?php } ?>            
     </table>   
+    
+    
+    <hr class="hr_round">
+    <h1><?= ml('Delegate.Candidates.Assepted') ?></h1>
+    <table>
+        <tr class="tr_title">
+            <td><?= ml('Delegate.Candidates.Competitor') ?></td>
+            <td><?= ml('Delegate.Candidates.Country') ?></td>
+            <td>WCAID</td>
+            <td><?= ml('Delegate.Candidates.DateRequest') ?></td>
+            <td></td>
+        </tr>
+    <?php foreach($RequestCandidates as $RequestCandidate)if($RequestCandidate['RequestCandidate_Status']==1){ 
+        $ApplictionID=$RequestCandidate['RequestCandidate_ID'];
+                ?>
+        <tr>
+            <td>
+                <nobr>
+                    <?= $RequestCandidate['Competitor_Name'] ?>
+                </nobr>
+            </td>
+            <td>
+                <nobr>
+                    <?= ImageCountry($RequestCandidate['Competitor_Country'], 20)?>  
+                    <?= CountryName($RequestCandidate['Competitor_Country']) ?> 
+                </nobr>    
+            </td>
+            <td>
+                <a href="https://www.worldcubeassociation.org/persons/<?= $RequestCandidate['Competitor_WCAID'] ?>"><?= $RequestCandidate['Competitor_WCAID'] ?></a>
+            </td>
+            <td>
+                <nobr>
+                    <?= date_range(date('Y-m-d',strtotime($RequestCandidate['RequestCandidate_Datetime']))) ?>
+                </nobr> 
+            </td>    
+            <td>
+                <a href='#' ID="A_<?=$ApplictionID?>" onclick="$('#A_<?=$ApplictionID?>').hide();$('#Application_<?=$ApplictionID?>').show(); return false;"><?= ml('Delegate.Candidates.Application.View')?></a>
+                <div hidden id="Application_<?=$RequestCandidate['RequestCandidate_ID']?>">
+                    <?php foreach($RequestCandidateFields as $RequestCandidateField){
+                        if($RequestCandidateField['RequestCandidateField_RequestCandidate']==$RequestCandidate['RequestCandidate_ID']){ ?>
+                            <p>[<?= $RequestCandidateField['RequestCandidateField_Field'] ?>]
+                            <?= $RequestCandidateField['RequestCandidateField_Value'] ?></p>
+                        <?php } ?>
+                    <?php } ?>
+                            
+                    <?php if($CheckAccessVote){ ?>
+                            <hr>
+                            <?php
+                            $reasons=[];
+                            if(isset($RequestCandidateVoteReasons[$RequestCandidate['RequestCandidate_Competitor']])){
+                                foreach($RequestCandidateVoteReasons[$RequestCandidate['RequestCandidate_Competitor']] as $row){
+                                  if($row['Reason'] and $row['Status']=-1){ ?>
+                                    <p>[<?= $row['Name'].'] '.$row['Reason'] ?></p>
+                                  <?php }
+                                }
+                            } ?>
+                    <?php } ?>
+                </div>
+            </td>
+            
+        </tr>
+    <?php } ?>            
+    </table>   
 <?= mlb('Delegate.Candidate.Decline') ?>
 <?= mlb('Delegate.Candidate.Accept') ?>
 <?= mlb('Delegate.Candidate.Vote') ?>

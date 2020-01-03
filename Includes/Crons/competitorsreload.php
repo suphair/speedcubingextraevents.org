@@ -4,6 +4,21 @@ $limitApi=50;
 $limitBd=1000;
 $depth=14;
 
+
+
+DataBaseClassWCA::Query("select C.name,C.iso2,Ct.recordName from `Countries` C join `Continents` Ct on Ct.id=C.continentid");
+foreach(DataBaseClassWCA::getRows() as $row){
+    DataBaseClass::Query("REPLACE into Country (ISO2,Name,Continent) values ('".$row['iso2']."','".DataBaseClass::Escape($row['name'])."','".$row['recordName']."')");
+}
+
+DataBaseClassWCA::Query("select Ct.recordName,Ct.`name` from `Continents`Ct ");
+foreach(DataBaseClassWCA::getRows() as $row){
+    DataBaseClass::Query("REPLACE into Continent (Code,Name) values ('".$row['recordName']."','".DataBaseClass::Escape($row['name'])."')");
+}
+    
+
+
+
 DataBaseClass::Query(" Select UpdateTimestamp, ID, WID from Competitor  where  WID is not null and WCAID='' and TO_DAYS(now()) - TO_DAYS(UpdateTimestamp) > $depth
 order by UpdateTimestamp Limit $limitApi");
 
