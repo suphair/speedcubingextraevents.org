@@ -327,6 +327,13 @@
                     <?php } ?>
                 </div>
             </td>
+            <td>
+                <?php DataBaseClass::Query("Select D.Status from Delegate D join Competitor C on C.WID=D.WID where C.ID=".$RequestCandidate['RequestCandidate_Competitor']);
+                $row=DataBaseClass::getRow();
+                if(isset($row['Status'])){ ?>
+                <?= $row['Status'] ?>
+                <?php }  ?>
+            </td>
             
         </tr>
     <?php } ?>            
