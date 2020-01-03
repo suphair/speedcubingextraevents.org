@@ -19,6 +19,13 @@
            <?php }elseif(sizeof($RequestCandidateFields) and $RequestCandidateFields[0]['RequestCandidate_Status']==-1){ ?>
                     <span class="error"><?= ml('Delegate.Candidate.Declined', date_range(date('Y-m-d',strtotime($RequestCandidateFields[0]['RequestCandidate_Datetime']." +1 year ")))) ?></span><br>       
             <?php }else{ ?>
+            <?php if($competitor->delegate_status){ 
+                $delegate_block= GetBlockText('DelegateWCA.Candidate'); ?>
+                    <?php if($delegate_block){ ?>
+                        <div class="form2"><?= $delegate_block ?></div>
+                    <?php } ?>
+            <?php } ?>
+                    
             <h2><?= $competitor->name; ?> &#9642; <?= $competitor->wca_id; ?> &#9642; <?= CountryName($competitor->country_iso2) ?></h2>
             <div class='form'>
                 <form method="POST" action="<?= PageAction('Delegate.Candidate.Add')?>">
