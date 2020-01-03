@@ -124,7 +124,11 @@ $typesSimplePage=[
                 break;
             
             case 'mainregulations':
-                IncludePage('MainRegulations');
+                if($request[1]=='edit' and self::CheckAccess("MainRegulations.Edit")===true){
+                    IncludePage('MainRegulations.Edit');    
+                }else{
+                    IncludePage('MainRegulations');
+                }
                 exit();
                 break;
                

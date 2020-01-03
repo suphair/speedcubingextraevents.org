@@ -27,29 +27,9 @@ function html_spellcount_only($num, $one, $two = false, $many = false) {
     return $one;
 }
 
-function Echo_format($str,$link=true){
-    $str=str_replace("\n","<br>",$str);
-    $str=str_replace('\t',"&#8195;&#8195;",$str);
-    
-    if($link){
-        $regex = "(((https?|ftp)\:\/\/)|(www))";//Scheme
-        $regex .= "([a-z0-9-.]*)\.([a-z]{2,4})";//Host or IP
-        $regex .= "(\:[0-9]{2,5})?";//Port
-        $regex .= "(\/([a-z0-9+\$_-]\.?)+)*\/?";//Path
-        $regex .= "(\?[a-z+&\$_.-][a-z0-9;:@&%=+\/\$_.-]*)?";//GET Query
-        $regex .= "(#[a-z_.-][a-z0-9+\$_.-]*)?";//Anchor
-        $str=str_replace
-        (
-            array('href="','http://http://','http://https://','http:///'),
-            array('href="http://','http://','https://','/'),
-            preg_replace('/'.$regex.'/i','<a href="\0" target="_blank" class="lgray">\0</a>',$str)
-        );
-
-
-        $regex="((([0-9A-Za-z]{1}[-0-9A-z\.]{1,}[0-9A-Za-z]{1})|([0-9А-Яа-я]{1}[-0-9А-я\.]{1,}[0-9А-Яа-я]{1}))@([-A-Za-z]{1,}\.){1,2}[-A-Za-z]{2,})"; 
-        $str=preg_replace('/'.$regex.'/i','<a href="mailto:\0" target="_blank" class="lgray">\0</a>',$str);
-    }
-    return $str;
+function Parsedown($str){
+    $Parsedown = new Parsedown();
+    echo $Parsedown->text($str);
 }
 
 function Short_Name($str){

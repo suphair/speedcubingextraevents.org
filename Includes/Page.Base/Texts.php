@@ -8,7 +8,7 @@
     foreach(DataBaseClass::QueryGenerate() as $block){ ?>
         <div class="form">
             <b><?= $block['BlockText_Name'] ?> <?= $block['BlockText_Country'] ?></b><br>
-            <?= Echo_format($block['BlockText_Value'],false); ?><br>
+            <?= Parsedown($block['BlockText_Value']); ?><br>
             <form method="POST" action="<?= PageAction('Texts.Edit') ?>">
                 <input name="Country" type="hidden" value="<?= $block['BlockText_Country'] ?>">
                 <input name="Name" type="hidden" value="<?= $block['BlockText_Name'] ?>">

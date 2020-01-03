@@ -20,7 +20,7 @@ $Competitor=GetCompetitorData(); ?>
     
 <?php if($CompetitionEvent['Event_Comment']){?>
     <div class="block_comment">
-        <?= Echo_format(ml_json($CompetitionEvent['Event_Comment'])); ?>
+        <?= Parsedown(ml_json($CompetitionEvent['Event_Comment'])); ?>
     </div>
 <?php } ?>
     

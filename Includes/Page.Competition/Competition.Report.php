@@ -65,7 +65,7 @@ DataBaseClass::Query("Select CR.CreateTimestamp CompetitionReport_CreateTimestam
      ?>
     <div class="form">
         <b>Report by <?= $report['Competitor_Name'] ?></b> (<?= $report['CompetitionReport_CreateTimestamp'] ?>)<br>
-        <?= Echo_format($report['CompetitionReport_Report']); ?>
+        <?= Parsedown($report['CompetitionReport_Report']); ?>
     </div>
 <?php } ?>
 
@@ -76,7 +76,7 @@ if(CheckAccess('Competition.Report.Create',$Competition['Competition_ID'])){ ?>
     <br><b>Enter report by <?= $Competitor->name ?></b><br>
     <div class="block_comment">
     <b>Instruction</b><br>
-    <?= Echo_format($Instruction); ?>
+    <?= Parsedown($Instruction); ?>
     </div>
     <form method="POST" action="<?= PageAction('Competition.Edit.Report')?>">
         <input name="ID" type="hidden" value="<?= $Competition['Competition_ID'] ?>" />

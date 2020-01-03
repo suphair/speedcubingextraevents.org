@@ -8,7 +8,8 @@ function GetBlockText($Name,$Country=''){
     DataBaseClass::Query("Select * from BlockText where Name='$Name'" );  
   }
   if(DataBaseClass::rowsCount()){
-    return DataBaseClass::getRow()['Value'];
+      $value=DataBaseClass::getRow()['Value'];
+      return $value;
   }  
    return false; 
     

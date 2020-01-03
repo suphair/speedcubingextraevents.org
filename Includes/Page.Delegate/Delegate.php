@@ -15,7 +15,7 @@
   &#9642;  <a href="<?= LinkCompetitor($Delegate['Delegate_WCA_ID']) ?>"><?= ml('Delegate.Results') ?></a> 
 </h2> 
 <?php if($Delegate['Delegate_Contact']){ ?>
-    <div class="form"><?= Echo_format($Delegate['Delegate_Contact']) ?></div>
+    <div class="form"><?= Parsedown($Delegate['Delegate_Contact']) ?></div>
 <?php } ?>
 <?php
 

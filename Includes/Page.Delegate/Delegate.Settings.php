@@ -6,7 +6,7 @@
     <a href="<?= LinkDelegate($Delegate['Delegate_WCA_ID'])?>"><?= short_Name($Delegate['Delegate_Name']) ?></a>
 </h1>
 <?php if($Delegate['Delegate_Contact']){ ?>
-    <div class="block_comment"><?= Echo_format($Delegate['Delegate_Contact']) ?></div><br>
+    <div class="block_comment"><?= Parsedown($Delegate['Delegate_Contact']) ?></div><br>
 <?php } ?>
 	<div class="form">
 		<form method="POST" action="<?= PageAction("Delegate.Edit") ?>">

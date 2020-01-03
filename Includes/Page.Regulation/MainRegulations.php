@@ -1,3 +1,8 @@
+<link rel="stylesheet" href="<?= PageLocal()?>style.css?t=1" type="text/css"/>
+<style>*{font-family:Arial; !important}</style>
+<?php if(CheckAccess('MainRegulations.Edit')){ ?>
+    <img style="vertical-align: middle" width="20px" src="<?= PageIndex()?>Image/Icons/settings.png">   <a href="<?= PageIndex() ?>MainRegulations/Edit">Edit</a>
+<?php } ?>
 <form class='form_inline' method="POST" action="<?=PageAction('Language.Set')?> "> 
     <?php $Language=$_SESSION['language_select']; ?>    
     <?= ImageCountry($Language,20); ?>
@@ -7,5 +12,6 @@
         <?php } ?>
     </select>
 </form> 
-<?php $regulations=file_get_contents_curl(ml('Regulations.LinkRegulationSEE.Link',false)); ?>
-<?= $regulations; ?>
+<?php 
+$regulations=GetBlockText("MainRegulation",$Language); 
+echo Parsedown($regulations); ?>

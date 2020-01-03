@@ -40,7 +40,7 @@ $disciplines=DataBaseClass::getRows(); ?>
         <?php } ?>
    </h2>
     <div id="Text_<?= $discipline_row['ID'] ?>">
-        <?= Echo_format($discipline_row['Text']);?>
+        <?= Parsedown($discipline_row['Text']);?>
     </div>
     <?= EventBlockLinks(['Discipline_Code'=>$discipline_row['Code'] ,'Discipline_ID'=>$discipline_row['ID'],'Discipline_Status'=>'Active'],'regulations'); ?>
 </div>

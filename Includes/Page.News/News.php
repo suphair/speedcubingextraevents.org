@@ -10,7 +10,7 @@
         </td>
         <td>
            <?php $text=ml_json($news['Text']);
-            $text_line=explode("<br>",str_replace("\n","<br>",$text)); 
+            $text_line=explode("<br>",Parsedown($text)); 
             if(isset($text_line[0])){
                 $text_line[0]="<span class=message>".$text_line[0]."</span>";
             }
