@@ -118,6 +118,7 @@
                   DataBaseClass::Join_current("Command");
                   DataBaseClass::Join_current("Event");
                   DataBaseClass::Join_current("Competition");
+                  DataBaseClass::Where_current("WCA not like 't.%'");
                   DataBaseClass::Join("Event","DisciplineFormat");
                   DataBaseClass::Join_current("Discipline");
                   DataBaseClass::OrderClear("Competition","StartDate");
