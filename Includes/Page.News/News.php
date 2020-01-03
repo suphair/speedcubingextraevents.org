@@ -10,12 +10,12 @@
         </td>
         <td>
            <?php $text=ml_json($news['Text']);
-            $text_line=explode("<br>",Parsedown($text)); 
+            $text_line=explode("/n",$text); 
             if(isset($text_line[0])){
                 $text_line[0]="<span class=message>".$text_line[0]."</span>";
             }
             $text=implode("<br>",$text_line); ?>
-            <?= $text ?>
+            <?= Parsedown($text) ?>
             <br><br>
         </td>
         <?php if(CashDelegate()){ ?>

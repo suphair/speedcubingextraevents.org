@@ -6,7 +6,7 @@
     <?php foreach($News as $news){ ?>
            <?php $text=ml_json($news['Text']);
            $text_new=$text;
-           $text_line=explode("<br>",Parsedown($text));
+           $text_line=explode("\n",$text);
            if(isset($text_line[0])){
                $text_new=$text_line[0];
            } ?>
