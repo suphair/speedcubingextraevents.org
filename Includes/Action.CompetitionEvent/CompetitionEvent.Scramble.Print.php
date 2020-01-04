@@ -76,29 +76,29 @@ foreach($data as $row){
         $n=0;
             
         //Instructions
-        if($row['Discipline_Code']=='Ivy'){
+        if($row['Discipline_CodeScript']=='ivy'){
             $pdf->SetFont('Arial','',10);
             $pdf->Text(120, 13, "Up-White, Right-Green, Left-Orange");
             $pdf->Text(120, 18, "U - WBR, R - GRY, L - OYB, F - WGO");
         }
         
         $pdf->SetFont('Arial','',10);
-        if($row['Discipline_Code']=='Mirror'){
-            $pdf->Text(110, 13, "UF the thickest");
-            $pdf->Text(110, 18, "FD more thinly than UB");
+        if($row['Discipline_CodeScript']=='mirror' or $row['Discipline_CodeScript']=='mirrorBLD'){
+            $pdf->Text(110, 13, "Top face (UF) thickest");
+            $pdf->Text(110, 18, "Bottom face (DF) thinnest");
         }
         
-        if($row['Discipline_Code']=='Redi'){
+        if($row['Discipline_CodeScript']=='redi'){
             $pdf->Text(100, 10, 'R - Right Front Up corner');
             $pdf->Text(100, 15, 'L - Left Front Up corner');
         }
         
-        if($row['Discipline_Code']=='Dino'){
+        if($row['Discipline_CodeScript']=='dino'){
             $pdf->Text(100, 10, 'R - Right Front Up corner');
             $pdf->Text(100, 15, 'L - Left Front Up corner');
         }
         
-        if($row['Discipline_Code']=='Pyraminx2x2x2'){
+        if($row['Discipline_CodeScript']=='pyra222'){
             $pdf->Text(100, 10, 'Yellow side to the top, Green - on themselves');
             $pdf->Text(100, 15, 'Yellow-Green-Red corner remains in place');
             $pdf->Text(100, 20, 'R - rotation line near to Green sticker');

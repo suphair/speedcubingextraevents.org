@@ -1,1 +1,1 @@
-<?php include 'Mirror.php';
+<?php include 'mirror.php';
