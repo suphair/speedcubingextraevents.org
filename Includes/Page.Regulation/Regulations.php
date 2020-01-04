@@ -1,7 +1,7 @@
 <?php includePage('Navigator'); ?>
 <?php $Language=$_SESSION['language_select'];?>
 <h2><img src='<?= PageIndex()?>Image/Icons/regulation.png' width='20px'> <?= ml('Regulations.Description'); ?></h2>
-<h3><img  src="<?= PageIndex()?>Logo/Logo_Color.png" width="20px"> <?= ml('Regulations.LinkRegulationSEE', PageIndex().'MainRegulations'); ?>  <?php if(CheckAccess('MainRegulations.Edit')){ ?> ▪ <a  target="_blank" href="<?= ml('Regulations.LinkRegulationSEE.Edit',false)?>"><?= ml('*.Edit')?></a><?php } ?></h3>
+<h3><img  src="<?= PageIndex()?>Logo/Logo_Color.png" width="20px"> <?= ml('Regulations.LinkRegulationSEE', PageIndex().'MainRegulations'); ?></h3>
 <h3><img  src="<?= PageIndex()?>Image/Icons/WCA.png" width="20px"> <?= ml('Regulations.LinkRegulationWCA'); ?></h3>
 
 <?php 
@@ -14,7 +14,7 @@ foreach(DataBaseClass::getRows() as $row){
     $language_default[$row['ID']]=$row['Language'];
 } ?>
 
-<?php DataBaseClass::Query("Select D.ID, D.Name, D.Code,D.CodeScript,R.Text from Discipline D  "
+<?php DataBaseClass::Query("Select D.ID, D.Name, D.Code,D.CodeScript,R.Text,D.Inspection,D.Competitors,D.TNoodles from Discipline D  "
         . " left outer join Regulation R on R.Event=D.ID and R.Language='$Language' where D.Status='Active'");
 $disciplines=DataBaseClass::getRows(); ?>
 <div class="regulation line">
@@ -40,7 +40,23 @@ $disciplines=DataBaseClass::getRows(); ?>
         <?php } ?>
    </h2>
     <div id="Text_<?= $discipline_row['ID'] ?>">
-        <?= Parsedown($discipline_row['Text']);?>
+        <?php $Text='';
+        if($discipline_row['Competitors']>1){
+            $Text.=Parsedown(str_replace("%1",$discipline_row['Competitors'],GetBlockText('Regulation.Competitors',$Language)));
+        }
+        $Text.=Parsedown($discipline_row['Text']);
+        if($discipline_row['Inspection']==20){
+            $Text.=Parsedown(GetBlockText('Regulation.Inspect.20',$Language));
+        }
+        if(strpos($discipline_row['CodeScript'],'mguild')!==false){
+            $Text.=Parsedown(GetBlockText('Regulation.mguild',$Language));
+        }
+        
+        
+        if($discipline_row['TNoodles']){
+            $Text.=Parsedown(GetBlockText('Regulation.puzzles',$Language));
+        } ?>
+        <?= $Text;?>
     </div>
     <?= EventBlockLinks(['Discipline_Code'=>$discipline_row['Code'] ,'Discipline_ID'=>$discipline_row['ID'],'Discipline_Status'=>'Active'],'regulations'); ?>
 </div>

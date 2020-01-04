@@ -5,7 +5,7 @@
 </h1>
 <div class="content">
     <?php DataBaseClass::FromTable("BlockText"); 
-    foreach(DataBaseClass::QueryGenerate() as $block){ ?>
+    foreach(DataBaseClass::QueryGenerate() as $block)if($block['BlockText_Name']!='MainRegulation'){ ?>
         <div class="form">
             <b><?= $block['BlockText_Name'] ?> <?= $block['BlockText_Country'] ?></b><br>
             <?= Parsedown($block['BlockText_Value']); ?><br>

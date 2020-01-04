@@ -54,35 +54,37 @@ foreach(DataBaseClass::getRows() as $row){
 $WRecords=[];
 $NRecords=[];
 $CRecords=[];
-foreach($formats as $format){
-    $format_arr=[$format];
-    if(in_array($format,['Mean','Average'])){
-        $format_arr=['Mean','Average'];
-    }
-    DataBaseClass::FromTable('Competition',"EndDate<='".$CompetitionEvent['Competition_EndDate']."'");       
-    DataBaseClass::Join_current("Event");
-    DataBaseClass::Join_current("DisciplineFormat");
-    DataBaseClass::Join_current("Format");
-    DataBaseClass::Join("DisciplineFormat","Discipline");
-    DataBaseClass::Join("Event","Command");
-    DataBaseClass::Join("Command","Attempt");
-    DataBaseClass::Join("Command","CommandCompetitor");
-    DataBaseClass::Where('Discipline',"ID='".$CompetitionEvent['Discipline_ID']."'");    
-    DataBaseClass::Where("A.Special in ('".implode("','",$format_arr)."')");
-    DataBaseClass::Where('A.isDNF = 0');
-    DataBaseClass::OrderClear('Attempt', 'vOrder');
-    DataBaseClass::SelectPre("distinct Com.ID Command, Com.vCountry, A.vOut, A.vOrder,A.Special,C.WCA ");
-        
-    foreach(DataBaseClass::QueryGenerate() as $r){
-        if(!isset($WRecords[$format])){
-            $WRecords[$format]=$r['vOut'];
+if( !$Competition['Competition_Unofficial']){ 
+    foreach($formats as $format){
+        $format_arr=[$format];
+        if(in_array($format,['Mean','Average'])){
+            $format_arr=['Mean','Average'];
         }
-        if($r['vCountry'] and !isset($NRecords[$r['vCountry']][$format])){
-            $NRecords[$r['vCountry']][$format]=$r['vOut'];
-        }
-        
-        if($r['vCountry'] and !isset($CRecords[$Country_Continent[$r['vCountry']]][$format]) and isset($Country_Continent[$r['vCountry']])){
-            $CRecords[$Country_Continent[$r['vCountry']]][$format]=$r['vOut'];
+        DataBaseClass::FromTable('Competition',"EndDate<='".$CompetitionEvent['Competition_EndDate']."'");       
+        DataBaseClass::Join_current("Event");
+        DataBaseClass::Join_current("DisciplineFormat");
+        DataBaseClass::Join_current("Format");
+        DataBaseClass::Join("DisciplineFormat","Discipline");
+        DataBaseClass::Join("Event","Command");
+        DataBaseClass::Join("Command","Attempt");
+        DataBaseClass::Join("Command","CommandCompetitor");
+        DataBaseClass::Where('Discipline',"ID='".$CompetitionEvent['Discipline_ID']."'");    
+        DataBaseClass::Where("A.Special in ('".implode("','",$format_arr)."')");
+        DataBaseClass::Where('A.isDNF = 0');
+        DataBaseClass::OrderClear('Attempt', 'vOrder');
+        DataBaseClass::SelectPre("distinct Com.ID Command, Com.vCountry, A.vOut, A.vOrder,A.Special,C.WCA ");
+
+        foreach(DataBaseClass::QueryGenerate() as $r){
+            if(!isset($WRecords[$format])){
+                $WRecords[$format]=$r['vOut'];
+            }
+            if($r['vCountry'] and !isset($NRecords[$r['vCountry']][$format])){
+                $NRecords[$r['vCountry']][$format]=$r['vOut'];
+            }
+
+            if($r['vCountry'] and !isset($CRecords[$Country_Continent[$r['vCountry']]][$format]) and isset($Country_Continent[$r['vCountry']])){
+                $CRecords[$Country_Continent[$r['vCountry']]][$format]=$r['vOut'];
+            }
         }
     }
 }

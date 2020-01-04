@@ -318,6 +318,30 @@ DataBaseClass::Query("
     join DisciplineFormat DF on D.ID=DF.Discipline 
     join Event E on DF.ID=E.DisciplineFormat 
     join Competition Cn on Cn.ID=E.Competition and Cn.WCA not like 't.%'
+    where D.ID='$ID' and Cn.EndDate>=now() and Cn.StartDate<=now() order by Cn.EndDate desc ");
+$EventsAll=DataBaseClass::getRows();
+
+if(sizeof($EventsAll)){ ?>
+<div class="form">
+    <?= ml('Event.Competition.Progress') ?><br>
+        <?php foreach($EventsAll as $competition){ ?> 
+            <nobr>&nbsp;
+                <img width="30" style="vertical-align: middle" src="<?= PageIndex()?>Image/Flags/<?= strtolower($competition['Country'])?>.png">
+                <a href="<?= LinkCompetition($competition['WCA'])?>/<?= $Event['Discipline_Code'] ?>">
+                    <span class="<?= $competition['Unofficial']?'unofficial':'' ?>"><?= $competition['Name']; ?></span>
+                </a>
+            </nobr>
+        <?php } ?>
+</div>            
+<?php }  ?>
+    
+<?php
+DataBaseClass::Query("
+    select distinct Cn.Unofficial, Cn.ID, Cn.Name, Cn.WCA, Cn.Country, Cn.StartDate, Cn.EndDate, Cn.City,Cn.Status
+    from `Discipline` D 
+    join DisciplineFormat DF on D.ID=DF.Discipline 
+    join Event E on DF.ID=E.DisciplineFormat 
+    join Competition Cn on Cn.ID=E.Competition and Cn.WCA not like 't.%'
     where D.ID='$ID' and Cn.EndDate<now() order by Cn.EndDate desc ");
 $EventsAll=DataBaseClass::getRows();
 

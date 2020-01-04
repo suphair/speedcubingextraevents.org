@@ -854,3 +854,15 @@ label{
     border:1px solid var(--red);
     background-color: var(--light_gray);
 }
+
+li {
+  list-style-type: none;
+}
+
+ul{
+    margin: 5px 0px;
+}
+
+ul li ul{
+    margin: 0px 0px;
+}
