@@ -84,8 +84,8 @@ foreach($data as $row){
         
         $pdf->SetFont('Arial','',10);
         if($row['Discipline_CodeScript']=='mirror' or $row['Discipline_CodeScript']=='mirrorBLD'){
-            $pdf->Text(110, 13, "Top face (UF) thickest");
-            $pdf->Text(110, 18, "Bottom face (DF) thinnest");
+            $pdf->Text(110, 13, "U layer is the thickest,");
+            $pdf->Text(110, 18, "UFL is the biggest corner of the cube.");
         }
         
         if($row['Discipline_CodeScript']=='redi'){
