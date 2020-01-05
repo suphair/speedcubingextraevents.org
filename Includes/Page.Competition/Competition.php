@@ -27,8 +27,7 @@ $attempts_exists=($data['Attempts']>0 or $data['Start']);
 <?php if(CheckAccess('Competition.Settings',$Competition['Competition_ID'])){ ?>
     <a class='Settings' href="<?= LinkCompetition($Competition['Competition_WCA'])?>/Settings"><img style="vertical-align: middle" width="20px" src="<?= PageIndex()?>Image/Icons/settings.png"> <?= ml('Competition.Settings') ?></a>
 <?php } ?> 
-<?php 
-if(strtotime($Competition['Competition_StartDate'])<strtotime('now')){
+<?php if(strtotime($Competition['Competition_StartDate'])<=strtotime(date('Y-m-d'))){
     if(CheckAccess('Competition.Report.Create',$Competition['Competition_ID'])){ ?>    
         <a class='Settings' href="<?= LinkCompetition($Competition['Competition_WCA'])?>/Report"><img style="vertical-align: middle" width="20px" src="<?= PageIndex()?>Image/Icons/report.png"> <?= ml('Competition.Report.Create') ?></a>
     <?php }elseif(CheckAccess('Competition.Report',$Competition['Competition_ID']) and sizeof(DataBaseClass::SelectTableRows("CompetitionReport","Competition=".$Competition['Competition_ID']))){ ?>
