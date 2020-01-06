@@ -5,10 +5,10 @@
 <?php foreach(DataBaseClass::getRows() as $news){ 
     if(ml_json($news['Text'])){ ?>
     <tr>
-        <td width="100px">
+        <td width="100px" style="padding:4px 0px 12px 0px">
            <?= date_range($news['Date']) ?>
         </td>
-        <td>
+        <td style="padding:4px 0px 12px 0px">
            <?php $text=ml_json($news['Text']);
             $text_line=explode("/n",$text); 
             if(isset($text_line[0])){
@@ -16,7 +16,6 @@
             }
             $text=implode("<br>",$text_line); ?>
             <?= Parsedown($text) ?>
-            <br><br>
         </td>
         <?php if(CashDelegate()){ ?>
             <td width="200px">
