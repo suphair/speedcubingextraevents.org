@@ -174,9 +174,9 @@ class DataBaseClass{
         self::$from=self::$tables[$name]['from'];
     }
     
-    public static function QueryGenerate($rows=true,$out=false){
+    public static function QueryGenerate($rows=true,$out=false,$log=false){
         $sql="select ".self::$select." 1 ".self::$from.self::$join.self::$where.self::$order.self::$limit;
-        self::Query($sql,$out);
+        self::Query($sql,$out,$log);
         if($rows){
             return self::getRows();
         }else{
@@ -191,7 +191,7 @@ class DataBaseClass{
        echo '</pre>';
     }
     
-    public static function Query($sql,$out=false){
+    public static function Query($sql,$out=false,$log=false){
         self::$count++;
         self::$queries[]=$sql;
         if (!self::$query=mysqli_query(self::$connection, $sql)) {
@@ -211,6 +211,13 @@ class DataBaseClass{
         }
         if($out){
             echo "<p>$sql</p>";
+        }
+        
+        if($log){
+            $time = date("Y-m-d H:i:s");
+            $handle = fopen("SQLlog.txt", "a");
+            fwrite($handle, "\r\n$time\r\n$sql\r\n");
+            fclose($handle);
         }
     }
     

@@ -15,7 +15,6 @@ function file_get_contents_curl($url) {
     return $data;
 }
 
-
 function file_get_contents_curl_PHPSESSID($url) {
     $ch = curl_init();
 

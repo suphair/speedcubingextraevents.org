@@ -156,7 +156,7 @@ $Competitor=GetCompetitorData(); ?>
                     . " where Com.ID=".$command['Command_ID']
                     . " order by C.Name Limit 1");
             $commandsData[$command['Command_ID']]['Name']=DataBaseClass::getRow()['Name'];
-            if($command['Command_vCompetitors']==$CompetitionEvent['Discipline_Competitors'] or true){
+            if($command['Command_vCompetitors']==$CompetitionEvent['Discipline_Competitors']){
                 DataBaseClass::Query("Select * from CommandCompetitor CC where CC.Command=".$command['Command_ID']);
                 
                 $sql='Select Com.ID from Command Com ';
@@ -172,21 +172,25 @@ $Competitor=GetCompetitorData(); ?>
                     $command_ids[]=$com['ID'];
                 }
 
+                $type_arr=[$type];
+                if($type=='Mean' or $type=='Average'){
+                    $type_arr=['Mean','Average'];    
+                }
                 DataBaseClass::FromTable('Command',"ID in('".implode("','",$command_ids)."')");
                 DataBaseClass::Join_current('Event');
                 DataBaseClass::Join_current('DisciplineFormat');
                 DataBaseClass::Where_current("Discipline='".$CompetitionEvent['Discipline_ID']."'");
                 DataBaseClass::Join('Event','Competition');
                 DataBaseClass::Join('Command','Attempt');
-                DataBaseClass::Where_current("Special='$type'");
+                DataBaseClass::Where_current("Special in ('".implode("','",$type_arr)."')");
                 
-                if(strpos($CompetitionEvent['Discipline_CodeScript'],'cup_')!==false){
+                if(strpos($CompetitionEvent['Discipline_CodeScript'],'cup_')===false){
                     DataBaseClass::OrderClear('Attempt', 'vOrder') ;
                 }else{
                     DataBaseClass::OrderClear('Command', 'Sum333') ;
                 }
                 DataBaseClass::Limit('1');
-                $result=DataBaseClass::QueryGenerate(false);
+                $result=DataBaseClass::QueryGenerate(false,false);
                 $commandsData[$command['Command_ID']][$name]=array(
                     'Competition_Name'=>$result['Competition_Name'],
                     'Event'=>$result['Event_ID'],

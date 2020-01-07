@@ -27,9 +27,13 @@ function html_spellcount_only($num, $one, $two = false, $many = false) {
     return $one;
 }
 
-function Parsedown($str){
+function Parsedown($str,$out=true){
     $Parsedown = new Parsedown();
-    echo $Parsedown->text($str);
+    if($out){
+        echo $Parsedown->text($str);
+    }else{
+        return $Parsedown->text($str);
+    }
 }
 
 function Short_Name($str){

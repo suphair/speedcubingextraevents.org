@@ -14,8 +14,8 @@ $Onsite=0+isset($_POST['Onsite']);
 if(CheckAccess('Competition.Settings.Ext',$ID)){
     $Unofficial=1-isset($_POST['Unofficial']);
     $DelegateWCAOn=0+isset($_POST['DelegateWCAOn']);
-
-    DataBaseClass::Query("Update `Competition` set Registration='$Registration',Status='$Status',Onsite='$Onsite',Unofficial='$Unofficial',DelegateWCAOn='$DelegateWCAOn' where `ID`='$ID'");
+    $Cubingchina=0+isset($_POST['Cubingchina']);
+    DataBaseClass::Query("Update `Competition` set Registration='$Registration',Status='$Status',Onsite='$Onsite',Unofficial='$Unofficial',DelegateWCAOn='$DelegateWCAOn',Cubingchina='$Cubingchina' where `ID`='$ID'");
 }else{
     DataBaseClass::Query("Update `Competition` set Registration='$Registration',Status='$Status',Onsite='$Onsite' where `ID`='$ID'");
 }

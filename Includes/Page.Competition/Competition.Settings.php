@@ -15,15 +15,18 @@ DataBaseClass::Query(" select count(distinct E.ID) Rounds,D.ID Discipline_ID fro
 foreach(DataBaseClass::getRows() as $event){
     $eventRounds[$event['Discipline_ID']]=$event['Rounds']+1;
 } ?>
-                    
+
+
+<?php if(!$Competition['Competition_Cubingchina']){ ?>
 <form method='POST' action='<?= PageAction('Competition.Competitors.Check')?>'>
     <?= ml('Competition.Competitors.Check') ?>
     <input hidden name='ID' value='<?= $Competition['Competition_ID'] ?>'>
     <input class="form_row" type='submit' value='<?= ml('*.Check',false) ?>'><?= mlb('*.Check')?>
     <?= $Competition['Competition_CheckDateTime'] ?>
 </form>
+<?php } ?>
 <form method='POST' action='<?= PageAction('Competition.Competitors.Load')?>'>
-     <?= ml('Competition.Competitors.Load') ?>
+     <?= ml('Competition.Competitors.Load',$Competition['Competition_Cubingchina']?'Cubingchina':'WCA' ) ?>
     <?php if(CheckAccess('Competition.Settings.Ext',$Competition['Competition_ID'])){ ?>
         <input hidden name='ID' value='<?= $Competition['Competition_ID'] ?>'>
         <span class="badge"><input class="form_row" type='submit' value='<?= ml('*.Reload',false) ?>'><?= mlb('*.Reload')?> Ext</span>   
@@ -283,6 +286,7 @@ WebSite &#9642; <a href="<?=  $Competition['Competition_WebSite'] ?>"><?=  $Comp
                 <?php } ?>
                 <label for="Competition.Onsite"><?= $Competition['Competition_Onsite']?ml('Competition.Onsite.True'):ml('Competition.Onsite.False')   ?></label><input id="Competition.Onsite" name="Onsite" <?= $Competition['Competition_Onsite']?'checked':'' ?> type="checkbox"><br>
                 <?php if(CheckAccess('Competition.Settings.Ext',$Competition['Competition_ID'])){ ?>
+                
                 <hr><span class="badge">Ext</span><br>
                     <?php if(!$Competition['Competition_Unofficial']){ ?>
                         <?= svg_green(10) ?>
@@ -296,6 +300,7 @@ WebSite &#9642; <a href="<?=  $Competition['Competition_WebSite'] ?>"><?=  $Comp
                         <?= svg_red(10) ?>
                     <?php } ?>
                     <label for="Competition.DelegateWCAOn"><?= $Competition['Competition_DelegateWCAOn']?ml('Competition.DelegateWCAOn.False'):ml('Competition.DelegateWCAOn.True')   ?></label><input id="Competition.DelegateWCAOn" name="DelegateWCAOn" <?= $Competition['Competition_DelegateWCAOn']?'checked':'' ?> type="checkbox"><br>
+                    <label for="Competition.Cubingchina"><?= $Competition['Competition_Cubingchina']?ml('Competition.Cubingchina.True'):ml('Competition.Cubingchina.False')   ?></label><input id="Competition.Cubingchina" name="Cubingchina" <?= $Competition['Competition_Cubingchina']?'checked':'' ?> type="checkbox"><br>
                 <?php } ?>
                 <input type="submit" name="submit" value="<?= ml('*.Save',false) ?>"><?= mlb('*.Save') ?>
             </form> 
@@ -478,3 +483,5 @@ WebSite &#9642; <a href="<?=  $Competition['Competition_WebSite'] ?>"><?=  $Comp
 <?= mlb('Competition.Unofficial.False') ?>
 <?= mlb('Competition.DelegateWCAOn.True') ?>
 <?= mlb('Competition.DelegateWCAOn.False') ?>
+<?= mlb('Competition.Cubingchina.True') ?>
+<?= mlb('Competition.Cubingchina.False') ?>

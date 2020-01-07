@@ -81,16 +81,37 @@ Function CompetitorReplace($user){
     }else{
         $email=false;
     }
-        ;
+    
         $name=short_Name(DataBaseClass::Escape($user->name));
-        $wcaid=$user->wca_id;
-        if(!is_numeric($user->id)){
+        if(isset($user->wca_id)){
+            $wcaid=$user->wca_id;
+        }else{
+            $wcaid=$user->wcaid;    
+        }
+        
+        if(!isset($user->id) or !is_numeric($user->id)){
             $wid=false;
         }else{
             $wid=$user->id;
         }
-        $country=$user->country_iso2;
-        $avatar=(!$user->avatar->is_default)?$user->avatar->thumb_url:"";
+        if(isset($user->country_iso2)){
+            $country=$user->country_iso2;
+        }elseif(isset($user->region)){
+            DataBaseClass::Query("Select ISO2 from Country where Name='".$user->region."'");
+            $row=DataBaseClass::getRow();
+            if(isset($row['ISO2'])){
+                $country=$row['ISO2'];
+            }else{
+                $country='';    
+            }
+        }else{
+            $country='';
+        }
+        if(isset($user->avatar)){
+            $avatar=(!$user->avatar->is_default)?$user->avatar->thumb_url:"";
+        }else{
+            $avatar='';
+        }
         $Language=false;
     
         if($wid){
@@ -122,8 +143,15 @@ Function CompetitorReplace($user){
         }else{
             DataBaseClass::Where("WID is null");
         }
-        DataBaseClass::Where("WCAID='$wcaid'");
+        if($wcaid){
+            DataBaseClass::Where("WCAID='$wcaid'");
+        }else{
+            DataBaseClass::Where("WCAID=''");
+        }
         
+        if(!$wid and !$wcaid){
+            DataBaseClass::Where("Name='$name'");
+        }
         $Competitor=DataBaseClass::QueryGenerate(false);
         
         if(!$Competitor){

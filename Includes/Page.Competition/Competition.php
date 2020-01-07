@@ -138,7 +138,7 @@ $comment="";
 <?php } ?>    
     
 <?php if($Competition['Competition_Comment']){ ?>
-    <?php $comment.="<hr>".Parsedown(ml_json($Competition['Competition_Comment'])); ?>
+    <?php $comment.="<hr>".Parsedown(ml_json($Competition['Competition_Comment']),false); ?>
 <?php } ?>                  
     
 <?php if($comment){ ?>

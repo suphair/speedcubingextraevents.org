@@ -1,4 +1,4 @@
-
+<script src="<?= PageLocal()?>jQuery/maskedinput/jquery.maskedinput.js?4" type="text/javascript"></script>
 <?php
 $Competition=ObjectClass::getObject('PageCompetition');
 $CompetitionEvents=ObjectClass::getObject('PageCompetitionEvents');
@@ -77,7 +77,7 @@ $CompetitionDelegates=ObjectClass::getObject('PageCompetitionDelegates');
 <a name="CompetitorEventAdd"></a>
 <div class="form">
     <form method="POST" action="<?= PageAction('CompetitionEvent.Registration.Add')?>">
-        <?= ml('CompetitionEvent.Registration.Add') ?><br>
+        <?= ml('CompetitionEvent.Registration.Add',$Competition['Competition_Cubingchina']?'CubingChina':'WCA') ?><br>
         <input name="ID" type="hidden" value="<?= $CompetitionEvent['Event_ID'] ?>" />
         <select style="width: 600px" Name="Competitors[]" data-placeholder="Choose <?= html_spellcount($CompetitionEvent['Discipline_Competitors'], 'competitor', 'competitors', 'competitors')?>" class="chosen-select chosen-select-<?= $CompetitionEvent['Discipline_Competitors'] ?>" multiple>
             <option value=""></option>
@@ -122,6 +122,68 @@ foreach($commands as $row){
        }
     }
 }
+
+
+DataBaseClass::Query("select Com.ID Command,C.Country, C.ID,C.Name,GROUP_CONCAT(A.vOut order by A.Attempt SEPARATOR ' | ') Attempts "
+        . " from Command Com"
+        . " join CommandCompetitor CC on CC.Command=Com.ID "
+        . " join Competitor C on CC.Competitor=C.ID " 
+        . " join Attempt A on A.Command=Com.ID and A.Attempt is not null"
+        . " where Com.Event=".$CompetitionEvent['Event_ID']." and C.WCAID='' and C.WID is null"
+        . " group by Command,C.Country,C.ID,C.Name "
+        . " order by C.Name");
+
+
+$competitors=DataBaseClass::getRows();
+
+if(sizeof($competitors)){ ?>
+    <div class="form">
+        <span class="error">Without wca_id and user_id</span>
+        <table>
+            <tr class="tr_title">
+                <td><?= ml('Event.Competitors.Table.Name');?></td>
+                <td><?= ml('Event.Competitors.Table.Country');?></td>
+                <td><?= ml('Event.Competitors.Table.Results');?></td>
+            </tr>    
+        <?php foreach($competitors as $row){ ?>
+            <tr>
+                <td>
+                    <?= $row['Name'] ?>
+                 </td>
+                 <td>
+                    <?= ImageCountry($row['Country'],20) ?> <?= CountryName($row['Country']); ?>
+                 </td>
+                <td class="border-left-solid">
+                    <?= $row['Attempts'] ?>
+                </td>
+                <td>
+                    <form  method="POST" action="<?= PageAction('CompetitionEvent.Registration.WCAID')?> " >
+                        <input name="Competitor" type="hidden" value="<?= $row['ID'] ?>" />
+                        <input name="Competition" type="hidden" value="<?= $Competition['Competition_ID'] ?>" />
+                        <input required="" class="WCAID" placeholder="WCA ID" ID="WCAID<?= $row['ID'] ?>" autocomplete="off" style="width:80px" name="WCAID" value="" 
+                            onkeyup="
+                            if($(this).val().indexOf('_')+1==0){
+                                if($('#WCAIDsearch<?= $row['ID'] ?>').val()!=$('#WCAID<?= $row['ID'] ?>').val()){
+                                    $('#tst<?= $row['ID'] ?>').html('search...'); 
+                                    $('#tst<?= $row['ID'] ?>').load('<?= PageAction('AJAX.Check.WCAID') ?>?Competitor=<?= $row['ID'] ?>&WCAID=' + $('#WCAID<?= $row['ID'] ?>').val());
+                                }
+                            }else{
+                                $('#tst<?= $row['ID'] ?>').html(''); 
+                            }" />
+                         <span id="tst<?= $row['ID'] ?>"></span>
+                    </form>
+                </td>
+            </tr>    
+        <?php } ?>
+        </table>    
+<script>
+    $(function(){
+      $(".WCAID").mask("9999aaaa99");
+    });
+</script>
+    </div>    
+<?php }
+
 if($deleter and sizeof($deleter_names)>0){?>
 <br>
 <div class="form">
@@ -213,11 +275,13 @@ if($deleter and sizeof($deleter_names)>0){?>
             <?php } ?>
         </td>
         <td>
-            <form  method="POST" action="<?= PageAction('CompetitionEvent.Registration.Video')?> " >
-                <input name="ID" type="hidden" value="<?= $command['ID'] ?>" />
-                <input  name="Video" value="<?= $command['Video'] ?>">
-                <input class="form_row" type="submit" value="<?= ml('*.Save',false); ?>" style="margin:0px; padding:1px 2px;">
-            </form>
+            <?php if($command['Attempt']){ ?>
+                <form  method="POST" action="<?= PageAction('CompetitionEvent.Registration.Video')?> " >
+                    <input name="ID" type="hidden" value="<?= $command['ID'] ?>" />
+                    <input  name="Video" value="<?= $command['Video'] ?>">
+                    <input class="form_row" type="submit" value="<?= ml('*.Save',false); ?>" style="margin:0px; padding:1px 2px;">
+                </form>
+            <?php } ?>
         </td>
         </tr>
     <?php } ?>
@@ -240,10 +304,13 @@ if($deleter and sizeof($deleter_names)>0){?>
                     <?php if(substr($row['Action'],2,1)=='*' or substr($row['Action'],2,1)=='+' ){ ?>
                           color:var(--green)
                     <?php } ?>
+                     <?php if(substr($row['Action'],2,1)=='!'){ ?>
+                          color:var(--blue)
+                    <?php } ?>
                     ">
                     <?= str_replace(
-                            ['x','-','*','+'],
-                            ['Del','Rem','New','Add'],$row['Action']) ?>
+                            ['x','-','*','+','!'],
+                            ['Del','Rem','New','Add','Link'],$row['Action']) ?>
                     </span>
                 </td>
                 <td class="border-left-dotted border-right-dotted"><?= $row['Details']?></td>
@@ -257,6 +324,8 @@ if($deleter and sizeof($deleter_names)>0){?>
 
 
 
-
+<?= mlb('*.Set'); ?>
+<?= mlb('*.Link'); ?>
+<?= mlb('*.Check'); ?>
 <?= mlb('Event.Competitors.Table.Teams'); ?>
 <?= mlb('Event.Competitors.Table.Competitors'); ?>
