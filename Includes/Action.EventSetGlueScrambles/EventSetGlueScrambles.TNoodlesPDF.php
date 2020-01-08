@@ -68,7 +68,6 @@ if($_FILES['file']['error']==0 and $_FILES['file']['type'] == 'application/pdf')
     Databaseclass::Join('Event','Competition');
     $data=Databaseclass::QueryGenerate(false);
     $Discipline=$data['Discipline_CodeScript'];
-
     $X0=285;
     $X1=2353;
     
@@ -184,8 +183,48 @@ if($_FILES['file']['error']==0 and $_FILES['file']['type'] == 'application/pdf')
                     $PageAdd++;
                 }
             }
+            if(strpos($data['Discipline_CodeScript'],'mguild')!==false){
+                $pdf->SetFont('times','B',18);
+                $mguild_X0=10;
+                $mguild_Y0=$pdf_img_Y+20;
+                $pdf->Text(85,$mguild_Y0-2, 'Competitor');
+                
+                $mguild_X1=$pdf->w-10;
+                $mguild_Y1=$pdf->h-20;        
+                $pdf->Rect($mguild_X0,$mguild_Y0-10,$mguild_X1-$mguild_X0,$mguild_Y1-$mguild_Y0+10);
+                
+                $mguild_events=[
+                    ['555'=>'5x5x5 Cube','444'=>'4x4x4 Cube','333'=>'3x3x3 Cube','222'=>'2x2x2 Cube'],
+                    ['minx'=>'Megaminx','pyram'=>'Pyraminx','333oh'=>'3x3x3 One-Handed'],
+                    ['sq1'=>'Square-1','skewb'=>'Skewb','clock'=>'Clock']
+                ];
+                
+                $mguild_line=[];
+                $mguild_ceil=[];
+                for($i=0;$i<sizeof($mguild_events);$i++){
+                    $mguild_line[$i]=$mguild_Y0+($mguild_Y1-$mguild_Y0)/sizeof($mguild_events)*$i;
+                    $j=0;
+                    foreach($mguild_events[$i] as $code=>$name){
+                        $mguild_ceil[$i][$code]=$mguild_X0+($mguild_X1-$mguild_X0)/sizeof($mguild_events[$i])*$j;
+                        $j++;
+                    }
+                }
+                $mguild_line[sizeof($mguild_events)]=$mguild_Y1;
+                
+                $pdf->SetFont('times','B',18);
+                for($i=0;$i<sizeof($mguild_events);$i++){
+                    $pdf->Line($mguild_X0, $mguild_line[$i], $mguild_X1, $mguild_line[$i]);   
+                    foreach($mguild_events[$i] as $code=>$name){
+                        $pdf->Line($mguild_ceil[$i][$code], $mguild_line[$i], $mguild_ceil[$i][$code], $mguild_line[$i+1]);   
+                        $pdf->Image("Image/Events/$code.png",$mguild_ceil[$i][$code]+5, $mguild_line[$i]+5, 15, 15);
+                        $pdf->Text($mguild_ceil[$i][$code]+5,$mguild_line[$i]+30, $name);
+                    }
+                }
+            }
         }
     }   
+    
+
     
     DataBaseClass::Query("Update Event set ScrambleSalt='$rand' where ID=".$data['Event_ID']);
     $file="Image/Scramble/".$rand.".pdf";
