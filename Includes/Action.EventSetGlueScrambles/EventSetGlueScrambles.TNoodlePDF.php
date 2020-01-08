@@ -149,11 +149,11 @@ if($_FILES['file']['error']==0 and $_FILES['file']['type'] == 'application/pdf')
                 }else{
                     $att=$attempt;
                 }
+                
+                $pdf->SetFont('times','B',20); 
                 if($data['Discipline_CutScrambles']){
-                    $pdf->SetFont('times','B',20); 
                     $pdf->Text(6, $pdf_img_Y+20, $Letter[$group+1].$att);
                 }else{
-                    $pdf->SetFont('times','B',20); 
                     $pdf->Text(10, $pdf_img_Y+20, $att);
                 }
             }

@@ -95,7 +95,7 @@ if($_FILES['file']['error']==0 and $_FILES['file']['type'] == 'application/pdf')
     $ScramblesEvent=$Groups*($Attemption+1);
     $PagesEvent=ceil($ScramblesEvent/$ScamblesOnePage);
 
-if(strpos($data['Discipline_Code'],'mguild')!==false){
+    if(strpos($data['Discipline_CodeScript'],'mguild')!==false){
         $data['Discipline_TNoodles']='555,444,333,222,minx,pyram,333oh,sq1,skewb,clock';
     }
     
@@ -178,8 +178,18 @@ if(strpos($data['Discipline_Code'],'mguild')!==false){
 
                 $pdf->SetFont('times','B',24);
 
-                if(strpos($Discipline, 'all_scr')!=false){
-                    $pdf->Text(10, $pdf_img_Y+10, $Letter[$group].$AttemptScrambling);
+                if($data['Discipline_CutScrambles']){
+                    if($AttemptScrambling>=10){
+                        $pdf->SetFont('times','B',16);
+                        $pdf->Text(10, $pdf_img_Y+10, $Letter[$group].$AttemptScrambling);
+                    }else{
+                        $pdf->Text(10, $pdf_img_Y+10, $Letter[$group].$AttemptScrambling);
+                    }
+                    if($attemption==$Attemption+1){
+                        $pdf->SetFont('times','B',20);
+                        $pdf->Text(10, $pdf_img_Y+28, 'EX');
+                    }
+                    
                 }else{
                     $pdf->Text(10, $pdf_img_Y+10, $AttemptScrambling);
                 }           
