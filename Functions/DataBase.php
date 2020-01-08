@@ -60,7 +60,7 @@ Function DataBaseInit(){
    DataBaseClass::SetJoin('CompetitionDelegate','Delegate');
    DataBaseClass::SetJoin('CompetitionDelegate','Competition');
    
-   DataBaseClass::AddTable('CompetitionReport','CR',array('ID','Competition','Delegate','Report'));
+   DataBaseClass::AddTable('CompetitionReport','CR',array('ID','Competition','Delegate','Report','Parsedown'));
    DataBaseClass::SetJoin('CompetitionReport','Delegate');
    DataBaseClass::SetJoin('CompetitionReport','Competition');
    

@@ -50,7 +50,7 @@ $delegatesWCA=DataBaseClass::getRows();
 DataBaseClass::Query("Select CR.CreateTimestamp CompetitionReport_CreateTimestamp, " 
         . " C.Country Competition_Country,  CR.Report CompetitionReport_Report, C.WCA Competition_WCA, C.ID Competition_ID, C.StartDate Competition_StartDate , C.EndDate Competition_EndDate, C.Name Competition_Name, "
         . " Cm.Name Competitor_Name, Cm.ID Competitor_ID, Cm.Country Competitor_Country "
-        . " , CR.DelegateWCA "
+        . " , CR.DelegateWCA, CR.Parsedown CompetitionReport_Parsedown"
         . " from  Competition C "
         . " join CompetitionReport CR  on C.ID=CR.Competition "
         . " left outer join Delegate D on D.ID=CR.Delegate "
@@ -62,10 +62,15 @@ DataBaseClass::Query("Select CR.CreateTimestamp CompetitionReport_CreateTimestam
 <h1><img style="vertical-align: middle" width="40px" src="<?= PageIndex()?>Image/Icons/report.png"> <?= ml('Competition.Report.Title') ?>: <a href="<?= LinkCompetition($Competition['Competition_WCA'])?>"><?= $Competition['Competition_Name'] ?></a></h1>
 <?php foreach(DataBaseClass::getRows() as $report){ 
     $Report[$report['Competitor_ID']]=$report['CompetitionReport_Report'];
+    $Parsedown[$report['Competitor_ID']]=$report['CompetitionReport_Parsedown'];
      ?>
-    <div class="form">
+    <div class="form" style="width:1000px">
         <b>Report by <?= $report['Competitor_Name'] ?></b> (<?= $report['CompetitionReport_CreateTimestamp'] ?>)<br>
-        <?= Parsedown($report['CompetitionReport_Report']); ?>
+        <?php if(!$report['CompetitionReport_Parsedown']){?>
+            <?= str_replace("\n","<br>",$report['CompetitionReport_Report']); ?>
+        <?php }else{ ?>
+            <?= Parsedown($report['CompetitionReport_Report']); ?>
+        <?php } ?>        
     </div>
 <?php } ?>
 
@@ -83,6 +88,7 @@ if(CheckAccess('Competition.Report.Create',$Competition['Competition_ID'])){ ?>
         <textarea name="Report" style="height: 400px;width: 1000px"><?= 
             isset($Report[$Competitor->local_id])?$Report[$Competitor->local_id]:'' 
         ?></textarea><br>
-        <input type="submit" name="submit" value="Save report">
+        Using <a target="_blank" href="https://parsedown.org">parsedown</a> <input name="Parsedown" type="checkbox" <?= (isset($Parsedown[$Competitor->local_id]) and $Parsedown[$Competitor->local_id])?'checked':'' ?>/>
+        <input type="submit" name="submit" value="Save report"> 
     </form> 
 <?php } ?>

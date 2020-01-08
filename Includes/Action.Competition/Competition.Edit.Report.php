@@ -28,14 +28,15 @@ if(CashDelegate()){
     }
 }
 
+$Parsedown=isset($_POST['Parsedown'])+0;
 
 if(!trim($Report)){
     DataBaseClass::Query("Delete from `CompetitionReport` where ID=$Report_ID");
 }else{
     if($Report_ID){
-        DataBaseClass::Query("Update `CompetitionReport` set Report='$Report' where ID=$Report_ID");
+        DataBaseClass::Query("Update `CompetitionReport` set Report='$Report',Parsedown=$Parsedown where ID=$Report_ID");
     }else{
-        DataBaseClass::Query("insert into `CompetitionReport` (Report,Competition,Delegate,DelegateWCA) values ('$Report',$ID,$Delegate,$DelegateWCA)");
+        DataBaseClass::Query("insert into `CompetitionReport` (Report,Competition,Delegate,DelegateWCA,Parsedown) values ('$Report',$ID,$Delegate,$DelegateWCA,$Parsedown)");
 
         DataBaseClass::FromTable("Competition","ID=".$ID);
         $Competition=DataBaseClass::QueryGenerate(false);
