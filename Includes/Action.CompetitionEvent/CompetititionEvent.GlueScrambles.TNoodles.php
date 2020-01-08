@@ -36,12 +36,11 @@ if(!$data['Discipline_GlueScrambles'] or !$data['Discipline_TNoodles']){
 
     $scrs=$data['Event_Groups']*($data['Format_Attemption']+1);
     
-    if($data['Discipline_Code']=='all_scr'){
+    if($data['Discipline_CodeScript']=='all_scr'){
         $scrs=$data['Event_Groups']*2;
     }
     
     $Pages_event=ceil($scrs/(5+2));
-
     ?>
     <h3><?= $scrs ?> scrambles for <?= $Pages_event==1?'page':"$Pages_event pages" ?> </h3>
     <center>

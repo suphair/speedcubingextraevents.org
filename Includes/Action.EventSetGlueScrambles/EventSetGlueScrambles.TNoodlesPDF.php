@@ -59,7 +59,7 @@ if($_FILES['file']['error']==0 and $_FILES['file']['type'] == 'application/pdf')
         }
         unset($lines[$i][$B]);
     }
-    
+   
     
     Databaseclass::FromTable('Event', "ID='$ID'");
     DataBaseClass::Join_current('DisciplineFormat');
@@ -94,9 +94,8 @@ if($_FILES['file']['error']==0 and $_FILES['file']['type'] == 'application/pdf')
     $ScamblesOnePage=(5+2);
     $ScramblesEvent=$Groups*($Attemption+1);
     $PagesEvent=ceil($ScramblesEvent/$ScamblesOnePage);
-    $ScramblesEachAttempts=$Pages/$PagesEvent;
-    
-    if(strpos($data['Discipline_Code'],'mguild')!==false){
+
+if(strpos($data['Discipline_Code'],'mguild')!==false){
         $data['Discipline_TNoodles']='555,444,333,222,minx,pyram,333oh,sq1,skewb,clock';
     }
     
@@ -109,6 +108,7 @@ if($_FILES['file']['error']==0 and $_FILES['file']['type'] == 'application/pdf')
     }
     
     $attemption_event=explode(',',$data['Discipline_TNoodles']);
+    
     for($group=1;$group<=$Groups;$group++){
         for($attemption=1;$attemption<=($Attemption+1);$attemption++){
             $StartPage=floor((($group-1)*($Attemption+1)+$attemption)/$ScamblesOnePage);
@@ -183,8 +183,11 @@ if($_FILES['file']['error']==0 and $_FILES['file']['type'] == 'application/pdf')
                 }else{
                     $pdf->Text(10, $pdf_img_Y+10, $AttemptScrambling);
                 }           
-                
-                $pdf->Image("Image/Events/".$attemption_event[$AttemptScrambling-1].".png",10,$pdf_img_Y+12,10,10);
+                if(isset($attemption_event[$AttemptScrambling-1])){
+                    $pdf->Image("Image/Events/".$attemption_event[$AttemptScrambling-1].".png",10,$pdf_img_Y+12,10,10);
+                }else{
+                    $pdf->Text(10, $pdf_img_Y+12, $AttemptScrambling-1);
+                }
                 
                 $pdf->Image($file_tmp,
                         $pdf_img_X0,
@@ -238,8 +241,6 @@ if($_FILES['file']['error']==0 and $_FILES['file']['type'] == 'application/pdf')
             }
         }
     }   
-    
-
     DataBaseClass::Query("Update Event set ScrambleSalt='$rand' where ID=".$data['Event_ID']);
     $file="Image/Scramble/".$rand.".pdf";
     $pdf->Output($file);
