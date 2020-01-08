@@ -96,6 +96,19 @@ if($_FILES['file']['error']==0 and $_FILES['file']['type'] == 'application/pdf')
     $PagesEvent=ceil($ScramblesEvent/$ScamblesOnePage);
     $ScramblesEachAttempts=$Pages/$PagesEvent;
     
+    if(strpos($data['Discipline_Code'],'mguild')!==false){
+        $data['Discipline_TNoodles']='555,444,333,222,minx,pyram,333oh,sq1,skewb,clock';
+    }
+    
+    if($data['Discipline_TNoodlesMult']){
+        $arr=[];
+        for($i=0;$i<$data['Discipline_TNoodlesMult'];$i++){
+            $arr[]=$data['Discipline_TNoodles'];
+        }
+        $data['Discipline_TNoodles']=implode(",",$arr);
+    }
+    
+    $attemption_event=explode(',',$data['Discipline_TNoodles']);
     for($group=1;$group<=$Groups;$group++){
         for($attemption=1;$attemption<=($Attemption+1);$attemption++){
             $StartPage=floor((($group-1)*($Attemption+1)+$attemption)/$ScamblesOnePage);
@@ -166,10 +179,12 @@ if($_FILES['file']['error']==0 and $_FILES['file']['type'] == 'application/pdf')
                 $pdf->SetFont('times','B',24);
 
                 if(strpos($Discipline, 'all_scr')!=false){
-                    $pdf->Text(10, $pdf_img_Y+20, $Letter[$group].$AttemptScrambling);
+                    $pdf->Text(10, $pdf_img_Y+10, $Letter[$group].$AttemptScrambling);
                 }else{
-                    $pdf->Text(10, $pdf_img_Y+20, $AttemptScrambling);
-                }                
+                    $pdf->Text(10, $pdf_img_Y+10, $AttemptScrambling);
+                }           
+                
+                $pdf->Image("Image/Events/".$attemption_event[$AttemptScrambling-1].".png",10,$pdf_img_Y+12,10,10);
                 
                 $pdf->Image($file_tmp,
                         $pdf_img_X0,
@@ -201,23 +216,23 @@ if($_FILES['file']['error']==0 and $_FILES['file']['type'] == 'application/pdf')
                 
                 $mguild_line=[];
                 $mguild_ceil=[];
-                for($i=0;$i<sizeof($mguild_events);$i++){
-                    $mguild_line[$i]=$mguild_Y0+($mguild_Y1-$mguild_Y0)/sizeof($mguild_events)*$i;
-                    $j=0;
-                    foreach($mguild_events[$i] as $code=>$name){
-                        $mguild_ceil[$i][$code]=$mguild_X0+($mguild_X1-$mguild_X0)/sizeof($mguild_events[$i])*$j;
-                        $j++;
+                for($mguild_i=0;$mguild_i<sizeof($mguild_events);$mguild_i++){
+                    $mguild_line[$mguild_i]=$mguild_Y0+($mguild_Y1-$mguild_Y0)/sizeof($mguild_events)*$mguild_i;
+                    $mguild_j=0;
+                    foreach($mguild_events[$mguild_i] as $code=>$name){
+                        $mguild_ceil[$mguild_i][$code]=$mguild_X0+($mguild_X1-$mguild_X0)/sizeof($mguild_events[$mguild_i])*$mguild_j;
+                        $mguild_j++;
                     }
                 }
                 $mguild_line[sizeof($mguild_events)]=$mguild_Y1;
                 
                 $pdf->SetFont('times','B',18);
-                for($i=0;$i<sizeof($mguild_events);$i++){
-                    $pdf->Line($mguild_X0, $mguild_line[$i], $mguild_X1, $mguild_line[$i]);   
-                    foreach($mguild_events[$i] as $code=>$name){
-                        $pdf->Line($mguild_ceil[$i][$code], $mguild_line[$i], $mguild_ceil[$i][$code], $mguild_line[$i+1]);   
-                        $pdf->Image("Image/Events/$code.png",$mguild_ceil[$i][$code]+5, $mguild_line[$i]+5, 15, 15);
-                        $pdf->Text($mguild_ceil[$i][$code]+5,$mguild_line[$i]+30, $name);
+                for($mguild_i=0;$mguild_i<sizeof($mguild_events);$mguild_i++){
+                    $pdf->Line($mguild_X0, $mguild_line[$mguild_i], $mguild_X1, $mguild_line[$mguild_i]);   
+                    foreach($mguild_events[$mguild_i] as $code=>$name){
+                        $pdf->Line($mguild_ceil[$mguild_i][$code], $mguild_line[$mguild_i], $mguild_ceil[$mguild_i][$code], $mguild_line[$mguild_i+1]);   
+                        $pdf->Image("Image/Events/$code.png",$mguild_ceil[$mguild_i][$code]+5, $mguild_line[$mguild_i]+5, 15, 15);
+                        $pdf->Text($mguild_ceil[$mguild_i][$code]+5,$mguild_line[$mguild_i]+30, $name);
                     }
                 }
             }
@@ -225,7 +240,6 @@ if($_FILES['file']['error']==0 and $_FILES['file']['type'] == 'application/pdf')
     }   
     
 
-    
     DataBaseClass::Query("Update Event set ScrambleSalt='$rand' where ID=".$data['Event_ID']);
     $file="Image/Scramble/".$rand.".pdf";
     $pdf->Output($file);

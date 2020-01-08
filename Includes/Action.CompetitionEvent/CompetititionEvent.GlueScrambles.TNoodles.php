@@ -50,6 +50,12 @@ if(!$data['Discipline_GlueScrambles'] or !$data['Discipline_TNoodles']){
     $Competition_WCA=str_replace('.','_',$data['Competition_WCA']);
     $FileName=$Competition_WCA."_".$data['Discipline_Code']."_".$data['Event_Round'];
     $event_requests=[];
+    
+    if(strpos($data['Discipline_Code'],'mguild')!==false){
+        $data['Discipline_TNoodles']='555,444,333,222,minx,pyram,333oh,sq1,skewb,clock';
+    }
+    
+    
     foreach(explode(",",$data['Discipline_TNoodles']) as $event){
         if(in_array($event,['666','777'])){
             $event_requests[]="('eventID'-'".$event."'_'round'-'1'_'scrambleSetCount'-".$data['Discipline_TNoodlesMult']*$Pages_event."_'scrambleCount'-3_'extraScrambleCount'-1_'copies'-1)";
