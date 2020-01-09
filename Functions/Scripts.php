@@ -101,6 +101,11 @@ function Script_Load333FT(){
         foreach (DataBaseClassWCA::getRows() as $row)
             if(!in_array($row['hash'],$hash)){
             $hash[]=$row['hash'];
+            
+            if($row['personId']=='2012GOOD02'){
+               $row['personId']='UNKN01';
+               $row['personName']='Unknown01';
+            }
             DataBaseClass::FromTable("Competitor","WCAID='".$row['personId']."'");
             $Competitor=DataBaseClass::QueryGenerate(false);
             if(!$Competitor){

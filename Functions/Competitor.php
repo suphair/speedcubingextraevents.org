@@ -85,8 +85,10 @@ Function CompetitorReplace($user){
         $name=short_Name(DataBaseClass::Escape($user->name));
         if(isset($user->wca_id)){
             $wcaid=$user->wca_id;
-        }else{
+        }elseif(isset($user->wcaid)){
             $wcaid=$user->wcaid;    
+        }else{
+            $wcaid='';
         }
         
         if(!isset($user->id) or !is_numeric($user->id)){
