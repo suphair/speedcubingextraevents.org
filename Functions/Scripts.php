@@ -20,7 +20,7 @@ function checkIndex($table,$index){
 
 function Script_Load333FT(){
     $hash=[];
-    $Comment='{"EN":"Results were downloaded from WCA","RU":"Данные загружены с WCA"}';
+    $Comment='{"EN":"This information is based on competition results owned and maintained by the World Cube Assocation, published at https://worldcubeassociation.org/results as of January 9, 2020."}';
     foreach([
         ['Name'=>'WCA 3x3x3 FT A5',     'Code'=>'t.Transfer333ftAverage5'   ,'Result' =>'Average',  'Attemption' => '5', 'format'=>'average'],
         ['Name'=>'WCA 3x3x3 FT M3',      'Code'=>'t.Transfer333ftMean3'      ,'Result' =>'Mean',     'Attemption' => '3', 'format'=>'average'],

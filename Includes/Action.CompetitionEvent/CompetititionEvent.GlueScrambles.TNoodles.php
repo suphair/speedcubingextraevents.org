@@ -51,7 +51,7 @@ if(!$data['Discipline_GlueScrambles'] or !$data['Discipline_TNoodles']){
     $event_requests=[];
     
     if(strpos($data['Discipline_Code'],'mguild')!==false){
-        $data['Discipline_TNoodles']='555,444,333,222,minx,pyram,333oh,sq1,skewb,clock';
+        $data['Discipline_TNoodles']=GetIni('TNoodles','mguild');
     }
     
     

@@ -96,7 +96,7 @@ if($_FILES['file']['error']==0 and $_FILES['file']['type'] == 'application/pdf')
     $PagesEvent=ceil($ScramblesEvent/$ScamblesOnePage);
 
     if(strpos($data['Discipline_CodeScript'],'mguild')!==false){
-        $data['Discipline_TNoodles']='555,444,333,222,minx,pyram,333oh,sq1,skewb,clock';
+        $data['Discipline_TNoodles']= GetIni('TNoodles','mguild');
     }
     
     if($data['Discipline_TNoodlesMult']){
@@ -214,17 +214,18 @@ if($_FILES['file']['error']==0 and $_FILES['file']['type'] == 'application/pdf')
             if(strpos($data['Discipline_CodeScript'],'mguild')!==false){
                 $pdf->SetFont('times','B',18);
                 $mguild_X0=10;
-                $mguild_Y0=$pdf_img_Y+20;
-                $pdf->Text(85,$mguild_Y0-2, 'Competitor');
+                $mguild_Y0=$pdf_img_Y+10;
                 
                 $mguild_X1=$pdf->w-10;
-                $mguild_Y1=$pdf->h-20;        
-                $pdf->Rect($mguild_X0,$mguild_Y0-10,$mguild_X1-$mguild_X0,$mguild_Y1-$mguild_Y0+10);
+                $mguild_Y1=$pdf->h-30;   
+                
+                $pdf->Text(85,$mguild_Y1+8, 'Competitor');
+                $pdf->Rect($mguild_X0,$mguild_Y0,$mguild_X1-$mguild_X0,$mguild_Y1-$mguild_Y0+12);
                 
                 $mguild_events=[
-                    ['555'=>'5x5x5 Cube','444'=>'4x4x4 Cube','333'=>'3x3x3 Cube','222'=>'2x2x2 Cube'],
+                    ['sq1'=>'Square-1','skewb'=>'Skewb','clock'=>'Clock'],
                     ['minx'=>'Megaminx','pyram'=>'Pyraminx','333oh'=>'3x3x3 One-Handed'],
-                    ['sq1'=>'Square-1','skewb'=>'Skewb','clock'=>'Clock']
+                    ['555'=>'5x5x5 Cube','444'=>'4x4x4 Cube','333'=>'3x3x3 Cube','222'=>'2x2x2 Cube'],
                 ];
                 
                 $mguild_line=[];
@@ -248,6 +249,7 @@ if($_FILES['file']['error']==0 and $_FILES['file']['type'] == 'application/pdf')
                         $pdf->Text($mguild_ceil[$mguild_i][$code]+5,$mguild_line[$mguild_i]+30, $name);
                     }
                 }
+                $pdf->Line($mguild_X0, $mguild_line[sizeof($mguild_events)], $mguild_X1, $mguild_line[sizeof($mguild_events)]);   
             }
         }
     }   
