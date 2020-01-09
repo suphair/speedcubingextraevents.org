@@ -20,32 +20,32 @@ $CoorColor['U']['L']='Yellow';
 
 $CoorColor['R']['U']='Yellow';
 $CoorColor['R']['F']='Green';
-$CoorColor['R']['r']='Blue';
+$CoorColor['R']['r']='Red';
 
 $CoorColor['B']['U']='Yellow';
-$CoorColor['B']['r']='Blue';
-$CoorColor['B']['l']='Red';
+$CoorColor['B']['r']='Red';
+$CoorColor['B']['l']='Blue';
 
 $CoorColor['L']['U']='Yellow';
 $CoorColor['L']['F']='Green';
-$CoorColor['L']['l']='Red';
+$CoorColor['L']['l']='Blue';
 
 
-$CoorColor['r']['D']='Blue';
-$CoorColor['r']['R']='Blue';
-$CoorColor['r']['B']='Blue';
+$CoorColor['r']['D']='Red';
+$CoorColor['r']['R']='Red';
+$CoorColor['r']['B']='Red';
 
-$CoorColor['l']['D']='Red';
-$CoorColor['l']['L']='Red';
-$CoorColor['l']['B']='Red';
+$CoorColor['l']['D']='Blue';
+$CoorColor['l']['L']='Blue';
+$CoorColor['l']['B']='Blue';
 
 $CoorColor['F']['D']='Green';
 $CoorColor['F']['R']='Green';
 $CoorColor['F']['L']='Green';
 
 $CoorColor['D']['F']='Green';
-$CoorColor['D']['r']='Blue';
-$CoorColor['D']['l']='Red';
+$CoorColor['D']['r']='Red';
+$CoorColor['D']['l']='Blue';
   
   $circles=array(
             'R'=>array(

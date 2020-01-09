@@ -33,7 +33,7 @@ $data=Databaseclass::QueryGenerate(false);
 $Discipline=$data['Discipline_Code'];
 $r=0;
 
-if($data['Discipline_Code']=='Pyraminx2x2x2'){
+if($data['Discipline_CodeScript']=='pyra222'){
     foreach($Scrambles_row as $n=>$s){
         $tmp=$s;
         $tmp=str_replace("R2","r2",$tmp);

@@ -100,10 +100,10 @@ foreach($data as $row){
         
         if($row['Discipline_CodeScript']=='pyra222'){
             $pdf->Text(100, 10, 'Yellow side to the top, Green - on themselves');
-            $pdf->Text(100, 15, 'Yellow-Green-Red corner remains in place');
+            $pdf->Text(100, 15, 'Yellow-Green-Blue corner remains in place');
             $pdf->Text(100, 20, 'R - rotation line near to Green sticker');
             $pdf->Text(100, 25, 'U - rotation line near to Yellow sticker');
-            $pdf->Text(100, 30, 'B - rotation line near to Red sticker');
+            $pdf->Text(100, 30, 'B - rotation line near to Blue sticker');
         }
         
         //Header
