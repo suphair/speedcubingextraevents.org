@@ -156,7 +156,7 @@ $Competitor=GetCompetitorData(); ?>
                     . " where Com.ID=".$command['Command_ID']
                     . " order by C.Name Limit 1");
             $commandsData[$command['Command_ID']]['Name']=DataBaseClass::getRow()['Name'];
-            if($command['Command_vCompetitors']==$CompetitionEvent['Discipline_Competitors']){
+            if(true or $command['Command_vCompetitors']==$CompetitionEvent['Discipline_Competitors']){
                 DataBaseClass::Query("Select * from CommandCompetitor CC where CC.Command=".$command['Command_ID']);
                 
                 $sql='Select Com.ID from Command Com ';
@@ -190,7 +190,7 @@ $Competitor=GetCompetitorData(); ?>
                     DataBaseClass::OrderClear('Command', 'Sum333') ;
                 }
                 DataBaseClass::Limit('1');
-                $result=DataBaseClass::QueryGenerate(false,false);
+                $result=DataBaseClass::QueryGenerate(false);
                 $commandsData[$command['Command_ID']][$name]=array(
                     'Competition_Name'=>$result['Competition_Name'],
                     'Event'=>$result['Event_ID'],
@@ -232,7 +232,7 @@ $Competitor=GetCompetitorData(); ?>
             onmouseover="this.className='competitor_block_select';"
             onmouseout=" this.className='';">
             <td  class="number">
-            <?php if($command['Result']['vOut'] or (isset($command['ExtResult']['vOut']) and $command['ExtResult']['vOut'])){ ?>
+            <?php if((isset($command['Result']['vOut']) and $command['Result']['vOut']) or (isset($command['ExtResult']['vOut']) and $command['ExtResult']['vOut'])){ ?>
                 <?= ++$n ?>
             <?php } ?>    
             </td>
@@ -271,7 +271,9 @@ $Competitor=GetCompetitorData(); ?>
                 </td>    
             <?php }else{ ?>
             <td  class="attempt">
-                <?= $command['Result']['vOut']; ?>    
+                <?php if(isset($command['Result']['vOut'])){ ?>
+                    <?= $command['Result']['vOut']; ?>    
+                <?php } ?>
             </td>
             <td>
                 <?php if($command['Result']['Competition_Name']){ ?>
@@ -282,7 +284,7 @@ $Competitor=GetCompetitorData(); ?>
             </td>
             <?php } ?>
             
-            <?php if($CompetitionEvent['Format_ExtResult'] and isset($command['ExtResult']) and !in_array($command['ExtResult']['vOut'],array('DNF','DNS'))){ ?>
+            <?php if($CompetitionEvent['Format_ExtResult'] and isset($command['ExtResult']['vOut']) and !in_array($command['ExtResult']['vOut'],array('DNF','DNS'))){ ?>
                 <td  class="attempt">
                     <?= $command['ExtResult']['vOut']; ?> 
                 </td>
