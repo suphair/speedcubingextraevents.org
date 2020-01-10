@@ -18,7 +18,7 @@ $Competitor=GetCompetitorData(); ?>
 
 <?= EventBlockLinks($CompetitionEvent); ?>
     
-<?php if($CompetitionEvent['Event_Comment']){?>
+<?php if(ml_json($CompetitionEvent['Event_Comment'])){?>
     <div class="block_comment">
         <?= Parsedown(ml_json($CompetitionEvent['Event_Comment'])); ?>
     </div>
@@ -60,10 +60,13 @@ $Competitor=GetCompetitorData(); ?>
     <?php if($Competition['Competition_Registration']==0){ ?>
         <p class="error"><?= ml('Competition.Registration.False') ?></p>
     <?php } ?>
-    <?php if($CompetitionEvent['Event_Round']>1){ ?>
-        <nobr><?= $CompetitionEvent['Event_Competitors'] ?> <?=$CompetitionEvent['Discipline_Competitors']>1?'teams':'competitors'; ?></nobr>
-    <?php } ?>   
-        
+    <?php if($CompetitionEvent['Event_Round']>1){        
+            if($CompetitionEvent['Event_Competitors']!=500){ ?>
+                <nobr><?= $CompetitionEvent['Event_Competitors'] ?> <?=$CompetitionEvent['Discipline_Competitors']>1?'teams':'competitors'; ?></nobr>
+        <?php }else{ ?>
+              75% from <?=$CompetitionEvent['Discipline_Competitors']>1?'teams':'competitors'; ?>
+        <?php } ?>  
+    <?php } ?>  
     <?php if($Competition['Competition_Registration']!=0 and $CompetitionEvent['Event_Round']==1){ ?>
         <?php if($CompetitionEvent['Event_Competitors']!=500){ ?>            
             <?php if($CompetitionEvent['Event_Competitors']<=$count){ ?>
