@@ -231,7 +231,7 @@ foreach($events as $event){
         <input name="ID" type="hidden" value="<?= $Competition['Competition_ID'] ?>" />
         <?php 
         $comments=json_decode($Competition['Competition_Comment'],true);
-        if(!$comments){
+        if(!$comments and $Competition['Competition_Comment']!='[]'){
             $comments[getLanguages()[0]]=$Competition['Competition_Comment'];
         }
         foreach(getLanguages() as $language){ ?>

@@ -61,7 +61,7 @@ $CompetitionDelegates=ObjectClass::getObject('PageCompetitionDelegates');
         <input name="ID" type="hidden" value="<?= $CompetitionEvent['Event_ID'] ?>" />
         <?php 
         $comments=json_decode($CompetitionEvent['Event_Comment'],true);
-        if(!$comments){
+        if(!$comments and $CompetitionEvent['Event_Comment']!='[]'){
             $comments[getLanguages()[0]]=$CompetitionEvent['Event_Comment'];
         }
         foreach(getLanguages() as $language){ ?>

@@ -22,8 +22,7 @@ if(isset($row['Event_Competition'])){
             unset($Comments[$c]);
         }
     }
-print_r($Comments);
-    DataBaseClass::Query("Update `Event` set Comment='". DataBaseClass::Escape(json_encode($Comments,JSON_UNESCAPED_UNICODE))."'  where `ID`='$ID'",true);
+    DataBaseClass::Query("Update `Event` set Comment='". DataBaseClass::Escape(json_encode($Comments,JSON_UNESCAPED_UNICODE))."'  where `ID`='$ID'");
 }
 header('Location: '.$_SERVER['HTTP_REFERER']);
 exit();  
