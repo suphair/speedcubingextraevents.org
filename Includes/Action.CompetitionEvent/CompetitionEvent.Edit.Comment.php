@@ -17,13 +17,13 @@ if(isset($row['Event_Competition'])){
     $Comments= $_POST['Comment'];
     foreach($Comments as $c=>$Comment){
         if(DataBaseClass::Escape($Comment)){
-            $Comments[$c]=DataBaseClass::Escape($Comment);
+            $Comments[$c]=$Comment;
         }else{
             unset($Comments[$c]);
         }
     }
-
-    DataBaseClass::Query("Update `Event` set Comment='". json_encode($Comments,JSON_UNESCAPED_UNICODE)."'  where `ID`='$ID'");
+print_r($Comments);
+    DataBaseClass::Query("Update `Event` set Comment='". DataBaseClass::Escape(json_encode($Comments,JSON_UNESCAPED_UNICODE))."'  where `ID`='$ID'",true);
 }
 header('Location: '.$_SERVER['HTTP_REFERER']);
 exit();  
