@@ -58,7 +58,7 @@ $typesSimplePage=[
     'multilanguage','401',
     'news','anews',
     'scramble','scrambleszip',
-    'scoretaker' ,'mainregulations','registrations','scrambles','access','reports'
+    'scoretaker' ,'mainregulations','registrations','scrambles','access','reports','api'
     ];
 
         if(substr($type,0,1)!='?'){
@@ -75,7 +75,15 @@ $typesSimplePage=[
             }
         }
         switch ($type):
-            
+            case 'api':
+                if($request[1]=='v0' and $request[2]=='competitions' and $request[4]=='results'){
+                    $Competition = DataBaseClass::SelectTableRow('Competition', "WCA='$request[3]'");
+                    ObjectClass::setObjects('PageCompetition', $Competition);
+                    if($Competition){
+                        IncludePage('Api.Competition.Results');
+                    }
+                }
+                exit();
             case 'scramble':
                $EventCode = $request[1];
                 if(!is_numeric($EventCode)){
