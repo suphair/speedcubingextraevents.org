@@ -29,7 +29,7 @@ DataBaseClass::Query(""
 $FormatSum=isset(DataBaseClass::getRow()['ID']);
 
 include "Events_Line.php" ?>
-<hr class="hr_round">
+<hr>
 <?php
 
 $request=getRequest();
@@ -287,7 +287,6 @@ if($FilterResults!='Results'){
 </h2>   
 <?php } ?>
 <?= EventBlockLinks($Event,'rankings'); ?>
-    <br>
     <?php
         DataBaseClass::Query("
             select distinct Cn.Unofficial, Cn.ID, Cn.Name, Cn.WCA, Cn.Country, Cn.StartDate, Cn.EndDate, Cn.City,Cn.Status

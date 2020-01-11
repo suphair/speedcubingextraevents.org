@@ -62,7 +62,7 @@ foreach($events as $event){
     <?= svg_red(10)?>Not all scrambles are ready (click on <img src='<?= PageIndex()?>Image/Icons/scramble.png' width='15px'> for generate scrambles)
 <?php } ?>
 <br><a target="_blank" href="<?= PageAction('Competition.Events.Results.Print')?>/<?= $Competition['Competition_ID'] ?>"><?= ml('Competition.Settings.Results.Print') ?></a>
-<br><a target="_blank" href="<?= PageAction('Competition.Events.Results.Export')?>/<?= $Competition['Competition_ID'] ?>"><?= ml('Competition.Settings.Results.Export') ?></a><br>
+<br><a target="_blank" href="<?= PageIndex()?>api/v0/competitions/<?= $Competition['Competition_WCA'] ?>/results"><?= ml('Competition.Settings.Results.Export') ?></a><br>
      
 <?php if($Competition['Competition_DelegateWCAOn']){ ?>
     <div class="block_comment error">

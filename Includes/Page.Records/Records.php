@@ -56,9 +56,9 @@ DataBaseClass::FromTable('Discipline');
 DataBaseClass::Where_current("Status='Active'");
 $disciplines=DataBaseClass::QueryGenerate(); ?>
 <div class="line">
-    <a class="<?= (!$DisciplineCode and !$country_filter)?"line_select":""?>" title="World records" href="<?= PageIndex()?>Records"><?= ImageCountry('', 50); ?></a>
+    <a class="<?= (!$DisciplineCode and !$country_filter)?"line_select":""?>" title="World records" href="<?= PageIndex()?>Records"><?= ImageCountry('', 25); ?></a>
     <?php foreach($disciplines as $discipline_row){ ?>   
-        <a class="<?= strtolower($discipline_row['Discipline_Code'])==$DisciplineCode?"line_select":""?>" title="<?= $discipline_row['Discipline_Name'] ?>" href="<?= PageIndex()?>Records/<?= $continent_filter?"_$continent_filter":$country_filter?>/<?= $discipline_row['Discipline_Code']?>"><?= ImageEvent($discipline_row['Discipline_CodeScript'],50) ?></a> 
+        <a class="<?= strtolower($discipline_row['Discipline_Code'])==$DisciplineCode?"line_select":""?>" title="<?= $discipline_row['Discipline_Name'] ?>" href="<?= PageIndex()?>Records/<?= $continent_filter?"_$continent_filter":$country_filter?>/<?= $discipline_row['Discipline_Code']?>"><?= ImageEvent($discipline_row['Discipline_CodeScript'],25) ?></a> 
     <?php } ?>
 </div>
 <hr>
@@ -149,7 +149,7 @@ $disciplines=DataBaseClass::QueryGenerate(); ?>
 <h2>
     <img src='<?= PageIndex()?>Image/Icons/record.png' width='20px'> 
     <?php if($country_filter!='all'){ ?>
-        <?= ImageCountry($country_filter, 50); ?>
+        <?= ImageCountry($country_filter, 30); ?>
         <nobr><?= ml('Records.Title.Country',CountryName($country_filter)) ?></nobr>
     <?php }elseif($continent_filter){ ?>
         <nobr><?= ml('Records.Title.Continent',$Continents[$continent_filter]) ?></nobr>
@@ -158,7 +158,7 @@ $disciplines=DataBaseClass::QueryGenerate(); ?>
     <?php } ?>
         
      <select onchange="document.location='<?= PageIndex()?>' + this.value ">
-        <option <?= ($country_filter=='0' )?'selected':''?> value="Records"><?= ml('Records.Select.WorldRecord') ?></option>
+        <option <?= ($country_filter=='0' )?'selected':''?> value="Records/all/<?= $DisciplineCode?"/$DisciplineCode":""?>"><?= ml('Records.Select.WorldRecord') ?></option>
         
         
         

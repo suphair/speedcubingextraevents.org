@@ -197,7 +197,7 @@ if($My==1 and  !GetCompetitorData()){
                       if($discipline['Round']==1){ ?> 
                         <a href="<?= LinkEvent($discipline['Event']) ?>"><?= ImageEvent($discipline['CodeScript'],25,$discipline['Name']);?></a>
                         <?php $j++;
-                        if($j==6){
+                        if($j==10){
                             $j=0;
                         echo "<br>";
                          }

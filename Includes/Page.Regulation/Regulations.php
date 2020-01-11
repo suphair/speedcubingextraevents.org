@@ -20,7 +20,7 @@ foreach(DataBaseClass::getRows() as $row){
 $disciplines=DataBaseClass::getRows(); ?>
 <div class="regulation line">
     <?php foreach($disciplines as $discipline_row){ ?>
-        <a href="#<?= $discipline_row['Code'] ?>"><?= ImageEvent($discipline_row['CodeScript'],35) ?></a> 
+        <a href="#<?= $discipline_row['Code'] ?>"><?= ImageEvent($discipline_row['CodeScript'],25) ?></a> 
     <?php } ?>
 </div>
 <hr>
