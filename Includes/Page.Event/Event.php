@@ -300,7 +300,7 @@ if($FilterResults!='Results'){
             
         if(sizeof($EventsAll)){ ?>
     <div class="form">
-        <?= ml('Event.Competition.Upcoming') ?><br>
+        <h3><?= ml('Event.Competition.Upcoming') ?></h3>
             <?php foreach($EventsAll as $competition){ ?> 
                 <nobr>&nbsp;
                     <img width="30" style="vertical-align: middle" src="<?= PageIndex()?>Image/Flags/<?= strtolower($competition['Country'])?>.png">
@@ -323,7 +323,7 @@ $EventsAll=DataBaseClass::getRows();
 
 if(sizeof($EventsAll)){ ?>
 <div class="form">
-    <?= ml('Event.Competition.Progress') ?><br>
+    <h3><?= ml('Event.Competition.Progress') ?></h3>
         <?php foreach($EventsAll as $competition){ ?> 
             <nobr>&nbsp;
                 <img width="30" style="vertical-align: middle" src="<?= PageIndex()?>Image/Flags/<?= strtolower($competition['Country'])?>.png">
@@ -347,7 +347,7 @@ $EventsAll=DataBaseClass::getRows();
 
 if(sizeof($EventsAll)){ ?>
 <div class="form">
-    <?= ml('Event.Competition.Past') ?><br>
+    <h3><?= ml('Event.Competition.Past') ?></h3>
         <?php foreach($EventsAll as $competition){ ?> 
             <nobr>&nbsp;
                 <img width="30" style="vertical-align: middle" src="<?= PageIndex()?>Image/Flags/<?= strtolower($competition['Country'])?>.png">
@@ -422,9 +422,9 @@ if(!$FormatSum){
     <tr class='tr_title'>
         <td/>
         <td><?= ml('Event.Table.Competitor')?></td>
-        <td><nobr><?= ml('Event.Table.Country')?></nobr></td>
         <td class='attempt select'><?= ml('Event.Table.'.$FilterAverage); ?></td>
         <td/>
+        <td><nobr><?= ml('Event.Table.Country')?></nobr></td>
         <?php if($FilterResults=='Results'){?>
             <?php if($FilterAverage=='Single'){ ?>
                 <td><?= ml('Event.Table.Competition')?> &#9642; <?= ml('Event.Table.Round')?>/<?= ml('Event.Table.Attempt')?></td>
@@ -488,6 +488,14 @@ $n=0; $fl=false; $prev=0;
             <?php } ?>
             <?= implode("",$competitors); ?>        
         </td>
+        <td class='attempt select'>
+            <?=  $Result['vOut'] ?>
+        </td>
+        <td class="border-right-dotted">
+            <?php if($Result['Video']){?>    
+                <a target=_blank" href="<?= $Result['Video'] ?>"><img class="video" src="<?= PageIndex()?>Image/Icons/Video.png"></a>
+            <?php } ?>
+        </td>
         <td> <nobr><?php if($Result['vCountry']){ ?>
                 <img width="20" style="vertical-align: middle" src="<?= PageIndex()?>Image/Flags/<?= strtolower($Result['vCountry'])?>.png">
                 <?= CountryName($Result['vCountry']) ?>
@@ -495,14 +503,6 @@ $n=0; $fl=false; $prev=0;
                 -
             <?php } ?></nobr>
        </td>                                 
-        <td class='attempt select border-right-dotted'>
-            <?=  $Result['vOut'] ?>
-        </td>
-        <td>
-            <?php if($Result['Video']){?>    
-                <a target=_blank" href="<?= $Result['Video'] ?>"><img class="video" src="<?= PageIndex()?>Image/Icons/Video.png"></a>
-            <?php } ?>
-        </td>
         <td class="border-right-dotted">
             <nobr>
                 <img width="20" style="vertical-align: middle" src="<?= PageIndex()?>Image/Flags/<?= strtolower($Result['Competition_Country'])?>.png">

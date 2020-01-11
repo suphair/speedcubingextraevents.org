@@ -12,11 +12,11 @@ if(!$CompetitionEvent and isset($CompetitionEvents[0])){
 DataBaseClass::Query("select Cn.ID, count( distinct C.ID) count,count(A.ID) Attempts, now()>=Cm.StartDate Start from `Competition` Cn  
 join `Event` E on E.Competition=Cn.ID
 join `Competition` Cm on Cm.ID=E.Competition
-join `Command` Com on Com.Event=E.ID 
-join `CommandCompetitor` CC on CC.Command=Com.ID 
-join `Competitor` C on CC.Competitor=C.ID
+left outer join `Command` Com on Com.Event=E.ID and Com.Decline!=1
+left outer join `CommandCompetitor` CC on CC.Command=Com.ID 
+left outer join `Competitor` C on CC.Competitor=C.ID
 left outer join Attempt A on A.Command=Com.ID
-where Com.Decline!=1 and E.Competition='".$Competition['Competition_ID']."'
+where E.Competition='".$Competition['Competition_ID']."'
 group by Cn.ID");
 $data=DataBaseClass::getRow();
 
@@ -35,27 +35,19 @@ $attempts_exists=($data['Attempts']>0 or $data['Start']);
     <?php } 
 } ?>      
  <table><tr class="no_border"><td>
-    <?= ImageCompetition($Competition['Competition_WCA'],100)?>
+    <?php $imgCompetition=ImageCompetition($Competition['Competition_WCA'],100); ?>
+    <?php if($imgCompetition){ ?>
+        <?= $imgCompetition ?>
+    <?php }else{ ?>
+        <?= ImageCountry($Competition['Competition_Country'],75) ?> 
+    <?php } ?>
     </td><td>
     <h1 class="competition_name">      
-        <?php if(!$attempts_exists){
-            if($Competition['Competition_Registration']){ ?>
-                <?= svg_green(30,ml('Competition.Registration.True',false)) ?>
-            <?php }else{ ?>
-                <?= svg_red(30,ml('Competition.Registration.False',false)) ?>
-            <?php }
-        }else{ 
-             if($Competition['Competition_Onsite']){ ?>
-                <?= svg_green(30,ml('Competition.Onsite.True',false)) ?>
-            <?php }else{ ?>
-                <?= svg_red(30,ml('Competition.Onsite.False',false)) ?>
-            <?php }
-        } ?>
         <nobr><a href="<?= LinkCompetition($Competition['Competition_WCA'])?>"><?= $Competition['Competition_Name'] ?></a>
         <span class="badge"><?= $count_competitors ?></span></nobr>
     </h1>            
     <h2 class="competition_details">
-        <img align='center' width='50px' src='<?= PageIndex() ?>Image/Flags/<?= strtolower($Competition['Competition_Country']) ?>.png'>
+        <?= $imgCompetition?ImageCountry($Competition['Competition_Country'],50):'' ?>
         <?=  date_range($Competition['Competition_StartDate'],$Competition['Competition_EndDate']); ?>
         &#9642; <?= CountryName($Competition['Competition_Country']); ?>, <?= $Competition['Competition_City'] ?>
         &#9642; <a href="https://www.worldcubeassociation.org/competitions/<?= $Competition['Competition_WCA'] ?>">WCA</a>

@@ -42,7 +42,7 @@
           $status_out=-2;
           foreach($RequestCandidates as $RequestCandidate)if($RequestCandidate['RequestCandidate_Status']==0){
               ?>
-             <h3>
+             <p>
                 <?php 
                 if($CheckAccessVote){ ?>
                 <div style="width: 100px; display: inline-block; padding:0px; margin:0px">
@@ -92,14 +92,17 @@
              }
                                     " style=" border-bottom: 1px dotted var(--blue); cursor: pointer">   
                   <?= $RequestCandidate['Competitor_Name'] ?></span>
+                 <?= ImageCountry($RequestCandidate['Competitor_Country'], 20)?>
+            <p>
+        <div class="Request_details block_comment" style="display:none" id="<?= $RequestCandidate['Competitor_ID'] ?>">  
+           <b>
+                <?= $RequestCandidate['Competitor_Name'] ?></span>
                  <?= ImageCountry($RequestCandidate['Competitor_Country'], 20)?> <?= CountryName($RequestCandidate['Competitor_Country']) ?> 
                  ▪ <?= date_range(date('Y-m-d',strtotime($RequestCandidate['RequestCandidate_Datetime']))); ?>
-             </h3>
-        <div hidden class="Request_details" id="<?= $RequestCandidate['Competitor_ID'] ?>">  
-           <h3>
+           <br>
               <?= $RequestCandidate['Competitor_WCAID'] ?> <a href="https://www.worldcubeassociation.org/persons/<?= $RequestCandidate['Competitor_WCAID'] ?>"><?= ml('Delegate.Candidate.Competitor.WCA') ?></a> &#9642; 
                <a href="<?= PageIndex()."Competitor/".$RequestCandidate['Competitor_WCAID'] ?>"><?= ml('Delegate.Candidate.Competitor') ?></a>
-          </h3>
+          </b><br>
             <?php if($RequestCandidate['Competitor_Avatar']){?>
                     <img src="<?= $RequestCandidate['Competitor_Avatar'] ?>" valign=top>
             <?php } ?>
@@ -305,7 +308,7 @@
             </td>    
             <td>
                 <a href='#' ID="A_<?=$ApplictionID?>" onclick="$('#A_<?=$ApplictionID?>').hide();$('#Application_<?=$ApplictionID?>').show(); return false;"><?= ml('Delegate.Candidates.Application.View')?></a>
-                <div hidden id="Application_<?=$RequestCandidate['RequestCandidate_ID']?>">
+                <div class="block_comment" style="display:none"  id="Application_<?=$RequestCandidate['RequestCandidate_ID']?>">
                     <?php foreach($RequestCandidateFields as $RequestCandidateField){
                         if($RequestCandidateField['RequestCandidateField_RequestCandidate']==$RequestCandidate['RequestCandidate_ID']){ ?>
                             <p>[<?= $RequestCandidateField['RequestCandidateField_Field'] ?>]

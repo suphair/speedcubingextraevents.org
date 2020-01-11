@@ -249,21 +249,22 @@ $disciplines=DataBaseClass::QueryGenerate(); ?>
     }
     $types=array_unique($types);
     sort($types);
+    $types= array_reverse($types);
     ?>
 <tr class="no_border">
     <td colspan='<?= $attemption+3+sizeof($types)?>'>
         <br>
-            <?= ImageEvent($discipline['Discipline_CodeScript'],30, $discipline['Discipline_Name']) ?>
+            <h3><?= ImageEvent($discipline['Discipline_CodeScript'],30, $discipline['Discipline_Name']) ?>
             <span class="<?= $discipline['Discipline_Status']=='Archive'?'archive':'' ?>">
-                <?= $discipline['Discipline_Name'] ?>
-            </span>
-            <a href="<?= PageIndex()?>Records/all/<?= $discipline['Discipline_Code'] ?>"> <img style="vertical-align: middle" width="20px"  src="<?= PageIndex()?>Image/Icons/record.png"> <?= ml('Event.Records'); ?></a>
-            <a href="<?= LinkDiscipline($discipline['Discipline_Code'])?>"> <img style="vertical-align: middle" width="20px"  src="<?= PageIndex()?>Image/Icons/rankings.png"><?= ml('Competition.Rankings'); ?></a>
-        
+                <a href="<?= LinkDiscipline($discipline['Discipline_Code'])?>"> <?= $discipline['Discipline_Name'] ?></a>
+            </span>        
+            </h3>    
     </td>        
 </tr>        
         <tr class='tr_title'> 
-            <td></td>
+            <td style="text-align:left"><?= ml('Competitor.Result.Table.Competition');?></td>
+            <td style="text-align:left"></td>
+            <td><?= ml('Competitor.Result.Table.Place');?></td>
             <?php foreach($types as $type){ ?>
                 <td class='attempt'>
                     <?= ml('Competitor.Result.Table.'.str_replace('Best','Single',$type)); ?>
@@ -272,8 +273,6 @@ $disciplines=DataBaseClass::QueryGenerate(); ?>
             <?php for($i=sizeof($types);$i<3;$i++){ ?>    
                 <td/>
             <?php } ?>
-            <td style="text-align:left"><?= ml('Competitor.Result.Table.Competition');?></td>
-            <td style="text-align:left"></td>
 
             <?php for($i=1;$i<=$attemption;$i++) {?>
             <td class="attempt">             
@@ -367,6 +366,37 @@ foreach($types as $type){
         $class=($command['Command_Place']<=3 and $command['Command_Place'])?"podium":"";?>
 
         <tr class="<?= $class ?>">
+            <td>
+                <a href="<?= LinkEvent($command['Event_ID']) ?>">
+                    <nobr><span class="<?= $command['Competition_Unofficial']?'unofficial':''?>"><?= $command['Competition_Name'] ?></span>
+                        <?php if($command['Command_Video']){ ?>    
+                            <a target=_blank" href="<?= $command['Command_Video'] ?>"><img class="video" src="<?= PageIndex()?>Image/Icons/Video.png"></a>
+                        <?php } ?>
+                    </nobr>
+                </a>
+            
+            <?php if($discipline['Discipline_Competitors']>1){ ?>
+            
+                        <?php DataBaseClass::FromTable("Command","ID='".$command['Command_ID']."'") ;
+                        DataBaseClass::Join_current("CommandCompetitor");
+                        DataBaseClass::Join_current("Competitor");
+                        DataBaseClass::Where_current("ID<>".$competitor['Competitor_ID']);
+                        $competitors=DataBaseClass::QueryGenerate();
+                        foreach($competitors as $competitor_com){ ?>
+                                <br>
+                                <nobr>
+                                <?= svg_blue(12,'Teammate') ?>
+                                <a href="<?= LinkCompetitor($competitor_com['Competitor_ID'],$competitor_com['Competitor_WCAID'])?>">
+                                    <?= Short_Name($competitor_com['Competitor_Name']) ?>      
+                                </a>
+                                </nobr>      
+                        <?php } ?>
+                
+             <?php }?>
+            </td>
+            <td class="attempt">
+                    <nobr><?= str_replace(": ","",$command['Event_vRound']) ?></nobr> 
+            </td>
             <td class="number">
                 <?php if($command['Command_Place']){ ?>
                     <?= $command['Command_Place'] ?>
@@ -415,7 +445,7 @@ foreach($types as $type){
                    <?php if(isset($attempts[$type]) and !in_array($attempts[$type],array('DNF','DNS'))){ ?>
                         <nobr> 
                            <span class="<?= in_array($attempts_ID[$type],$bestID)?"PB":"" ?>">
-                               <?=  $attempts[$type]; ?> 
+                               <b><?=  $attempts[$type]; ?></b> 
                            </span>
                             <?php if($WRecord==$attempts[$type]){ ?>
                                 <span class="message">WR</span>
@@ -431,38 +461,6 @@ foreach($types as $type){
             <?php for($i=sizeof($types);$i<3;$i++){ ?>    
                 <td/>
             <?php } ?>
-            <td>
-                <a href="<?= LinkEvent($command['Event_ID']) ?>">
-                    <nobr><span class="<?= $command['Competition_Unofficial']?'unofficial':''?>"><?= $command['Competition_Name'] ?></span>
-                        <?php if($command['Command_Video']){ ?>    
-                            <a target=_blank" href="<?= $command['Command_Video'] ?>"><img class="video" src="<?= PageIndex()?>Image/Icons/Video.png"></a>
-                        <?php } ?>
-                    </nobr>
-                </a>
-            
-            <?php if($discipline['Discipline_Competitors']>1){ ?>
-            
-                        <?php DataBaseClass::FromTable("Command","ID='".$command['Command_ID']."'") ;
-                        DataBaseClass::Join_current("CommandCompetitor");
-                        DataBaseClass::Join_current("Competitor");
-                        DataBaseClass::Where_current("ID<>".$competitor['Competitor_ID']);
-                        $competitors=DataBaseClass::QueryGenerate();
-                        foreach($competitors as $competitor_com){ ?>
-                                <br>
-                                <nobr>
-                                <?= svg_blue(12,'Teammate') ?>
-                                <a href="<?= LinkCompetitor($competitor_com['Competitor_ID'],$competitor_com['Competitor_WCAID'])?>">
-                                    <?= Short_Name($competitor_com['Competitor_Name']) ?>      
-                                </a>
-                                </nobr>      
-                        <?php } ?>
-                
-             <?php }?>
-            </td>
-            <td class="attempt">
-                    <nobr><?= str_replace(": ","",$command['Event_vRound']) ?></nobr> 
-            </td>
-
             <?php if(!$is_attempt){ ?>
                 <td  class="future" colspan="<?= $attemption ?>">
                     <nobr><?= date_range($command['Competition_StartDate'], $command['Competition_EndDate']) ?></nobr>

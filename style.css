@@ -29,7 +29,6 @@ var(--blue) - Blue
 
 */
 
-
 @font-face {
 font-family: Stolzl-Book;
 src: url("Fonts/Stolzl-Book.otf") format("opentype");
@@ -44,12 +43,15 @@ src: url("Fonts/Stolzl-Light.otf") format("opentype");
 }
 
 body {
-    font-family: Stolzl-Book;
-    color:rgb(51,51,51);
+    /*font-family: Stolzl-Book;*/
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: #333333;
     padding:10px 20px;
     margin: 0 auto; 
     width:1200px;
-    font-size:16px;
+    /*font-size:16px;*/
+    font-size: 14px;
+    line-height: 1.428571429;
 }
 
 hr.hr_round{
@@ -61,7 +63,7 @@ body div {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
-    padding: 10px;
+    padding: 0px;
 }
 
 .header {
@@ -123,21 +125,18 @@ tr.select{
 
 .future{
     color: var(--red);
-    font-family: Stolzl-Book;
     text-align: center;
 }
 
 
 table{
     margin:10px;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     border-collapse: collapse;
     margin-bottom:0px;
     background-color: var(--white);
 }
 
 thead{
-    font-family: Stolzl-Book;
     text-align: center;
 }
 
@@ -215,7 +214,6 @@ td.result_many_rows{
 
 
 .podium td:first-child{
-    font-family: Stolzl-Book;
     color: var(--red);
 }
 
@@ -477,7 +475,12 @@ td.big_flag, td.flag{
     text-align: center;
     color:#00F;
     text-decoration: underline;
-  
+    font-variant: small-caps;
+    color: var(--blue);
+}
+
+.title_link:hover{
+    color: var(--light_blue);
 }
 
 .footer{
@@ -503,24 +506,21 @@ td.big_flag, td.flag{
 
 
 h1{    
-    font-family: Stolzl-Book;
-    font-size:38px; 
+    /*font-size:38px;*/
     text-align: left;
     margin:0px;
     color: var(--blue);
 }
 
-h2{
-    font-family: Stolzl-Book;
-    font-size:24px; 
+h2{    
+    /*font-size:24px;*/
     text-align: left;
     margin:0px;
     color: var(--blue);
 }
 
 h3{
-    font-family: Stolzl-Light;
-    font-size:20px; 
+    /*font-size:20px; */
     text-align: left;
     margin:0px;
     color: var(--blue);
@@ -588,7 +588,6 @@ input[type=submit], button {
     cursor:pointer;
     -webkit-border-radius: 5px;
     border-radius: 5px; 
-    font-family: Stolzl-Book;
     font-size:14px;
     margin:10px 0px 0px 0px;
 }
@@ -716,7 +715,6 @@ hr{
 
 .tr_title{
     background-color: var(--back_color);    
-    font-family: Stolzl-Light;
 }
 .tr_title td{
     border:0px;
@@ -829,12 +827,10 @@ label{
 }
 
 .section_description_1{
-    font-family: Stolzl-Book;
     color:var(--red);
     font-size:32px; 
 }
 .section_description_2{
-    font-family: Stolzl-Book;
     color:var(--green);
     font-size:32px;
 }

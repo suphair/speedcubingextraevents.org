@@ -33,13 +33,13 @@
     DataBaseClass::Join_current("Competition");
     DataBaseClass::Where_current("WCA not like 't.%'");
     DataBaseClass::Where("Command","Decline!=1");
-    DataBaseClass::OrderClear("Competitor","Name");
     if($country_filter){
         DataBaseClass::Where("Competitor","Country='".strtoupper($country_filter)."'");
     }
     DataBaseClass::Select("Distinct Cm.*");
+    DataBaseClass::OrderClear("Competitor","Name");
     
-    $competitors=DataBaseClass::QueryGenerate();
+    $competitors=DataBaseClass::QueryGenerate(true);
     
     $sort='';
     $sort_name='Name';

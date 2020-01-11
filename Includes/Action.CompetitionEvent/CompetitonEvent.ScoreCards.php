@@ -8,7 +8,7 @@ if(!isset($requests[2]) or !is_numeric($requests[2])){
 }
 
             
-    DataBaseClass::Query("Select E.Cumulative, D.Inspection Discipline_Inspection,D.ID Discipline_ID, E.vRound, C.Name Competition,C.ID Competition_ID, D.Name Discipline ,C.WCA Competition_WCA, D.Code Discipline_Code, D.Code Discipline_CodeScript, F.Attemption, F.Result, E.CutoffSecond, E.CutoffMinute, E.LimitSecond, E.LimitMinute, E.LocalID, D.Competitors "
+    DataBaseClass::Query("Select E.Cumulative, D.Inspection Discipline_Inspection,D.ID Discipline_ID, E.vRound, C.Name Competition,C.ID Competition_ID, D.Name Discipline ,C.WCA Competition_WCA, D.Code Discipline_Code, D.CodeScript Discipline_CodeScript, F.Attemption, F.Result, E.CutoffSecond, E.CutoffMinute, E.LimitSecond, E.LimitMinute, E.LocalID, D.Competitors "
             . " from `Event` E "
             . " join `DisciplineFormat` DF on E.DisciplineFormat= DF.ID "
             . " join `Discipline` D on D.ID=DF.Discipline "
@@ -81,8 +81,6 @@ foreach($command_group as $group=>$commands){
                 $pdf->Image(ImageEventFile($data['Discipline_CodeScript']),$point[0],$point[1]+1,10,10,'jpg');
             }
 
-
-            
             $pdf->Image("Logo/Logo_Black.png",$point[0]+$pdf->w /2-20,$point[1]+1,10,10,'png');
 
             if(isset($commands[$i+$l*4])){
@@ -140,7 +138,7 @@ foreach($command_group as $group=>$commands){
             }
 
             $pdf->SetFont('Arial','',10);
-            if(strpos($data['Discipline_Code'],'_scr')===FALSE){
+            if(strpos($data['Discipline_CodeScript'],'_scr')===FALSE){
                 $pdf->Text($point[0] + 10, $point[1] + $Ry+1,'Scr');
                 $pdf->Text($point[0] + 36, $point[1] + $Ry+1, 'Result');
             }else{
@@ -156,7 +154,7 @@ foreach($command_group as $group=>$commands){
             for($k=1;$k<=$data['Attemption'];$k++){
                 $pdf->SetFont('Arial','',14);
                 $pdf->Text($point[0], $point[1] + $Ry+10 + ($k-1)*17, $k);
-                if(strpos($data['Discipline_Code'],'_scr')===FALSE){
+                if(strpos($data['Discipline_CodeScript'],'_scr')===FALSE){
                     $pdf->Rect($point[0] + 5, $point[1] + $Ry+2 + ($k-1)*17 ,15,13);
                     $pdf->Rect($point[0] + 21, $point[1] + $Ry+2 + ($k-1)*17 ,42,13);
                 }else{

@@ -219,7 +219,7 @@ $disciplines=DataBaseClass::QueryGenerate(); ?>
                 </td> 
                 <?php if(!$DisciplineCode){ ?>
                 <td>
-                    <?= ImageEvent($c['Discipline_CodeScript'],30,$c['Discipline_Name']); ?> 
+                    <?= ImageEvent($c['Discipline_CodeScript'],25,$c['Discipline_Name']); ?> 
                     <a href="<?= LinkDiscipline($c['Discipline_Code']) ?>">
                         <?= $c['Discipline_Name'] ?>
                     </a>
@@ -251,13 +251,13 @@ $disciplines=DataBaseClass::QueryGenerate(); ?>
                     $competitors=DataBaseClass::QueryGenerate();
                     foreach($competitors as $competitor){ ?>
                         <p>
-                            <img width="30" style="vertical-align: middle" src="<?= PageIndex()?>Image/Flags/<?= strtolower($competitor['Competitor_Country'])?>.png">
+                            <img width="25" style="vertical-align: middle" src="<?= PageIndex()?>Image/Flags/<?= strtolower($competitor['Competitor_Country'])?>.png">
                             <a href="<?= PageIndex() ?>Competitor/<?= $competitor['Competitor_WCAID']?$competitor['Competitor_WCAID']:$competitor['Competitor_ID'] ?>"><?= trim(explode("(",$competitor['Competitor_Name'])[0]) ?></a></p>
                     <?php } ?>
 
                 </td>
                 <td>
-                    <img width="30" style="vertical-align: middle" src="<?= PageIndex()?>Image/Flags/<?= strtolower($c['Competition_Country'])?>.png">
+                    <img width="25" style="vertical-align: middle" src="<?= PageIndex()?>Image/Flags/<?= strtolower($c['Competition_Country'])?>.png">
                     <a href="<?= LinkCompetition($c['Competition_WCA']) ?>">
                         <?= $c['Competition_Name'] ?>
                     </a>

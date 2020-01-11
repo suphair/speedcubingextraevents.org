@@ -1,8 +1,9 @@
 <?php includePage('Navigator'); ?>
 <?php $Language=$_SESSION['language_select'];?>
 <h2><img src='<?= PageIndex()?>Image/Icons/regulation.png' width='20px'> <?= ml('Regulations.Description'); ?></h2>
-<h3><img  src="<?= PageIndex()?>Logo/Logo_Color.png" width="20px"> <?= ml('Regulations.LinkRegulationSEE', PageIndex().'MainRegulations'); ?></h3>
-<h3><img  src="<?= PageIndex()?>Image/Icons/WCA.png" width="20px"> <?= ml('Regulations.LinkRegulationWCA'); ?></h3>
+  
+<h3><?= ml('Regulations.LinkRegulationSEE', PageIndex().'MainRegulations'); ?>
+  ▪ <?= ml('Regulations.LinkRegulationWCA'); ?></h3>
 
 <?php 
 $discipline_default=[];
@@ -22,7 +23,7 @@ $disciplines=DataBaseClass::getRows(); ?>
         <a href="#<?= $discipline_row['Code'] ?>"><?= ImageEvent($discipline_row['CodeScript'],35) ?></a> 
     <?php } ?>
 </div>
-<hr class="hr_round">
+<hr>
 <?php foreach($disciplines as $discipline_row){ 
     $other_language=false;
     if(!$discipline_row['Text'] and isset($discipline_default[$discipline_row['ID']])){

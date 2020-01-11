@@ -103,6 +103,14 @@ if($My==1 and  !GetCompetitorData()){
     </h2>
     <table class="Competitions">
     <?php 
+    $comp_statuses=[];
+    foreach($results as $i=>$r){
+        if(!isset($comp_statuses[$r['UpcomingStatus']])){
+            $comp_statuses[$r['UpcomingStatus']]=0;
+        }
+        $comp_statuses[$r['UpcomingStatus']]++;
+    }
+    
     $comp_status='-2';
     foreach( $results as $i=>$r){ ?>
         <?php 
@@ -124,6 +132,7 @@ if($My==1 and  !GetCompetitorData()){
                     <?php }else{ ?>
                         <?= ml('Competitons.Secret') ?>
                     <?php } ?>
+                    <span class="badge"><?= $comp_statuses[$comp_status]?></span>
                 </td>
                 <td align="center">
                     <img height="15px"src="<?= PageIndex()?>Image/Icons/persons.png">
@@ -136,7 +145,7 @@ if($My==1 and  !GetCompetitorData()){
         } ?>
     <tr valign="bottom">
         <td>
-            <?= date_range($r['StartDate'],$r['EndDate']); ?>
+            <b><?= date_range($r['StartDate'],$r['EndDate']); ?></b>
         </td>   
         <td>
             <?php if($comp_status==0.5){ ?>
@@ -159,15 +168,15 @@ if($My==1 and  !GetCompetitorData()){
         </td>
         <td>
             <?= ImageCountry($r['Country'],20) ?>
-            <?= CountryName($r['Country']) ?>, <?= CountryName($r['City']) ?>
+            <b><?= CountryName($r['Country']) ?></b>, <?= CountryName($r['City']) ?>
         </td>
         <td class="attempt">
             <?= $r['countCompetitors']?$r['countCompetitors']:'' ?>
         </td>
-        <td>
+        <td style="padding:0px">
             <?php 
                     DataBaseClass::Query(
-                            "Select E.ScrambleSalt, E.Round, E.ID Event, D.Name,D.Code,D.CodeScript,sum(case when Com.Decline!=1 and A.ID is null then 1 else 0 end) notResult "
+                            "Select E.ScrambleSalt, E.Round, E.ID Event, D.Name,D.Code,D.CodeScript  "
                             . " from Discipline D"
                             . " join DisciplineFormat DF on DF.Discipline=D.ID "
                             . " join Event E on E.DisciplineFormat=DF.ID "
@@ -186,15 +195,7 @@ if($My==1 and  !GetCompetitorData()){
                   
                   foreach($diciplines as $discipline){ 
                       if($discipline['Round']==1){ ?> 
-                        <a href="<?= LinkEvent($discipline['Event']) ?>"><span 
-                                <?php if($comp_status==0){?>
-                                    <?php if($discipline['notResult']){ ?>
-                                        class="nonResult"
-                                    <?php }else{ ?>
-                                        class="existsResult"
-                                    <?php } ?>
-                                <?php } ?>
-                            ><?= ImageEvent($discipline['CodeScript'],25,$discipline['Name']);?></span></a>
+                        <a href="<?= LinkEvent($discipline['Event']) ?>"><?= ImageEvent($discipline['CodeScript'],25,$discipline['Name']);?></a>
                         <?php $j++;
                         if($j==6){
                             $j=0;
