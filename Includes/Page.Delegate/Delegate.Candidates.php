@@ -45,7 +45,7 @@
              <p>
                 <?php 
                 if($CheckAccessVote){ ?>
-                <div style="width: 100px; display: inline-block; padding:0px; margin:0px">
+                <div style="width: 50px; display: inline-block; padding:0px; margin:0px">
                 <?php $vs=[];
                 foreach($Seniors as $senior){
                     $reason='';
@@ -238,7 +238,7 @@
             </td>    
             <td>
                 <a href='#' ID="A_<?=$ApplictionID?>" onclick="$('#A_<?=$ApplictionID?>').hide();$('#Application_<?=$ApplictionID?>').show(); return false;"><?= ml('Delegate.Candidates.Application.View')?></a>
-                <div hidden id="Application_<?=$RequestCandidate['RequestCandidate_ID']?>">
+                <div class="block_comment" style="display:none"  id="Application_<?=$RequestCandidate['RequestCandidate_ID']?>">
                     <?php foreach($RequestCandidateFields as $RequestCandidateField){
                         if($RequestCandidateField['RequestCandidateField_RequestCandidate']==$RequestCandidate['RequestCandidate_ID']){ ?>
                             <p>[<?= $RequestCandidateField['RequestCandidateField_Field'] ?>]
