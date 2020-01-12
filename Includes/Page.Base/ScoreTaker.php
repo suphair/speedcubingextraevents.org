@@ -25,7 +25,8 @@ $event=DataBaseClass::getRow();
     <title><?= $event['Discipline']?><?= $event['vRound']?></title>
     <link rel="stylesheet" href="<?= PageLocal()?>getStyle.css" type="text/css"/>
     <link rel="stylesheet" href="<?= PageLocal()?>jQuery/chosen_v1/chosen.css" type="text/css"/>
-</head><?php
+</head>
+        <?php
 
 
 $Next=false;
@@ -449,7 +450,6 @@ foreach(DataBaseClass::QueryGenerate() as $competitor){
     
     <?php if($event['Competition_Onsite'] and CheckAccess('Competition.Event.Settings',$event['Competition_ID'])){ ?>
         <br>
-        <center>
             <div style="border:1px solid red">
                 <form method="POST" action="<?= PageAction('ScoreTaker.Registartion.Add')?>">
                     <?php $message=GetMessage("ScoreTaker.Registartion.Add");
@@ -457,12 +457,20 @@ foreach(DataBaseClass::QueryGenerate() as $competitor){
                         <p style='color:green'><?= $message ?></p>
                     <?php } ?>
                     <?= ml ('ScoreTaker.Registartion.Add') ?>
-                    <input hidden value="<?= $event['Competition_ID'] ?>" name="Competition">
-                    <input size=40 placeholder="WCA ID" name="WCAID" >
-                    <input type="submit" value="Add registration" style="background-color:lightgreen" >
+                    <input name="Competition" type="hidden" value="<?= $event['Competition_ID'] ?>" />
+                    <input required="" class="WCAID" placeholder="WCA ID" ID="WCAID" autocomplete="off" style="width:80px" name="WCAID" value="" 
+                        onkeyup="
+                        if($(this).val().indexOf('_')+1==0){
+                            if($('#WCAIDsearch').val()!=$('#WCAID').val()){
+                                $('#tst').html('search...'); 
+                                $('#tst').load('<?= PageAction('AJAX.ScoreTaker.Check.WCAID') ?>?Competition=<?= $event['Competition_ID'] ?>&WCAID=' + $('#WCAID').val());
+                            }
+                        }else{
+                            $('#tst').html(''); 
+                        }" />
+                     <span id="tst"></span>
                 </form>
             </div>
-        </center>
     <?php } ?>
     
 
@@ -470,8 +478,15 @@ foreach(DataBaseClass::QueryGenerate() as $competitor){
 <script src="<?= PageLocal()?>jQuery/jquery-3.3.1.min.js" type="text/javascript"></script>
 <script src="<?= PageLocal()?>jQuery/chosen_v1/chosen.jquery.js" type="text/javascript"></script>
 <script src="<?= PageLocal()?>jQuery/chosen_v1/docsupport/init.js" type="text/javascript" charset="utf-8"></script>
-
+<script src="<?= PageLocal()?>jQuery/maskedinput/jquery.maskedinput.js?4" type="text/javascript"></script>
+    
 <script> 
     PrepareInputs(false);
     $('.chosen-search-input').focus();        
+</script>
+
+<script>
+    $(function(){
+      $(".WCAID").mask("9999aaaa99");
+    });
 </script>
