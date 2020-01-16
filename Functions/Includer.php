@@ -98,3 +98,20 @@ function Request(){
      global $request;
     return $request;
 }
+
+function IncluderScript(){
+    if(isset($_GET['Script'])){
+        if(CheckAccess('Scripts')){
+            $Script="Script_{$_GET['Script']}";
+            echo "[$Script]";
+            if(function_exists($Script)){
+                echo "Found ";
+                eval("$Script();");
+                echo "Complete ";
+            }else{
+                echo "Not found";
+            }
+            exit();
+        }
+    }
+}

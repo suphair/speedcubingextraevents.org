@@ -58,7 +58,7 @@ $typesSimplePage=[
     'multilanguage','401',
     'news','anews',
     'scramble','scrambleszip',
-    'scoretaker' ,'mainregulations','registrations','scrambles','access','reports','api'
+    'scoretaker' ,'mainregulations','registrations','scrambles','access','reports','api','logs'
     ];
 
         if(substr($type,0,1)!='?'){
@@ -337,10 +337,6 @@ $typesSimplePage=[
                 endswitch; #$CompetitionCode  
                 break;
             
-            case 'logs':
-                self::CheckAccess("Logs"); 
-                break;    
-            
             case 'texts':
                 self::CheckAccess("Texts"); 
                 break;    
@@ -369,7 +365,19 @@ $typesSimplePage=[
                 self::CheckAccess('MultiLanguage');
                 self::$titles[1]='Multi Language';
                 break;    
-                
+            
+            case 'logs':
+                $LogType=$request[1];
+                if($request[1]=='null'){
+                    self::CheckAccess('Logs');
+                    self::$titles[1]='Logs';
+                    unset(self::$titles[2]);
+                }else{
+                    self::CheckAccess('Logs.'.ucfirst($request[1]));
+                    self::$titles[1]='Logs '.ucfirst($request[1]);
+                    unset(self::$titles[2]);
+                }
+                break;    
                 
             case '401':
                 self::set401(ml('401'));
@@ -450,7 +458,7 @@ $typesSimplePage=[
             
             $page=sizeof(explode("/",$page))>1?explode("/",$page)[1]:$page;
             
-            $err="<h1 style='color:red'>You do not have permission [".$type."] to use action [".$page."]</h1>";
+            $err="<h3 style='color:red'>You do not have permission [".$type."] to use action [".$page."]</h3>";
             self::set401($err);
             return $err;
         }

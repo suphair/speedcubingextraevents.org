@@ -92,8 +92,8 @@ foreach($events as $event){
             <?php if(file_exists('Functions/Generate_'.$event['Discipline_CodeScript'].'.php')){ ?>
                 <a target="_blank" href="<?= PageAction('CompetitionEvent.Scramble.Generate') ?>/<?= $event['Event_ID'] ?>"><img  class="img_a" src='<?= PageIndex()?>Image/Icons/scramble.png' width='30px'></a>
             <?php }else{ ?>
-                <?php if(!$event['Discipline_GlueScrambles'] and file_exists('Includes/Action.CompetitionEvent/CompetitionEvent.Scramble.'.$event['Discipline_Code'].'.php') ){ ?>
-                   <a target="_blank" href="<?= PageAction('CompetitionEvent.Scramble.'.$event['Discipline_Code'])?>/<?= $event['Event_ID'] ?>"><img  class="img_a" src='<?= PageIndex()?>Image/Icons/scramble.png' width='30px'></a>
+                <?php if(!$event['Discipline_GlueScrambles'] and file_exists('Includes/Action.CompetitionEvent/CompetitionEvent.Scramble.'.$event['Discipline_CodeScript'].'.php') ){ ?>
+                   <a target="_blank" href="<?= PageAction('CompetitionEvent.Scramble.'.$event['Discipline_CodeScript'])?>/<?= $event['Event_ID'] ?>"><img  class="img_a" src='<?= PageIndex()?>Image/Icons/scramble.png' width='30px'></a>
                 <?php }else{ ?>
                        <a target="_blank" href="<?= PageAction('CompetitionEvent.Scramble.Page') ?>/<?= $event['Event_ID'] ?>"><img  class="img_a" src='<?= PageIndex()?>Image/Icons/scramble.png' width='30px'></a>
                 <?php } ?>        
@@ -265,42 +265,57 @@ WebSite &#9642; <a href="<?=  $Competition['Competition_WebSite'] ?>"><?=  $Comp
     <?php  } ?>
 </div>
     <div class="form">
-            <form method="POST" action="<?= PageAction('Competition.Edit.Status') ?>">
-                <input name="ID" type="hidden" value="<?= $Competition['Competition_ID'] ?>" />
+            <form>
+            <input name="ID" type="hidden" value="<?= $Competition['Competition_ID'] ?>" />
                 <?php if($Competition['Competition_Status']){ ?>
                     <?= svg_green(10) ?>
                 <?php }else{ ?>
                     <?= svg_red(10) ?>
                 <?php } ?>
-                <label for="Competition.Status"><?= $Competition['Competition_Status']?ml('Competition.Status.Show.True'):ml('Competition.Status.Show.False')   ?></label><input id="Competition.Status" name="Status" <?= $Competition['Competition_Status']?'checked':'' ?> type="checkbox"><br>
+                <?= $Competition['Competition_Status']?ml('Competition.Status.Show.True'):ml('Competition.Status.Show.False')   ?><br>
                 <?php if($Competition['Competition_Registration']){ ?>
                     <?= svg_green(10) ?>
                 <?php }else{ ?>
                     <?= svg_red(10) ?>
                 <?php } ?>
-                <label for="Competition.Registration"><?= $Competition['Competition_Registration']?ml('Competition.Registration.True'):ml('Competition.Registration.False')   ?></label><input id="Competition.Registration" name="Registration" <?= $Competition['Competition_Registration']?'checked':'' ?> type="checkbox"><br>
+                <?= $Competition['Competition_Registration']?ml('Competition.Registration.True'):ml('Competition.Registration.False')   ?><br>
                 <?php if($Competition['Competition_Onsite']){ ?>
                     <?= svg_green(10) ?>
                 <?php }else{ ?>
                     <?= svg_red(10) ?>
                 <?php } ?>
-                <label for="Competition.Onsite"><?= $Competition['Competition_Onsite']?ml('Competition.Onsite.True'):ml('Competition.Onsite.False')   ?></label><input id="Competition.Onsite" name="Onsite" <?= $Competition['Competition_Onsite']?'checked':'' ?> type="checkbox"><br>
-                <?php if(CheckAccess('Competition.Settings.Ext',$Competition['Competition_ID'])){ ?>
-                
+                <?= $Competition['Competition_Onsite']?ml('Competition.Onsite.True'):ml('Competition.Onsite.False')   ?><br>
+                <?php if(!$Competition['Competition_Unofficial']){ ?>
+                    <?= svg_green(10) ?>
+                <?php }else{ ?>
+                    <?= svg_red(10) ?>
+                <?php } ?>
+                <?= $Competition['Competition_Unofficial']?ml('Competition.Unofficial.True'):ml('Competition.Unofficial.False')   ?><br>
+                <?php if($Competition['Competition_DelegateWCAOn']){ ?>
+                    <?= svg_green(10) ?>
+                <?php }else{ ?>
+                    <?= svg_red(10) ?>
+                <?php } ?>
+                <?= $Competition['Competition_DelegateWCAOn']?ml('Competition.DelegateWCAOn.False'):ml('Competition.DelegateWCAOn.True')   ?><br>
+                <?= $Competition['Competition_Cubingchina']?ml('Competition.Cubingchina.True'):ml('Competition.Cubingchina.False')   ?><br>
+            </form>
+        <hr>
+            <form method="POST" action="<?= PageAction('Competition.Edit.Status') ?>">
+                <input name="ID" type="hidden" value="<?= $Competition['Competition_ID'] ?>" />
+                <input name="Status" <?= $Competition['Competition_Status']?'checked':'' ?> type="checkbox">
+                <?= ml('Competition.Status.Checkbox') ?><br>
+                <input name="Registration" <?= $Competition['Competition_Registration']?'checked':'' ?> type="checkbox">
+                <?= ml('Competition.Registration.Checkbox') ?><br>
+                <input name="Onsite" <?= $Competition['Competition_Onsite']?'checked':'' ?> type="checkbox">
+                <?= ml('Competition.Onsite.Checkbox') ?><br>
+                <?php if(CheckAccess('Competition.Settings.Ext',$Competition['Competition_ID'])){ ?>                
                 <hr><span class="badge">Ext</span><br>
-                    <?php if(!$Competition['Competition_Unofficial']){ ?>
-                        <?= svg_green(10) ?>
-                    <?php }else{ ?>
-                        <?= svg_red(10) ?>
-                    <?php } ?>
-                    <label for="Competition.Unofficial"><?= $Competition['Competition_Unofficial']?ml('Competition.Unofficial.True'):ml('Competition.Unofficial.False')   ?></label><input id="Competition.Unofficial" name="Unofficial" <?= !$Competition['Competition_Unofficial']?'checked':'' ?> type="checkbox"><br>
-                    <?php if($Competition['Competition_DelegateWCAOn']){ ?>
-                        <?= svg_green(10) ?>
-                    <?php }else{ ?>
-                        <?= svg_red(10) ?>
-                    <?php } ?>
-                    <label for="Competition.DelegateWCAOn"><?= $Competition['Competition_DelegateWCAOn']?ml('Competition.DelegateWCAOn.False'):ml('Competition.DelegateWCAOn.True')   ?></label><input id="Competition.DelegateWCAOn" name="DelegateWCAOn" <?= $Competition['Competition_DelegateWCAOn']?'checked':'' ?> type="checkbox"><br>
-                    <label for="Competition.Cubingchina"><?= $Competition['Competition_Cubingchina']?ml('Competition.Cubingchina.True'):ml('Competition.Cubingchina.False')   ?></label><input id="Competition.Cubingchina" name="Cubingchina" <?= $Competition['Competition_Cubingchina']?'checked':'' ?> type="checkbox"><br>
+                    <input name="Unofficial" <?= !$Competition['Competition_Unofficial']?'checked':'' ?> type="checkbox">
+                    <?= ml('Competition.Unofficial.Checkbox') ?><br>
+                    <input name="DelegateWCAOn" <?= $Competition['Competition_DelegateWCAOn']?'checked':'' ?> type="checkbox">
+                    <?= ml('Competition.DelegateWCAOn.Checkbox') ?>
+                    <br>
+                    <input name="Cubingchina" <?= $Competition['Competition_Cubingchina']?'checked':'' ?> type="checkbox"> <?= ml('Competition.Cubingchina.True') ?>?<br>
                 <?php } ?>
                 <input type="submit" name="submit" value="<?= ml('*.Save',false) ?>"><?= mlb('*.Save') ?>
             </form> 
@@ -472,6 +487,7 @@ WebSite &#9642; <a href="<?=  $Competition['Competition_WebSite'] ?>"><?=  $Comp
         </table>
         <span class="badge">C</span> - Competitor <span class="badge">D</span> - Delegate <span class="badge">S</span> - ScoreTaker
     </div>
+<script src="<?= PageLocal()?>jQuery/chosen_v1/docsupport/init.js" type="text/javascript" charset="utf-8"></script>
 <?= mlb('*.Delete') ?>
 <?= mlb('Competition.Status.Show.True') ?>
 <?= mlb('Competition.Status.Show.False') ?>

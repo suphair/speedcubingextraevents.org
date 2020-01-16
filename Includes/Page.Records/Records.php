@@ -251,7 +251,7 @@ $disciplines=DataBaseClass::QueryGenerate(); ?>
                     $competitors=DataBaseClass::QueryGenerate();
                     foreach($competitors as $competitor){ ?>
                         <p>
-                            <img width="25" style="vertical-align: middle" src="<?= PageIndex()?>Image/Flags/<?= strtolower($competitor['Competitor_Country'])?>.png">
+                            <img width="24" style="vertical-align: middle" src="<?= PageIndex()?>Image/Flags/<?= strtolower($competitor['Competitor_Country'])?>.png">
                             <a href="<?= PageIndex() ?>Competitor/<?= $competitor['Competitor_WCAID']?$competitor['Competitor_WCAID']:$competitor['Competitor_ID'] ?>"><?= trim(explode("(",$competitor['Competitor_Name'])[0]) ?></a></p>
                     <?php } ?>
 

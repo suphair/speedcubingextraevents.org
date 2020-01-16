@@ -34,9 +34,10 @@ if(isset($request[1])){
 if($My==1 and  !GetCompetitorData()){
     $My=0;
 }
-    DataBaseClass::Query("Select Cn.Country, count(*) count from Competition Cn "
+    DataBaseClass::Query("Select Cn.Country,Country.Name CountryName, count(*) count from Competition Cn "
+            . " left outer join Country on Country.ISO2=Cn.Country "
             .(CheckAccess('Competitions.Hidden')?"": " where Cn.Status=1 and Cn.WCA not like 't.%'")
-            . "group by Cn.Country order by 2 desc ");
+            . " group by Cn.Country,Country.Name order by 2 ");
     
     $competitions_countries=DataBaseClass::getRows();
     $competitions_countries_all=0;
@@ -47,34 +48,38 @@ if($My==1 and  !GetCompetitorData()){
     
     DataBaseClass::Query("
     select t.*,
+    case when t.WCA like 't.%' then 1 else 0 end Secret,
     case 
-    when t.WCA like 't.%' then 2
-    when Status=0 then -1
-    when countDisiplines=0 then -1
-    when (ResultExists and nonResultExist) or (current_date>=StartDate and nonResultExist) or (current_date>=StartDate and current_date<=EndDate) then 0
-    when ResultExists and !nonResultExist then 1
-    when ( !countCompetitors or (!ResultExists and nonResultExist)) and current_date<StartDate then 0.5
+    when current_date < StartDate then 0
+    when current_date >= StartDate and current_date <= EndDate then 1
+    when current_date > EndDate then 2
     end UpcomingStatus
 
         from(    
 
-    select Cn.*, count(distinct C.ID) countCompetitors, count(distinct E.DisciplineFormat) countDisiplines,
+    select Cn.*, coalesce(Country.Name,'') CountryName,
+    GROUP_CONCAT(DISTINCT Concat(D.Name,';',D.Code,';',D.CodeScript) order by D.Code SEPARATOR '#') events,
+    count(distinct C.ID) countCompetitors, count(distinct E.DisciplineFormat) countDisiplines,
     case when max(coalesce(Com.Place,0))>0 then 1 else 0 end ResultExists,
     case when sum(case when A.ID is null and Com.Decline!=1 then 1 else 0 end)>0 then 1 else 0 end nonResultExist
     from `Competition` Cn
     left outer join `Event` E on E.Competition=Cn.ID
+    left outer join `DisciplineFormat` DF on DF.ID=E.DisciplineFormat and E.Round=1
+    left outer join `Discipline` D on D.ID=DF.Discipline
+
     left outer join `Command` Com on Com.Event=E.ID  and Com.Decline!=1
     left outer join `Attempt` A on A.Command=Com.ID and A.Attempt=1
     left outer join `CommandCompetitor` CC on CC.Command=Com.ID 
     left outer join `Competitor` C on C.ID=CC.Competitor
+    left outer join Country on Country.ISO2=Cn.Country
     where ".(CheckAccess('Competitions.Hidden')?"1=1": "Cn.Status=1") ." and ".(CheckAccess('Competitions.Secret')?"1=1": "Cn.WCA not like 't.%'") ."
     and ('$country_filter'='0' or '$country_filter'=Cn.Country) 
     and ($My=0 or Cn.id in (".implode(",",$competitor_competitions)."))   
-    group by Cn.ID 
+    group by Cn.ID,Country.Name
     
     )t
-    order by UpcomingStatus, t.StartDate desc"); 
-    $results= DataBaseClass::getRows();
+    order by UpcomingStatus,t.StartDate desc, t.EndDate desc"); 
+    $results= DataBaseClass::getRows(true,true);
     ?>
     <h2> 
         <img src='<?= PageIndex()?>Image/Icons/competitions.png' width='20px'>
@@ -84,18 +89,19 @@ if($My==1 and  !GetCompetitorData()){
         <?php }elseif($country_filter=='0'){ ?>
             <?= ml('Competitions.All') ?>
         <?php }else{ ?>
-            <?= ImageCountry($country_filter, 50)?>
-            <?= ml('Competitions.Title.Country',CountryName($country_filter)); ?>
+            <?= ml('Competitions.Title.Country'); ?>
+        <?= ImageCountry($country_filter, 25)?>
+            <?= CountryName($country_filter) ?>
         <?php } ?>
             
         <select onchange="document.location='<?= PageIndex()?>Competitions/' + this.value ">
-            <option <?= ($country_filter=='0' and $My==0)?'selected':''?> value=""><?= ml('Competitions.Select.All') ?>: <?= $competitions_countries_all ?></option>
-            <?php if(GetCompetitorData()){ ?><option <?= $My=='1'?'selected':''?> value="My"><?= ml('Competitions.Select.My') ?><?php if(sizeof($competitor_competitions)-1>0){ ?>: <?= sizeof($competitor_competitions)-1 ?> <?php } ?></option><?php } ?>
+            <option <?= ($country_filter=='0' and $My==0)?'selected':''?> value=""><?= ml('Competitions.Select.All') ?> (<?= $competitions_countries_all ?>)</option>
+            <?php if(GetCompetitorData()){ ?><option <?= $My=='1'?'selected':''?> value="My"><?= ml('Competitions.Select.My') ?><?php if(sizeof($competitor_competitions)-1>0){ ?> (<?= sizeof($competitor_competitions)-1 ?>) <?php } ?></option><?php } ?>
             <option disabled>------</option>
 
             <?php foreach($competitions_countries as $competitions_country)if($competitions_country['Country']){ ?>
                     <option <?= $country_filter==strtolower($competitions_country['Country'])?'selected':''?> value="<?= $competitions_country['Country']?>">        
-                        <?= CountryName($competitions_country['Country']) ?> [<?= $competitions_country['Country'] ?>]: <?= $competitions_country['count'] ?>
+                        <?= $competitions_country['CountryName'] ?> (<?= $competitions_country['count'] ?>)
                     </option> 
             <?php } ?>      
 
@@ -121,16 +127,12 @@ if($My==1 and  !GetCompetitorData()){
             <?php } ?>    
             <tr class="no_border tr_title">
                 <td colspan="3">
-                    <?php if($comp_status==1){ ?>
+                    <?php if($comp_status==2){ ?>
                         <?= ml('Competitons.Past') ?>
-                    <?php }elseif($comp_status==0){ ?>    
+                    <?php }elseif($comp_status==1){ ?>    
                         <?= ml('Competitons.Progress') ?>
-                    <?php }elseif($comp_status==0.5){ ?>
+                    <?php }elseif($comp_status==0){ ?>
                         <?= ml('Competitons.Upcoming') ?>
-                    <?php }elseif($comp_status==-1){ ?>
-                        <?= ml('Competitons.Hidden') ?>
-                    <?php }else{ ?>
-                        <?= ml('Competitons.Secret') ?>
                     <?php } ?>
                     <span class="badge"><?= $comp_statuses[$comp_status]?></span>
                 </td>
@@ -145,64 +147,33 @@ if($My==1 and  !GetCompetitorData()){
         } ?>
     <tr valign="bottom">
         <td>
-            <b><?= date_range($r['StartDate'],$r['EndDate']); ?></b>
+            <span class="<?= !$r['Status']?'error':($comp_status==1?'message':'') ?>">
+                <b><?= date_range($r['StartDate'],$r['EndDate']); ?></b>
+            </span>
         </td>   
         <td>
-            <?php if($comp_status==0.5){ ?>
-                <?php if($r['Registration']){ ?>
-                    <?= svg_green(10,ml('Competition.Registration.True',false)) ?>
-                <?php }else{ ?>
-                    <?= svg_red(10,ml('Competition.Registration.False',false)) ?>
-                <?php } ?>
-            <?php } ?>    
-            <?php if($comp_status==0){ ?>
-                <?php if($r['Onsite']){ ?>
-                    <?= svg_green(10,ml('Competition.Onsite.True',false)) ?>
-                <?php }else{ ?>
-                    <?= svg_red(10,ml('Competition.Onsite.False',false)) ?>
-                <?php } ?>
-            <?php } ?>    
+            <?= ImageCountry($r['Country'],20) ?>
             <a href="<?= LinkCompetition($r['WCA']) ?>">
                 <span class="<?= ($r['Unofficial'] and $comp_status!=-1)?'unofficial':'' ?>"><?= $r['Name'] ?></span>
             </a>
         </td>
         <td>
-            <?= ImageCountry($r['Country'],20) ?>
-            <b><?= CountryName($r['Country']) ?></b>, <?= CountryName($r['City']) ?>
+            <b><?= $r['CountryName'] ?></b>, <?= $r['City'] ?>
         </td>
         <td class="attempt">
             <?= $r['countCompetitors']?$r['countCompetitors']:'' ?>
         </td>
         <td style="padding:0px">
             <?php 
-                    DataBaseClass::Query(
-                            "Select E.ScrambleSalt, E.Round, E.ID Event, D.Name,D.Code,D.CodeScript  "
-                            . " from Discipline D"
-                            . " join DisciplineFormat DF on DF.Discipline=D.ID "
-                            . " join Event E on E.DisciplineFormat=DF.ID "
-                            . " left outer join Command Com on Com.Event=E.ID and Com.Decline!=1 "
-                            . " left outer join Attempt A on A.Command=Com.ID and A.Attempt=1"
-                            . ($My?(" join CommandCompetitor CC on CC.Command=Com.ID "
-                            . " join Competitor C on C.ID=CC.Competitor and C.WID=".$Competitor->id):"")
-                            . " where E.Competition=".$r['ID']
-                            . " group by E.ID, D.Code, D.Name "
-                            ." order by D.Name");
             
-            
-                  $j=0; 
-                  
-                  $diciplines=DataBaseClass::getRows();
-                  
-                  foreach($diciplines as $discipline){ 
-                      if($discipline['Round']==1){ ?> 
-                        <a href="<?= LinkEvent($discipline['Event']) ?>"><?= ImageEvent($discipline['CodeScript'],25,$discipline['Name']);?></a>
-                        <?php $j++;
-                        if($j==10){
-                            $j=0;
-                        echo "<br>";
-                         }
-                      }
-                  } ?>
+            foreach(explode('#',$r['events']) as $e=>$event){
+                if($e<10){
+                    $event_data=explode(';',$event); 
+                    if(isset($event_data[2])){ ?>
+                        <a href="<?= setLinkEvent($r['WCA'],$event_data[1],1) ?>"><?= ImageEvent($event_data[2],25,$event_data[0]);?></a>
+                    <?php } 
+                }
+            } ?>
         </td>
     </tr>
 <?php } ?>

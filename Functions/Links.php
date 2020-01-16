@@ -3,6 +3,15 @@ function LinkDiscipline($code){
     return PageIndex()."Event/$code";
 }
 
+
+function setLinkEvent($CompetitionWCA,$EventCode,$eventRound){
+    if($eventRound>1){
+        return PageIndex()."Competition/$CompetitionWCA/$EventCode/$eventRound";
+    }else{
+        return PageIndex()."Competition/$CompetitionWCA/$EventCode";
+    }
+}
+
 function LinkEvent($ID){
     DataBaseClass::FromTable('Event',"ID=$ID");
     DataBaseClass::Join('Event', 'Competition');

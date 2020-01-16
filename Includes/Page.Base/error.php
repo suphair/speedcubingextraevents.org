@@ -1,4 +1,3 @@
-<?php includePage('Navigator'); ?>
-<h1 style="color:red">
+<h3 style="color:red">
     <?= RequestClass::getError() ?>
-</h1>
+</h3>

@@ -44,7 +44,7 @@ $attempts_exists=($data['Attempts']>0 or $data['Start']);
     </td><td>
     <h1 class="competition_name">      
         <nobr><a href="<?= LinkCompetition($Competition['Competition_WCA'])?>"><?= $Competition['Competition_Name'] ?></a>
-        <span class="badge"><?= $count_competitors ?></span></nobr>
+            <span class="badge"><img src="<?=  PageIndex() ?>Image/Icons/persons.png" align="top" width="20px"> <?= $count_competitors ?></span></nobr>
     </h1>            
     <h2 class="competition_details">
         <?= $imgCompetition?ImageCountry($Competition['Competition_Country'],50):'' ?>
@@ -104,34 +104,35 @@ $comment="";
        $comment.="<p>".$delegate_str."<b>".implode(", ",$delegates_out)."</b></p>";           
     }  ?>  
 
-<?php if(strtotime($Competition['Competition_StartDate'])<=strtotime(date('Y-m-d'))){ ?>    
-    <?php if( $Competition['Competition_Unofficial']){ 
-           if(!$Competition['Competition_DelegateWCAOn']){ ?>
-                <?php $comment.= "<p>".svg_red(10)." ".ml('Competition.Unofficial.True')."</p>"?>
-        <?php }else{ ?>
-                <?php $comment.= "<p>".svg_red(10)." ".ml('Competition.Unofficial.TrueTemp')."</p>"?>
-        <?php } ?>                    
-    <?php } ?>    
-<?php } ?>        
-
-<?php if(strtotime($Competition['Competition_EndDate'])>=strtotime(date('Y-m-d'))){ ?>    
-    <?php if(!$attempts_exists){?>
-        <?php if($Competition['Competition_Registration']){ ?>
-            <?php $comment.= "<p>".svg_green(10)." ".ml('Competition.Registration.True')."</p>"?>
-        <?php }else{ ?>    
-            <?php $comment.= "<p>".svg_red(10)." ".ml('Competition.Registration.False')."</p>"?>
-        <?php } ?>
-    <?php } ?>
-    <?php if( $Competition['Competition_Onsite']){ ?>
-        <?php $comment.= "<p>".svg_green(10)." ".ml('Competition.Onsite.True')."</p>"?>
-    <?php }else{ ?>    
-        <?php $comment.= "<p>".svg_red(10)." ".ml('Competition.Onsite.False')."</p>"?>
-    <?php } ?>
-<?php } ?>    
-    
-<?php if($Competition['Competition_Comment']){ ?>
-    <?php $comment.="<hr>".Parsedown(ml_json($Competition['Competition_Comment']),false); ?>
-<?php } ?>                  
+<?php if(!$Competition['Competition_Status']){
+    $comment.= "<p>".svg_red(10)." ".ml('Competition.Status.Show.False')."</p>";
+}
+if(strtotime($Competition['Competition_StartDate'])<=strtotime(date('Y-m-d'))){
+    if( $Competition['Competition_Unofficial']){ 
+        if(!$Competition['Competition_DelegateWCAOn']){
+            $comment.= "<p>".svg_red(10)." ".ml('Competition.Unofficial.True')."</p>";
+        }else{
+            $comment.= "<p>".svg_red(10)." ".ml('Competition.Unofficial.TrueTemp')."</p>";
+        }
+    }
+}        
+if(strtotime($Competition['Competition_EndDate'])>=strtotime(date('Y-m-d'))){
+    if(!$attempts_exists){
+        if($Competition['Competition_Registration']){
+            $comment.= "<p>".svg_green(10)." ".ml('Competition.Registration.True')."</p>";
+        }else{ 
+            $comment.= "<p>".svg_red(10)." ".ml('Competition.Registration.False')."</p>";
+        }
+    }
+    if( $Competition['Competition_Onsite']){
+        $comment.= "<p>".svg_green(10)." ".ml('Competition.Onsite.True')."</p>";
+    }else{
+        $comment.= "<p>".svg_red(10)." ".ml('Competition.Onsite.False')."</p>";
+    }
+} 
+if($Competition['Competition_Comment']){
+    $comment.="<hr>".Parsedown(ml_json($Competition['Competition_Comment']),false);
+} ?>                  
     
 <?php if($comment){ ?>
    <div class="block_comment"> 

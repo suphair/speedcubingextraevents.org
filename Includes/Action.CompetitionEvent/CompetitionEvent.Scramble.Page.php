@@ -41,22 +41,20 @@ if($Discipline=='9x9' or $Discipline=='8x8'){
 
 ?>
 <head>
-    <title>Set scrambles</title>
-    <link rel="stylesheet" href="../../getStyle.css" type="text/css"/>
+    <link rel="icon" href="<?= PageLocal()?><?= ImageEventFile($data['Discipline_CodeScript'])?>" >
+    <title><?= $data['Discipline_Name']?><?= $data['Event_vRound']?></title>
+    <link rel="stylesheet" href="../../style.css" type="text/css"/>
 </head>
 
-<h1><img width="30px" src="<?= PageIndex()?>Logo/Logo_Black.jpg"> Set scrambles</h1>
-<h2><?= $data['Competition_Name']?> ▪ <?= date_range($data['Competition_StartDate'],$data['Competition_EndDate']) ?></h2>
-<h2><img width="30px" align="top" src="<?= PageIndex()?><?= ImageEventFile($data['Discipline_CodeScript']) ?>"> <?= $data['Discipline_Name']?><?= $data['Event_vRound']?></h2>
-<h3>Scrambles {<?= $data['Discipline_TNoodle'] ?>} for <?= $data['Event_Groups'] ?> groups (<?= $data['Format_Attemption']."+".$ex?>)</h3>
-
- <center>
+<h1><?= $data['Competition_Name'] ?> ▪ <?= $data['Discipline_Name']?><?= $data['Event_vRound']?></h1>
+<h2>Set scrambles <?= $data['Discipline_TNoodle'] ?> for <?= $data['Event_Groups'] ?> groups ( <?= $data['Format_Attemption']." attempts + ".$ex?> extra )</h2>
+<br>
     <?php $Competition_WCA=str_replace('.','_',$data['Competition_WCA']);
     $FileName=$Competition_WCA."_".$data['Discipline_Code']."_".$data['Event_Round']; 
     $link="http://localhost:2014/scramble-legacy/#competitionName=".$FileName."&rounds=i('eventID'-'".$data['Discipline_TNoodle']."'_'round'-'1'_'scrambleSetCount'-".$data['Event_Groups']."_'scrambleCount'-".$data['Format_Attemption']."_'extraScrambleCount'-".$ex."_'copies'-1)!&version=1.0" ?>    
      
     1. Prepare TNoodle WCA Scrambler according to the <a target="_blank" href="https://www.worldcubeassociation.org/regulations/scrambles/">instructions</a><br><br>    
-    2. Click the button "Sramble!" in the <a target="_blank" href="<?= $link ?>">TNoodle WCA Scrambler</a> (open at this link)<br><br>
+    2. Click the button "<b>Sramble!</b>" in the <a target="_blank" href="<?= $link ?>">TNoodle WCA Scrambler</a> (open at this link)<br><br>
     
     
     3. Click the "Json" button and select the file with the same name in the download folder<br>
@@ -70,6 +68,5 @@ if($Discipline=='9x9' or $Discipline=='8x8'){
             <button class="form_change">Json</button> 
         </div>
     </div>
-</form>
-</center>    
+</form>   
 <?php exit();

@@ -41,6 +41,7 @@ if($type_filter=='wcapuzzle') echo '/ '.ml('Events.WCAPuzzle.Title');
 if($type_filter=='nonwcapuzzle') echo '/ '.ml('Events.nonWCAPuzzle.Title');
 if($type_filter=='simple') echo '/ '.ml('Events.Simple.Title');
 if($type_filter=='nonsimple') echo '/ '.ml('Events.nonSimple.Title');
+if($type_filter=='inscpection20') echo '/ '.ml('Events.Inscpection20.Title');
  ?>
 
 </h2>
@@ -50,11 +51,17 @@ if($type_filter=='nonsimple') echo '/ '.ml('Events.nonSimple.Title');
 ▪ 
 <nobr><a class="<?= $type_filter=='wcapuzzle'?'select':'' ?>" href="<?= PageIndex() ?>Events/WCAPuzzle"><?= ml('Events.WCAPuzzle.Title'); ?></a></nobr>
 ▪ 
+<nobr><a class="<?= $type_filter=='333cube'?'select':'' ?>" href="<?= PageIndex() ?>Events/333Cube"><?= ml('Events.333Cube.Title'); ?></a></nobr>
+▪ 
 <nobr><a class="<?= $type_filter=='nonwcapuzzle'?'select':'' ?>" href="<?= PageIndex() ?>Events/nonWCAPuzzle"><?= ml('Events.nonWCAPuzzle.Title'); ?></a></nobr>
 ▪ 
 <nobr><a class="<?= $type_filter=='simple'?'select':'' ?>" href="<?= PageIndex() ?>Events/Simple"><?= ml('Events.Simple.Title'); ?></a></nobr>
 ▪ 
 <nobr><a class="<?= $type_filter=='nonsimple'?'select':'' ?>" href="<?= PageIndex() ?>Events/nonSimple"><?= ml('Events.nonSimple.Title'); ?></a></nobr>
+▪ 
+<nobr><a class="<?= $type_filter=='inscpection20'?'select':'' ?>" href="<?= PageIndex() ?>Events/Inscpection20"><?= ml('Events.Inscpection20.Title'); ?></a></nobr>
+▪ 
+<nobr><a class="<?= $type_filter=='cutscrambles'?'select':'' ?>" href="<?= PageIndex() ?>Events/CutScrambles"><?= ml('Events.CutScrambles.Title'); ?></a></nobr>
 
 <?php $Competitor=GetCompetitorData();
 
@@ -82,6 +89,20 @@ if($type_filter=='nonwcapuzzle'){
     $extraWhere=" and coalesce(GlueScrambles,0)<>1 ";
 }
 
+if($type_filter=='inscpection20'){
+    $extraWhere=" and Inspection=20 ";
+}
+
+if($type_filter=='cutscrambles'){
+    $extraWhere=" and CutScrambles=1 ";
+}
+
+if($type_filter=='333cube'){
+    $extraWhere=" and (TNoodle='333' or TNoodles='333') and GlueScrambles=1 ";
+}
+
+
+
     DataBaseClass::Query("select D.Simple,D.ID,D.Code,D.CodeScript,D.Status,D.Name,D.Competitors,
     count(distinct C.ID) countCompetitors,
     count(distinct Cn.ID) countCompetitions,
@@ -95,72 +116,52 @@ if($type_filter=='nonwcapuzzle'){
     left outer join `Competitor` C on C.ID=CC.Competitor and Cn.WCA not like 't.%'
     where 1=1 ".(CheckAccess('Events.Arhive')?"": " and D.Status='Active' ") ." $extraWhere
     group by D.ID
-    order by D.Status,(sum(case when Com.Place>0 and Cn.ID is not null then 1 else 0 end)>0)
+    order by D.Status
     ,count(distinct C.ID) desc, count(distinct E.Competition) desc,  D.Name"); 
     $disciplines= DataBaseClass::getRows(); 
     ?>
     <table class="Disciplines">
-    <?php $attempt_exists='-1';
-    foreach( $disciplines as $d=>$discipline){ ?>
-         <?php if($discipline['AttemptExists']!=$attempt_exists){
-            $attempt_exists = $discipline['AttemptExists']; ?>
-            <tr class="no_border">
-                <td colspan="9"><b>
-                        <?= $d?'<br>':'' ?>
-                    <?php if($attempt_exists){ ?>
-                        <?php # ml('Events.Old') ?>
-                    <?php }else{ ?>    
-                        <?= ml('Events.New') ?>
-                    <?php } ?>
-                    </b>
+       
+        <tr class="tr_title">
+            <td><?= ml('Events.Table.Name') ?></td>
+            <td align="center"> <img height="15px"src="<?= PageIndex() ?>Image/Icons/persons.png"></td>
+            <td align="center"> <img height="12px"src="<?= PageIndex() ?>Image/Icons/competitions.png"></td>
+            <?php if($Competitor){?>
+                <td class="attempt" colspan="2"><b><?= ml('Events.Table.PersonalRecord') ?></b> <?= $Competitor->wca_id ?></td>
+                <td class="attempt" colspan="2">
+                    <b><?= ml('Events.Table.NationalRecord') ?></b>
+                    <?= ImageCountry($Competitor->country_iso2, 25) ?> 
                 </td>
-            </tr>
-            <tr class="tr_title">
-                <td><?= ml('Events.Table.Name') ?></td>
-                <td align="center"> <img height="15px"src="<?= PageIndex() ?>Image/Icons/persons.png"></td>
-                <td align="center"> <img height="12px"src="<?= PageIndex() ?>Image/Icons/competitions.png"></td>
-                <?php if($Competitor){?>
-                    <td class="attempt" colspan="2"><b><?= ml('Events.Table.PersonalRecord') ?></b></td>
-                    <td class="attempt" colspan="2">
-                        <b><?= ml('Events.Table.NationalRecord') ?></b>
-                        <?php if($attempt_exists){ ?>
-                            <?= ImageCountry($Competitor->country_iso2, 25) ?> 
-                        <?php } ?>
-                    </td>
-                    <td class="attempt" colspan="2">
-                        <b><?= ml('Events.Table.ContinentRecord') ?></b>
-                            <?php if($attempt_exists){ ?>
-                                (<?= $Continent ?>)
-                            <?php } ?>
-                    </td>
-                <?php } ?>
-                
-                <td class="attempt" colspan="2"><b><?= ml('Events.Table.WorldRecord') ?></b></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <?php if($attempt_exists){?>
-            <tr >
-                <td></td>
-                <td/>
-                <td/>    
-                
-                <?php if($Competitor){?>
-                    <td class="attempt"><?= ml('Events.Table.Single') ?></td>
-                    <td class="attempt"><?= ml('Events.Table.Average') ?></td>
-                    <td class="attempt"><?= ml('Events.Table.Single') ?></td>
-                    <td class="attempt"><?= ml('Events.Table.Average') ?></td>
-                    <td class="attempt"><?= ml('Events.Table.Single') ?></td>
-                    <td class="attempt"><?= ml('Events.Table.Average') ?></td>
-                <?php } ?>
-                <td class="attempt"><?= ml('Events.Table.Single') ?></td>
-                <td class="attempt"><?= ml('Events.Table.Average') ?></td>
-            </tr>
+                <td class="attempt" colspan="2">
+                    <b><?= ml('Events.Table.ContinentRecord') ?></b> <?= $Continent ?>
+                </td>
             <?php } ?>
-        <?php 
-        } ?>
+
+            <td class="attempt" colspan="2"><b><?= ml('Events.Table.WorldRecord') ?></b></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr >
+            <td class="border-right-dotted"/>
+            <td class="border-right-dotted"/>
+            <td class="border-right-dotted"/>    
+
+            <?php if($Competitor){?>
+                <td class="attempt"><?= ml('Events.Table.Single') ?></td>
+                <td class="attempt border-right-solid"><?= ml('Events.Table.Average') ?></td>
+                <td class="attempt"><?= ml('Events.Table.Single') ?></td>
+                <td class="attempt border-right-solid"><?= ml('Events.Table.Average') ?></td>
+                <td class="attempt"><?= ml('Events.Table.Single') ?></td>
+                <td class="attempt border-right-solid"><?= ml('Events.Table.Average') ?></td>
+            <?php } ?>
+            <td class="attempt"><?= ml('Events.Table.Single') ?></td>
+            <td class="attempt"><?= ml('Events.Table.Average') ?></td>
+        </tr>
+    <?php
+    foreach( $disciplines as $d=>$discipline){
+            $attempt_exists = $discipline['AttemptExists']; ?>
     <tr valign="bottom" >
-    <td class="border-right-dotted" style="padding:0; margin:0">
+    <td class="border-right-dotted" style="padding:0 5px; margin:0">
         <?= ImageEvent($discipline['CodeScript'],25,$discipline['Name']) ?>  
 
         <a href="<?= LinkDiscipline($discipline['Code']) ?>">

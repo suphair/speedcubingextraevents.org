@@ -1,5 +1,5 @@
-<div class="block_comment">
-        <b><img src='<?= PageIndex()?>Image/Icons/persons.png' width='30px'> History of registrations of competitors</b><br>
+<?php IncludePage('Logs_navigator')?>
+<h1><img src='<?= PageIndex()?>Image/Icons/persons.png' width='30px'> Logs Registrations</h1>
             <?php DataBaseClass::Query("Select "
                     . " Cn.WCA, D.Code, D.CodeScript, LR.Timestamp,LR.Action, LR.Doing,LR.Details "
                     . " from LogsRegistration LR "
@@ -7,6 +7,7 @@
                     . " join Competition Cn on Cn.ID=E.Competition "
                     . " join DisciplineFormat DF on DF.ID=E.DisciplineFormat"
                     . " join Discipline D on D.ID=DF.Discipline"
+                    . " where date(LR.Timestamp)>=DATE_ADD(current_date(),INTERVAL -14 Day)  "
                     . " order by LR.Timestamp desc");?>
         <table style="font-size: 14px">
             <?php foreach(DataBaseClass::getRows() as $row){ ?>
@@ -28,7 +29,7 @@
                 <td>
                     <a href="<?= LinkCompetition($row['WCA'])?>/<?=$row['Code']  ?>"><?= $row['WCA']?></a>
                 </td>    
-                <td class="border-left-dotted border-right-dotted">
+                <td width=400px class="border-left-dotted border-right-dotted">
                             <?= ImageEvent($row['CodeScript'],20)?>
                             <?= $row['Details']?>
                 </td>
@@ -37,4 +38,3 @@
             <?php } ?>
         </table>
         <span class="badge">C</span> - Competitor <span class="badge">D</span> - Delegate <span class="badge">S</span> - ScoreTaker
-    </div>

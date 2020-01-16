@@ -1,10 +1,9 @@
-<?php
+<?php AddLog('CompetitorsReload', 'Cron','Start');
+
 $start=date("H:i:s");
-$limitApi=50;
+$limitApi=0;
 $limitBd=1000;
 $depth=14;
-
-
 
 DataBaseClassWCA::Query("select C.name,C.iso2,Ct.recordName from `Countries` C join `Continents` Ct on Ct.id=C.continentid");
 foreach(DataBaseClassWCA::getRows() as $row){
@@ -16,9 +15,6 @@ foreach(DataBaseClassWCA::getRows() as $row){
     DataBaseClass::Query("REPLACE into Continent (Code,Name) values ('".$row['recordName']."','".DataBaseClass::Escape($row['name'])."')");
 }
     
-
-
-
 DataBaseClass::Query(" Select UpdateTimestamp, ID, WID from Competitor  where  WID is not null and WCAID='' and TO_DAYS(now()) - TO_DAYS(UpdateTimestamp) > $depth
 order by UpdateTimestamp Limit $limitApi");
 
@@ -76,6 +72,6 @@ $count2T=DataBaseClass::rowsCount();
 DataBaseClass::Query("select ID, WCAID from Competitor where WCAID<>'' and TO_DAYS(now()) - TO_DAYS(UpdateTimestamp) > $depth ");
 $count3=DataBaseClass::rowsCount();
 
-AddLog('CompetitorsReload', 'Cron',"$count1/$count1t $count2/$count2T $count3 : $start - $end");
+AddLog('CompetitorsReload', 'Cron',"End $count1/$count1t $count2/$count2T $count3 : $start - $end");
 
 exit();  

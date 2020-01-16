@@ -1,9 +1,4 @@
-<head>
-    <title>Distribution of competitors by groups</title>
-    <link rel="stylesheet" href="../../getStyle.css" type="text/css"/>
-</head>  
-<?php
-
+<?php 
 $request=Request();
 if(!isset($request[2]) or !is_numeric($request[2])){
     exit();
@@ -20,13 +15,21 @@ if(DataBaseClass::rowsCount()==0){
 }
     
 $data=DataBaseClass::getRow();
+
+?>
+<head>
+    <link rel="icon" href="<?= PageLocal()?><?= ImageEventFile($data['Discipline_CodeScript'])?>" >
+    <title><?= $data['Discipline']?><?= $data['vRound']?></title>
+    <link rel="stylesheet" href="../../style.css" type="text/css"/>
+</head>  
+<?php
+
 $Competition=$data['Competition'];
 $Discipline=$data['Discipline'];
 
 RequestClass::CheckAccessExit(__FILE__,'Competition.Event.Settings',$data['Competition_ID']); ?>
-
-
-    <h3>Distribution of competitors by groups</h3>
+    <h1><?= $data['Competition'] ?> ▪ <?= $data['Discipline']?><?= $data['vRound']?></h1>
+    <h2>Distribution of competitors by groups</h2>
 
     <?php 
     
@@ -34,26 +37,10 @@ RequestClass::CheckAccessExit(__FILE__,'Competition.Event.Settings',$data['Compe
     
     $commands=DataBaseClass::QueryGenerate();?>
     
-    <table>    
-        <tr class="middle">
-            <td>
-                <?= ImageCompetition($data['Competition_WCA'],40) ?>   
-            </td>
-            <td>
-                <?= $Competition ?>
-            </td>
-            <td>
-                <?= ImageEvent($data['Discipline_CodeScript'],40) ?>   
-            </td>
-            <td>
-                <?= $Discipline ?><?= $data['vRound'] ?>
-            </td>
-        </tr>
-    </table>
         <form method="POST" action="<?= PageAction('CompetitionEvent.Groups.Edit')?>">
         <input name="ID" type="hidden" value="<?= $Event ?>" />    
-        <table class="delegate row">
-            <tr>
+        <table>
+            <tr class="tr_title">
                 <td/>
                 <?php 
                 $Group=array(-1=>0);
@@ -79,16 +66,16 @@ RequestClass::CheckAccessExit(__FILE__,'Competition.Event.Settings',$data['Compe
                         <?php } ?>
                     </td>
                     <?php for($i=0;$i<$data['EventGroups'];$i++){  ?>
-                        <td <?= ($command['Command_Group']==$i)?"style='background:lightblue'":"" ?> >
+                        <td <?= ($command['Command_Group']==$i)?"style='background:var(--light_green)'":"" ?> >
                             <input type="radio" <?= ($command['Command_Group']==$i)?"checked":"" ?> name="Command_ID[<?= $command['Command_ID'] ?>]" value="<?= $i ?>">
                         </td>
                     <?php } ?>
-                        <td <?= ($command['Command_Group']==-1)?"style='background:gray'":"" ?> >
+                        <td class="border-left-solid" <?= ($command['Command_Group']==-1)?"style='background:var(--light_red)'":"" ?> >
                             <input type="radio" <?= ($command['Command_Group']==-1)?"checked":"" ?> name="Command_ID[<?= $command['Command_ID'] ?>]" value="-1">
                         </td>            
                 </tr>
                 <?php } ?>
-            <tr>
+            <tr class="tr_title">
                 <td/>
                 <?php 
                 for($i=0;$i<$data['EventGroups'];$i++){ ?>
@@ -98,11 +85,11 @@ RequestClass::CheckAccessExit(__FILE__,'Competition.Event.Settings',$data['Compe
             </tr>
 
         </table>
-        <center><input style="background-color:lightblue" type="submit" value="Save group distribution"></center>
+        <input type="submit" value="Save group distribution">
     </form>
     <form method="POST" action="<?= PageAction('CompetitionEvent.Groups.Delete')?>">
         <input name="ID" type="hidden" value="<?= $Event ?>" />   
-        <center><input style="background-color:lightpink" type="submit" value="Reset group distribution"></center>
+        <input class="delete" type="submit" value="Reset group distribution">
     </form>
 
 <?php exit();

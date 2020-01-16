@@ -12,34 +12,34 @@
         $country_filter='0'; 
     } 
     
-    DataBaseClass::Query("Select C.Country, count(distinct C.ID) count from Competitor C "
+    DataBaseClass::Query("Select C.Country, Country.Name CountryName,  count(distinct C.ID) count from Competitor C "
             . " join CommandCompetitor CC on CC.Competitor=C.ID "
             . " join Command Com on CC.Command=Com.ID "
+            . " left outer join Country on Country.ISO2=C.Country "
             . " join Event E on E.ID=Com.Event "
             . " join Competition Cm on Cm.ID=E.Competition and Cm.WCA not like 't.%'"
             . " where Com.Decline!=1 and E.Round = (select max(E2.Round) from Event E2 where E2.Competition=E.Competition) "
             . " and (C.WCAID<>'' or WID is not null)"
-            . "group by C.Country order by 2 desc ");
+            . "group by C.Country,Country.Name order by 2 desc ");
     
     $competitors_countries=DataBaseClass::getRows();
     $competitors_countries_all=0;
     foreach($competitors_countries as $competitors_country){
         $competitors_countries_all+=$competitors_country['count'];
     }      
-    DataBaseClass::FromTable("Competitor");
-    DataBaseClass::Join_current("CommandCompetitor");
-    DataBaseClass::Join_current("Command");
-    DataBaseClass::Join_current("Event");
-    DataBaseClass::Join_current("Competition");
-    DataBaseClass::Where_current("WCA not like 't.%'");
-    DataBaseClass::Where("Command","Decline!=1");
-    if($country_filter){
-        DataBaseClass::Where("Competitor","Country='".strtoupper($country_filter)."'");
-    }
-    DataBaseClass::Select("Distinct Cm.*");
-    DataBaseClass::OrderClear("Competitor","Name");
     
-    $competitors=DataBaseClass::QueryGenerate(true);
+    
+    DataBaseClass::Query("Select distinct C.*, Country.Name CountryName from Competitor C "
+         . " join CommandCompetitor CC on CC.Competitor=C.ID "
+         . " join Command Com on CC.Command=Com.ID "
+         . " left outer join Country on Country.ISO2=C.Country "
+         . " join Event E on E.ID=Com.Event "
+         . " join Competition Cm on Cm.ID=E.Competition and Cm.WCA not like 't.%'"
+         . " where (C.WCAID<>'' or WID is not null)"
+         .($country_filter? " and C.Country='{strtoupper($country_filter)}'":"")  
+         . "Order by C.Name "); 
+    
+    $competitors=DataBaseClass::getRows();
     
     $sort='';
     $sort_name='Name';
@@ -54,7 +54,7 @@
     }
     
     DataBaseClass::Query("
-        Select C.WCAID WCAID, C.Name, C.Country,C.ID,
+        Select C.WCAID WCAID, C.Name, C.Country, Country.Name CountryName, C.ID,
         sum(case when Com.Place=1 then 1 else 0 end) Gold,
         sum(case when Com.Place=2 then 1 else 0 end) Silver,
         sum(case when Com.Place=3 then 1 else 0 end) Bronze,
@@ -62,6 +62,7 @@
         count(distinct Cm.ID) Competitions,
         count(distinct D.ID) Events
         from Competitor C join CommandCompetitor CC on CC.Competitor=C.ID 
+        join Country on Country.ISO2=C.Country
         join Command Com on Com.ID=CC.Command and Com.Decline!=1
         join Event E on E.ID=Com.Event
         join DisciplineFormat DF on E.DisciplineFormat=DF.ID
@@ -70,7 +71,7 @@
         where ('$country_filter'='0' or '".strtoupper($country_filter)."'=C.Country)
         and E.Round = (select max(E2.Round) from Event E2 where E2.Competition=E.Competition)
         and (C.WCAID<>'' or WID is not null)
-        group by C.WCAID, C.Name, C.Country,C.ID 
+        group by C.WCAID, C.Name, C.Country,C.ID , Country.Name
         order by 
         $sort
         C.Name,
@@ -95,7 +96,7 @@
             <option disabled>------</option>
             <?php foreach($competitors_countries as $competitors_country){ ?>
                     <option <?= strtoupper($country_filter)==$competitors_country['Country']?'selected':''?> value="Competitors/<?= $competitors_country['Country']?>">        
-                        <?= CountryName($competitors_country['Country']) ?> [<?= $competitors_country['Country']?>]: <?= $competitors_country['count'] ?>
+                        <?= $competitors_country['CountryName'] ?> [<?= $competitors_country['Country']?>]: <?= $competitors_country['count'] ?>
                     </option> 
             <?php } ?>      
         </select>
@@ -109,7 +110,7 @@
             <option value=""></option>
             <?php 
             foreach($competitors as $competitor){ ?>
-                <option value="<?= $competitor['ID'] ?>"> <?= $competitor['WCAID'] ?> &#9642; <?= $competitor['Name'] ?> &#9642; <?= CountryName($competitor['Country']) ?>  </option>    
+                <option value="<?= $competitor['ID'] ?>"> <?= $competitor['WCAID'] ?> &#9642; <?= $competitor['Name'] ?> &#9642; <?= $competitor['CountryName'] ?>  </option>    
             <?php } ?>
     </select>
 
@@ -161,7 +162,7 @@
                 <?php if($country_filter=='0'){ ?>
                     <td>
                         <?= ImageCountry($competitors_medal['Country'], 15)?>
-                        <?= CountryName($competitors_medal['Country']) ?>
+                        <?= $competitors_medal['CountryName'] ?>
                     </td>
                 <?php } ?>
                 <td class="attempt border-left-solid"><?= $competitors_medal['Competitions']; ?></td>
@@ -177,5 +178,6 @@
 <script>
 $("#SelectCompetitors").show();
 </script>
+<script src="<?= PageLocal()?>jQuery/chosen_v1/docsupport/init.js" type="text/javascript" charset="utf-8"></script>
 
 <?= mlb('*.Reload')?>

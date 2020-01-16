@@ -1,5 +1,5 @@
-<div class="block_comment">
-    <b><img src='<?= PageIndex()?>Image/Icons/scramble.png' width='30px'> History generations/publications srambles</b>
+<?php IncludePage('Logs_navigator')?>
+<h1><img src='<?= PageIndex()?>Image/Icons/scramble.png' width='30px'> Logs Scrambles</h1>
     <table>
     <?php DataBaseClass::Query(""
             . "Select Cn.WCA, SP.Action, SP.Timestamp, D.Name, SP.Secret,E.ScrambleSalt,E.ScramblePublic, Discipline.Code,Discipline.CodeScript, Discipline.Name, E.vRound,D.Name Delegate from ScramblePdf SP "
@@ -7,7 +7,9 @@
             . " join Competition Cn on Cn.ID=E.Competition"
             . " join DisciplineFormat DF on DF.ID=E.DisciplineFormat "
             . " join Discipline on Discipline.ID=DF.Discipline "
-            . " join Delegate D on D.ID=SP.Delegate  order by SP.Timestamp desc");
+            . " join Delegate D on D.ID=SP.Delegate "
+            . " where date(SP.Timestamp)>=DATE_ADD(current_date(),INTERVAL -14 Day)  "
+            . " order by SP.Timestamp desc");
     foreach(DataBaseClass::getRows() as $row){ ?>
         <tr>
             <td>
@@ -46,5 +48,3 @@
     </tr>
     <?php } ?>
     </table>
-    
-</div>

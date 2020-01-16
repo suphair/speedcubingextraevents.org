@@ -23,17 +23,18 @@ if(isset($row['ID'])){ ?>
 <?php
 DataBaseClass::FromTable('Competitor',"WCAID='$WCAID'");
 $row=DataBaseClass::QueryGenerate(false);
-if(isset($row['Competitor_ID'])){ ?>
-    <?= $row['Competitor_Name'] ?> <?= ImageCountry($row['Competitor_Country'], 20); ?> 
-    <input class="form_row" type="submit" value="Add registration" style="background-color:lightgreen;"
-     onclick="return confirm('Attention: Add competitor  <?= $WCAID ?>?')">
-    <?php exit();
+$needAdd=true;
+if(isset($row['Competitor_ID'])){
+    $needAdd=false;
 }
 
 DataBaseClassWCA::Query(" Select P.*,C.iso2 from Persons P join Countries C on C.id=P.countryId where P.id='$WCAID'");
 $row=DataBaseClassWCA::getRow();
 if(isset($row['id'])){ ?>
-    <?php DataBaseClass::Query("insert into Competitor (Name,WCAID,Country) values ('".Short_Name($row['name'])."','$WCAID','{$row['iso2']}')")?>
+    <?php 
+    if($needAdd){
+        DataBaseClass::Query("insert into Competitor (Name,WCAID,Country) values ('".Short_Name($row['name'])."','$WCAID','{$row['iso2']}')");
+    } ?>
     <?= $row['name'] ?> <?= ImageCountry($row['iso2'], 20); ?> 
     <input class="form_row" type="submit" value="Add registration" style="background-color:lightgreen;"
     onclick="return confirm('Attention: Add competitor  <?= $WCAID ?>?')">

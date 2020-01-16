@@ -1,6 +1,6 @@
 <?php
 $Competition=ObjectClass::getObject('PageCompetition'); 
-
+$Competitor= GetCompetitorData();
 
 
 DataBaseClass::FromTable('Competition',"ID='".$Competition['Competition_ID']."'");
@@ -49,7 +49,7 @@ $delegatesWCA=DataBaseClass::getRows();
 
 DataBaseClass::Query("Select CR.CreateTimestamp CompetitionReport_CreateTimestamp, " 
         . " C.Country Competition_Country,  CR.Report CompetitionReport_Report, C.WCA Competition_WCA, C.ID Competition_ID, C.StartDate Competition_StartDate , C.EndDate Competition_EndDate, C.Name Competition_Name, "
-        . " Cm.Name Competitor_Name, Cm.ID Competitor_ID, Cm.Country Competitor_Country "
+        . " Cm.Name Competitor_Name,Cm.WID Competitor_WID, Cm.ID Competitor_ID, Cm.Country Competitor_Country "
         . " , CR.DelegateWCA, CR.Parsedown CompetitionReport_Parsedown"
         . " from  Competition C "
         . " join CompetitionReport CR  on C.ID=CR.Competition "
@@ -70,13 +70,36 @@ DataBaseClass::Query("Select CR.CreateTimestamp CompetitionReport_CreateTimestam
             <?= str_replace("\n","<br>",$report['CompetitionReport_Report']); ?>
         <?php }else{ ?>
             <?= Parsedown($report['CompetitionReport_Report']); ?>
-        <?php } ?>        
+        <?php }        
+        DataBaseClass::Query("Select CRC.Comment,D.Name,CRC.CommentDelegate "
+                . " from CompetitionReportComment CRC "
+                . " join Delegate D on D.ID=CRC.CommentDelegate "
+                . " where CRC.Competition=".$Competition['Competition_ID']." and CRC.Delegate=".$report['Competitor_WID']);
+            $comment=false;
+            foreach(DataBaseClass::getRows() as $row){
+                if(trim($row['Comment'])){ 
+                    if($row['CommentDelegate']== CashDelegate()['Delegate_ID']){ 
+                        $comment= trim($row['Comment']);
+                    } ?>
+        <div class="block_comment"><b><?= $row['Name'] ?></b><br><?= Parsedown($row['Comment']) ?></div>
+            <?php }
+            }
+        if(CheckAccess('Competition.Report.Comment',$Competition['Competition_ID'])){  ?> 
+            <div class="block_comment">
+                <form method="POST" action="<?= PageAction('Competition.Edit.Report.Comment')?>">
+                    Сomment by <b><?= $Competitor->name ?></b><br>
+                    <input name="Competition" type="hidden" value="<?= $report['Competition_ID'] ?>" />        
+                    <input name="Delegate" type="hidden" value="<?= $report['Competitor_WID'] ?>" />        
+                    <textarea name="Comment"><?= $comment ?></textarea>
+                    <input type="submit" value="<?= ml('*.Save',false)?>">
+                </form>
+            </div>    
+        <?php } ?>
     </div>
 <?php } ?>
 
 
 <?php $Instruction=GetBlockText("Report"); 
-$Competitor= GetCompetitorData();
 if(CheckAccess('Competition.Report.Create',$Competition['Competition_ID'])){ ?> 
     <br><b>Enter report by <?= $Competitor->name ?></b><br>
     <div class="block_comment">
@@ -88,7 +111,7 @@ if(CheckAccess('Competition.Report.Create',$Competition['Competition_ID'])){ ?>
         <textarea name="Report" style="height: 400px;width: 1000px"><?= 
             isset($Report[$Competitor->local_id])?$Report[$Competitor->local_id]:'' 
         ?></textarea><br>
-        Using <a target="_blank" href="https://parsedown.org">parsedown</a> <input name="Parsedown" type="checkbox" <?= (isset($Parsedown[$Competitor->local_id]) and $Parsedown[$Competitor->local_id])?'checked':'' ?>/>
+        Using <a target="_blank" href="https://parsedown.org">Markdown</a> <input name="Parsedown" type="checkbox" <?= (isset($Parsedown[$Competitor->local_id]) and $Parsedown[$Competitor->local_id])?'checked':'' ?>/>
         <input type="submit" name="submit" value="Save report"> 
     </form> 
 <?php } ?>

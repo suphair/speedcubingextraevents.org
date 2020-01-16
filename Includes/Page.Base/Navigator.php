@@ -1,6 +1,7 @@
 <?php $type = RequestClass::getPage();
 if(explode('.',$type)[0]=='aNews')$type='News';
 if(explode('.',$type)[0]=='Delegate' or explode('.',$type)[0]=='Delegates')$type='Delegates';
+if(explode('.',$type)[0]=='Competitor')$type='Competitors';
 if($type=='Event')$type='Events';
 ?>
 <div class="Navigator">

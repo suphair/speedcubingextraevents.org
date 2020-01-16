@@ -125,7 +125,7 @@ if( !$Competition['Competition_Unofficial']){
         <table class="competition_result">
             <tr class="tr_title"> 
                 <td><?= ml('Competition_Results.Table.Place') ?></td>
-                <td><?= $CompetitionEvent['Discipline_Competitors']>1?ml('Event.Competitors.Table.Teams'):ml('Event.Competitors.Table.Competitors') ?></td>
+                <td> <img src="<?=  PageIndex() ?>Image/Icons/persons.png" align="top" width="20px"> <?= $CompetitionEvent['Discipline_Competitors']>1?ml('Event.Competitors.Table.Teams'):ml('Event.Competitors.Table.Competitors') ?></td>
                 <?php for($i=1;$i<=$CompetitionEvent['Format_Attemption'];$i++) {?>
                 <td class="attempt attempt_header_num">
                     <?php if($image=IconAttempt($CompetitionEvent['Discipline_Code'],$i)){ ?>

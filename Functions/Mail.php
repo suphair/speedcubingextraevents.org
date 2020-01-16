@@ -1,6 +1,5 @@
 <?php
 function SendMail($to, $subject, $body){
-
    if(strpos($_SERVER['PHP_SELF'],'/'.GetIni('LOCAL','PageBase').'/')!==false){
         $section="SMTP_LOCAL";
     }else{
@@ -20,6 +19,9 @@ function SendMail($to, $subject, $body){
     VALUES ('$to', '$subject', '".DataBaseClass::Escape($body)."','$result')";
 
     DataBaseClass::Query ($sql);    
+    
+    
+    
     
     return $result;
 }

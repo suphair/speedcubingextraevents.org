@@ -98,8 +98,9 @@ foreach(DataBaseClass::getRows() as $row){
         </td>
         <td>
 <h1><?= $competitor['Competitor_Name'] ?></h1>  
+<h3>
 <?php if($competitor['Competitor_Country']){ ?>
-    <?= ImageCountry($competitor['Competitor_Country'], 50)?> <?= CountryName($competitor['Competitor_Country']) ?> (<?= $Continent ?>)
+    <?= ImageCountry($competitor['Competitor_Country'], 20)?> <?= CountryName($competitor['Competitor_Country']) ?> (<?= $Continent ?>)
 <?php } ?>  
 <?php if ($competitor['Competitor_WCAID']){ ?>    
     &#9642; <a href="https://www.worldcubeassociation.org/persons/<?= $competitor['Competitor_WCAID'] ?>"><?= $competitor['Competitor_WCAID'] ?></a>
@@ -107,10 +108,11 @@ foreach(DataBaseClass::getRows() as $row){
 <?php if($competitor['Competitor_Email'] and CheckAccess('Competitor.Email')){ ?>
     &#9642; <a href='mailto:<?= $competitor['Competitor_Email'] ?>'><?= $competitor['Competitor_Email'] ?></a>
 <?php } ?>  
+</h3>    
         </td>
     </tr>
 </table>
-<hr class='hr_round'>
+<br>
 <h2><img src='<?= PageIndex()?>Image/Icons/record.png' width='20px'> <?= ml('Competitor.Rank.Title'); ?></h2>
 <table>  
     <tr class='tr_title'>
@@ -202,7 +204,7 @@ foreach(DataBaseClass::getRows() as $row){
     </tr>
 <?php } ?>
 </table>
-<hr class='hr_round'>
+<br>
 
 <?php 
 
@@ -225,7 +227,7 @@ DataBaseClass::SelectPre('distinct D.ID Discipline_ID, '
 $disciplines=DataBaseClass::QueryGenerate(); ?>
 <h2><?= ml('Competitor.Results.Title'); ?></h2>
 <table class="discipline_result">
-<?php foreach($disciplines as $discipline){
+<?php foreach($disciplines as $d=>$discipline){
     
     DataBaseClass::FromTable('Discipline',"ID='".$discipline['Discipline_ID']."'");
     DataBaseClass::Join_current('DisciplineFormat');
@@ -253,11 +255,12 @@ $disciplines=DataBaseClass::QueryGenerate(); ?>
     ?>
 <tr class="no_border">
     <td colspan='<?= $attemption+3+sizeof($types)?>'>
-        <br>
+        <?php if($d){ ?><br><?php } ?>
             <h3><?= ImageEvent($discipline['Discipline_CodeScript'],25, $discipline['Discipline_Name']) ?>
-            <span class="<?= $discipline['Discipline_Status']=='Archive'?'archive':'' ?>">
-                <a href="<?= LinkDiscipline($discipline['Discipline_Code'])?>"> <?= $discipline['Discipline_Name'] ?></a>
-            </span>        
+            <a href="<?= LinkDiscipline($discipline['Discipline_Code'])?>"> <?= $discipline['Discipline_Name'] ?></a>
+            <?php if($discipline['Discipline_Status']=='Archive'){ ?>
+            <span class="error">(<?= ml('Competitor.Event.Archive')?>)</span>
+            <?php } ?>       
             </h3>    
     </td>        
 </tr>        
@@ -368,7 +371,14 @@ foreach($types as $type){
         <tr class="<?= $class ?>">
             <td>
                 <a href="<?= LinkEvent($command['Event_ID']) ?>">
-                    <nobr><span class="<?= $command['Competition_Unofficial']?'unofficial':''?>"><?= $command['Competition_Name'] ?></span>
+                    
+                    <nobr>
+                        <?= ImageCountry($command['Competition_Country'] , 20)?>
+                        
+                        <?= $command['Competition_Name'] ?>
+                        <?php if($command['Competition_Unofficial']){ ?>
+                            <span class="error">(<?= ml('Competitor.Competition.Unofficial') ?>)</span>
+                        <?php } ?>
                         <?php if($command['Command_Video']){ ?>    
                             <a target=_blank" href="<?= $command['Command_Video'] ?>"><img class="video" src="<?= PageIndex()?>Image/Icons/Video.png"></a>
                         <?php } ?>
@@ -400,9 +410,6 @@ foreach($types as $type){
             <td class="number">
                 <?php if($command['Command_Place']){ ?>
                     <?= $command['Command_Place'] ?>
-                <?php } ?>
-                <?php if(!$is_attempt){ ?>
-                    <?= svg_green(12,'Upcoming competition') ?>
                 <?php } ?>
             </td>
             <?php 
@@ -445,7 +452,11 @@ foreach($types as $type){
                    <?php if(isset($attempts[$type]) and !in_array($attempts[$type],array('DNF','DNS'))){ ?>
                         <nobr> 
                            <span class="<?= in_array($attempts_ID[$type],$bestID)?"PB":"" ?>">
-                               <b><?=  $attempts[$type]; ?></b> 
+                               <?php if($command['Competition_Unofficial']){ ?>
+                                    <?=  $attempts[$type]; ?>
+                               <?php }else{ ?>
+                                    <b><?=  $attempts[$type]; ?></b> 
+                                <?php } ?>
                            </span>
                             <?php if($WRecord==$attempts[$type]){ ?>
                                 <span class="message">WR</span>
@@ -462,7 +473,7 @@ foreach($types as $type){
                 <td/>
             <?php } ?>
             <?php if(!$is_attempt){ ?>
-                <td  class="future" colspan="<?= $attemption ?>">
+                <td  class="message" colspan="<?= $attemption ?>">
                     <nobr><?= date_range($command['Competition_StartDate'], $command['Competition_EndDate']) ?></nobr>
                 </td>
             <?php }else{ ?>
@@ -483,6 +494,7 @@ foreach($types as $type){
     <br>
     <div class='form2'>    
         <form method='POST' action='<?= PageAction('Competitor.Reload')?>'>
+            <img style="vertical-align: middle" width="20px" src="<?= PageIndex()?>Image/Icons/settings.png"> 
             id <?=$competitor['Competitor_ID'] ?> &#9642;
             user_id <a target='_blank' href="https://www.worldcubeassociation.org/api/v0/users/<?= $competitor['Competitor_WID'] ?>"><?= $competitor['Competitor_WID'] ?></a> &#9642;
             wca_id <a target='_blank' href="https://www.worldcubeassociation.org/api/v0/persons/<?= $competitor['Competitor_WCAID'] ?>"><?= $competitor['Competitor_WCAID'] ?></a>

@@ -1,4 +1,5 @@
 <?php
+
 CheckPostIsset('ID');
 CheckPostNotEmpty('ID');
 CheckPostIsNumeric('ID');

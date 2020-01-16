@@ -15,7 +15,7 @@ DataBaseClass::Query("Select DATEDIFF(max(C.EndDate),now()) Latestactivity,"
         . " left outer join Competitor Cm on Cm.ID=CC.Competitor "
         . (!CheckAccess('Delegates.Arhive')?" where D.Status!='Archive' ":"")
         . " group by D.ID, DelC.Country,DelC.Avatar "
-        . " order by case when D.Status='Archive' then 1 else 0 end,DelC.Country, "
+        . " order by case when D.Status='Archive' then 1 else 0 end, DelC.Country, "
         . " case D.Status when 'Senior' then 1  when 'Middle' then 2  when 'Junior' then 3 when 'Trainee' then 4 end  , D.Name");
 $Delegate_rows=DataBaseClass::GetRows();
 ?>
@@ -28,38 +28,62 @@ $Delegate_rows=DataBaseClass::GetRows();
     </h3><br>
     <table class="Disciplines">
         <tr class="tr_title">
-            <td></td>
-            <td><?= ml('Judgs.Table.Name') ?></td>
-            <td><?= ml('Judgs.Table.Country') ?></td><td/>
+            <td/>
+            <td/>
+            <td><?=ml('Judgs.Table.Delegate')?></td>
             <td align="center"><img height="15px"src="Image/Icons/competitions.png"></td>
+            <td align="center"><img height="15px"src="Image/Icons/persons.png"></td>
             <?php if(CheckAccess('Delegates.Statistics')){ ?>
                 <td><?= ml('Judgs.Table.Days') ?></td>
                 <td><?= ml('Judgs.Table.CompetitionsInMonth') ?></td>
                 <td><?= ml('Judgs.Table.LatestActivity') ?></td>
             <?php } ?>
-           <td align="center"><img height="15px"src="Image/Icons/persons.png"></td>
         </tr>
-        <?php foreach($Delegate_rows as $delegate){ ?>
+        <?php 
+            $archive=false;
+            $country=false;
+          foreach($Delegate_rows as $delegate){
+            if(!$archive and $delegate['Status']=='Archive'){ ?>
+                <tr><td>&nbsp;</td><td/><td/><td/><td/></tr>
+            <?php } ?>
+            <?php if($delegate['Status']=='Archive'){
+                $archive=true;
+            } ?>  
+            <?php if(!$archive and $delegate['Country']!=$country){ 
+                $country=$delegate['Country']; ?>
+                <tr>
+                    <td>
+                        <?= ImageCountry($delegate['Country'], 20)?>
+                    </td>
+                    <td>
+                        <b><?= CountryName($delegate['Country'])?></b>
+                    </td>
+                    <td/>
+                    <td/>
+                    <td/>
+                </tr>
+            <?php } ?>
             <tr>
-                <td align="right">
-                    <?php if($delegate['Avatar']){ ?>
-                        <img class="avatar" src="<?= $delegate['Avatar'] ?>">
+                <td>
+                    <?php if($archive){ ?>
+                        <?= ImageCountry($delegate['Country'], 20)?>
                     <?php } ?>
                 </td>
-                <td>
-                <a href="<?= LinkDelegate($delegate['WCA_ID'])?>"><?= Short_Name($delegate['Name']) ?></a>
+                <td> 
+                    <a href="<?= LinkDelegate($delegate['WCA_ID'])?>"><?= Short_Name($delegate['Name']) ?></a>
                 </td>
-                <td><?= ImageCountry($delegate['Country'], 30)?> <?= CountryName($delegate['Country'])?></td>
                 <td>
                     <span class='<?= $delegate['Status']=='Archive'?'archive':'' ?>
                           <?= $delegate['Status']=='Trainee'?'':'' ?>
                           <?= $delegate['Status']=='Senior'?'message':'' ?>'>
-                    <?= ml('Delegate.'.$delegate['Status']) ?></span>
+                    <?= ml('Judgs.Table.Delegate.'.$delegate['Status']) ?></span>
                 </td>
                 <td class="attempt">
                     <?= $delegate['Count_Competitions'] ?>
                 </td>
-
+                <td class="attempt">
+                    <?= $delegate['Count_Competitors'] ?>
+                </td>
                 <?php if(CheckAccess('Delegates.Statistics')){ ?>
                     <td align="right" class="border-left-dotted">    
                         <?= $delegate['Period'] ?>
@@ -85,10 +109,6 @@ $Delegate_rows=DataBaseClass::GetRows();
                         </span>
                     </td>
                 <?php } ?>
-
-                <td class="attempt">
-                    <?= $delegate['Count_Competitors'] ?>
-                </td>
             </tr>
         <?php } ?>
     </table>

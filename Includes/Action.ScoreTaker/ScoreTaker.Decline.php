@@ -11,15 +11,14 @@ DataBaseClass::Query("Delete from `Attempt` where Command='$ID' ");
 
 DataBaseClass::FromTable("Command","ID=$ID");
 
-if(DataBaseClass::QueryGenerate(false)['Command_Onsite']){
+DataBaseClass::FromTable("Command","ID=".$ID);
+DataBaseClass::Join_current("Event");
+DataBaseClass::Join_current("Competition");
+DataBaseClass::Join("Event","DisciplineFormat");
+DataBaseClass::Join_current("Discipline");
+$data=DataBaseClass::QueryGenerate(false);
     
-    DataBaseClass::FromTable("Command","ID=".$ID);
-    DataBaseClass::Join_current("Event");
-    DataBaseClass::Join_current("Competition");
-    DataBaseClass::Join("Event","DisciplineFormat");
-    DataBaseClass::Join_current("Discipline");
-    $data=DataBaseClass::QueryGenerate(false);
-    
+if(DataBaseClass::QueryGenerate(false)['Command_Onsite']){    
     $teamNames=[];
     DataBaseClass::FromTable('Command',"ID='".$ID."'");
     DataBaseClass::Join_current('CommandCompetitor');
@@ -39,16 +38,7 @@ if(DataBaseClass::QueryGenerate(false)['Command_Onsite']){
     DataBaseClass::Query("Update `Command` set Decline=1,Place=0,Warnings=null where ID='$ID' ");
 }
     
-DataBaseClass::Query("Select E.ID "
-        . " from `Discipline` D "
-        . " join `DisciplineFormat` DF on DF.Discipline=D.ID "
-        . " join `Event` E on E.DisciplineFormat=DF.ID "
-        . " join `Command` Com on Com.Event=E.ID "
-        . "where Com.ID='$ID'");
-
-$event=DataBaseClass::getRow()['ID'];
-
-Update_Place($event);
+Update_Place($data['Event_ID']);
 
 SetMessage(""); 
 header('Location: '.$_SERVER['HTTP_REFERER']);

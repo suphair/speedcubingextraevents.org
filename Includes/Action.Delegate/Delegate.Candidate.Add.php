@@ -43,7 +43,7 @@ if($competitor->delegate_status){
 }
 
 if($new){
-    SendMail(getini('Seniors','email'), 'New application to become a SEE Delegate',
+    SendMail(getini('Seniors','email'), 'SEE: New application to become a SEE Delegate',
             '<pre>'.($competitor->url).'<br>'.$competitor->name.'<hr>'.print_r($Fields,true).'</pre><br>https://speedcubingextraevents.org/Delegate/Candidates');
 }
 header('Location: '.$_SERVER['HTTP_REFERER']);

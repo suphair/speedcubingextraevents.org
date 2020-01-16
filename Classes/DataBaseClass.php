@@ -197,14 +197,17 @@ class DataBaseClass{
         if (!self::$query=mysqli_query(self::$connection, $sql)) {
             
             $time = date("Y-m-d H:i:s");
-            echo '"';
-            echo "<h1><font color='red'>Unexpected error. We'll fix it soon.</font></h1>$time";
-            
             $handle = fopen("SQLError.txt", "a");
             fwrite($handle, "\r\n$time\r\n$sql\r\n".mysqli_error(self::$connection));
             fwrite($handle,print_r(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS),true));
             fclose($handle);
-            #echo "Error: " . $sql . "<br>" . mysqli_error(self::$connection);
+            
+            if(strpos($_SERVER['PHP_SELF'],'/'.GetIni('LOCAL','PageBase').'/')!==false){
+                echo "<p>[SQLError] $sql :".mysqli_error(self::$connection)."<br>".print_r(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS),true)."</p>";
+            }else{
+                echo '"';
+                echo "<h1><font color='red'>Unexpected error. We'll fix it soon.</font></h1>$time";
+            }
             
             exit();
             

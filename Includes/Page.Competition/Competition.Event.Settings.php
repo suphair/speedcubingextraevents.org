@@ -322,7 +322,13 @@ if($deleter and sizeof($deleter_names)>0){?>
     </div>
 </div>
 
-
+<script>
+  $(".chosen-select-1").chosen({max_selected_options: 1});
+  $(".chosen-select-2").chosen({max_selected_options: 2});
+  $(".chosen-select-3").chosen({max_selected_options: 3});
+  $(".chosen-select-4").chosen({max_selected_options: 4});
+</script>
+<script src="<?= PageLocal()?>jQuery/chosen_v1/docsupport/init.js" type="text/javascript" charset="utf-8"></script>
 
 <?= mlb('*.Set'); ?>
 <?= mlb('*.Link'); ?>

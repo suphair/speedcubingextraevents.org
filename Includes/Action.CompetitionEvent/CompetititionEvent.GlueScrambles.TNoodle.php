@@ -30,19 +30,18 @@ if(!$data['Discipline_GlueScrambles'] or !$data['Discipline_TNoodle']){
     exit();
 } ?>
 <head>
-    <title>Set scrambles</title>
-    <link rel="stylesheet" href="../../getStyle.css" type="text/css"/>
+    <link rel="icon" href="<?= PageLocal()?><?= ImageEventFile($data['Discipline_CodeScript'])?>" >
+    <title><?= $data['Discipline_Name']?><?= $data['Event_vRound']?></title>
+    <link rel="stylesheet" href="../../style.css" type="text/css"/>
 </head>
-<h1><img width="30px" src="<?= PageIndex()?>Logo/Logo_Black.jpg"> Set scrambles</h1>
-<h2><?= $data['Competition_Name']?> ▪ <?= date_range($data['Competition_StartDate'],$data['Competition_EndDate']) ?></h2>
-<h2><img width="30px" align="top" src="<?= PageIndex()?><?= ImageEventFile($data['Discipline_CodeScript']) ?>"> <?= $data['Discipline_Name']?><?= $data['Event_vRound']?></h2>
+<h1><?= $data['Competition_Name'] ?> ▪ <?= $data['Discipline_Name']?><?= $data['Event_vRound']?></h1>
     <?php if($data['Format_Attemption']==5){
         $ex=2;
     }else{
         $ex=1;
     } ?>
-    <h3>Scrambles {<?= $data['Discipline_TNoodle'] ?>} for <?= $data['Event_Groups'] ?> groups (<?= $data['Format_Attemption']."+".$ex?>)</h3>
-    <center>
+    <h2>Set scrambles <?= $data['Discipline_TNoodle'] ?> for <?= $data['Event_Groups'] ?> groups ( <?= $data['Format_Attemption']." attempts + ".$ex?> extra )</h2>
+    <br>
     <?php
     $event_request="('eventID'-'".$data['Discipline_TNoodle']."'_'round'-'1'_'scrambleSetCount'-".$data['Event_Groups']."_'scrambleCount'-".$data['Format_Attemption']."_'extraScrambleCount'-".$ex."_'copies'-1)";
     $link="http://localhost:2014/scramble-legacy/#competitionName=".str_replace('.','_',$data['Competition_WCA'])."_".$data['Discipline_Code']."_1&rounds=i".
@@ -51,7 +50,7 @@ if(!$data['Discipline_GlueScrambles'] or !$data['Discipline_TNoodle']){
         
         
     1. Prepare TNoodle WCA Scrambler according to the <a target="_blank" href="https://www.worldcubeassociation.org/regulations/scrambles/">instructions</a><br><br>    
-    2. Click the button "Sramble!" in the <a target="_blank" href="<?= $link ?>">TNoodle WCA Scrambler</a> (open at this link)<br><br>
+    2. Click the button "<b>Sramble!</b>" in the <a target="_blank" href="<?= $link ?>">TNoodle WCA Scrambler</a> (open at this link)<br><br>
     3. Click the "PDF" button and select the file with the same name in the download folder<br>
     [ <?= $FileName ?> / <b>Printing</b> / <?= $FileName ?> - All Scrambles.<b>pdf</b> ]<br><br>
     
@@ -66,6 +65,5 @@ if(!$data['Discipline_GlueScrambles'] or !$data['Discipline_TNoodle']){
         </div>
     </form>
 
-    </center>
     <?php
 exit();
