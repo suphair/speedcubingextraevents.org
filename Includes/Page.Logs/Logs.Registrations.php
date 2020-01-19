@@ -1,5 +1,5 @@
 <?php IncludePage('Logs_navigator')?>
-<h1><img src='<?= PageIndex()?>Image/Icons/persons.png' width='30px'> Logs Registrations</h1>
+<h1><img src='<?= PageIndex()?>Image/Icons/persons.png' width='30px'> Logs registrations</h1>
             <?php DataBaseClass::Query("Select "
                     . " Cn.WCA, D.Code, D.CodeScript, LR.Timestamp,LR.Action, LR.Doing,LR.Details "
                     . " from LogsRegistration LR "

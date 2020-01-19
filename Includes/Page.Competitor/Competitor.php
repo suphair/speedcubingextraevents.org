@@ -451,7 +451,7 @@ foreach($types as $type){
                 <td class="attempt">
                    <?php if(isset($attempts[$type]) and !in_array($attempts[$type],array('DNF','DNS'))){ ?>
                         <nobr> 
-                           <span class="<?= in_array($attempts_ID[$type],$bestID)?"PB":"" ?>">
+                           <span class="<?= (isset($attempts_ID[$type]) and in_array($attempts_ID[$type],$bestID))?"PB":"" ?>">
                                <?php if($command['Competition_Unofficial']){ ?>
                                     <?=  $attempts[$type]; ?>
                                <?php }else{ ?>

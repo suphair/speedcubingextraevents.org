@@ -1,5 +1,5 @@
 <?php IncludePage('Logs_navigator')?>
-<h1><img src='<?= PageIndex()?>Image/Icons/scramble.png' width='30px'> Logs Scrambles</h1>
+<h1><img src='<?= PageIndex()?>Image/Icons/scramble.png' width='30px'> Logs scrambles</h1>
     <table>
     <?php DataBaseClass::Query(""
             . "Select Cn.WCA, SP.Action, SP.Timestamp, D.Name, SP.Secret,E.ScrambleSalt,E.ScramblePublic, Discipline.Code,Discipline.CodeScript, Discipline.Name, E.vRound,D.Name Delegate from ScramblePdf SP "

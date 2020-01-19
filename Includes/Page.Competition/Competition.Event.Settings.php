@@ -10,11 +10,7 @@ $CompetitionDelegates=ObjectClass::getObject('PageCompetitionDelegates');
     <?php foreach($CompetitionEvents as $competition_event){?>
         <nobr>
             <?= ImageEvent($competition_event['Discipline_CodeScript'],30) ?>
-            <?php if($competition_event['Event_ID']==$CompetitionEvent['Event_ID']){ ?>
-                <span class="list_select"><?= $competition_event['Discipline_Name'] ?><?= $competition_event['Event_vRound'] ?></span>
-            <?php }else{ ?>
-                <a class="<?= $competition_event['Event_ID']==$Event?"list_select":""?>"  href="<?= LinkEvent($competition_event['Event_ID']) ?>/Settings"><?= $competition_event['Discipline_Name'] ?><?= $competition_event['Event_vRound'] ?></a>
-            <?php } ?>
+                <a class="<?= $competition_event['Event_ID']==$CompetitionEvent['Event_ID']?"list_select":""?>"  href="<?= LinkEvent($competition_event['Event_ID']) ?>/Settings"><?= $competition_event['Discipline_Name'] ?><?= $competition_event['Event_vRound'] ?></a>
         </nobr>
     <?php } ?>
 </div>
@@ -77,17 +73,19 @@ $CompetitionDelegates=ObjectClass::getObject('PageCompetitionDelegates');
 <a name="CompetitorEventAdd"></a>
 <div class="form">
     <form method="POST" action="<?= PageAction('CompetitionEvent.Registration.Add')?>">
-        <?= ml('CompetitionEvent.Registration.Add',$Competition['Competition_Cubingchina']?'CubingChina':'WCA') ?><br>
+    <?php   $CompetitorsEventAdd=GetMessage("CompetitorsEventAdd");
+            if(!$CompetitorsEventAdd)$CompetitorsEventAdd=array();
+            DataBaseClass::FromTable("Registration","Competition=".$CompetitionEvent['Competition_ID']);
+            DataBaseClass::Join_current("Competitor");
+            DataBaseClass::OrderClear("Competitor", "Name");
+            $registrations=DataBaseClass::QueryGenerate(); ?>
+        
+        
+        <?= ml('CompetitionEvent.Registration.Add',$Competition['Competition_Cubingchina']?'CubingChina':'WCA') ?> <br>
         <input name="ID" type="hidden" value="<?= $CompetitionEvent['Event_ID'] ?>" />
         <select style="width: 600px" Name="Competitors[]" data-placeholder="Choose <?= html_spellcount($CompetitionEvent['Discipline_Competitors'], 'competitor', 'competitors', 'competitors')?>" class="chosen-select chosen-select-<?= $CompetitionEvent['Discipline_Competitors'] ?>" multiple>
             <option value=""></option>
-            <?php 
-                $CompetitorsEventAdd=GetMessage("CompetitorsEventAdd");
-                if(!$CompetitorsEventAdd)$CompetitorsEventAdd=array();
-                    DataBaseClass::FromTable("Registration","Competition=".$CompetitionEvent['Competition_ID']);
-                    DataBaseClass::Join_current("Competitor");
-                    DataBaseClass::OrderClear("Competitor", "Name");
-            foreach(DataBaseClass::QueryGenerate() as $competitor){ ?>
+            <?php foreach($registrations as $competitor){ ?>
                 <option <?= in_array($competitor['Competitor_ID'],$CompetitorsEventAdd)?'selected':'' ?> value="<?= $competitor['Competitor_ID'] ?>"><?= $competitor['Competitor_WCAID'] ?> <?= $competitor['Competitor_Name'] ?></option>    
             <?php } ?>
         </select>
@@ -97,6 +95,12 @@ $CompetitionDelegates=ObjectClass::getObject('PageCompetitionDelegates');
             <span class="error"><?= GetMessage("CompetitorEventAddError") ?></font> 
         </p>
     </form>
+    <form method='POST' action='<?= PageAction('CompetitionEvent.Competitors.Load')?>'>
+        <input hidden name='ID' value='<?= $Competition['Competition_ID'] ?>'>
+        <input type='submit' value='<?= ml('Registrations.Reload',false) ?>'><?= mlb('*.Reload')?>
+        <?= $Competition['Competition_LoadDateTime'] ?>
+    </form>
+    <?= mlb('Registrations.Reload') ?>
 </div>
 <?php
 DataBaseClass::Query("select GROUP_CONCAT(C.Name order by C.Name SEPARATOR ', ') vName, Decline, count(A.ID) Attempt,"

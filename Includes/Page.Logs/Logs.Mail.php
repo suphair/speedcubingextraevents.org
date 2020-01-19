@@ -1,5 +1,5 @@
 <?php IncludePage('Logs_navigator')?>
-<h1>Logs Mail</h1>
+<h1>Logs mail</h1>
 <table style="white-space:nowrap" >
 <thead>
 <tr class="tr_title">

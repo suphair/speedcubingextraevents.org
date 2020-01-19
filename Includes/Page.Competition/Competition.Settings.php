@@ -27,12 +27,10 @@ foreach(DataBaseClass::getRows() as $event){
 <?php } ?>
 <form method='POST' action='<?= PageAction('Competition.Competitors.Load')?>'>
      <?= ml('Competition.Competitors.Load',$Competition['Competition_Cubingchina']?'Cubingchina':'WCA' ) ?>
-    <?php if(CheckAccess('Competition.Settings.Ext',$Competition['Competition_ID'])){ ?>
         <input hidden name='ID' value='<?= $Competition['Competition_ID'] ?>'>
-        <span class="badge"><input class="form_row" type='submit' value='<?= ml('*.Reload',false) ?>'><?= mlb('*.Reload')?> Ext</span>   
-    <?php } ?>
+        <input class="form_row" type='submit' value='<?= ml('*.Reload',false) ?>'><?= mlb('*.Reload')?>
     <?= $Competition['Competition_LoadDateTime'] ?>
- </form>       
+</form>       
 <a target="_blank" href="<?= PageAction('Competition.Competitors.Print')?>/<?= $Competition['Competition_ID'] ?>"><?= ml('Competition.Settings.Competitors.Print') ?></a>
 
 <?php   

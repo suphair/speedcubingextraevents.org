@@ -5,7 +5,7 @@ CheckPostNotEmpty('ID');
 CheckPostIsNumeric('ID');
 $ID=$_POST['ID'];
 
-RequestClass::CheckAccessExit(__FILE__, 'Competition.Settings',$ID);
+RequestClass::CheckAccessExit(__FILE__, 'Competition.Event.Settings',$ID);
 
 DataBaseClass::FromTable("Competition","ID=$ID");
 $Competition= DataBaseClass::QueryGenerate(false);

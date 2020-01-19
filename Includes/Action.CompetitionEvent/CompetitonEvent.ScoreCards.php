@@ -232,5 +232,5 @@ foreach($command_group as $group=>$commands){
 
     $pdf->Output($data['Competition_WCA'].'_ScoreCards_'.$data['Discipline_Code'].".pdf",'I');              
     $pdf->Close();
-    
+    exit();
 

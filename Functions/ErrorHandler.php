@@ -11,7 +11,8 @@ function myErrorHandler($errno,$errstr,$errfile,$errline){
     
     $time = date("Y-m-d H:i:s");
     $handle = fopen("PHPError.txt", "a");
-    fwrite($handle, "\r\n$time\r\n$errfile ($errline): $errstr");
+    fwrite($handle, "\r\n$time\r\n[PHPError]: $errfile ($errline): $errstr");
+    fwrite($handle, "\r\n".print_r(getRequest(),true));
     fclose($handle);
     
     if($errno==E_USER_ERROR){

@@ -363,7 +363,7 @@ foreach(DataBaseClass::QueryGenerate() as $competitor){
     onmouseover=" this.style.cursor='pointer'; this.style.color='green';"
     onmouseout="this.style.color='black';">
             <td>
-                <span id="rowCardID<?= $command['CommandID'] ?>" class="CommandID" style="<?= $command['Warnings']?"color:red;":"";  ?> <?= $command['Onsite']?'text-decoration:underline':''; ?>">
+                <span id="rowCardID<?= $command['ID'] ?>" class="CommandID" style="<?= $command['Warnings']?"color:red;":"";  ?> <?= $command['Onsite']?'text-decoration:underline':''; ?>">
                     <b><?= $command['CardID'] ?></b>
                 </span>
             </td>

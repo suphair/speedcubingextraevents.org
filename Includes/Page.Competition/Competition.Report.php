@@ -23,7 +23,7 @@ $delegatesWCA=DataBaseClass::getRows();
 
 ?>
 <?php if(sizeof($delegates)){ ?>
-    <div class="block_comment"> <b>Delegates SEE</b>
+    <div class="block_comment"> <b>Delegate<?= sizeof($delegates)>1?'s':'' ?> SEE</b>
         <?php foreach($delegates as $delegate){
             if(isset($reports[$delegate['Delegate_ID']])){ ?>
                <?= svg_green(10); ?> 
@@ -36,7 +36,7 @@ $delegatesWCA=DataBaseClass::getRows();
 <?php } ?>
 
 <?php if(sizeof($delegatesWCA)){ ?>
-    <div class="block_comment"> <b>Delegates WCA</b>
+    <div class="block_comment"> <b>Delegate<?= sizeof($delegatesWCA)>1?'s':'' ?> WCA</b>
         <?php foreach($delegatesWCA as $delegate){ ?>
                <?= svg_blue(10); ?> 
             <?= short_name($delegate['Competitor_Name']); ?>

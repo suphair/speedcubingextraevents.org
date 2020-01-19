@@ -1,5 +1,5 @@
 <?php IncludePage('Logs_navigator')?>
-<h1><img src='<?= PageIndex()?>Image/Icons/persons.png' width='30px'> Logs Authorisations</h1>
+<h1><img src='<?= PageIndex()?>Image/Icons/persons.png' width='30px'> Logs authorisations</h1>
 <table style="white-space:nowrap" >
 <thead>
 <tr class="tr_title">
