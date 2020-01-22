@@ -65,7 +65,8 @@ DataBaseClass::Query("Select CR.CreateTimestamp CompetitionReport_CreateTimestam
     $Parsedown[$report['Competitor_ID']]=$report['CompetitionReport_Parsedown'];
      ?>
     <div class="form" style="width:1000px">
-        <b>Report by <?= $report['Competitor_Name'] ?></b> (<?= $report['CompetitionReport_CreateTimestamp'] ?>)<br>
+        <b>Report by <?= $report['Competitor_Name'] ?></b> (<?= date('d-m-Y',strtotime($report['CompetitionReport_CreateTimestamp'])) ?>)
+             <br>
         <?php if(!$report['CompetitionReport_Parsedown']){?>
             <?= str_replace("\n","<br>",$report['CompetitionReport_Report']); ?>
         <?php }else{ ?>
@@ -85,6 +86,7 @@ DataBaseClass::Query("Select CR.CreateTimestamp CompetitionReport_CreateTimestam
             <?php }
             }
         if(CheckAccess('Competition.Report.Comment',$Competition['Competition_ID'])){  ?> 
+            <br>
             <div class="block_comment">
                 <form method="POST" action="<?= PageAction('Competition.Edit.Report.Comment')?>">
                     Сomment by <b><?= $Competitor->name ?></b><br>

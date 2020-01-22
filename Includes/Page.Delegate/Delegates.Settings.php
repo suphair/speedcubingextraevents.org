@@ -48,7 +48,7 @@ $Statuses['?']=-1;
 <?php
 DataBaseClass::Query("Select D.*,C.Country from Delegate D "
         . " join Competitor C on C.WID=D.WID "
-        . "where D.Status!='Archive' and D.Status!='Senior' order by D.Name");
+        . "where D.Status!='Archive' and D.Status!='Senior' order by C.Country, D.Name");
 foreach(DataBaseClass::getRows() as $delegate){ 
     
 if(isset($DelegateChange[$Delegate['Delegate_ID']][$delegate['ID']])){

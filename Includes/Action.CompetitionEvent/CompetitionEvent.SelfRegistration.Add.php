@@ -88,7 +88,7 @@ if(!$find){
             }
             
             LogsRegistration($data['Event_ID'],'C +',$competitorName .': '. implode(", ", $teamNames));
-            AddLog("CompetitionRegistration","Join team",$command.' / '.$data["Competition_WCA"].' / '.$data["Discipline_Code"]);
+            AddLog("CompetitionRegistration","Join team",$Command.' / '.$data["Competition_WCA"].' / '.$data["Discipline_Code"]);
 
         }else{
             $Command=CommandAdd(0,$event['Event_ID'],$competitorID);   

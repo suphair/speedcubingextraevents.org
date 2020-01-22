@@ -44,6 +44,7 @@
               ?>
              <p>
                 <?php 
+                $result=0;
                 if($CheckAccessVote){ ?>
                 <div style="width: 50px; display: inline-block; padding:0px; margin:0px">
                 <?php $vs=[];
@@ -72,7 +73,6 @@
                     } ?>
                     <?php } ?>
                     <?php $vs_unique=array_unique($vs);
-                    $result=0;
                     if(sizeof($vs)==sizeof($Seniors) and in_array(1,$vs_unique) and !in_array(-1,$vs_unique)){
                         $result=1;
                     }
