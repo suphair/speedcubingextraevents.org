@@ -38,37 +38,38 @@ if(isset($_GET['code'])){
         )
     );
     $context = stream_context_create($opts);
-    $result = file_get_contents("https://www.worldcubeassociation.org/oauth/token", false, $context); 
-    $access_token=json_decode($result)->access_token;
+    $result = @file_get_contents("https://www.worldcubeassociation.org/oauth/token", false, $context); 
+    if(isset(json_decode($result)->access_token)){
+        $access_token=json_decode($result)->access_token;
 
 
-    $ch = curl_init('https://www.worldcubeassociation.org/api/v0/me'); // Initialise cURL
-    
-    $authorization = "Authorization: Bearer ".$access_token; // Prepare the authorisation token
-    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', $authorization ));
-    curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+        $ch = curl_init('https://www.worldcubeassociation.org/api/v0/me'); // Initialise cURL
 
-    $result = json_decode(curl_exec($ch));
-    curl_close($ch);
-    
-    if(isset($result->me)){
-        
-        $CompetitorID=CompetitorReplace($result->me);
+        $authorization = "Authorization: Bearer ".$access_token; // Prepare the authorisation token
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', $authorization ));
+        curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
 
-        $competitor = (object) array_merge( (array) $result->me, array( 'local_id' => $CompetitorID ) );
-        $_SESSION['Competitor']=$competitor;
-        DataBaseClass::Query("Insert into `WCAauth` (WID,Object) values ('".$result->me->id."','".json_encode($result->me)."')");
-        
-        $Language=DataBaseClass::SelectTableRow("Competitor","ID=$CompetitorID")['Competitor_Language'];
-        
-        if($Language){
-            $_SESSION['language_select']=$Language;
+        $result = json_decode(curl_exec($ch));
+        curl_close($ch);
+
+        if(isset($result->me)){
+
+            $CompetitorID=CompetitorReplace($result->me);
+
+            $competitor = (object) array_merge( (array) $result->me, array( 'local_id' => $CompetitorID ) );
+            $_SESSION['Competitor']=$competitor;
+            DataBaseClass::Query("Insert into `WCAauth` (WID,Object) values ('".$result->me->id."','".json_encode($result->me)."')");
+
+            $Language=DataBaseClass::SelectTableRow("Competitor","ID=$CompetitorID")['Competitor_Language'];
+
+            if($Language){
+                $_SESSION['language_select']=$Language;
+            }
+
+            AddLog('WCA_Auth','Login',$result->me->name);
+
         }
-        
-        AddLog('WCA_Auth','Login',$result->me->name);
-
-    }
-        
+    }    
     if(isset($_SESSION['ReferAuth']) and strpos($_SESSION['ReferAuth'],'favicon.ico')===false){
         header('Location: '.$_SESSION['ReferAuth']);
     }else{
