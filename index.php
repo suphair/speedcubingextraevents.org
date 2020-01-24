@@ -28,7 +28,7 @@ if(RequestClass::getError(401)){ header('HTTP/1.1 401 Unauthorized'); } ?>
     <title><?= RequestClass::getTitle(); ?></title>
     <link rel="icon" href="<?= PageLocal()?>Logo/Logo_Color.png" >
     
-    <link rel="stylesheet" href="<?= PageLocal()?>style.css?t=1" type="text/css"/>
+    <link rel="stylesheet" href="<?= PageLocal()?>style.css?t=2" type="text/css"/>
     <link rel="stylesheet" href="<?= PageLocal()?>jQuery/chosen_v1/chosen.css" type="text/css"/>
     <script src="<?= PageLocal()?>jQuery/jquery-3.4.1.min.js" type="text/javascript"></script>
     <script src="<?= PageLocal()?>jQuery/chosen_v1/chosen.jquery.js" type="text/javascript"></script>

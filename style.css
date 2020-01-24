@@ -331,16 +331,6 @@ div.form3{
     vertical-align:top;
 }
 
-div.border_warning{
-    display: inline-block;
-    padding: 5px;
-    margin: 5px;
-    border: 1px solid var(--red);
-    border-radius:5px;
-    vertical-align:top;
-}
-
-
 .form div.form_field{
     float: left;
     clear:both;
@@ -376,6 +366,15 @@ div.block_comment{
     padding: 5px;
     margin: 5px;
     border: 1px solid var(--blue);
+    border-radius:10px;
+    vertical-align:top;
+}
+
+div.border_warning{
+    display: inline-block;
+    padding: 5px;
+    margin: 5px;
+    border: 1px solid var(--red);
     border-radius:10px;
     vertical-align:top;
 }

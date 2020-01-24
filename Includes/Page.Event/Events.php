@@ -42,6 +42,7 @@ if($type_filter=='nonwcapuzzle') echo '/ '.ml('Events.nonWCAPuzzle.Title');
 if($type_filter=='simple') echo '/ '.ml('Events.Simple.Title');
 if($type_filter=='nonsimple') echo '/ '.ml('Events.nonSimple.Title');
 if($type_filter=='inscpection20') echo '/ '.ml('Events.Inscpection20.Title');
+if($type_filter=='333cube') echo '/ '.ml('Events.333Cube.Title');
  ?>
 
 </h2>
@@ -60,8 +61,6 @@ if($type_filter=='inscpection20') echo '/ '.ml('Events.Inscpection20.Title');
 <nobr><a class="<?= $type_filter=='nonsimple'?'select':'' ?>" href="<?= PageIndex() ?>Events/nonSimple"><?= ml('Events.nonSimple.Title'); ?></a></nobr>
 ▪ 
 <nobr><a class="<?= $type_filter=='inscpection20'?'select':'' ?>" href="<?= PageIndex() ?>Events/Inscpection20"><?= ml('Events.Inscpection20.Title'); ?></a></nobr>
-▪ 
-<nobr><a class="<?= $type_filter=='cutscrambles'?'select':'' ?>" href="<?= PageIndex() ?>Events/CutScrambles"><?= ml('Events.CutScrambles.Title'); ?></a></nobr>
 
 <?php $Competitor=GetCompetitorData();
 
@@ -93,9 +92,6 @@ if($type_filter=='inscpection20'){
     $extraWhere=" and Inspection=20 ";
 }
 
-if($type_filter=='cutscrambles'){
-    $extraWhere=" and CutScrambles=1 ";
-}
 
 if($type_filter=='333cube'){
     $extraWhere=" and (TNoodle='333' or TNoodles='333') and GlueScrambles=1 ";

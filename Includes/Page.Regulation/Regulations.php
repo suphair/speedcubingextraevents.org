@@ -57,13 +57,6 @@ $disciplines=DataBaseClass::getRows(); ?>
             $Text.=Parsedown(GetBlockText('Regulation.puzzles',$Language));
         } 
         ?>
-        <?php $comment=ml_json($discipline_row['Comment']);
-        if($comment){ ?>
-            <hr>
-            <div class="border_warning">
-                <b><?= ml('Regultions.Comment') ?></b> <?= $comment; ?>
-            </div>
-        <?php  } ?>
         <?= $Text;?>
     </div>
     <?= EventBlockLinks(['Discipline_Code'=>$discipline_row['Code'] ,'Discipline_ID'=>$discipline_row['ID'],'Discipline_Status'=>'Active'],'regulations'); ?>

@@ -24,7 +24,7 @@ $Competitor=GetCompetitorData(); ?>
         if($comment){ ?>
         <hr>
         <div class="border_warning">
-            <b><?= ml('Regultions.Comment') ?></b> <?= $comment; ?>
+            <?= $comment; ?>
         </div>
     <?php  } ?>    
 <?php  } ?>        
