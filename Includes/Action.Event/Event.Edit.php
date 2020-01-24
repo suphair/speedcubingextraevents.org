@@ -1,13 +1,14 @@
 <?php
 RequestClass::CheckAccessExit(__FILE__, 'Event.Settings');
 
-CheckPostIsset('Name','Code','ID','Competitors','FormatResult','TNoodle','TNoodlesMult','Inspection');
+CheckPostIsset('Name','Code','ID','Competitors','FormatResult','TNoodle','TNoodlesMult','Inspection','Comment');
 
 CheckPostNotEmpty('Name','Code','ID','Competitors','FormatResult','TNoodlesMult','Inspection');
 CheckPostIsNumeric('ID','Competitors','FormatResult','TNoodlesMult','Inspection');
 $ID=$_POST['ID'];
 $FormatResult=$_POST['FormatResult'];
 $Formats_set=array();
+
 if(isset($_POST['Formats']))
 foreach($_POST['Formats'] as $format){
     if(!is_numeric($format)){
@@ -22,6 +23,15 @@ foreach($_POST['Formats'] as $format){
     }
     
     $Formats_set[$format]=1;
+}
+
+$Comments= $_POST['Comment'];
+foreach($Comments as $c=>$Comment){
+    if(DataBaseClass::Escape($Comment)){
+        $Comments[$c]=$Comment;
+    }else{
+        unset($Comments[$c]);
+    }
 }
 
 $Name=$_POST['Name'];
@@ -57,7 +67,20 @@ if( isset($_POST['Simple'])){
     $Simple=0;
 }
 
-DataBaseClass::Query("Update `Discipline` set Name='$Name' , Code='$Code' , Competitors='$Competitors',FormatResult='$FormatResult',TNoodle='$TNoodle',TNoodles='$TNoodles_str',TNoodlesMult='$TNoodlesMult',GlueScrambles=$GlueScrambles,CutScrambles=$CutScrambles,Simple=$Simple,Inspection=$Inspection where ID='$ID'");
+DataBaseClass::Query("Update `Discipline` "
+        . " set Name='$Name' , "
+        . " Code='$Code' , "
+        . " Competitors='$Competitors',"
+        . " FormatResult='$FormatResult',"
+        . " TNoodle='$TNoodle',"
+        . " TNoodles='$TNoodles_str',"
+        . " TNoodlesMult='$TNoodlesMult',"
+        . " GlueScrambles=$GlueScrambles,"
+        . " CutScrambles=$CutScrambles,"
+        . " Simple=$Simple,"
+        . " Inspection=$Inspection,"
+        . " Comment='". DataBaseClass::Escape(json_encode($Comments,JSON_UNESCAPED_UNICODE))."' "
+        . " where ID='$ID'");
 DataBaseClass::FromTable('Discipline',"ID=$ID");
 DataBaseClass::Join_current('DisciplineFormat');
 DataBaseClass::Join_current('Format');

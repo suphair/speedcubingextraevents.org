@@ -18,6 +18,17 @@ $Competitor=GetCompetitorData(); ?>
 
 <?= EventBlockLinks($CompetitionEvent); ?>
     
+    
+<?php if(CheckAccess('Competition.Event.Settings',$Competition['Competition_ID'])){ ?>
+    <?php $comment=ml_json($CompetitionEvent['Discipline_Comment']);
+        if($comment){ ?>
+        <hr>
+        <div class="border_warning">
+            <b><?= ml('Regultions.Comment') ?></b> <?= $comment; ?>
+        </div>
+    <?php  } ?>    
+<?php  } ?>        
+    
 <?php if(ml_json($CompetitionEvent['Event_Comment'])){?>
     <div class="block_comment">
         <?= Parsedown(ml_json($CompetitionEvent['Event_Comment'])); ?>

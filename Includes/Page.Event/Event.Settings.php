@@ -141,8 +141,19 @@ if(isset($request[1])){
     <div class="form_input">
         <input type="number" min="1" max="10" required="" name="TNoodlesMult" value="<?= $discipline['Discipline_TNoodlesMult'] ?>">
     </div>
-    
-    
+    <div class="form_field">
+        Comment
+    </div>
+    <div class="form_input">
+    <?php $comments=json_decode($discipline['Discipline_Comment'],true);
+        if(!$comments and $discipline['Discipline_Comment']!='[]'){
+            $comments[getLanguages()[0]]=$discipline['Discipline_Comment'];
+        }
+        foreach(getLanguages() as $language){ ?>
+            <?= ImageCountry($language,20); ?>
+            <input name="Comment[<?= $language ?>]" style="width: 300px" value="<?= isset($comments[$language])?$comments[$language]:''; ?>"><br>
+        <?php } ?>
+    </div>
     <div class="form_change">
         <input type="submit" value="Change">
     </div>

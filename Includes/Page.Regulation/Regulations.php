@@ -15,7 +15,7 @@ foreach(DataBaseClass::getRows() as $row){
     $language_default[$row['ID']]=$row['Language'];
 } ?>
 
-<?php DataBaseClass::Query("Select D.ID, D.Name, D.Code,D.CodeScript,R.Text,D.Inspection,D.Competitors,D.TNoodles from Discipline D  "
+<?php DataBaseClass::Query("Select D.Comment,D.ID, D.Name, D.Code,D.CodeScript,R.Text,D.Inspection,D.Competitors,D.TNoodles from Discipline D  "
         . " left outer join Regulation R on R.Event=D.ID and R.Language='$Language' where D.Status='Active'");
 $disciplines=DataBaseClass::getRows(); ?>
 <div class="regulation line">
@@ -53,10 +53,17 @@ $disciplines=DataBaseClass::getRows(); ?>
             $Text.=Parsedown(GetBlockText('Regulation.mguild',$Language));
         }
         
-        
         if($discipline_row['TNoodles']){
             $Text.=Parsedown(GetBlockText('Regulation.puzzles',$Language));
-        } ?>
+        } 
+        ?>
+        <?php $comment=ml_json($discipline_row['Comment']);
+        if($comment){ ?>
+            <hr>
+            <div class="border_warning">
+                <b><?= ml('Regultions.Comment') ?></b> <?= $comment; ?>
+            </div>
+        <?php  } ?>
         <?= $Text;?>
     </div>
     <?= EventBlockLinks(['Discipline_Code'=>$discipline_row['Code'] ,'Discipline_ID'=>$discipline_row['ID'],'Discipline_Status'=>'Active'],'regulations'); ?>
