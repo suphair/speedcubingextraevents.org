@@ -33,7 +33,7 @@ $CompetitionDelegates=ObjectClass::getObject('PageCompetitionDelegates');
 <br>
 <h3><?= ml('Competition.Event.Setting.Block.Scrambles') ?></h3>
     <?php $file="Image/Scramble/".$CompetitionEvent['Event_ScrambleSalt'].".pdf";         
-    if(file_exists($file)){ ?>
+    if($CompetitionEvent['Event_ScrambleSalt'] and file_exists($file)){ ?>
             <a target="_blank"  href="<?= PageIndex()?>Scramble/<?= $CompetitionEvent['Event_ID'] ?>">Print scrambles</font></a>
     <?php }else{ ?>
         <?= svg_red(10) ?> Scrambles not created ▪    
