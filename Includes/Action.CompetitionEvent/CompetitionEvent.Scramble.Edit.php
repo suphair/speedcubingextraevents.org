@@ -5,6 +5,10 @@ CheckPostNotEmpty('ID','Scrambles');
 $ID=$_POST['ID'];
 $Scrambles=$_POST['Scrambles'];
 
+DataBaseClass::FromTable("Event","ID=$ID");
+$row=DataBaseClass::QueryGenerate(false);
+
+
 if(isset($row['Event_Competition'])){
     $Competition=$row['Event_Competition'];
 }else{

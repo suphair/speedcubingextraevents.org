@@ -16,6 +16,9 @@ CheckPostIsNumeric('ID');
 CheckPostNotEmpty('ID');
 $ID=$_POST['ID'];
 
+DataBaseClass::FromTable("Event","ID=$ID");
+$row=DataBaseClass::QueryGenerate(false);
+
 if(isset($row['Event_Competition'])){
     $Competition=$row['Event_Competition'];
 }else{

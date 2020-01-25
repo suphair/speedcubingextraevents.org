@@ -26,6 +26,7 @@
 <?php } ?>  
     &#9642; <a href="<?= LinkCompetitor($Delegate['Delegate_WCA_ID']) ?>"><?= ml('Delegate.Results') ?></a>
 </h3>    
+<h3><?= ml('Delegate.'.$Delegate['Delegate_Status']) ?></h3>
 
         </td>
     </tr>

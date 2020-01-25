@@ -73,6 +73,7 @@
                     } ?>
                     <?php } ?>
                     <?php $vs_unique=array_unique($vs);
+                    $result=0;
                     if(sizeof($vs)==sizeof($Seniors) and in_array(1,$vs_unique) and !in_array(-1,$vs_unique)){
                         $result=1;
                     }

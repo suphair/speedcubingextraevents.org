@@ -8,6 +8,9 @@ if($_FILES['file']['error']==0 and $_FILES['file']['type'] == 'application/pdf')
 
     $Scramble_Timestamp=date("Y-m-d H:i:s");
     
+    DataBaseClass::FromTable("Event","ID=$ID");
+    $row=DataBaseClass::QueryGenerate(false);
+    
     if(isset($row['Event_Competition'])){
         $Competition=$row['Event_Competition'];
     }else{

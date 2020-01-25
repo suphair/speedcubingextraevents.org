@@ -5,6 +5,8 @@ if(!isset($request[2]) or !is_numeric($request[2])){
 }
 $ID=$request[2];
 
+DataBaseClass::FromTable("Event","ID=$ID");
+$row=DataBaseClass::QueryGenerate(false);
 
 
 if(isset($row['Event_Competition'])){

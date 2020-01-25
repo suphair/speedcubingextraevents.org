@@ -76,7 +76,7 @@ $Delegate_rows=DataBaseClass::GetRows();
                     <span class='<?= $delegate['Status']=='Archive'?'archive':'' ?>
                           <?= $delegate['Status']=='Trainee'?'':'' ?>
                           <?= $delegate['Status']=='Senior'?'message':'' ?>'>
-                    <?= ml('Judgs.Table.Delegate.'.$delegate['Status']) ?></span>
+                    <?= ml('Delegate.'.$delegate['Status']) ?></span>
                 </td>
                 <td class="attempt">
                     <?= $delegate['Count_Competitions'] ?>

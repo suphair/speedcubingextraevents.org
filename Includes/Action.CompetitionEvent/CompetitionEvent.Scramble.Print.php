@@ -38,7 +38,17 @@ if($ID){
     DataBaseClass::OrderClear('Scramble', 'Group');
     DataBaseClass::Order('Scramble','Attempt');
     $data=DataBaseClass::QueryGenerate();
-    RequestClass::CheckAccessExit(__FILE__, 'Competition.Event.Settings',$ID);
+    
+    DataBaseClass::FromTable("Event","ID=$ID");
+    $row=DataBaseClass::QueryGenerate(false);
+    
+    if(isset($row['Event_Competition'])){
+        $Competition=$row['Event_Competition'];
+    }else{
+        $Competition=-1;
+    }
+
+    RequestClass::CheckAccessExit(__FILE__, 'Competition.Event.Settings',$Competition);
 
 $scramble_max=0;
 foreach($data as $row){

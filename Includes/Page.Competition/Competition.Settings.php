@@ -108,7 +108,10 @@ foreach($events as $event){
                     <a  target="_blank" href="<?= PageIndex()?>Scramble/<?= $event['Event_ID'] ?>">
                         <img class="img_a" src='<?= PageIndex()?>Image/Icons/print.png' width='30px'>
                     </a>
-                <font size="2"><?= $scrambles[$event['Event_ID']]['Timestamp'] ?></font>
+                    <a  target="_blank" href="<?= PageIndex()?>Scramble/<?= $event['Event_ID'] ?>/Download">
+                        <img class="img_a" src='<?= PageIndex()?>Image/Icons/download.png' width='30px'>
+                    </a>
+                <br><font size="2"><?= $scrambles[$event['Event_ID']]['Timestamp'] ?></font>
         <?php } ?>
         <?php if($event['Event_vRound']){ ?>
             <br>
