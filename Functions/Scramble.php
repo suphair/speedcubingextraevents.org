@@ -10,7 +10,7 @@ function scramble_block($ID){
         $scramble=DataBaseClass::QueryGenerate(false);
                    
     $file="Image/Scramble/".$date['Event_ScrambleSalt'].".pdf";
-        if (file_exists($file)){ ?>
+        if ($date['Event_ScrambleSalt'] and file_exists($file)){ ?>
             <a target="_blank"  href="<?= PageIndex() ?>Scramble/<?= $date['Event_ID']?>">
                 <img style="vertical-align: middle" width="20px"  src="<?= PageIndex()?>Image/Icons/scramble.png">
                 <?= ml('Function.Scramble') ?></a>
