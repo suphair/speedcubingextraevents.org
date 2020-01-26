@@ -2,7 +2,7 @@
 RequestClass::CheckAccessExit(__FILE__, 'Delegates.Settings');
 
 $Delegate=CashDelegate();
-DataBaseClass::Query("Delete from DelegateChange where Senior=".$Delegate['Delegate_ID']);
+#DataBaseClass::Query("Delete from DelegateChange where Senior=".$Delegate['Delegate_ID']);
 
 CheckPostIsset('Delegate');
 
@@ -11,7 +11,8 @@ foreach($_POST['Delegate'] as $delegate=>$status){
     $status= DataBaseClass::Escape($status);
     
     if(is_numeric($delegate)){
-        DataBaseClass::Query("Insert into  DelegateChange (Delegate,Senior,Status) values ('$delegate',".$Delegate['Delegate_ID'].",'$status')");
+        DataBaseClass::Query("INSERT INTO DelegateChange set Delegate='$delegate', Senior=".$Delegate['Delegate_ID']." ,Status='$status'");
+        #DataBaseClass::Query("Insert into  DelegateChange (Delegate,Senior,Status) values ('$delegate',".$Delegate['Delegate_ID'].",'$status')");
     }
 }
 

@@ -20,11 +20,12 @@ $Statuses['Junior']=2;
 $Statuses['Trainee']=1;
 $Statuses['Archive']=0;
 $Statuses['?']=-1;
-
 ?>
-<form method="POST" action="<?= PageAction('Delegates.Change.Delete') ?>">
-    <input class="delete" type="submit" value="<?= ml('*.Delete',false)?>">
-</form>
+<?php foreach([1,-1] as $tr_check){ ?>
+<?php if($tr_check==1){ ?>
+    <h2><?= ml('Delegate.Trainee') ?></h2>
+<?php } ?>
+
 <form method="POST" action="<?= PageAction('Delegates.Change.Edit') ?>">
 <table>
 <tr class="tr_title">
@@ -45,12 +46,12 @@ $Statuses['?']=-1;
     <?php } ?>
     <td><b>Results</b></td>   
 </tr>    
-<?php
-DataBaseClass::Query("Select D.*,C.Country from Delegate D "
+<?php DataBaseClass::Query("Select D.*,C.Country from Delegate D "
         . " join Competitor C on C.WID=D.WID "
         . "where D.Status!='Archive' and D.Status!='Senior' order by C.Country, D.Name");
-foreach(DataBaseClass::getRows() as $delegate){ 
-    
+$delegates=DataBaseClass::getRows();
+foreach($delegates as $delegate)
+    if(($tr_check==1 and $delegate['Status']=='Trainee') or ($tr_check==-1 and $delegate['Status']!='Trainee')){ 
 if(isset($DelegateChange[$Delegate['Delegate_ID']][$delegate['ID']])){
     $status_new=$DelegateChange[$Delegate['Delegate_ID']][$delegate['ID']];
 }else{
@@ -102,9 +103,9 @@ $status_news=[]; ?>
 </tr>
 <?php } ?>
 </table>
-    <input type="submit" value="<?= ml('*.Save',false)?>">
+    <input type="submit" value="<?= ml($tr_check==1?'Trainee.Save':'*.Save',false)?>">
 </form>
-
+<?php } ?>
 <?php if(CheckAccess('Delegate.Settings.Ext')){ ?>
 <form method="POST" action="<?= PageAction('Delegates.Change.DeleteAll') ?>" onsubmit="return confirm('Attention: Confirm <?= ml('Delegate.Settings.DeleteAll',false)?>.')">
     <input class="delete" type="submit" value="<?= ml('Delegate.Settings.DeleteAll',false)?>">
@@ -113,3 +114,4 @@ $status_news=[]; ?>
     
 
 <?= mlb('Delegate.Settings.DeleteAll')?>
+<?= mlb('Trainee.Save')?>
