@@ -115,6 +115,15 @@ foreach($data as $row){
             $pdf->Text(100, 25, 'U - rotation line near to Yellow sticker');
             $pdf->Text(100, 30, 'B - rotation line near to Blue sticker');
         }
+        if($row['Discipline_CodeScript']=='fto'){
+            $pdf->Text(100, 10, 'The lightest face on the top');
+            $pdf->Text(100, 15, '(the base of the triangle faces itself)');
+            $pdf->Text(100, 20, 'The darkest adjacent face on the front');
+            $pdf->Text(100, 25, '(out of the possible scrambling orientations)');
+            $pdf->Text(100, 30, 'Flip - move x2 in other events');
+        }
+        
+        
         
         //Header
         if(file_exists(ImageEventFile($row['Discipline_CodeScript']))){
@@ -176,15 +185,14 @@ foreach($data as $row){
         if($scramble_max>44*3){         $scramble_row=3; $scramble_size=12; 
         }elseif($scramble_max>38*3){    $scramble_row=3; $scramble_size=12; 
         }elseif($scramble_max>102){     $scramble_row=3; $scramble_size=16; 
-        }elseif($scramble_max>90){      $scramble_row=3; $scramble_size=18; 
-        }elseif($scramble_max>68){      $scramble_row=3; $scramble_size=20; 
+        }elseif($scramble_max>90){      $scramble_row=3; $scramble_size=16; 
+        }elseif($scramble_max>68){      $scramble_row=3; $scramble_size=16; 
         }elseif($scramble_max>60){      $scramble_row=2; $scramble_size=18; 
         }elseif($scramble_max>34){      $scramble_row=2; $scramble_size=18; 
         }elseif($scramble_max>20){      $scramble_row=1; $scramble_size=18; 
         }else{                          $scramble_row=1; $scramble_size=20; }
 
         if($scramble_len<10)$scramble_row=1;
-        
         
         if($scramble_row==3){
             //$Y=$y0+$n*$dy-4;////
@@ -293,7 +301,7 @@ foreach($data as $row){
     
 }
 
-DataBaseClass::Query("Update Event set ScrambleSalt='$rand' where ID=".$data[0]['Event_ID']);
+DataBaseClass::Query("Update Event set ScrambleSalt='$rand' where ID='".$data[0]['Event_ID']."'");
 $file="Image/Scramble/".$rand.".pdf";
 $pdf->Output($file);
 $pdf->Close();
