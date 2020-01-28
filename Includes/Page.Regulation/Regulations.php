@@ -45,7 +45,11 @@ $disciplines=DataBaseClass::getRows(); ?>
         if($discipline_row['Competitors']>1){
             $Text.=Parsedown(str_replace("%1",$discipline_row['Competitors'],GetBlockText('Regulation.Competitors',$Language)));
         }
-        $Text.=Parsedown($discipline_row['Text']);
+        if($discipline_row['Text']){
+            $Text.=Parsedown($discipline_row['Text']);
+        }else{
+            $Text.="<div class=border_warning>".ml('Regulation.Writing')."</div>";
+        }
         if($discipline_row['Inspection']==20){
             $Text.=Parsedown(GetBlockText('Regulation.Inspect.20',$Language));
         }
@@ -57,7 +61,7 @@ $disciplines=DataBaseClass::getRows(); ?>
             $Text.=Parsedown(GetBlockText('Regulation.puzzles',$Language));
         } 
         ?>
-        <?= $Text;?>
+            <?= $Text;?>
     </div>
     <?= EventBlockLinks(['Discipline_Code'=>$discipline_row['Code'] ,'Discipline_ID'=>$discipline_row['ID'],'Discipline_Status'=>'Active'],'regulations'); ?>
 </div>
