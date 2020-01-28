@@ -105,6 +105,11 @@ foreach($commands_group as $group=>$commands){
 
     }
 }
+
+if(isset($requests[3]) and $requests[3]=='Download'){
+    $pdf->Output($data['Competition_WCA'].'_ScoreCards_'.$data['Discipline_Code'].".pdf",'D');              
+}else{
     $pdf->Output($data['Competition_WCA'].'_ScoreCards_'.$data['Discipline_Code'].".pdf",'I');              
+}
     $pdf->Close();
 exit();

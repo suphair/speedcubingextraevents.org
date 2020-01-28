@@ -29,12 +29,14 @@ $CompetitionDelegates=ObjectClass::getObject('PageCompetitionDelegates');
 <h3><?= ml('Competition.Event.Setting.Block.Print') ?></h3>
 <a target="_blank" href="<?= PageAction('CompetitionEvent.Competitors.Print')?>/<?= $CompetitionEvent['Event_ID'] ?>">Print the list of competitors</a><br>
 <a target="_blank" href="<?= PageAction('CompetitonEvent.ScoreCards')?>/<?= $CompetitionEvent['Event_ID'] ?>">Print competitors cards</a> <br>  
+<a target="_blank" href="<?= PageAction('CompetitonEvent.ScoreCards')?>/<?= $CompetitionEvent['Event_ID'] ?>/Download">Download competitors cards</a> <br>  
     
 <br>
 <h3><?= ml('Competition.Event.Setting.Block.Scrambles') ?></h3>
     <?php $file="Image/Scramble/".$CompetitionEvent['Event_ScrambleSalt'].".pdf";         
     if($CompetitionEvent['Event_ScrambleSalt'] and file_exists($file)){ ?>
-            <a target="_blank"  href="<?= PageIndex()?>Scramble/<?= $CompetitionEvent['Event_ID'] ?>">Print scrambles</font></a>
+            <a target="_blank"  href="<?= PageIndex()?>Scramble/<?= $CompetitionEvent['Event_ID'] ?>">Print scrambles</font></a><br>
+            <a target="_blank"  href="<?= PageIndex()?>Scramble/<?= $CompetitionEvent['Event_ID'] ?>/Download">Download scrambles</font></a>
     <?php }else{ ?>
         <?= svg_red(10) ?> Scrambles not created ▪    
         <?php if(CheckAccess('Competition.Settings',$Competition['Competition_ID'])){ ?>
