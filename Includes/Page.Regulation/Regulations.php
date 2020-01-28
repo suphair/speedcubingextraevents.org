@@ -24,6 +24,24 @@ $disciplines=DataBaseClass::getRows(); ?>
     <?php } ?>
 </div>
 <hr>
+<?php 
+if(CheckAccess('Event.Settings')){
+DataBaseClass::Query("Select D.* from Discipline D"
+                         . " Left outer join Regulation R on D.ID=R.Event"
+                         . " where D.Status='Active'  and R.ID is null"); 
+$eventswithoutregulations=DataBaseClass::getRows();
+if(sizeof($eventswithoutregulations)){ ?>
+    <div class="form">
+        <h2 class="error"><?= ml('Competitor.Delegate.Regulations') ?></h2>
+    <?php foreach($eventswithoutregulations as $eventwithoutregulations){ ?>
+    <div class="border_warning"><a href="<?= PageIndex()?>/Regulations/#<?= $eventwithoutregulations['Code']?>"><?= $eventwithoutregulations['Name']?></a></div>
+    <?php } ?>
+    </div>
+<?php } 
+} ?>
+
+
+
 <?php foreach($disciplines as $discipline_row){ 
     $other_language=false;
     if(!$discipline_row['Text'] and isset($discipline_default[$discipline_row['ID']])){

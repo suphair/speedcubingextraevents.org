@@ -21,6 +21,16 @@ if($Competitor){ ?>
                 <nobr>&#9642; <a href='<?= LinkDelegate("Candidates") ?>'><?= ml('Competitor.Delegate.Candidates') ?></a> <span class="badge"><?= sizeof(DataBaseClass::getRows());?></span></nobr>
             <?php } ?> 
         <?php } ?> 
+                
+        <?php if(CheckAccess('Event.Settings')){
+            DataBaseClass::Query("Select * from Discipline D"
+                         . " Left outer join Regulation R on D.ID=R.Event"
+                         . " where D.Status='Active'  and R.ID is null"); ?>
+            <?php if(sizeof(DataBaseClass::getRows())){ ?>
+                <nobr>&#9642; <a href='<?= PageIndex() ?>Regulations'><?= ml('Competitor.Delegate.Regulations') ?></a> <span class="badge"><?= sizeof(DataBaseClass::getRows());?></span></nobr>
+            <?php } ?> 
+        <?php } ?> 
+                
 <?php }else{ ?>
     <?= svg_red(12) ?>
     <?php  $_SESSION['ReferAuth']=$_SERVER['REQUEST_URI']; ?> 
