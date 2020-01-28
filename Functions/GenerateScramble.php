@@ -1,24 +1,26 @@
 <?php
 
-function GenerateScramble($Discipline){
-    if($Discipline=='kilo'){
+function GenerateScramble($Event){
+    if($Event=='kilo'){
         return Generate_kilo();
-    }elseif($Discipline=='ivy'){
+    }elseif($Event=='ivy'){
         return Generate_ivy();
-    }elseif($Discipline=='223'){
+    }elseif($Event=='223'){
         return Generate_223();
-    }elseif($Discipline=='332'){
+    }elseif($Event=='332'){
         return Generate_332();
-    }elseif($Discipline=='redi'){
+    }elseif($Event=='redi'){
         return Generate_redi();
-    }elseif($Discipline=='dino'){
+    }elseif($Event=='dino'){
         return Generate_dino();
-    }elseif($Discipline=='888'){
+    }elseif($Event=='888'){
         return GenerateNxN(8,100,10);
-    }elseif($Discipline=='999'){
+    }elseif($Event=='999'){
         return GenerateNxN(9,100,10);
-    }elseif($Discipline=='pyra444'){
+    }elseif($Event=='pyra444'){
         return Generate_pyra444();
+    }elseif($Event=='fto'){
+        return Generate_fto();
     }else{
         return false;
     }
