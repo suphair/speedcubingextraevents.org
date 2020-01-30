@@ -48,6 +48,7 @@ if(($exists_GenerateTraining or $exists_Generate or $exists_ScriptGenerate)
             <?php  }?>
             <div ID="Scramble" style="width:600px; font-size:20px;" class="block_comment">   
             <?= str_replace("&","<br>",$Scramble); ?></div>
+            <div>Press the space to generate new scramble</div>
         </td>
         <td>
             <div style="width:400px;height:400px">
@@ -65,74 +66,18 @@ if(($exists_GenerateTraining or $exists_Generate or $exists_ScriptGenerate)
          });
     }
 </script>
-    
-        
-<?php }else{ ?>
-    <snap class="error">The event uses an external scramble generator.</span>
-<?php }?>
-
-<?php exit(); ?>
-
-<?php
-
-
-if(!isset($_GET['Discipline']) or !in_array($_GET['Discipline'],
-        array('Redi','2x2x3','Dino','Ivy','Kilominx'))){
-    echo 'wrong discipline';
-    exit();
-}
-$discipline=$_GET['Discipline'];
-
-if(!isset($_SESSION[$discipline.'_N'])){
-    $_SESSION[$discipline.'_N']=1;
-}else{
-    $_SESSION[$discipline.'_N']++;
-}
-$Scrumble_ID=$discipline.'_'.session_id();
-
-include 'Functions/GenerateScramble.php';
-include 'Functions/Generate'.$discipline.'.php';
-include 'Functions/Rotate.php';
-
-$scramble_function='Generate'.$discipline;
-$scramble=$scramble_function();
-include 'Scramble/'.$discipline.'.php';
-$scramble=str_replace(array("x  R","x R","x  & R"),"x<br>R",$scramble);
-$scramble=str_replace(array("x  L","x L","x  & L"),"x<br>   L",$scramble);
-$scramble=str_replace("& ","<br>",$scramble);
-$scramble=str_replace(" ","&nbsp;",$scramble);
-$scramble=str_replace("x","<font color=red>x</font>",$scramble);
-
-?>
-<h1><?= $discipline ?>: <?=  $_SESSION[$discipline.'_N'] ?></h1>
-<table cellpadding="20px" border=1>
-    <tr>
-        <td><img width="320px" src="../Image/Scramble/<?= $Scrumble_ID ?>.png?tmp=<?= time()?>"></td>
-        <td align=left><?= $scramble ?></td>
-    </tr>   
-</table>
-<br>
-<span style="font-size:24px;" >Click the Mouse or Press the Space or Tap the Screen</span>
-
 <script>
-
 function moveRect(e){
     switch(e.keyCode){
         case 32: 
+            e.preventDefault();
             location.reload();
             break;
     }
 }
-
 addEventListener("keydown", moveRect);
+</script>            
+<?php }else{ ?>
+    <snap class="error">The event uses an external scramble generator.</span>
+<?php }?>
 
-addEventListener('click', function(){
-   location.reload();
-});
-
-addEventListener('touchend', function(){
-   location.reload();
-});
-
-
-</script>
