@@ -42,12 +42,12 @@ if(($exists_GenerateTraining or $exists_Generate or $exists_ScriptGenerate)
         <td>    
             <?php $Instructions=$Event['Discipline_ScrambleComment'];
             if($Instructions){ ?>
-                <div style="font-size:20px;" class="border_warning">
                     <?= str_replace("\n","<br>",$Instructions); ?>
-                </div>
+                <hr>
             <?php  }?>
-            <div ID="Scramble" style="width:600px; font-size:20px;" class="block_comment">   
+            <div ID="Scramble" style="width:600px; font-size:20px;">   
             <?= str_replace("&","<br>",$Scramble); ?></div>
+            <hr>
             <div>Press the space to generate new scramble</div>
         </td>
         <td>
