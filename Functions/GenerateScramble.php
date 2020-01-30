@@ -6,7 +6,7 @@ function GenerateScramble($Event,$training=false){
     }elseif($Event=='ivy'){
         return Generate_ivy();
     }elseif($Event=='223'){
-        return Generate_223();
+        return Generate_223($training);
     }elseif($Event=='332'){
         return Generate_332();
     }elseif($Event=='redi'){

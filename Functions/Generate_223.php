@@ -1,14 +1,14 @@
 <?php
 
-function Generate_223(){
+function Generate_223($training=false){
     do{
-        $solve=Generate2x2x3Attempt(); 
+        $solve=Generate2x2x3Attempt($training); 
     }while(!$solve);
     return $solve;    
 }
 
 
-function Generate2x2x3Attempt(){
+function Generate2x2x3Attempt($training=false){
     $move=array("D ","D'","D2","U ","U'","U2","F2","R2","L2");
     $str="";
     $prev="";
@@ -61,15 +61,16 @@ function Generate2x2x3Attempt(){
         return $str;
     }
     
-    $min_solve=4;
-    for($d=1;$d<=$min_solve;$d++){
-        $HelperAlgs= file("2x2x3Helper/algs$d.txt",true);
+    if(!$training){
+        $min_solve=4;
+        for($d=1;$d<=$min_solve;$d++){
+            $HelperAlgs= file("2x2x3Helper/algs$d.txt",true);
 
-        foreach($HelperAlgs as $alg){ 
-            if(CheckSolve2x2x3($str,$alg)){
-                return false;
-                //return $str.' '.$alg."(".$d.")";
-            }  
+            foreach($HelperAlgs as $alg){ 
+                if(CheckSolve2x2x3($str,$alg)){
+                    return false;
+                }  
+            }
         }
     }
     
