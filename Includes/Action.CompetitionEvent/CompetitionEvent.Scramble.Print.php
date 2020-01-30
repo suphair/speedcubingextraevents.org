@@ -85,45 +85,16 @@ foreach($data as $row){
         $group=$row['Scramble_Group'];
         $n=0;
             
+      
         //Instructions
-        if($row['Discipline_CodeScript']=='ivy'){
-            $pdf->SetFont('Arial','',10);
-            $pdf->Text(120, 13, "Up-White, Right-Green, Left-Orange");
-            $pdf->Text(120, 18, "U - WBR, R - GRY, L - OYB, F - WGO");
-        }
-        
         $pdf->SetFont('Arial','',10);
-        if($row['Discipline_CodeScript']=='mirror' or $row['Discipline_CodeScript']=='mirrorBLD'){
-            $pdf->Text(110, 13, "U layer is the thickest,");
-            $pdf->Text(110, 18, "UFL is the biggest corner of the cube.");
+        $Instructions=$row['Discipline_ScrambleComment'];
+        $Instruction_rows=explode("\n",$Instructions);
+        $y_instruction=10;
+        foreach($Instruction_rows as $instruction_row){
+            $pdf->Text(100, $y_instruction, $instruction_row);
+            $y_instruction+=5;
         }
-        
-        if($row['Discipline_CodeScript']=='redi'){
-            $pdf->Text(100, 10, 'R - Right Front Up corner');
-            $pdf->Text(100, 15, 'L - Left Front Up corner');
-        }
-        
-        if($row['Discipline_CodeScript']=='dino'){
-            $pdf->Text(100, 10, 'R - Right Front Up corner');
-            $pdf->Text(100, 15, 'L - Left Front Up corner');
-        }
-        
-        if($row['Discipline_CodeScript']=='pyra222'){
-            $pdf->Text(100, 10, 'Yellow side to the top, Green - on themselves');
-            $pdf->Text(100, 15, 'Yellow-Green-Blue corner remains in place');
-            $pdf->Text(100, 20, 'R - rotation line near to Green sticker');
-            $pdf->Text(100, 25, 'U - rotation line near to Yellow sticker');
-            $pdf->Text(100, 30, 'B - rotation line near to Blue sticker');
-        }
-        if($row['Discipline_CodeScript']=='fto'){
-            $pdf->Text(100, 10, 'The lightest face on the top');
-            $pdf->Text(100, 15, '(the base of the triangle faces itself)');
-            $pdf->Text(100, 20, 'The darkest adjacent face on the front');
-            $pdf->Text(100, 25, '(out of the possible scrambling orientations)');
-            $pdf->Text(100, 30, 'Flip - move x2 in other events');
-        }
-        
-        
         
         //Header
         if(file_exists(ImageEventFile($row['Discipline_CodeScript']))){
@@ -146,24 +117,16 @@ foreach($data as $row){
         $Y=$Y_Content_S;
     }
         
-    
- //   $pdf->SetDrawColor(255,0,0);
-   
-    
     $pdf->Line(10,$Y,$X_IMG_1,$Y);
- //   $pdf->SetDrawColor(0,0,0);
 
     $y0=43;
-    //$pdf->Line(10,$y0,205,$y0);
     
     if($n==$row['Format_Attemption']){
-        //$Y=$y0+$n*$dy-8;/////
         $pdf->SetFont('Arial','',12);
         $pdf->SetFillColor(230,230,230);
         $pdf->Rect(17, $Y , $X_IMG_1-17, 6,'DF');
         $pdf->Text(90, $Y+4, 'Extra scrambles');
         $Y+=6;
-        //$pdf->Line(10,$y0+$n*$dy,205,$y0+$n*$dy);
     }
     
     
@@ -195,9 +158,7 @@ foreach($data as $row){
         if($scramble_len<10)$scramble_row=1;
         
         if($scramble_row==3){
-            //$Y=$y0+$n*$dy-4;////
             $d=8;
-            
             $r1=ceil($scramble_len/3);
             $r2=ceil($scramble_len/3*2);
             while(substr($row['Scramble_Scramble'],$r1,1)!=" "){$r1--;}
@@ -205,28 +166,15 @@ foreach($data as $row){
             $texts[]=trim(substr($row['Scramble_Scramble'],0,$r1));
             $texts[]=trim(substr($row['Scramble_Scramble'],$r1+1,$r2-$r1));
             $texts[]=trim(substr($row['Scramble_Scramble'],$r2));
-            //$pdf->SetFont($scramble_font,'',$scramble_size);
-            //$pdf->Text(20, $Y     ,$text1);
-            //$pdf->Text(20, $Y+$d  ,$text2);
-            //$pdf->Text(20, $Y+$d*2,$text3);
 
         }elseif($scramble_row==2){
-            //$Y=$y0+$n*$dy;////
             $d=10;
-            
             $r1=ceil($scramble_len/2);
             while(substr($row['Scramble_Scramble'],$r1,1)!=" "){$r1--;}
             $texts[]=trim(substr($row['Scramble_Scramble'],0,$r1));
             $texts[]=trim(substr($row['Scramble_Scramble'],$r1));
-            //$pdf->SetFont($scramble_font,'',$scramble_size);
-            //$pdf->Text(20, $Y   ,$text1);
-            //$pdf->Text(20, $Y+$d,$text2);
         }else{
-            //$Y=$y0+$n*$dy+4;////
-            
             $texts[]=trim($row['Scramble_Scramble']);
-            //$pdf->SetFont($scramble_font,'',$scramble_size);
-            //$pdf->Text(20, $Y, $text1);
         }
 
     }else{
@@ -289,8 +237,6 @@ foreach($data as $row){
     $max_width=$X_IMG_1-$X_IMG_0;
     $max_height=$D_Att-1;
     $k=min($max_width/$size[0],$max_height/$size[1]);
-    //$pdf->SetLineWidth(0.2);
-    
     $img_dx=($max_width-$k*$size[0])/2;
     $img_dy=($D_Att-$k*$size[1])/2;
     

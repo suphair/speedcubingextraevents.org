@@ -1,12 +1,12 @@
 <?php
 RequestClass::CheckAccessExit(__FILE__, 'Event.Settings');
 
-CheckPostIsset('Name','Code','ID','Competitors','FormatResult','TNoodle','TNoodlesMult','Inspection','Comment');
-
+CheckPostIsset('Name','Code','ID','Competitors','FormatResult','TNoodle','TNoodlesMult','Inspection','Comment','ScrambleComment');
 CheckPostNotEmpty('Name','Code','ID','Competitors','FormatResult','TNoodlesMult','Inspection');
 CheckPostIsNumeric('ID','Competitors','FormatResult','TNoodlesMult','Inspection');
 $ID=$_POST['ID'];
 $FormatResult=$_POST['FormatResult'];
+
 $Formats_set=array();
 
 if(isset($_POST['Formats']))
@@ -41,6 +41,7 @@ $Inspection=$_POST['Inspection'];
 $TNoodle= DataBaseClass::Escape($_POST['TNoodle']);
 $TNoodles=[];
 $TNoodlesMult=$_POST['TNoodlesMult'];
+$ScrambleComment=DataBaseClass::Escape($_POST['ScrambleComment']);
 if(isset($_POST['TNoodles'])){
     foreach($_POST['TNoodles'] as $code=>$tmp){
         $TNoodles[]=DataBaseClass::Escape($code);
@@ -79,7 +80,8 @@ DataBaseClass::Query("Update `Discipline` "
         . " CutScrambles=$CutScrambles,"
         . " Simple=$Simple,"
         . " Inspection=$Inspection,"
-        . " Comment='". DataBaseClass::Escape(json_encode($Comments,JSON_UNESCAPED_UNICODE))."' "
+        . " Comment='". DataBaseClass::Escape(json_encode($Comments,JSON_UNESCAPED_UNICODE))."', "
+        . " ScrambleComment='$ScrambleComment'"
         . " where ID='$ID'");
 DataBaseClass::FromTable('Discipline',"ID=$ID");
 DataBaseClass::Join_current('DisciplineFormat');

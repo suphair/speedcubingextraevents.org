@@ -154,6 +154,15 @@ if(isset($request[1])){
             <input name="Comment[<?= $language ?>]" style="width: 300px" value="<?= isset($comments[$language])?$comments[$language]:''; ?>"><br>
         <?php } ?>
     </div>
+    <div class="form_field">
+        Comment on the scramble page<br>
+        and training page<br>
+        * max 5 rows<br>
+        * maximum of 45 characters per line
+    </div>
+    <div class="form_input">
+        <textarea name="ScrambleComment" style="width: 240px;height:65px;"><?= $discipline['Discipline_ScrambleComment']; ?></textarea>
+    </div>
     <div class="form_change">
         <input type="submit" value="Change">
     </div>
