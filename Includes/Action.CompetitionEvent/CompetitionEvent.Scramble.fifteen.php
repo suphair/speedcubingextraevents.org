@@ -27,7 +27,7 @@ $Attemption=$data['Format_Attemption'];
 
 $s=$data['Event_Groups']*($data['Format_Attemption']+2); ?>
 <head>
-    <script src="<?= PageLocal()?>Script/Fifteeen_generator.js" type="text/javascript"></script>
+    <script src="<?= PageLocal()?>Script/fifteen_generator.js" type="text/javascript"></script>
 </head>
         <form hidden method="POST" ID="form" action="<?= PageAction('CompetitionEvent.Scramble.Edit')?>">
             <input name="ID" type="hidden" value="<?= $data['Event_ID'] ?>" />
@@ -36,14 +36,8 @@ $s=$data['Event_Groups']*($data['Format_Attemption']+2); ?>
         </form>
         
        <script>
-           var Solver;
-           var result= [];
-           Solver = new SlidySolver(4, 4, [[1,2,3,4],[5,9,13],[6,7,8,10,11,12,14,15]]);
-           <?php for($i=1;$i<=$s;$i++){ ?>
-           result.push(Solver.getscramble());
-           <?php } ?>
-           
-           document.getElementById('Scrambles').value=result.join('\n');
+           scrambles=getscrambles(<?= $s ?>);
+           document.getElementById('Scrambles').value=scrambles.join('\n');
            document.getElementById('form').submit();
        </script>  
        

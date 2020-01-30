@@ -315,3 +315,13 @@ SlidySolver.prototype.statecount = function() {
 	}
 	return cnt;
 }
+
+function getscrambles(s){
+    var Solver;
+    var result= [];
+    Solver = new SlidySolver(4, 4, [[1,2,3,4],[5,9,13],[6,7,8,10,11,12,14,15]]);
+    for(var i=0;i<s;i++){
+        result.push(Solver.getscramble());
+    }
+    return result;
+}

@@ -1,3 +1,6 @@
+<script>
+    scramble='';
+</script>    
 <?php includePage('Navigator'); ?>
 <?php includePage('Events.Trainig_Line'); ?>
 <?php $Event=ObjectClass::getObject('PageEvent');
@@ -6,20 +9,34 @@ $Event_CodeScript=$Event['Discipline_CodeScript'];
 <hr>
 <h2><?= ImageEvent($Event_CodeScript,30)?> <?= $Event['Discipline_Name']; ?></h1>
 <?php
-if((file_exists("Functions/GenerateTraining_$Event_CodeScript.php")
-        or  
-    file_exists("Functions/Generate_$Event_CodeScript.php")) 
+$exists_GenerateTraining=file_exists("Functions/GenerateTraining_{$Event_CodeScript}.php");
+$exists_Generate=file_exists("Functions/Generate_{$Event_CodeScript}.php");
+$exists_ScriptGenerate=file_exists("Script/{$Event_CodeScript}_generator.js");
+
+$ScrambleImageFilename='Scramble/Training/'.session_id().'_'.$Event_CodeScript.'.png';
+
+if(($exists_GenerateTraining or $exists_Generate or $exists_ScriptGenerate)
         and file_exists("Scramble/$Event_CodeScript.php")){
+    $Scramble='';
+    if($exists_GenerateTraining or $exists_Generate){
+        if($exists_Generate){
+            $Scramble=GenerateScramble($Event_CodeScript,true);
+        }
+        if($exists_GenerateTraining){
+            eval("\$Scramble=GenerateTraining_$Event_CodeScript();");
+        }
+        include "Scramble/$Event_CodeScript.php";
+        $ScrambleImage=ScrambleImage($Scramble);
+        imagepng($ScrambleImage,$ScrambleImageFilename);
+    }elseif($exists_ScriptGenerate){ ?>
+        <script src="<?= PageLocal()?>Script/<?= $Event_CodeScript ?>_generator.js" type="text/javascript"></script>
+        <script>
+            scramble=getscrambles(1);
+        </script>
+        
+    <?php }
     
-    include "Scramble/$Event_CodeScript.php";
-    if(file_exists("Functions/Generate_$Event_CodeScript.php")){
-        $Scramble=GenerateScramble($Event_CodeScript,true);
-    }else{
-        eval("\$Scramble=GenerateTraining_$Event_CodeScript();");
-    }
-    $ScrambleImage=ScrambleImage($Scramble);
-    $ScrambleImageFilename='Scramble/Training/'.session_id().'_'.$Event_CodeScript.'.png';
-    imagepng($ScrambleImage,$ScrambleImageFilename); ?>
+    ?>
 <table>
     <tr>
         <td>    
@@ -29,15 +46,27 @@ if((file_exists("Functions/GenerateTraining_$Event_CodeScript.php")
                     <?= str_replace("\n","<br>",$Instructions); ?>
                 </div>
             <?php  }?>
-            <div style="width:600px; font-size:20px;" class="block_comment"><?= str_replace("&","<br>",$Scramble); ?></div>
+            <div ID="Scramble" style="width:600px; font-size:20px;" class="block_comment">   
+            <?= str_replace("&","<br>",$Scramble); ?></div>
         </td>
         <td>
             <div style="width:400px;height:400px">
-                <img style="max-width: 100%; max-height: 100%;" src="<?= PageIndex().$ScrambleImageFilename?>">
+                <img ID="ScrambleImage" style="max-width: 100%; max-height: 100%;" src="<?= !$exists_ScriptGenerate?(PageIndex().$ScrambleImageFilename):''?>">
             </div>
         </td>
     </tr>
 </table>
+<script>
+    if(scramble){
+        $('#Scramble').html(scramble);
+        
+        $.get( '<?= PageAction('AJAX.Scramble.Image') ?>?CodeScript=<?= $Event_CodeScript ?>&Scramble=' + encodeURI(scramble), function( data ) {
+	      $('#ScrambleImage').attr('src',data);
+         });
+    }
+</script>
+    
+        
 <?php }else{ ?>
     <snap class="error">The event uses an external scramble generator.</span>
 <?php }?>
