@@ -209,6 +209,9 @@ $typesSimplePage=[
                           if($request[2]=='settings'){
                               self::$titles[]="Settings";
                               self::CheckAccess("Event.Settings");
+                          }elseif($request[2]=='training'){   
+                              self::$titles[]="Training";
+                              self::$page ='Event.Training';
                           }elseif(in_array($request[2],['average','single','sum'])){
                               if(!in_array($request[3],['results','persons'])){
                                    self::set404();    

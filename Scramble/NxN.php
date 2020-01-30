@@ -1,6 +1,8 @@
 <?php
-function ScrambleImage($scramble,$size){
+function ScrambleImage($scramble){
 
+global $Size;
+$size=$Size;
 $Ceil=50;
 $Border=40;
 $D=40;

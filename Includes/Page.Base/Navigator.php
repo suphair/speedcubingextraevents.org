@@ -2,7 +2,7 @@
 if(explode('.',$type)[0]=='aNews')$type='News';
 if(explode('.',$type)[0]=='Delegate' or explode('.',$type)[0]=='Delegates')$type='Delegates';
 if(explode('.',$type)[0]=='Competitor')$type='Competitors';
-if($type=='Event')$type='Events';
+if(explode('.',$type)[0]=='Event')$type='Events';
 ?>
 <div class="Navigator">
         <nobr><a <?= ($type=='Competitions' or $type=='index')?"class='select'":"" ?> href="<?= PageIndex() ?>Competitions">

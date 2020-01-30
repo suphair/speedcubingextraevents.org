@@ -1,8 +1,8 @@
 <?php
 
-function GenerateScramble($Event){
+function GenerateScramble($Event,$training=false){
     if($Event=='kilo'){
-        return Generate_kilo();
+        return Generate_kilo($training);
     }elseif($Event=='ivy'){
         return Generate_ivy();
     }elseif($Event=='223'){
