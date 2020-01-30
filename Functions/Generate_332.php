@@ -11,7 +11,6 @@ function Generate_332(){
     $Bs=0;
     $Fs=0;
     $Pattern="R U R U R U R U R D & R U R U R U R U R D & R U R U R U R U R D";
-    $Pattern="R U R U R U R U R D & R U R U R U R U R D";
     
     $str='';
     for($l=0;$l<strlen($Pattern);$l++){

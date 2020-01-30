@@ -6,9 +6,17 @@ $Event_CodeScript=$Event['Discipline_CodeScript'];
 <hr>
 <h2><?= ImageEvent($Event_CodeScript,30)?> <?= $Event['Discipline_Name']; ?></h1>
 <?php
-if(file_exists("Functions/Generate_$Event_CodeScript.php") and file_exists("Scramble/$Event_CodeScript.php")){
+if((file_exists("Functions/GenerateTraining_$Event_CodeScript.php")
+        or  
+    file_exists("Functions/Generate_$Event_CodeScript.php")) 
+        and file_exists("Scramble/$Event_CodeScript.php")){
+    
     include "Scramble/$Event_CodeScript.php";
-    $Scramble=GenerateScramble($Event_CodeScript,true);
+    if(file_exists("Functions/Generate_$Event_CodeScript.php")){
+        $Scramble=GenerateScramble($Event_CodeScript,true);
+    }else{
+        eval("\$Scramble=GenerateTraining_$Event_CodeScript();");
+    }
     $ScrambleImage=ScrambleImage($Scramble);
     $ScrambleImageFilename='Scramble/Training/'.session_id().'_'.$Event_CodeScript.'.png';
     imagepng($ScrambleImage,$ScrambleImageFilename); ?>
