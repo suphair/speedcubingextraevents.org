@@ -7,7 +7,7 @@
 $Event_CodeScript=$Event['Discipline_CodeScript'];
 ?>
 <hr>
-<h2><?= ImageEvent($Event_CodeScript,30)?> <?= $Event['Discipline_Name']; ?></h1>
+<h1><?= ImageEvent($Event_CodeScript,50)?> <?= $Event['Discipline_Name']; ?> / <?= ml('TrainingScrambling.Title') ?></h1>
 <?php
 $exists_GenerateTraining=file_exists("Functions/GenerateTraining_{$Event_CodeScript}.php");
 $exists_Generate=file_exists("Functions/Generate_{$Event_CodeScript}.php");
@@ -37,32 +37,31 @@ if(($exists_GenerateTraining or $exists_Generate or $exists_ScriptGenerate)
     <?php }
     
     ?>
-<table>
+<table width="100%">
     <tr>
+        <td width="400px">
+            <div style="width:400px;height:300px">
+                <img ID="ScrambleImage" style="max-width: 100%; max-height: 100%;" src="<?= !$exists_ScriptGenerate?(PageIndex().$ScrambleImageFilename.'?t='.time()):''?>">
+            </div>
+            Press the <b>space</b> to generate new scramble
+        </td>
         <td>    
+            <span class="form" ID="Scramble" style="font-size:20px;">   
+            <?= str_replace("&","<br>",$Scramble); ?></span>
             <?php $Instructions=$Event['Discipline_ScrambleComment'];
             if($Instructions){ ?>
-                    <?= str_replace("\n","<br>",$Instructions); ?>
-                <hr>
+                <div><?= str_replace("\n","<br>",$Instructions); ?></div>
             <?php  }?>
-            <div ID="Scramble" style="width:600px; font-size:20px;">   
-            <?= str_replace("&","<br>",$Scramble); ?></div>
-            <hr>
-            <div>Press the space to generate new scramble</div>
-        </td>
-        <td>
-            <div style="width:400px;height:400px">
-                <img ID="ScrambleImage" style="max-width: 100%; max-height: 100%;" src="<?= !$exists_ScriptGenerate?(PageIndex().$ScrambleImageFilename):''?>">
-            </div>
         </td>
     </tr>
 </table>
+<?= EventBlockLinks($Event,'training'); ?>
 <script>
     if(scramble){
         $('#Scramble').html(scramble);
         
         $.get( '<?= PageAction('AJAX.Scramble.Image') ?>?CodeScript=<?= $Event_CodeScript ?>&Scramble=' + encodeURI(scramble), function( data ) {
-	      $('#ScrambleImage').attr('src',data);
+	      $('#ScrambleImage').attr('src',data+ '?t=<?= time() ?>');
          });
     }
 </script>

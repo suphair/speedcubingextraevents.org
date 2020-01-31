@@ -8,9 +8,7 @@ DataBaseClass::OrderClear('Discipline','Name');
 DataBaseClass::Where_current("Status='Active'");    
 $disciplines=DataBaseClass::QueryGenerate();
 ?>
-<div class="line">
-    <h2>
-        Training scrambling
+<div class="line">     
     <?php foreach($disciplines as $discipline_row){ ?>   
         <?php if(
                 (file_exists("Functions/Generate_{$discipline_row['Discipline_CodeScript']}.php")  or
@@ -20,5 +18,4 @@ $disciplines=DataBaseClass::QueryGenerate();
         <a class="<?= $discipline_row['Discipline_ID']==$Event_line['Discipline_ID']?"line_select":""?>" title="<?= $discipline_row['Discipline_Name'] ?>" href="<?= LinkDiscipline($discipline_row['Discipline_Code']) ?>/Training"><?= ImageEvent($discipline_row['Discipline_CodeScript'],25) ?></a> 
         <?php } ?> 
     <?php } ?>
-    </h2>
 </div>

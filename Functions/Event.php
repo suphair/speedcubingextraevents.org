@@ -42,6 +42,14 @@ function EventBlockLinks($Event,$current=""){
             <?= scramble_block($Event['Discipline_ID']);?>
             <?= scorecard_block($Event['Discipline_ID']);?>
         <?php } ?>
+        <?php
+        $exists_GenerateTraining=file_exists("Functions/GenerateTraining_{$Event['Discipline_CodeScript']}.php");
+        $exists_Generate=file_exists("Functions/Generate_{$Event['Discipline_CodeScript']}.php");
+        $exists_ScriptGenerate=file_exists("Script/{$Event['Discipline_CodeScript']}_generator.js");
+        if($exists_GenerateTraining or $exists_Generate or  $exists_ScriptGenerate){ ?>
+            <a class="<?= $current=='training'?'select':''?>" href="<?= PageIndex()?>Event/<?= $Event['Discipline_Code'] ?>/Training"> <img style="vertical-align: middle" width="20px"  src="<?= PageIndex()?>Image/Icons/scramble.png"> <?= ml('TrainingScrambling.Title') ?></a>
+            
+        <?php } ?>
     </div><br>
 <?php $return = ob_get_contents();
     ob_end_clean();
