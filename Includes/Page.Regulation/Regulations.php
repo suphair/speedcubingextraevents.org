@@ -81,7 +81,7 @@ if(sizeof($eventswithoutregulations)){ ?>
         ?>
             <?= $Text;?>
     </div>
-    <?= EventBlockLinks(['Discipline_Code'=>$discipline_row['Code'] ,'Discipline_ID'=>$discipline_row['ID'],'Discipline_Status'=>'Active'],'regulations'); ?>
+    <?= EventBlockLinks(['Discipline_CodeScript'=>$discipline_row['CodeScript'] ,'Discipline_Code'=>$discipline_row['Code'] ,'Discipline_ID'=>$discipline_row['ID'],'Discipline_Status'=>'Active'],'regulations'); ?>
 </div>
 <br>
 <?php 
