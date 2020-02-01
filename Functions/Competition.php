@@ -73,7 +73,7 @@ function UpdateLocalID($competition){
 
 function CompetitionCompetitorsLoad($ID,$WCA,$Name,$type){
     $start=date('H:i:s'); 
-    $registrations_data = file_get_contents(GetIni('WCA_API','competition')."/$WCA/registrations", false); 
+    $registrations_data = file_get_contents_curl(GetIni('WCA_API','competition')."/$WCA/registrations"); 
     $registrations=json_decode($registrations_data);
     if($registrations){    
         foreach($registrations as $registration){
@@ -82,7 +82,7 @@ function CompetitionCompetitorsLoad($ID,$WCA,$Name,$type){
             if(isset($Competitor['Competitor_ID'])){
                 $Competitor_ID=$Competitor['Competitor_ID'];
             }else{
-                $user_content = file_get_contents("https://www.worldcubeassociation.org/api/v0/users/".$registration->user_id, false);   
+                $user_content = file_get_contents_curl("https://www.worldcubeassociation.org/api/v0/users/".$registration->user_id);   
                 $user=json_decode($user_content);
                 $Competitor_ID=CompetitorReplace($user->user);
             }
@@ -90,7 +90,7 @@ function CompetitionCompetitorsLoad($ID,$WCA,$Name,$type){
         }
     }
 
-    $competitors_data = file_get_contents(GetIni('WCA_API','competition')."/$WCA/competitors", false); 
+    $competitors_data = file_get_contents_curl(GetIni('WCA_API','competition')."/$WCA/competitors"); 
     $competitors=json_decode($competitors_data);
     if($competitors){    
         foreach($competitors as $competitor){
