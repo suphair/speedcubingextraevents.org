@@ -1,5 +1,5 @@
 <?php 
-function ScrambleImage($scramble){
+function ScrambleImage($scramble,$training=false){
 $Ceil=100;
 $Border=10;
 $D=10;
@@ -83,7 +83,9 @@ $black=imagecolorallocate($im,0,0,0);
       'White'=> imagecolorallocate($im,255,255,255),
       'Blue'=> imagecolorallocate($im,0,0,255),
       'Yellow'=> imagecolorallocate($im,255,255,0),
-      'Orange'=> imagecolorallocate($im,255,165,0)
+      'Orange'=> imagecolorallocate($im,255,165,0),
+      
+      'Black'=> imagecolorallocate($im,0,0,0),
   );
   
 
@@ -121,6 +123,41 @@ foreach($Polygons as $Polygon){
     imagepolygon($im,$Points,sizeof($Points)/2,$black);
 }
     
+    if($training){
+
+        $moveNames=[
+            'R'=>[2,1,1.5,0.5],
+            'L'=>[1,1,0.5,0.5],
+        ];
+
+        imagesetthickness($im,2);
+        foreach($moveNames as $name=>$coor){
+            $X=$D*$coor[2]+$Border+$coor[0]*$Ceil;
+            $Y=$D*$coor[3]+$Border+$coor[1]*$Ceil;
+            imagefilledellipse($im,$X, $Y, 30, 30, $Colors['White']);
+            imageellipse($im,$X, $Y, 30, 30, $Colors['Black']);
+            $param=GetParam(18,'Fonts/Arial Bold.ttf', $name);
+            imagefttext($im,18, 0, $X-$param['weith']/2-$param['dx'], $Y+$param['height']/2-$param['dy'], $Colors['Black'], 'Fonts/Arial Bold.ttf', $name);
+        }
+
+        $sideNames=[
+            'U'=>[1.5,0.5,1,0,'Black'],
+            'F'=>[1.5,1.5,1,1,'White'],
+            'R'=>[2.5,1.5,2,1,'Black'],
+            'L'=>[0.5,1.5,0,1,'Black'],
+        ];
+
+        imagesetthickness($im,1);
+        foreach($sideNames as $name=>$coor){
+            $X=$D*$coor[2]+$Border+$coor[0]*$Ceil;
+            $Y=$D*$coor[3]+$Border+$coor[1]*$Ceil;
+            imagefilledrectangle($im,$X-10, $Y-10, $X+10, $Y+10, $Colors[$Center[$name]['Color']]);
+            imagerectangle($im,$X-10, $Y-10, $X+10, $Y+10, $Colors['Black']);
+            $param=GetParam(12,'Fonts/Arial Bold.ttf', $name);
+            imagefttext($im,12, 0, $X-$param['weith']/2-$param['dx'], $Y+$param['height']/2-$param['dy'], $Colors[$coor[4]], 'Fonts/Arial Bold.ttf', $name);
+        }
+    }
+
   return $im;
 }
 ?>

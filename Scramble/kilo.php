@@ -1,5 +1,5 @@
 <?php 
-function ScrambleImage($scramble){
+function ScrambleImage($scramble,$training=false){
 
     $im = imageCreateFromPng("Scramble/Template/Kilominx.png");
 
@@ -18,22 +18,23 @@ function ScrambleImage($scramble){
           'LightBlue'=> imagecolorallocate($im,66,170,255),
           'LightYellow'=> imagecolorallocate($im,230,215,176),
 
+          'Black'=> imagecolorallocate($im,0,0,0),
       );
 
       $Center=array(
-            1=>array('x'=>406,'y'=>654,'P'=>'D','Color'=>'Green'),
-            2=>array('x'=>174,'y'=>484,'P'=>'D','Color'=>'Violet'),
-            3=>array('x'=>263,'y'=>212,'P'=>'D','Color'=>'Yellow'),
-            4=>array('x'=>548,'y'=>213,'P'=>'D','Color'=>'Blue'),
-            5=>array('x'=>641,'y'=>481,'P'=>'D','Color'=>'Red'),
-            6=>array('x'=>406,'y'=>413,'P'=>'U','Color'=>'White'),
+            1=>array('name'=>'F','x'=>406,'y'=>654,'P'=>'D','Color'=>'Green'),
+            2=>array('name'=>'L','x'=>174,'y'=>484,'P'=>'D','Color'=>'Violet'),
+            3=>array('name'=>'BL','x'=>263,'y'=>212,'P'=>'D','Color'=>'Yellow'),
+            4=>array('name'=>'BR','x'=>548,'y'=>213,'P'=>'D','Color'=>'Blue'),
+            5=>array('name'=>'R','x'=>641,'y'=>481,'P'=>'D','Color'=>'Red'),
+            6=>array('name'=>'U','x'=>406,'y'=>413,'P'=>'U','Color'=>'White'),
 
-            7=>array('x'=>872,'y'=>407,'P'=>'U','Color'=>'Pink'),
-            8=>array('x'=>1101,'y'=>250,'P'=>'U','Color'=>'LightGreen'),
-            9=>array('x'=>1335,'y'=>412,'P'=>'U','Color'=>'Orange'),
-            'A'=>array('x'=>1245,'y'=>680,'P'=>'U','Color'=>'LightBlue'),
-            'B'=>array('x'=>960,'y'=>681,'P'=>'U','Color'=>'LightYellow'),
-            'C'=>array('x'=>1100,'y'=>489,'P'=>'D','Color'=>'Grey'),
+            7=>array('name'=>'','x'=>872,'y'=>407,'P'=>'U','Color'=>'Pink'),
+            8=>array('name'=>'','x'=>1101,'y'=>250,'P'=>'U','Color'=>'LightGreen'),
+            9=>array('name'=>'','x'=>1335,'y'=>412,'P'=>'U','Color'=>'Orange'),
+            'A'=>array('name'=>'','x'=>1245,'y'=>680,'P'=>'U','Color'=>'LightBlue'),
+            'B'=>array('name'=>'','x'=>960,'y'=>681,'P'=>'U','Color'=>'LightYellow'),
+            'C'=>array('name'=>'','x'=>1100,'y'=>489,'P'=>'D','Color'=>'Grey'),
       );
 
 
@@ -152,6 +153,16 @@ function ScrambleImage($scramble){
       foreach($Center as $n=>$center){
         foreach ($Coor[$center['P']] as $c=>$coor){
             imagefill($im,($center['x']+$coor['x']), ($center['y']+$coor['y']), $Colors[$CoorColor[$n][$c]]);       
+        }
+        
+        if($training){
+            $name=$center['name'];
+            if($name){
+                imagefilledellipse($im,$center['x'], $center['y'], 80, 80, $Colors[$center['Color']]);
+                imageellipse($im,$center['x'], $center['y'], 80, 80, $Colors['Black']);
+                $param=GetParam(32,'Fonts/Arial Bold.ttf', $name);
+                imagefttext($im,  32, 0, $center['x']-$param['weith']/2-$param['dx'], $center['y']+$param['height']/2-$param['dy'], $Colors['Black'], 'Fonts/Arial Bold.ttf', $name);
+            }
         }
       }
       return $im;

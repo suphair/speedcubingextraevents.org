@@ -26,7 +26,7 @@ if(($exists_GenerateTraining or $exists_Generate or $exists_ScriptGenerate)
             eval("\$Scramble=GenerateTraining_$Event_CodeScript();");
         }
         include "Scramble/$Event_CodeScript.php";
-        $ScrambleImage=ScrambleImage($Scramble);
+        $ScrambleImage=ScrambleImage($Scramble,true);
         imagepng($ScrambleImage,$ScrambleImageFilename);
     }elseif($exists_ScriptGenerate){ ?>
         <script src="<?= PageLocal()?>Script/<?= $Event_CodeScript ?>_generator.js" type="text/javascript"></script>
