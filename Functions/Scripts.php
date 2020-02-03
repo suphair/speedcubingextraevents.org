@@ -1,4 +1,8 @@
 <?php
+function Script_phpinfo(){
+    phpinfo();
+}
+
 function checkColumn($table,$column){
     DataBaseClass::Query("select count(*) count from information_schema.`COLUMNS` where `TABLE_SCHEMA`='".getIni('DB','schema')."' and `TABLE_NAME`='$table' and `COLUMN_NAME`='$column'");
     return DataBaseClass::getrow()['count'];
