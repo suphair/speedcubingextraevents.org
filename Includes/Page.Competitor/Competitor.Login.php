@@ -5,8 +5,8 @@ $Delegate=CashDelegate();
 if($Competitor){ ?>
     <?= svg_green(12) ?>
     <?= Short_Name($Competitor->name) ?> <a href="<?= PageIndex() ?>Actions/Competitor.Logout"><font color="red"><?= ml('Competitor.SignOut')?></font></a>
-        &#9642; <a href="<?= PageIndex() ?>Competitor/<?= $Competitor->local_id ?>"><?= ml('Competitor.MyResults') ?></a>
-        &#9642; <a href="<?= PageIndex() ?>Competitions/My"><?= ml('Competitor.MyCompetitions') ?></a>   
+        <a href="<?= PageIndex() ?>Competitor/<?= $Competitor->local_id ?>"><img src='<?= PageIndex()?>Image/Icons/noavatar.png' width='10px'> <?= ml('Competitor.MyResults') ?></a>
+        <a href="<?= PageIndex() ?>Competitions/My"><img src='<?= PageIndex()?>Image/Icons/mycompetitions.png' width='10px'> <?= ml('Competitor.MyCompetitions') ?></a>   
         <?php if($Delegate){ ?>
             <nobr>&#9642; <a href="<?= LinkDelegate($Delegate['Delegate_WCA_ID']); ?>">
                 <?= ml('Competitor.Login.Delegate') ?>
