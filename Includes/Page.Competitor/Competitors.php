@@ -87,7 +87,7 @@
     $competitors_medals=DataBaseClass::getRows(); ?>
     <h2><img src='<?= PageIndex()?>Image/Icons/persons.png' width='20px'>
         <?php if($country_filter!='0'){ ?>
-            <?= ImageCountry($country_filter, 50)?> <?= ml('Competitors.Title.Country',CountryName($country_filter))?>
+            <?= ImageCountry($country_filter, 30)?> <?= ml('Competitors.Title.Country',CountryName($country_filter))?>
         <?php }else{ ?>
             <?= ml('Competitors.Title.All' )?>
         <?php } ?>

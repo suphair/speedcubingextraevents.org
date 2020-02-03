@@ -67,7 +67,7 @@ $comment="";
                 $row=DataBaseClass::QueryGenerate(false);
                 if(isset($row['Competitor_Name'])){
                     $CompetitionDelegatesWCA[$d]=$row;
-                    $delegates_out[]="<a href='mailto:".$row['Competitor_Email']."'><img valign='middle' src='". PageIndex()."Image/Icons/mail.png' width='15px'>".$row['Competitor_Name']."</a>";   
+                    $delegates_out[]="<a href='mailto:".$row['Competitor_Email']."'><img valign='middle' src='". PageIndex()."Image/Icons/mail.png' width='20px'> ".$row['Competitor_Name']."</a>";   
                 }
             }
         }

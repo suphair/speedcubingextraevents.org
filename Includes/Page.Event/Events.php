@@ -32,7 +32,7 @@ $extraWhere="";
 ?>
 
 
-<h2><a href="<?=PageIndex()?>Events"><?= ml('Events.Title'); ?></a>
+<h2><img src='<?= PageIndex()?>Image/Icons/SEE.png' width='20px'> <a href="<?=PageIndex()?>Events"><?= ml('Events.Title'); ?></a>
 
 <?php  
 if($type_filter=='team') echo '/ '.ml('Events.Team.Title');
@@ -121,7 +121,7 @@ if($type_filter=='333cube'){
         <tr class="tr_title">
             <td><?= ml('Events.Table.Name') ?></td>
             <td align="center"> <img height="15px"src="<?= PageIndex() ?>Image/Icons/persons.png"></td>
-            <td align="center"> <img height="12px"src="<?= PageIndex() ?>Image/Icons/competitions.png"></td>
+            <td align="center"> <img height="15px"src="<?= PageIndex() ?>Image/Icons/competitions.png"></td>
             <?php if($Competitor){?>
                 <td class="attempt" colspan="2"><b><?= ml('Events.Table.PersonalRecord') ?></b> <?= $Competitor->wca_id ?></td>
                 <td class="attempt" colspan="2">

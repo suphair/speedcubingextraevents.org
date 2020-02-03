@@ -34,7 +34,7 @@ if(sizeof($eventswithoutregulations)){ ?>
     <div class="form">
         <h2 class="error"><?= ml('Competitor.Delegate.Regulations') ?></h2>
     <?php foreach($eventswithoutregulations as $eventwithoutregulations){ ?>
-    <div class="border_warning"><a href="<?= PageIndex()?>/Regulations/#<?= $eventwithoutregulations['Code']?>"><?= $eventwithoutregulations['Name']?></a></div>
+    <p><?= ImageEvent($eventwithoutregulations['CodeScript'],25) ?> <?= $eventwithoutregulations['Name']?></p>
     <?php } ?>
     </div>
 <?php } 

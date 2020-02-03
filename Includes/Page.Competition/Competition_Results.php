@@ -14,7 +14,7 @@ $CompetitionEvent=ObjectClass::getObject('PageCompetitionEvent');
 
 <?= EventBlockLinks($CompetitionEvent); ?>
     
-<?php if($CompetitionEvent['Event_Comment']){?>
+<?php if(ml_json($CompetitionEvent['Event_Comment'])){?>
     <div class="block_comment">
         <?= Parsedown(ml_json($CompetitionEvent['Event_Comment'])); ?>
     </div>

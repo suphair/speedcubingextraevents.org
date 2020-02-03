@@ -25,7 +25,10 @@ $Delegate_rows=DataBaseClass::GetRows();
 <?php }else{ ?>
     <a href="<?= PageIndex()."Delegate/Candidate" ?>"><span class='error'><?= ml('Delegate.Candidate.Title') ?></span></a>
 <?php } ?>    
-    </h3><br>
+    </h3>
+    
+    <h2><img src='<?= PageIndex()?>Image/Icons/delegates.png' width='20px'> <?= ml('Navigator.Delegates') ?></h2>
+    
     <table class="Disciplines">
         <tr class="tr_title">
             <td/>

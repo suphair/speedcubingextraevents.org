@@ -4,7 +4,7 @@ $Delegate=CashDelegate();
 
 if($Competitor){ ?>
     <?= svg_green(12) ?>
-    <?= $Competitor->name ?> <a href="<?= PageIndex() ?>Actions/Competitor.Logout"><font color="red"><?= ml('Competitor.SignOut')?></font></a>
+    <?= Short_Name($Competitor->name) ?> <a href="<?= PageIndex() ?>Actions/Competitor.Logout"><font color="red"><?= ml('Competitor.SignOut')?></font></a>
         &#9642; <a href="<?= PageIndex() ?>Competitor/<?= $Competitor->local_id ?>"><?= ml('Competitor.MyResults') ?></a>
         &#9642; <a href="<?= PageIndex() ?>Competitions/My"><?= ml('Competitor.MyCompetitions') ?></a>   
         <?php if($Delegate){ ?>

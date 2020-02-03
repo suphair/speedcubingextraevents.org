@@ -1,5 +1,5 @@
 <?php includePage('Navigator'); ?>
-<h1><?= ml('News.Title') ?></h1>
+<h1><img src='<?= PageIndex()?>Image/Icons/news.png' width='20px'> <?= ml('News.Title') ?></h1>
 <?php DataBaseClass::Query("Select N.*,C.Name from News N left outer join Competitor C on C.WID=N.Delegate order by ID desc"); ?>
 <table  width="100%"> 
 <?php foreach(DataBaseClass::getRows() as $news){ 
