@@ -22,7 +22,7 @@
     <?= ImageCountry($competitor['Competitor_Country'], 20)?> <?= CountryName($competitor['Competitor_Country']) ?>
 <?php } ?>  
 <?php if ($competitor['Competitor_WCAID']){ ?>    
-    &#9642; <a href="https://www.worldcubeassociation.org/persons/<?= $competitor['Competitor_WCAID'] ?>"><?= $competitor['Competitor_WCAID'] ?></a>
+    &#9642; <a target="_blank" href="https://www.worldcubeassociation.org/persons/<?= $competitor['Competitor_WCAID'] ?>"><?= $competitor['Competitor_WCAID'] ?><img src="<?=  PageIndex() ?>Image/Icons/externallink.png" align="top" width="10px"></a>
 <?php } ?>  
     &#9642; <a href="<?= LinkCompetitor($Delegate['Delegate_WCA_ID']) ?>"><?= ml('Delegate.Results') ?></a>
 </h3>    

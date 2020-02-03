@@ -130,7 +130,7 @@ tr.select{
 
 
 table{
-    margin:10px;
+    margin:0px;
     border-collapse: collapse;
     margin-bottom:0px;
     background-color: var(--white);
@@ -872,4 +872,3 @@ ul{
 ul li ul{
     margin: 0px 0px;
 }
-

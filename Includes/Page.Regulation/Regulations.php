@@ -2,8 +2,9 @@
 <?php $Language=$_SESSION['language_select'];?>
 <h2><img src='<?= PageIndex()?>Image/Icons/regulation.png' width='20px'> <?= ml('Regulations.Description'); ?></h2>
   
-<h3><?= ml('Regulations.LinkRegulationSEE', PageIndex().'MainRegulations'); ?>
-  ▪ <?= ml('Regulations.LinkRegulationWCA'); ?></h3>
+<h3><?= ml('Regulations.LinkRegulationSEE', PageIndex().'MainRegulations'); ?><br>
+<?= ml('Regulations.LinkRegulationWCA',['<a target="_blank" href="https://www.worldcubeassociation.org/regulations">','<img src="'.PageIndex().'Image/Icons/externallink.png" align="top" width="10px"></a>']); ?></h3>
+
 
 <?php 
 $discipline_default=[];
@@ -86,7 +87,3 @@ if(sizeof($eventswithoutregulations)){ ?>
 <br>
 <?php 
 } ?>
-
-<?= mlb('Regulations.LinkRegulationSEE.Link')?>
-<?= mlb('Regulations.LinkRegulationSEE.Edit')?>
-

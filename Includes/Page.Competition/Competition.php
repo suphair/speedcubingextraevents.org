@@ -50,7 +50,7 @@ $attempts_exists=($data['Attempts']>0 or $data['Start']);
         <?= $imgCompetition?ImageCountry($Competition['Competition_Country'],50):'' ?>
         <?=  date_range($Competition['Competition_StartDate'],$Competition['Competition_EndDate']); ?>
         &#9642; <?= CountryName($Competition['Competition_Country']); ?>, <?= $Competition['Competition_City'] ?>
-        &#9642; <a href="https://www.worldcubeassociation.org/competitions/<?= $Competition['Competition_WCA'] ?>">WCA</a>
+        &#9642; <a target="_blank" href="https://www.worldcubeassociation.org/competitions/<?= $Competition['Competition_WCA'] ?>">WCA<img src="<?=  PageIndex() ?>Image/Icons/externallink.png" align="top" width="15px"></a>
     </h2>    
     </td></tr></table>
     

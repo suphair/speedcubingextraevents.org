@@ -8,7 +8,7 @@ function scorecard_block($ID){
         if(isset($date['Event_ID'])){ 
             ob_start(); ?>
             <a target="_blank"  href="<?= PageAction('CompetitonEvent.ScoreCards')?>/<?= $date['Event_ID'] ?>">        
-                <img style="vertical-align: middle" width="20px"  src="<?= PageIndex()?>Image/Icons/print.png">
+                <img style="vertical-align: middle" width="15px"  src="<?= PageIndex()?>Image/Icons/print.png">
                 <?= ml('Function.ScoreCard') ?>
             </a>
             <?php

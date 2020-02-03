@@ -101,7 +101,7 @@
                  <?= ImageCountry($RequestCandidate['Competitor_Country'], 20)?> <?= CountryName($RequestCandidate['Competitor_Country']) ?> 
                  ▪ <?= date_range(date('Y-m-d',strtotime($RequestCandidate['RequestCandidate_Datetime']))); ?>
            <br>
-              <?= $RequestCandidate['Competitor_WCAID'] ?> <a href="https://www.worldcubeassociation.org/persons/<?= $RequestCandidate['Competitor_WCAID'] ?>"><?= ml('Delegate.Candidate.Competitor.WCA') ?></a> &#9642; 
+              <?= $RequestCandidate['Competitor_WCAID'] ?> <a target="_blank" href="https://www.worldcubeassociation.org/persons/<?= $RequestCandidate['Competitor_WCAID'] ?>"><?= ml('Delegate.Candidate.Competitor.WCA') ?><img src="<?=  PageIndex() ?>Image/Icons/externallink.png" align="top" width="10px"></a> 
                <a href="<?= PageIndex()."Competitor/".$RequestCandidate['Competitor_WCAID'] ?>"><?= ml('Delegate.Candidate.Competitor') ?></a>
           </b><br>
             <?php if($RequestCandidate['Competitor_Avatar']){?>
@@ -230,7 +230,7 @@
                 </nobr>    
             </td>
             <td>
-                <a href="https://www.worldcubeassociation.org/persons/<?= $RequestCandidate['Competitor_WCAID'] ?>"><?= $RequestCandidate['Competitor_WCAID'] ?></a>
+                <a target="_blank" href="https://www.worldcubeassociation.org/persons/<?= $RequestCandidate['Competitor_WCAID'] ?>"><?= $RequestCandidate['Competitor_WCAID'] ?><img src="<?=  PageIndex() ?>Image/Icons/externallink.png" align="top" width="10px"></a>
             </td>
             <td>
                 <nobr>
@@ -300,7 +300,7 @@
                 </nobr>    
             </td>
             <td>
-                <a href="https://www.worldcubeassociation.org/persons/<?= $RequestCandidate['Competitor_WCAID'] ?>"><?= $RequestCandidate['Competitor_WCAID'] ?></a>
+                <a target="_blank" href="https://www.worldcubeassociation.org/persons/<?= $RequestCandidate['Competitor_WCAID'] ?>"><?= $RequestCandidate['Competitor_WCAID'] ?><img src="<?=  PageIndex() ?>Image/Icons/externallink.png" align="top" width="10px"></a>
             </td>
             <td>
                 <nobr>
