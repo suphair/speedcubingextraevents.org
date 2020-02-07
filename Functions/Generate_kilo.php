@@ -18,17 +18,24 @@ function Generate_kilo($training=false){
         $str=trim($str);
         return $str;
     }else{
-       $filename="Script/kilo_out.txt";
-       $file=file($filename);
-       $i=rand(0,sizeof($file));
-       $str=$file[$i];
-       if(!$training){
+        if($training){
+            $filename="Script/kilo_training_out.txt";
+            $file=file($filename);
+            $i=rand(0,sizeof($file));
+            $str=$file[$i];
+            $str=trim($str);
+            return $str;
+       }else{
+            $filename="Script/kilo_out.txt";
+            $file=file($filename);
+            $i=rand(0,sizeof($file));
+            $str=$file[$i];
             $fp=fopen($filename,"w");
             unset($file[$i]);
             fputs($fp,implode("",$file));
             fclose($fp);
+            $str=trim($str);
+            return $str;
        }
-       $str=trim($str);
-       return $str;
     }
 }

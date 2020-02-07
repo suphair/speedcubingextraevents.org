@@ -485,11 +485,13 @@ def ida_search(indices, mtables, ptables, bound, last):
 
 
 
-for i in range(800):
-    f = open("kilo_out.txt", 'a')
+
+f = open("kilo_training_out.txt", 'w')
+for i in range(1000):
     now = datetime.datetime.now()
     print(i)
     print(now.strftime("%d-%m-%Y %H:%M\n"))
-    f.write("\n")
+    if i>0:
+        f.write("\n")
     f.write(print_move_sequence(solve(random_state())))
-    f.close()
+f.close()
