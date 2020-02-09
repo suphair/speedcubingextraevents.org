@@ -15,10 +15,11 @@ if(CheckAccess('Competition.Add.Ext')){
     $DelegateID=$Delegate['Delegate_ID'];
 }
 
-$result=@file_get_contents(GetIni('WCA_API','competition')."/$WCA");
+$WCA=str_replace(" ","",$WCA);
+$result= file_get_contents_curl(GetIni('WCA_API','competition')."/".$WCA);
 $competition=json_decode($result);
-if(!$competition){
-    SetMessageName('CompetitionCreate','WCA not load '.$WCA);
+if(!$competition or isset($competition->error)){
+    SetMessageName('CompetitionCreate',"[$WCA] competition is not announced on the WCA website");
     HeaderExit();  
 }
 

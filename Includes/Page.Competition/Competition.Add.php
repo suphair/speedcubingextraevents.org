@@ -4,7 +4,7 @@
     <div class="form"> 
         <form method="POST" action="<?= PageAction('Competition.Add') ?>">
             <div class="form_field">
-                WCA 
+                competition_id 
             </div>
             <div class="form_input">
                 <input required type="text" name="WCA" value="" />
