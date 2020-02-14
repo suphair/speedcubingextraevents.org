@@ -8,7 +8,7 @@ function add_visit(){
     if(filter_var($client, FILTER_VALIDATE_IP)) $ip = $client;
     elseif(filter_var($forward, FILTER_VALIDATE_IP)) $ip = $forward;
     else $ip = $remote;
-    $user_agent=@$_SERVER['HTTP_USER_AGENT'];
+    $user_agent= DataBaseClass::Escape(@$_SERVER['HTTP_USER_AGENT']);
 
   /*  $bots=['YandexBot','YandexMobileBot','Googlebot','Mail.RU_Bot','SeznamBot','bingbot','coccocbot','SafeDNSBot','DuckDuckGo-Favicons-Bot',
 'BLEXBot','msnbot','CCBot','TelegramBot','LinkpadBot' ,'SurdotlyBot','YandexMetrika','Applebot','PaperLiBot','Clarabot','bot@linkfluence.com',
