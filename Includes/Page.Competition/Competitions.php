@@ -1,4 +1,3 @@
-<?php includePage('Navigator'); ?>
 <?php includePage('News.Announce'); ?>
 
 <?php     
@@ -27,10 +26,16 @@ if(isset($request[1])){
     if($request[1]=='my'){
         $My=1;
     }else{
-        $country_filter= DataBaseClass::Escape($request[1]);
+        $country_filter_tmp=DataBaseClass::Escape($request[1]);
+        $country_filter='0';
+        DataBaseClass::Query('select * from Country');
+        foreach(DataBaseClass::getRows() as $row){
+            if($row['ISO2']== strtoupper($country_filter_tmp)){
+                $country_filter=$country_filter_tmp;
+            }
+        }
     }
 }  
-
 if($My==1 and  !GetCompetitorData()){
     $My=0;
 }
@@ -82,32 +87,25 @@ if($My==1 and  !GetCompetitorData()){
     $results= DataBaseClass::getRows(true,true);
     ?>
     <h2> 
-        <img src='<?= PageIndex()?>Image/Icons/competitions.png' width='20px'>
         <?php if($My){ ?>
             <?= ml('Competitions.My') ?>
-            
-        <?php }elseif($country_filter=='0'){ ?>
-            <?= ml('Competitions.All') ?>
         <?php }else{ ?>
-            <?= ml('Competitions.Title.Country'); ?>
-        <?= ImageCountry($country_filter, 25)?>
-            <?= CountryName($country_filter) ?>
+            <?= ml('Competitions.Title') ?>
         <?php } ?>
-            
-        <select onchange="document.location='<?= PageIndex()?>Competitions/' + this.value ">
-            <option <?= ($country_filter=='0' and $My==0)?'selected':''?> value=""><?= ml('Competitions.Select.All') ?> (<?= $competitions_countries_all ?>)</option>
-            <?php if(GetCompetitorData()){ ?><option <?= $My=='1'?'selected':''?> value="My"><?= ml('Competitions.Select.My') ?><?php if(sizeof($competitor_competitions)-1>0){ ?> (<?= sizeof($competitor_competitions)-1 ?>) <?php } ?></option><?php } ?>
-            <option disabled>------</option>
+    </h2>     
+    <select onchange="document.location='<?= PageIndex()?>Competitions/' + this.value ">
+        <option <?= ($country_filter=='0' and $My==0)?'selected':''?> value=""><?= ml('Competitions.All') ?> (<?= $competitions_countries_all ?>)</option>
+        <?php if(GetCompetitorData()){ ?><option <?= $My=='1'?'selected':''?> value="My"><?= ml('Competitions.My') ?><?php if(sizeof($competitor_competitions)-1>0){ ?> (<?= sizeof($competitor_competitions)-1 ?>) <?php } ?></option><?php } ?>
+        <option disabled>------</option>
 
-            <?php foreach($competitions_countries as $competitions_country)if($competitions_country['Country']){ ?>
-                    <option <?= $country_filter==strtolower($competitions_country['Country'])?'selected':''?> value="<?= $competitions_country['Country']?>">        
-                        <?= $competitions_country['CountryName'] ?> (<?= $competitions_country['count'] ?>)
-                    </option> 
-            <?php } ?>      
+        <?php foreach($competitions_countries as $competitions_country)if($competitions_country['Country']){ ?>
+                <option <?= $country_filter==strtolower($competitions_country['Country'])?'selected':''?> value="<?= $competitions_country['Country']?>">        
+                    <?= $competitions_country['CountryName'] ?> (<?= $competitions_country['count'] ?>)
+                </option> 
+        <?php } ?>      
 
-        </select>
-    </h2>
-    <table class="Competitions">
+    </select>
+    <table class="table_new">
     <?php 
     $comp_statuses=[];
     foreach($results as $i=>$r){
@@ -119,40 +117,29 @@ if($My==1 and  !GetCompetitorData()){
     
     $comp_status='-2';
     foreach( $results as $i=>$r){ ?>
-        <?php 
-            if($r['UpcomingStatus']!=$comp_status){
-            $comp_status = $r['UpcomingStatus']; ?>
-            <?php if($i){ ?>
-                <tr class="no_border"><td></td></tr>
-            <?php } ?>    
-            <tr class="no_border tr_title">
-                <td colspan="3">
-                    <?php if($comp_status==2){ ?>
-                        <?= ml('Competitons.Past') ?>
-                    <?php }elseif($comp_status==1){ ?>    
-                        <?= ml('Competitons.Progress') ?>
-                    <?php }elseif($comp_status==0){ ?>
-                        <?= ml('Competitons.Upcoming') ?>
-                    <?php } ?>
-                    <span class="badge"><?= $comp_statuses[$comp_status]?></span>
-                </td>
-                <td align="center">
-                    <img height="15px"src="<?= PageIndex()?>Image/Icons/persons.png">
-                </td>
-                <td>
-                    <?= ml('Competitions.Table.Events')?>
-                </td>
-            </tr>
-        <?php 
-        } ?>
-    <tr valign="bottom">
+        <?php if($r['UpcomingStatus']!=$comp_status and $comp_status!=-2){ ?>
+            
+        <?php } 
+        $comp_status = $r['UpcomingStatus']; ?>
+    <tr valign="bottom" class="competition">
         <td>
-            <span class="<?= !$r['Status']?'error':($comp_status==1?'message':'') ?>">
-                <b><?= date_range($r['StartDate'],$r['EndDate']); ?></b>
-            </span>
+            <?php if($comp_status==0){ ?>
+                <span style="color:var(--light_gray)"><i class="fas fa-hourglass-start"></i></span>
+            <?php }?>
+            <?php if($comp_status==1){ ?>
+                <span style="color:var(--green)"><i class="fas fa-hourglass-half"></i></span>
+            <?php }?>
+            <?php if($comp_status==2){ ?>
+                <span style="color:var(--black)"><i class="fas fa-hourglass-end"></i></span>
+            <?php }?>
+        </td>            
+        <td>            
+            <b><?= date_range($r['StartDate'],$r['EndDate']); ?></b>    
         </td>   
         <td>
             <?= ImageCountry($r['Country'],20) ?>
+        </td>
+        <td>
             <a href="<?= LinkCompetition($r['WCA']) ?>">
                 <span class="<?= ($r['Unofficial'] and $comp_status!=-1)?'unofficial':'' ?>"><?= $r['Name'] ?></span>
             </a>
@@ -160,17 +147,17 @@ if($My==1 and  !GetCompetitorData()){
         <td>
             <b><?= $r['CountryName'] ?></b>, <?= $r['City'] ?>
         </td>
-        <td class="attempt">
-            <?= $r['countCompetitors']?$r['countCompetitors']:'' ?>
+        <td>
+            <b><?= $r['countCompetitors']?$r['countCompetitors']:'' ?></b>
         </td>
-        <td style="padding:0px">
+        <td >
             <?php 
             
             foreach(explode('#',$r['events']) as $e=>$event){
                 if($e<10){
                     $event_data=explode(';',$event); 
-                    if(isset($event_data[2])){ ?>
-                        <a href="<?= setLinkEvent($r['WCA'],$event_data[1],1) ?>"><?= ImageEvent($event_data[2],25,$event_data[0]);?></a>
+                    if(isset($event_data[2])){?>
+                        <a href="<?= setLinkEvent($r['WCA'],$event_data[1],1) ?>"><?= ImageEvent($event_data[2],1.3,$event_data[0]);?></a>
                     <?php } 
                 }
             } ?>

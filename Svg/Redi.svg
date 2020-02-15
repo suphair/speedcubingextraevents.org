@@ -5,16 +5,16 @@
 	 width="500px" height="500px" viewBox="0 0 500 500" enable-background="new 0 0 500 500" xml:space="preserve">
 
 	 
-<polygon fill="#000000" points="192,30   308 ,30   308,155  250,218  192,146 "/>
-<polygon fill="#000000" points=" 30,192   30 ,308  155,308  218,250  146,192 "/>
-<polygon fill="#000000" points="192,470  308 ,470  308,345  250,282  192,354 "/>
-<polygon fill="#000000" points="470,192  470 ,308  345,308  282,250  354,192 "/>
+<polygon fill="#000000" points="192,30   308,30   308,155  250,218  192,146 "/>
+<polygon fill="#000000" points="30,192   30,308  155,308  218,250  146,192 "/>
+<polygon fill="#000000" points="192,470  308,470  308,345  250,282  192,354 "/>
+<polygon fill="#000000" points="470,192  470,308  345,308  282,250  354,192 "/>
 	 
 
-<rect     x="30"     y="30"     width="116"     height="116"     id="rect18"     style="fill:#000000" />
-<rect     x="354"     y="30"     width="116"     height="116"     id="rect22"     style="fill:#000000" />
-<rect     x="30"     y="354.45139"     width="116.05709"     height="116.05709"     id="rect30"     style="fill:#000000" />
-<rect     x="354.8866"     y="354.45139"     width="116.05709"     height="116.05709"     id="rect34"     style="fill:#000000" />
+<rect     x="30"     y="30"     width="116"     height="116"    style="fill:#000000" />
+<rect     x="354"     y="30"     width="116"     height="116"  style="fill:#000000" />
+<rect     x="30"     y="354"     width="116"     height="116"  style="fill:#000000" />
+<rect     x="354"     y="354"     width="116"     height="116"   style="fill:#000000" />
 	 
 	 
 </svg>

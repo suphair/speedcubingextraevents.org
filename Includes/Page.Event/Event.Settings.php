@@ -1,8 +1,7 @@
-<?php includePage('Navigator'); ?>
     <?php
 $request=Request();
 $ID=0;
-
+$Language=getLanguages()[0];
 if(isset($request[1])){
     $Code=DataBaseClass::Escape($request[1]);
     DataBaseClass::FromTable('Discipline', "Code='$Code'");
@@ -18,223 +17,239 @@ if(isset($request[1])){
    
     $formats=DataBaseClass::QueryGenerate();
 }
+
+DataBaseClass::FromTable('Discipline'); 
+DataBaseClass::OrderClear('Discipline','Status'); 
+DataBaseClass::Order_current('Name'); 
+$disciplines=DataBaseClass::QueryGenerate();
 ?>
-<?php IncludePage("Events_Line") ?>
-<hr class="hr_round">
-<h1 class="<?= $discipline['Discipline_Status'] ?>">
-    <img style="vertical-align: middle" width="40px" src="<?= PageIndex()?>Image/Icons/settings.png"> <?= ml('*.Settings') ?>:
-    <a href="<?= PageIndex()?>Event/<?= $discipline['Discipline_Code'] ?>"><?= $discipline['Discipline_Name'] ?></a>
-</h1>
+<h1 class="<?= $discipline['Discipline_Status'] ?>"><?= $discipline['Discipline_Name'] ?> / Settings</h1>
 
-<?= EventBlockLinks($discipline,'settings'); ?>
-
-<div class="form">
+<table width="100%"><tr><td width="10%">
+<table class="table_info" style="white-space: nowrap">
+    <?php foreach($disciplines as $d=>$discipline_row){ ?>
+        <tr>
+            <td><?= ImageEvent($discipline_row['Discipline_CodeScript'],1) ?></td>
+            <td>
+                <a class="<?= $discipline['Discipline_Code'] ==$discipline_row['Discipline_Code']?'list_select':''?>" href="<?= PageIndex()?>Event/<?= $discipline_row['Discipline_Code'] ?>/Settings"><?= $discipline_row['Discipline_Name'] ?></a>
+                <?php if($discipline_row['Discipline_Status']!='Active'){ ?>
+                   <i class="fas fa-ban"></i>
+                <?php } ?>
+            </td>
+        </tr>
+    <?php } ?>
+</table>     
+</td><td width="90%">  
+<table class="table_info">
+    <tr>
+        <td>Image</td>
+        <td><?= ImageEvent($discipline['Discipline_CodeScript'],2) ?></td>    
+    </tr>    
     <form method="POST" action="<?= PageAction("Event.Edit") ?>">
     <input name="ID" type="hidden" value="<?=  $discipline['Discipline_ID'] ?>" />
-    <div class="form_field">
-        Name 
-    </div>
-    <div class="form_input">
-        <input type="text" name="Name" value="<?= $discipline['Discipline_Name'] ?>" />
-    </div>
-    <div class="form_field">
-        Code
-    </div>
-    <div class="form_input">
-        <input type="text" name="Code" value="<?= $discipline['Discipline_Code']?>" />
-    </div>
-    <div class="form_field">
-        Simple
-    </div>
-    <div class="form_input">
-        <input  type="checkbox" name="Simple" <?= $discipline['Discipline_Simple']?'checked':'' ?> ><br>
-    </div>
-    <div class="form_field">
-        Inspection
-    </div>
-    <div class="form_input">
-        <input  type="radio" name="Inspection" value="15" <?= $discipline['Discipline_Inspection']==15?'checked':'' ?>>15 
-        <input  type="radio" name="Inspection" value="20" <?= $discipline['Discipline_Inspection']==20?'checked':'' ?>>20<br>
-    </div>
-    <div class="form_field">
-        Team
-    </div>
-    <div class="form_input">
-        <?php for($i=1;$i<=4;$i++){ ?>
-            <input type="radio" name="Competitors" <?= $discipline['Discipline_Competitors']==$i?'checked':''?> value="<?= $i ?>"><?= $i ?>
-        <?php } ?>
-    </div>
-    <div class="form_field">
-        Format 
-    </div>
-    <div class="form_input">
-        <?php 
-        DataBaseClass::Query(' Select '
+    <tr>
+        <td>Name</td>
+        <td><input type="text" name="Name" value="<?= $discipline['Discipline_Name'] ?>" /></td>   
+    </tr>    
+    <tr>
+        <td>Code</td>
+        <td><input type="text" name="Code" value="<?= $discipline['Discipline_Code'] ?>" /></td>   
+    </tr> 
+    <tr>
+        <td>Development code</td>
+        <td><i class="far fa-file-code"></i> <?=  $discipline['Discipline_CodeScript'] ?></td>   
+    </tr> 
+    <tr>
+        <td>Simple</td>
+        <td><input  type="checkbox" name="Simple" <?= $discipline['Discipline_Simple']?'checked':'' ?> ></td>   
+    </tr> 
+    <tr>
+        <td>Inspection</td>
+        <td>
+            <input  type="radio" name="Inspection" value="15" <?= $discipline['Discipline_Inspection']==15?'checked':'' ?>>15 seconds&nbsp;
+            <input  type="radio" name="Inspection" value="20" <?= $discipline['Discipline_Inspection']==20?'checked':'' ?>>20 seconds  
+        </td>   
+    </tr>   
+    <tr>
+        <td>Team</td>
+        <td>
+            <?php for($i=1;$i<=4;$i++){ ?>
+                <input type="radio" name="Competitors" <?= $discipline['Discipline_Competitors']==$i?'checked':''?> value="<?= $i ?>"><?= $i ?>&nbsp;
+            <?php } ?>
+        </td>   
+    </tr>
+    
+    <?php DataBaseClass::Query(' Select '
                 . ' F.ID,F.Result, F.Attemption,max(DF.ID) DF, max(E.ID) E '
                 . ' from Format F '
                 . ' left outer join DisciplineFormat DF on DF.Format=F.ID and DF.Discipline='.$discipline['Discipline_ID']. ' ' 
                 . ' left outer join Event E on E.DisciplineFormat=DF.ID '
                 . ' group by F.ID,F.Result, F.Attemption '
                 . ' order by F.Result, F.Attemption'); 
-        foreach(DataBaseClass::getRows() as $format){ ?>
-        <input  type="checkbox" <?= $format['E']?'disabled':'' ?>  <?= $format['DF']?'checked':'' ?> name="Formats[]" value="<?= $format['ID'] ?>" ><?= $format['Result']." of ".$format['Attemption'] ?><br>
-        <?php } ?>               
-    </div>
-    <div class="form_field">
-        Format result 
-    </div>
-    <div class="form_input">
-        <select name="FormatResult">
-        <?php DataBaseClass::Query(' Select * from FormatResult order by ID');
-        foreach(DataBaseClass::getRows() as $format_result){ ?>
-            <option value="<?= $format_result['ID']?>" <?= $discipline['FormatResult_ID']==$format_result['ID']?'selected':''; ?>><?= $format_result['Name']?></option>
-        <?php } ?>
-        </select>
-    </div>    
+        $format_result_disabled=false;
+        foreach(DataBaseClass::getRows() as $f=>$format){ 
+            if($format['E']){$format_result_disabled=true;} ?>
+    <tr>
+        <td><?php if(!$f) {?>Formats<?php } ?></td>
+        <td>
+            <input  type="checkbox" <?= $format['E']?'disabled':'' ?> <?= $format['DF']?'checked':'' ?> name="Formats[]" value="<?= $format['ID'] ?>" > <?= $format['Result']." of ".$format['Attemption'] ?>
+            <?php if($format['E']){?>
+                <i class="fas fa-info-circle"></i> attempts exist
+            <?php } ?>
+        </td>
+    </tr>
+    <?php } ?>
     
+    <tr>
+        <td>Format results</td>
+        <td>
+            <?php if($format_result_disabled){  ?>
+                <input hidden name="FormatResult" value="<?= $discipline['FormatResult_ID'] ?>">
+                <?php DataBaseClass::Query(' Select * from FormatResult order by ID');
+                foreach(DataBaseClass::getRows() as $format_result)
+                    if($discipline['FormatResult_ID']==$format_result['ID']){?>
+                        <?= $format_result['Name']?>
+                    <?php } ?>
+            <?php }else{ ?>
+                <select name="FormatResult">
+                <?php DataBaseClass::Query(' Select * from FormatResult order by ID');
+                foreach(DataBaseClass::getRows() as $format_result){ ?>
+                    <option value="<?= $format_result['ID']?>" <?= $discipline['FormatResult_ID']==$format_result['ID']?'selected':''; ?>><?= $format_result['Name']?></option>
+                <?php } ?>
+                </select>
+            <?php } ?>
+        </td>
+    </tr>
     <?php $TNoodles=["222","333","333oh","333bf","444","555","skewb","pyram","sq1","clock","minx","666","777"] ?>
-    <div class="form_field">
-        TNoodle event
-    </div>
-    <div class="form_input">
-        <select name="TNoodle">
+    <tr>
+        <td>TNoodle event</td>
+        <td>
+            <select name="TNoodle">
             <option value=""></option>
             <?php foreach( $TNoodles as $i=>$code){?>
                <option <?= $discipline['Discipline_TNoodle']==$code?'selected':'' ?> value="<?= $code ?>"><?= $code ?></option>
             <?php } ?>
-        </select>    
-    </div>
-    <div class="form_field">
-        Use TNoodle's picture
-    </div>
-    <div class="form_input">
-        <input  type="checkbox" name="GlueScrambles" <?= $discipline['Discipline_GlueScrambles']?'checked':'' ?> ><br>
-    </div>
-    <div class="form_field">
-        Cut scrambles
-    </div>
-    <div class="form_input">
-        <input  type="checkbox" name="CutScrambles" <?= $discipline['Discipline_CutScrambles']?'checked':'' ?> ><br>
-    </div>
-    <div class="form_field">
-        <br><b>Glue the scrambles</b>
-    </div>
-    <?php $Discipline_TNoodles=explode(",",$discipline['Discipline_TNoodles']); ?>
-    <div class="form_field">
-        TNoodle events <span class="badge"><?= $discipline['Discipline_TNoodles']?sizeof($Discipline_TNoodles):0 ?></span>
-    </div>
-    <br>
-    <div class="form_input">
-        <?php 
-        foreach( $TNoodles as $i=>$code){?>
-            <input type="checkbox" name="TNoodles[<?= $code?>]" <?= in_array($code,$Discipline_TNoodles)?"checked":"" ?> /><?= $code?>
+            </select>   
+        </td>    
+    </tr>
+    <tr>
+        <td>Use TNoodle's picture</td>
+        <td><input  type="checkbox" name="GlueScrambles" <?= $discipline['Discipline_GlueScrambles']?'checked':'' ?> ></td>
+    </tr>  
+    <tr>
+        <td>Cut scrambles</td>
+        <td><input  type="checkbox" name="CutScrambles" <?= $discipline['Discipline_CutScrambles']?'checked':'' ?> ></td>
+    </tr>  
+    <tr>
+        <?php $Discipline_TNoodles=explode(",",$discipline['Discipline_TNoodles']); ?>
+        <td>Glue the scrambles</td>
+        <td>
+            <?php foreach( $TNoodles as $i=>$code){?>
+            <input type="checkbox" name="TNoodles[<?= $code?>]" <?= in_array($code,$Discipline_TNoodles)?"checked":"" ?> /><?= $code?>&nbsp;
             <?php if($i==5){ ?>
                     <br>
                <?php } ?>
-        <?php } ?>
-    </div>
-    
-    
-    <div class="form_field">
-        Multiplier
-    </div>
-    <div class="form_input">
-        <input type="number" min="1" max="10" required="" name="TNoodlesMult" value="<?= $discipline['Discipline_TNoodlesMult'] ?>">
-    </div>
-    <div class="form_field">
-        Comment
-    </div>
-    <div class="form_input">
-    <?php $comments=json_decode($discipline['Discipline_Comment'],true);
-        if(!$comments and $discipline['Discipline_Comment']!='[]'){
-            $comments[getLanguages()[0]]=$discipline['Discipline_Comment'];
-        }
-        foreach(getLanguages() as $language){ ?>
-            <?= ImageCountry($language,20); ?>
-            <input name="Comment[<?= $language ?>]" style="width: 300px" value="<?= isset($comments[$language])?$comments[$language]:''; ?>"><br>
-        <?php } ?>
-    </div>
-    <div class="form_field">
-        Comment on the scramble page<br>
-        and training page<br>
-        * max 5 rows<br>
-        * maximum of 45 characters per line
-    </div>
-    <div class="form_input">
-        <textarea name="ScrambleComment" style="width: 240px;height:65px;"><?= $discipline['Discipline_ScrambleComment']; ?></textarea>
-    </div>
-    <div class="form_change">
-        <input type="submit" value="Change">
-    </div>
+            <?php } ?>   
+        </td>
+    <tr>   
+    <tr>
+        <td>Multiplier</td>
+        <td><input type="number" min="1" max="10" required="" name="TNoodlesMult" value="<?= $discipline['Discipline_TNoodlesMult'] ?>"></td>
+    </tr>    
+    <tr>
+        <td>Information for delegates</td>
+        <td><input name="Comment" style="width: 300px" value="<?= $discipline['Discipline_Comment'] ?>"></td>
+    </tr>
+    <tr>
+        <td>Information for scrambles</td>
+        <td><i class="fas fa-info-circle"></i> max 5 rows, maximum of 45 characters per line</td>
+    </tr>    
+    <tr>
+        <td/>
+        <td><textarea name="ScrambleComment" style="width: 240px;height:65px;"><?= $discipline['Discipline_ScrambleComment']; ?></textarea></td>
+    </tr>    
+    <tr>
+        <td/>
+        <td><button><i class="fas fa-save"></i> Save</button></td>
+    </tr>
+    <tr>
+        <td><hr></td>
+        <td><hr></td>
+    </tr>
     </form>
-</div>
-
-
-<div class="form">
-    <?= ImageEvent($discipline['Discipline_CodeScript']) ?> 
-    <form name="LoadDisciplineImage" enctype="multipart/form-data" method="POST" action="<?= PageAction("Event.Image") ?>">           
-        <div class="fileinputs">
-            <input accept="image/jpeg,image/png" type="file" name="uploadfile" class="file"  onchange="document.forms['LoadDisciplineImage'].submit();"/>
-            <div class="fakefile" id="fkf">
-                <button class="form_change">Image</button>
-            </div>
-        </div>
-        <input name="ID" type="hidden" value="<?= $discipline['Discipline_ID'] ?>" />
-    </form>
-</div>
-
-
-<?php 
-    DataBaseClass::FromTable("Event");
-    DataBaseClass::Join_current("DisciplineFormat");
-    DataBaseClass::Join_current("Discipline");
-    DataBaseClass::Where_current("ID='".$discipline['Discipline_ID']."'");
-    $competition=DataBaseClass::QueryGenerate(); ?>
-    <div class="form">
-        <?php if (DataBaseClass::rowsCount()==0){ ?>
+    <tr>
+        <td>Delete event</td>
+        <td>
+            <?php  DataBaseClass::FromTable("Event");
+            DataBaseClass::Join_current("DisciplineFormat");
+            DataBaseClass::Join_current("Discipline");
+            DataBaseClass::Where_current("ID='".$discipline['Discipline_ID']."'");
+            $competition=DataBaseClass::QueryGenerate(); ?>
+            <?php if (DataBaseClass::rowsCount()==0){ ?>
                 <form method="POST" action="<?= PageAction("Event.Delete") ?>"   onsubmit="return confirm('Attention: Confirm the deletion.')">
                     <input name="ID" type="hidden" value="<?= $discipline['Discipline_ID'] ?>" />
-                    <input  class="delete" type="submit" value="Delete">
+                    <button class="delete"><i class="fas fa-trash-alt"></i> Delete</button>
                 </form>
-       <?php }
-       if($discipline['Discipline_Status']=='Active'){ ?>
-                <form method="POST" action="<?= PageAction("Event.Archive") ?>">
-                    <input name="ID" type="hidden" value="<?= $discipline['Discipline_ID'] ?>" />
-                    <input class="delete" type="submit" value="Send to archive">
-                </form>
-        <?php }else{ ?>
-                <form method="POST" action="<?= PageAction("Event.Active") ?>">
-                    <input name="ID" type="hidden" value="<?= $discipline['Discipline_ID'] ?>" />
-                    <input type="submit" value="To return from the archive">
-                </form>
-        <?php } ?> 
-    </div>
+            <?php }else{ ?>
+                 <i class="fas fa-info-circle"></i> can't be deleted because attempts exist
+            <?php } ?>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <?php if($discipline['Discipline_Status']=='Active'){ ?>
+                <i class="fas fa-check-circle"></i> The event is active
+            <?php }else{ ?>
+                <i class="fas fa-ban"></i> Event in the archive
+            <?php } ?>
+        </td>
+        <td>
+            <?php if($discipline['Discipline_Status']=='Active'){ ?>
+              <form method="POST" action="<?= PageAction("Event.Archive") ?>"  onsubmit="return confirm('Confirm delete')">
+                  <input name="ID" type="hidden" value="<?= $discipline['Discipline_ID'] ?>" />
+                  <button class="delete"><i class="fas fa-ban"></i> Send to archive</button>
+              </form>
+          <?php }else{ ?>
+              <form method="POST" action="<?= PageAction("Event.Active") ?>"   onsubmit="return confirm('Confirm return')">
+                  <input name="ID" type="hidden" value="<?= $discipline['Discipline_ID'] ?>" />
+                  <button><i class="fas fa-undo-alt"></i> To return from the archive</button>
+              </form>
+          <?php } ?>
+    </tr>    
+    <tr>
+        <td><hr></td>
+        <td><hr></td>
+    </tr>
+<form method="POST" action="<?= PageAction('Regulation.Edit')?>">
+    <input hidden name='ID' value='<?= $discipline['Discipline_ID'] ?>'>
+    <?php foreach(getLanguages() as $language){ 
+        DataBaseClass::FromTable('Regulation');
+        DataBaseClass::Where_current('Event='.$discipline['Discipline_ID']);
+        DataBaseClass::Where_current("Language='$language'");        
+        $result=DataBaseClass::QueryGenerate(false);
+        if(isset($result['Regulation_Text'])){
+            $Regulation=$result['Regulation_Text'];
+        }else{
+            $Regulation='';
+        } ?>
+    <tr>
+        <td>Regulations <?= ImageCountry($language)?></td>
+        <td><textarea class="big_data" name="regulation[<?=$language ?>]"><?= $Regulation ?></textarea></td>
+     <tr>   
+    <?php } ?>
+    <tr>
+        <td></td>
+        <td><button><i class="fas fa-save"></i> Save regulations</button></td>
+    </tr>
+    <tr>
+        <td><hr></td>
+        <td><hr></td>
+    </tr>
+    <?= EventBlockLinks($discipline,'settings',true); ?>    
+</form>
+</table>    
+    
+</td></tr></table>
 
-<div class="form">
-    <form method="POST" action="<?= PageAction('Regulation.Edit')?>">
-        <div>
-            Regulations
-            <input hidden name='ID' value='<?= $discipline['Discipline_ID'] ?>'>
-            <input type="submit" value="Save">
-        </div>
-        <?php foreach(getLanguages() as $language){ 
-            DataBaseClass::FromTable('Regulation');
-            DataBaseClass::Where_current('Event='.$discipline['Discipline_ID']);
-            DataBaseClass::Where_current("Language='$language'");        
-            $result=DataBaseClass::QueryGenerate(false);
-            if(isset($result['Regulation_Text'])){
-                $Regulation=$result['Regulation_Text'];
-            }else{
-                $Regulation='';
-            }
-            ?>
-            <div class="form_input form_input_left">        
-                <?= ImageCountry($language, 30)?>
-                <b><?= CountryName($language,true)?></b><br>
-                <textarea class="regulation" name="regulation[<?=$language ?>]"><?= $Regulation ?></textarea>
-            </div>
-        <?php } ?>
-    </form>
-</div>
 
-<div class="block_comment">For scripts: <?=  $discipline['Discipline_CodeScript'] ?></div>
+    

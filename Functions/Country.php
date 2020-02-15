@@ -37,15 +37,12 @@ function CountryNames($str){
     return implode(", ",$strs);
 }
 
-function ImageCountry($country,$width){ 
-    $country=str_replace('EN','GB',$country);
+function ImageCountry($country){
+    $country=str_replace('en','gb',strtolower($country));
     if($country){
-        if(file_exists("Image/Flags/".strtolower($country).".png")){ ?>
-            <img alt="<?= $country?>" width="<?= $width ?>" style="vertical-align: middle" src="<?= PageIndex() ?>Image/Flags/<?= strtolower($country)?>.png"><?php
-         }else{ 
-            echo  " &bull;";
-           } 
-     }else{
-         ?><img alt="world" width="<?= $width ?>" style="vertical-align: middle" src="<?= PageIndex() ?>Image/Flags/world.png"><?php 
-     }
+        return '<span class="flag-icon flag-icon-'.$country.'"></span>';
+    }else{
+        return '<i class="fas fa-globe"></i>';
+    }    
 }
+        

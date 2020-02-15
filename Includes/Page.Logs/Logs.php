@@ -1,7 +1,7 @@
 
 <table style="white-space:nowrap" >
 <thead>
-<tr class="tr_title">
+<tr>
     <td>DateTime</td>
     <td>Competitor</td>
     <td>Action</td>

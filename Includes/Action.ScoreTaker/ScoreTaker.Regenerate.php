@@ -1,10 +1,9 @@
 <?php
-$request=Request();
-if(!isset($request[2]) or !is_numeric($request[2])){
-    exit();
-}
-$ID=$request[2];
 
+CheckPostIsset('ID');
+CheckPostNotEmpty('ID');
+CheckPostIsNumeric('ID');
+$ID=$_POST['ID'];
 
 DataBaseClass::FromTable("Event","ID=$ID");
 $row=DataBaseClass::QueryGenerate(false);

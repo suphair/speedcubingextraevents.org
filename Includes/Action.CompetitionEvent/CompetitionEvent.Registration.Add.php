@@ -1,4 +1,5 @@
 <?php
+
 CheckPostIsset('ID','Competitors');
 CheckPostNotEmpty('ID','Competitors');
 CheckPostIsNumeric('ID');
@@ -10,7 +11,6 @@ foreach($_POST['Competitors'] as $competitior){
         header('Location: '.$_SERVER['HTTP_REFERER']);
         exit();  
     }
-    
     $Competitors[]=$competitior;
 }
 
@@ -25,8 +25,10 @@ if(!isset($date['Event_Competition'])){
 }
 RequestClass::CheckAccessExit(__FILE__, "Competition.Event.Settings",$date['Event_Competition']);
 
+
+
 if(sizeof($Competitors)<>$date['Discipline_Competitors']){
-    SetMessageName("CompetitorEventAddError","Required to select ".html_spellcount($date['Discipline_Competitors'],'competitor','competitors','competitors'));
+    SetMessageName("CompetitorEventAddError",svg_red()." Required to select ".html_spellcount($date['Discipline_Competitors'],'competitor','competitors','competitors'));
     SetMessageName("CompetitorsEventAdd",$_POST['Competitors']);
     header('Location: '.$_SERVER['HTTP_REFERER'].'#CompetitorEventAdd');
     exit();  
@@ -45,8 +47,9 @@ foreach($Competitors as $competitior){
     }
 }
 
+
 if(sizeof($errors)){
-    SetMessageName("CompetitorEventAddError","Competitor already registered: ".implode(",<br>",$errors));
+    SetMessageName("CompetitorEventAddError",svg_red()." Competitor already registered: ".implode(",<br>",$errors));
     SetMessageName("CompetitorsEventAdd",$_POST['Competitors']);
     header('Location: '.$_SERVER['HTTP_REFERER'].'#CompetitorEventAdd');
     exit();   
@@ -77,7 +80,7 @@ AddLog("CompetitionRegistration","Create/Delegate",$command.' / '.$data["Competi
 
 
 
-SetMessageName("CompetitorEventAddMessage","Registered");
+SetMessageName("CompetitorEventAddMessage",svg_green()." Registered: ".implode(", ",$teamNames));
 
 SetMessage();    
 header('Location: '.$_SERVER['HTTP_REFERER'].'#CompetitorEventAdd');

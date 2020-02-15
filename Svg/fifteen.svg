@@ -10,11 +10,10 @@
 			</cc:Work>
 		</rdf:RDF>
 	</metadata>
-	<defs	id="defs213" />
-	<sodipodi:namedview	pagecolor="#ffffff"	bordercolor="#666666"	borderopacity="1"	objecttolerance="10"	gridtolerance="10"	guidetolerance="10"	inkscape:pageopacity="0"	inkscape:pageshadow="2"	inkscape:window-width="2560"	inkscape:window-height="1413"	id="namedview211"	showgrid="false"	inkscape:zoom="0.49166667"	inkscape:cx="-130.16949"	inkscape:cy="240"	inkscape:window-x="0"	inkscape:window-y="27"	inkscape:window-maximized="0"	inkscape:current-layer="Layer_1" />
-	<rect	x="49.8411975"	y="46.8411975"	width="400.315267"	height="406.315267"	id="rect139"	style="fill:#000000" />	
-	<rect	x="77.833692"	y="74.512259"	width="344.327947"	height="350.975471"	id="rect"	style="fill:#FFFFFF" />	
+
+        <!--<path	d="M 50 50 L 50 450 450 450 450 50 Z"	fill="none"  stroke="black" stroke-width="20"  />	-->
 	
+        
 	<rect	x="101.69347"	y="99.869972"	width="55.983826"	height="55.983826"	id="rect145"	style="fill:#000000" />
 
 	

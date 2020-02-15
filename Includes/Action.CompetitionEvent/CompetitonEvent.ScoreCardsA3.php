@@ -24,12 +24,6 @@ foreach($commands_group as $group=>$commands){
         for($i=0;$i<2;$i++){
             $point=$points[$i];
  
-            if(file_exists(ImageEventFile($data['Discipline_CodeScript']))){
-                $pdf->Image(ImageEventFile($data['Discipline_CodeScript']),$point[0],$point[1]+1,10,10,'jpg');
-            }
-
-            
-            $pdf->Image("Logo/Logo_Black.png",$point[0]+$pdf->w /2-20,$point[1]+1,10,10,'png');
 
             if(isset($commands[$i+$l*2])){
                 $command=$commands[$i+$l*2];
@@ -39,17 +33,57 @@ foreach($commands_group as $group=>$commands){
             //$pdf->SetFont('Arial','',10);
             //$pdf->Text($point[0] + 25, $point[1] + 140,GetIni('TEXT','print'));
 
-            $pdf->SetFont('Arial','',10);
+            #$pdf->SetFont('Arial','',10);
             $pdf->SetLineWidth(0.2);
-            $str=iconv('utf-8', 'cp1252//TRANSLIT', $data['Competition']);
-            $pdf->Text($point[0] + 14, $point[1] + 10,$str); 
+            #$str=iconv('utf-8', 'cp1252//TRANSLIT', $data['Competition']);
+            #$pdf->Text($point[0] + 14, $point[1] + 10,$str); 
             
-            $pdf->SetFont('msserif','',14);
-            $pdf->Text($point[0] + 14, $point[1] + 5,iconv('utf-8', 'windows-1251',$data['Discipline']));
+            #$pdf->SetFont('msserif','',14);
+            #$pdf->Text($point[0] + 14, $point[1] + 5,iconv('utf-8', 'windows-1251',$data['Discipline']));
+            
+            
+            $pdf->SetFont('Arial','',10);
+            $str=iconv('utf-8', 'cp1252//TRANSLIT', $competition);
+            $pdf->Text($point[0] + 5, $point[1] + 5, $str); 
+            $pdf->SetFont('Arial','U',12);
+            $pdf->Text($point[0] + 5, $point[1] + 10,$data['Discipline'].$data['vRound']);
+            
             
             $Ry=20;
             
-            $names= explode(",", $command['vName']);            
+            $names= explode(",", $command['vName']);  
+            
+            for($c=1;$c<=$data['Competitors'];$c++){
+                if(!$command['CardID']){
+                    $pdf->Rect($point[0] + 5, $point[1] + $Ry-3 ,30,10);    
+                    $pdf->Rect($point[0] + 37, $point[1] + $Ry-3,65,10);
+                    if($c==1){
+                        $pdf->SetFont('Arial','',10);
+                        $pdf->Text($point[0] + 13, $point[1] + $Ry-4, "WCA ID");
+                        $pdf->Text($point[0] + 50, $point[1] + $Ry-4, "Competitor Name");
+                    }
+                    if($data['Competitors']>1){
+                        $pdf->SetFont('Arial','',14);
+                        $pdf->Text($point[0], $point[1] + $Ry+4 , $c);
+                    }
+                }else{
+                    if($c==1){
+                        $pdf->Rect($point[0] + 5, $point[1] + $Ry-3 ,15,10);    
+                        $pdf->SetFont('Arial','',18);
+                        $pdf->Text($point[0] + 7, $point[1] + $Ry+4, $command['CardID']);
+                    }
+                    $pdf->Rect($point[0] + 22, $point[1] + $Ry-3,70,10);
+
+                    if(isset( $names[$c-1])){
+                        $pdf->SetFont('Arial','',14); 
+                        $pdf->Text($point[0] + 23, $point[1] + $Ry+4, iconv('utf-8', 'cp1252//TRANSLIT',Short_Name($names[$c-1])));
+                    }
+                }
+                $Ry+=12;
+            }
+
+            
+           /* 
             for($c=1;$c<=$data['Competitors'];$c++){
                 if($c==1){
                     $pdf->Rect($point[0] + 15, $point[1] + $Ry-3 ,15,10);    
@@ -63,7 +97,7 @@ foreach($commands_group as $group=>$commands){
                     $pdf->Text($point[0] + 33, $point[1] + $Ry+4, iconv('utf-8', 'cp1252//TRANSLIT', Short_Name($names[$c-1])));
                 }
                 $Ry+=12;
-            }
+            }*/
 
             if($command['Group']!=-1){
                 $pdf->SetFont('Arial','',10);    
@@ -80,9 +114,9 @@ foreach($commands_group as $group=>$commands){
 
             for($k=1;$k<=$data['Attemption'];$k++){
                 $pdf->SetFont('Arial','',14);
-                if($image=IconAttempt($data['Discipline_Code'],$k)){
+                if($image=IconAttempt($data['Discipline_CodeScript'],$k)){
                     $pdf->Image($image,$point[0], $point[1] + $Ry+10 + ($k-1)*13-7,10,10);
-                    $pdf->Text($point[0]+105, $point[1] + $Ry+10 + ($k-1)*13-1, IconAttempt_DisciplineName($image,$data['Discipline_Code'],$k));
+                    $pdf->Text($point[0]+105, $point[1] + $Ry+10 + ($k-1)*13-1, IconAttempt_DisciplineName($image,$data['Discipline_CodeScript'],$k));
                 }else{
                     $pdf->Text($point[0]+2, $point[1] + $Ry+10 + ($k-1)*13-1, $k);
                 }

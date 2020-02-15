@@ -11,12 +11,35 @@ function scramble_block($ID){
                    
     $file="Image/Scramble/".$date['Event_ScrambleSalt'].".pdf";
         if ($date['Event_ScrambleSalt'] and file_exists($file)){ ?>
-            <a target="_blank"  href="<?= PageIndex() ?>Scramble/<?= $date['Event_ID']?>">
-                <img style="vertical-align: middle" width="15px"  src="<?= PageIndex()?>Image/Icons/print.png">
-                <?= ml('Function.Scramble') ?></a>
+            <tr>
+                <td><i class="fas fa-print"></i></td>
+                <td><a target="_blank"  href="<?= PageIndex() ?>Scramble/<?= $date['Event_ID']?>"> <?= ml('Function.Scramble') ?></a></td>
+            </tr>    
     <?php } ?>
     <?php
     $return = ob_get_contents();
     ob_end_clean();
-    return "<nobr>$return</nobr>";
+    return $return;
+}
+
+function GetLinkScrambes($event){
+    if(file_exists('Scramble/'.$event['Discipline_CodeScript'].'.php')){
+            if(file_exists('Functions/Generate_'.$event['Discipline_CodeScript'].'.php')){
+                return PageAction('CompetitionEvent.Scramble.Generate');
+            }else{
+                if(!$event['Discipline_GlueScrambles'] and file_exists('Includes/Action.CompetitionEvent/CompetitionEvent.Scramble.'.$event['Discipline_CodeScript'].'.php') ){
+                    return PageAction('CompetitionEvent.Scramble.'.$event['Discipline_CodeScript']);
+                }else{
+                    return PageAction('CompetitionEvent.Scramble.Page');
+                }
+            }
+        }else{
+            if($event['Discipline_GlueScrambles'] and $event['Discipline_TNoodles']){
+                return PageAction('CompetititionEvent.GlueScrambles.TNoodles');
+            }
+            if($event['Discipline_GlueScrambles'] and $event['Discipline_TNoodle']){
+                return PageAction('CompetititionEvent.GlueScrambles.TNoodle');
+            }
+         }
+    return false;            
 }

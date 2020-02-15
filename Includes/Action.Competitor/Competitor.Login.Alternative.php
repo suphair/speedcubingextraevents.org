@@ -24,6 +24,8 @@ if(is_array($Delegate)){
     
     $_SESSION['Competitor']=$competitor;
     AddLog('Alternative','Login',$Delegate['Name']);
+}else{
+    SetMessageName('Alternative','Access denied');
 }
 
 header('Location: '.$_SERVER['HTTP_REFERER']);

@@ -35,8 +35,8 @@ function LinkLogin(){
     return PageIndex()."Login";
 }
 
-function LinkDelegate($Site){
-    return PageIndex()."Delegate/$Site";  
+function LinkDelegate($WCAID){
+    return PageIndex()."Delegate/$WCAID";  
 }
 
 function LinkDelegateAdd(){

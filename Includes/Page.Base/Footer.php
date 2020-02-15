@@ -1,25 +1,25 @@
 <?php  $Footer_links=[
-            ['Visiters','Visiters','Footer.Visiters'],
-            ['Texts','Texts','Footer.Texts'],
-            ['Competition.Add','Competition/Add','Footer.Competition.Add'],
-            ['Event.Add','Event/Add','Footer.Event.Add'],
-            ['aNews','aNews/Add','Footer.aNews.Add'],
-            ['Delegate.Candidates','Delegate/Candidates','Footer.Delegate.Candidates'],
-            ['Competition.Report','Reports','Footer.Reports'],
-            ['Delegates.Settings','Delegates/Settings','Footer.Delegates.Settings'],
-            ['MultiLanguage','MultiLanguage','Footer.MultiLanguage'],
-            ['Access','Access','Footer.Access'],
-            ['Logs.Authorisations','Logs/Authorisations','Footer.Logs.Authorisations'],
-            ['Logs.Registrations','Logs/Registrations','Footer.Logs.Registrations'],
-            ['Logs.Scrambles','Logs/Scrambles','Footer.Logs.Scrambles'],
-            ['Logs.Cron','Logs/Cron','Footer.Logs.Cron'],
-            ['Logs.Mail','Logs/Mail','Footer.Logs.Mail']
+            ['Visiters','Visiters','Visiters'],
+            ['Texts','Texts','Texts'],
+            ['Competition.Add','Competition/Add','Add Competition'],
+            ['Event.Add','Event/Add','Add Event'],
+            ['aNews','aNews/Add','Add aNews'],
+            ['Delegate.Candidates','Delegate/Candidates','Applications to Delegate'],
+            ['Competition.Report','Reports','Reports'],
+            ['Delegates.Settings','Delegates/Settings','Delegate Changes'],
+            ['MultiLanguage','MultiLanguage','Multi language'],
+            ['Access','Access','Access'],
+            ['Logs.Authorisations','Logs/Authorisations','Logs authorisations'],
+            ['Logs.Registrations','Logs/Registrations','Logs registrations'],
+            ['Logs.Scrambles','Logs/Scrambles','Logs scrambles'],
+            ['Logs.Cron','Logs/Cron','Logs cron'],
+            ['Logs.Mail','Logs/Mail','Logs mail']
         ];
     $actions_grand=[]; 
     foreach($Footer_links as $link){
         if(CheckAccess($link[0])){
             ob_start(); ?>
-            <nobr><a href='<?= PageIndex().$link[1] ?>'><?= ml($link[2]) ?></a></nobr>
+            <nobr><a href='<?= PageIndex().$link[1] ?>'><?= $link[2] ?></a></nobr>
             <?php $actions_grand[] = ob_get_contents();
             ob_clean();
         } 
@@ -27,6 +27,7 @@
 
     if(!empty($actions_grand)){ ?>
         <div class="content"> 
+            <b>Delegate's links:</b> 
             <?=implode(" &#9642; ",$actions_grand); ?>
         </div>
     <?php } ?>

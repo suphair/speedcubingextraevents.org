@@ -1,8 +1,23 @@
-<div class="form">
-    <form name="LoginAlternative"  method="POST" action="<?= PageAction('Competitor.Login.Alternative')?>">           
-        <input required name="Secret" placeholder="Enter your secret" />
-        <input name="WCA" type="checkbox">
-        <input name="LoginAlternative" type="submit" value="Go" />
-        <p><?= GetMessage('Alternative'); ?></p>
-    </form> 
-</div> 
+<form name="LoginAlternative"  method="POST" action="<?= PageAction('Competitor.Login.Alternative')?>">           
+<table class="table_info">
+    <tr>
+        <td>Your secret code</td>
+        <td><input required name="Secret"/></td>
+    </tr>
+    <tr>
+        <td>as WCA Delegate</td>
+        <td><input name="WCA" type="checkbox"></td>
+    </tr>
+    <?php $message=GetMessage('Alternative');
+    if($message){ ?>
+    <tr>
+        <td><?= svg_red(); ?></td>
+        <td><?= $message ?></td>
+    </tr>    
+    <?php } ?>        
+    <tr>
+        <td/>
+        <td><button><i class="fas fa-user-secret"></i> Enter</button></td>
+    </tr>
+</table>        
+</form> 

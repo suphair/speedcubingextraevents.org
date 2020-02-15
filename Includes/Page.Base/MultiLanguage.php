@@ -4,14 +4,11 @@ if(isset($_SERVER['HTTP_REFERER']) and !isset($_SESSION['ML_ACTION'])){
     $_SESSION['HTTP_REFERER']=$_SERVER['HTTP_REFERER'];
 }
 unset($_SESSION['ML_ACTION']);
-$Link=$_SESSION['HTTP_REFERER'];
-
-?>
-<h1><?= ml('MultiLanguage.Title')?></h1>
-<h2><a href='<?= $Link ?>'><?= $Link ?></a></h2>
+$Link=$_SESSION['HTTP_REFERER'];?>
+<h1>Multi Language</h1>
+<h3><a href='<?= $Link ?>'><?= $Link ?></a></h3>
 <?php
 $MultiLanguages=[];
-
 
 if(strpos($Link,'MultiLanguage')!==false){
     $ml_finds=[]; 
@@ -52,17 +49,17 @@ foreach($ml_finds as $ml_find){
 ksort($MultiLanguagesOut);
 ?>
 <form method="POST" action="<?= PageAction('Language.Edit') ?>">
-<table>
-    <tr class='tr_title'>
-        <td width='200'>
-            Name
-        </td>
+<table class="table_new">
+    <thead>
+    <tr>
+        <td>Name</td>
         <?php foreach($Languages as $Language){ ?>
-            <td width='400'>
-                <?= ImageCountry($Language,50); ?>
+            <td>
+                <?= ImageCountry($Language); ?> <?= CountryName($Language,true); ?>
             </td>
         <?php } ?>
-    </tr>    
+    </tr> 
+    </thead>
 <?php foreach($MultiLanguagesOut as $Name=>$MultiLanguages){ ?>
     <tr>
         <td>
@@ -76,5 +73,5 @@ ksort($MultiLanguagesOut);
      </tr>   
 <?php } ?>
 </table>
-    <input type='submit' value='<?= ml('*.Save',false) ?>'>
+    <button><i class="fas fa-save"></i> Save</button>
 </form>

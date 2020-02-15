@@ -1,4 +1,5 @@
 <?php
+
 CheckPostIsset('ID');
 CheckPostNotEmpty('ID');
 CheckPostIsNumeric('ID');
@@ -20,5 +21,5 @@ if(isset($row['Event_Competition'])){
 }
 SetMessage();
     
-header('Location: '.$_SERVER['HTTP_REFERER']);
+header('Location: '.$_SERVER['HTTP_REFERER'].'#CompetitionEvent.Action');
 exit();  

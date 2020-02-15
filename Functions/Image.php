@@ -1,10 +1,16 @@
 <?php
 
-function ImageEvent($event,$size=100,$name=""){
-    if(file_exists($filename= ImageEventFile($event))){
-        return  "<img  align='center' title='$name' width='".$size."px' src='".PageIndex().$filename."?".date("YMd")."'>";
+function ImageEvent($event,$size='',$name=""){
+       
+    $style="";
+    if(is_float($size) and $size<2){
+        $style=" style='font-size:{$size}em;'";
+    }
+    
+    if(file_exists("./Svg/$event.svg")){        
+        return "<i $style title='$name' class='fas fa-{$size}x ee-$event'></i>";
     }else{
-        return  svg_red(30);
+        return  "<i $style class='fas fa-{$size}x fa-question-circle'></i>";
     }
 }
 

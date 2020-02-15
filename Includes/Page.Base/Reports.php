@@ -1,4 +1,4 @@
-<h1><img src='<?= PageIndex() ?>Image/Icons/report.png' width='30px'> <?= ml('Reports.Title')?></h1>
+<h1>Reports</h1>
 
 <?php 
 DataBaseClass::Query("Select Competition,Delegate,D.Name,C.Country,C.ID,C.WCAID from CompetitionDelegate CD"
@@ -10,7 +10,7 @@ foreach(DataBaseClass::getRows() as $row){
 }
 
 
-DataBaseClass::Query("Select Competition,Delegate,DelegateWCA, C.Name, C.ID,C.Country from CompetitionReport CR"
+DataBaseClass::Query("Select Competition,Delegate,DelegateWCA, C.Name, C.ID,C.Country,C.WCAID from CompetitionReport CR"
         . " left outer join Delegate D on D.ID=CR.Delegate"
         . " left outer join Competitor C on C.WID=CR.DelegateWCA or D.WID=C.WID");
 $CompetitionReport=[];
@@ -30,20 +30,32 @@ foreach(DataBaseClass::getRows() as $row){
         . " where C.StartDate<=now()"
         . " order by C.StartDate desc"); ?>
 
-<table>
+<table class="table_new">
+    <thead>
+        <td>Report</td>
+        <td></td>
+        <td>Competition</td>
+        <td>Date</td>
+        <td>Delegate</td>
+    </thead>
     <?php foreach(DataBaseClass::getRows() as $competition){ ?>
         <?php if(!isset($CompetitionDelegate[$competition['Competition_ID']]) and !isset($CompetitionReportWCA[$competition['Competition_ID']])){ ?>
             <tr>
                 <td>
-                    <?= svg_red(10)?>
+                    <?php if($competition['DelegateWCAOn']){ ?>
+                        <i class="fas fa-eye-slash"></i>
+                    <?php }else{ ?>
+                        <i class="fas fa-minus"></i>
+                     <?php } ?>   
                 </td>
-                <td><?= ImageCountry($competition['Competition_Country'],20)?> <a href="<?= LinkCompetition($competition['Competition_WCA'])?>"><?= $competition['Competition_Name']?></a></td>    
+                <td><?= ImageCountry($competition['Competition_Country'])?></td> 
+                <td><a href="<?= LinkCompetition($competition['Competition_WCA'])?>"><?= $competition['Competition_Name']?></a></td>    
                 <td><?= date_range($competition['Competition_StartDate'], $competition['Competition_EndDate'])?></td>
                 <td>
                     <?php if($competition['DelegateWCAOn']){ ?>
-                        <?= svg_blue(10)?> Waiting for a WCA Delegate report
+                        <i class="fas fa-hourglass-half"></i> Waiting for a WCA Delegate
                     <?php }else{ ?>
-                        <?= svg_red(10)?> No one to write a report
+                        No one to write a report
                     <?php } ?>
                 </td>
             </tr>     
@@ -54,21 +66,22 @@ foreach(DataBaseClass::getRows() as $row){
             <tr>
                 <td>
                     <?php if(isset($CompetitionReport[$competition['Competition_ID']][$delegate['Delegate']])){ ?>
-                        <a href="<?= PageIndex()?>Competition/<?= $competition['Competition_WCA'] ?>/Report"><?= ml('*.Report') ?></a> 
+                        <a href="<?= PageIndex()?>Competition/<?= $competition['Competition_WCA'] ?>/Report/<?= $delegate['WCAID'] ?>"><i class="far fa-eye"></i> View</a> 
                     <?php }else{ ?>
-                        <?= svg_red(10)?>
+                        <i class="fas fa-eye-slash"></i>
                         <?php $r=true; ?>
                     <?php } ?>
                 </td>
-                <td><?= ImageCountry($competition['Competition_Country'],20)?> <a href="<?= LinkCompetition($competition['Competition_WCA'])?>"><?= $competition['Competition_Name']?></a></td>    
+                <td><?= ImageCountry($competition['Competition_Country'])?></td>
+                <td><a href="<?= LinkCompetition($competition['Competition_WCA'])?>"><?= $competition['Competition_Name']?></a></td>    
                 <td><?= date_range($competition['Competition_StartDate'], $competition['Competition_EndDate'])?></td>
                 <td>
                     <?php if($r){ ?>
-                        <?= svg_red(10)?>
+                        <i class="fas fa-hourglass-half"></i>
                     <?php }else{ ?>
-                        <?= svg_green(10)?>
+                        <i class="far fa-check-circle"></i>
                     <?php } ?>
-                    <?= ImageCountry($delegate['Country'],20)?> <a href="<?= LinkDelegate($delegate['WCAID'])?>"><?= short_Name($delegate['Name']) ?></a>
+                    <a target="_blank" href="<?= LinkDelegate($delegate['WCAID'])?>"><?= short_Name($delegate['Name']) ?></a>
                  </td>
             </tr>     
             <?php } 
@@ -76,11 +89,12 @@ foreach(DataBaseClass::getRows() as $row){
             foreach($CompetitionReportWCA[$competition['Competition_ID']] as $report){ ?>
                 <tr>
                     <td>
-                        <a href="<?= PageIndex()?>Competition/<?= $competition['Competition_WCA'] ?>/Report"><?= ml('*.Report') ?></a> 
+                        <a href="<?= PageIndex()?>Competition/<?= $competition['Competition_WCA'] ?>/Report/<?= $report['WCAID'] ?>"><i class="far fa-eye"></i> View</a> 
                     </td>
-                    <td><?= ImageCountry($competition['Competition_Country'],20)?> <a href="<?= LinkCompetition($competition['Competition_WCA'])?>"><?= $competition['Competition_Name']?></a></td>    
+                    <td><?= ImageCountry($competition['Competition_Country'])?></td>
+                    <td><a href="<?= LinkCompetition($competition['Competition_WCA'])?>"><?= $competition['Competition_Name']?></a></td>    
                     <td><?= date_range($competition['Competition_StartDate'], $competition['Competition_EndDate'])?></td>
-                    <td><?= svg_blue(10)?><img style="vertical-align: middle;" src="<?=PageIndex()?>Image/Icons/WCA.png" width="15px"> <?= short_Name($report['Name']) ?></td>
+                    <td><i class="fas fa-check-circle"></i> <?= short_Name($report['Name']) ?></td>
                 </<tr>
             <?php } ?>    
         <?php } ?>

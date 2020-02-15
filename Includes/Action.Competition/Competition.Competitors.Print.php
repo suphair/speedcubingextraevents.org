@@ -7,11 +7,12 @@ if(!isset($requests[2]) or !is_numeric($requests[2])){
    $ID=$requests[2];
 }
 
-RequestClass::CheckAccessExit(__FILE__, 'Competition.Settings',$ID);
+RequestClass::CheckAccessExit(__FILE__, 'Competition.Event.Settings',$ID);
 
         
-@$pdf = new FPDF('P','mm');
-$pdf->SetFont('courier');
+@$pdf = new FPDF('L','mm');
+$max_page=20;  
+$pdf->SetTextColor(33,33,33);
 
 DataBaseClass::FromTable('Competition',"ID=$ID");
 DataBaseClass::Join_current("Event");
@@ -40,7 +41,7 @@ foreach($competitors as $competitor){
 $data=array_values($data);
 $events=array_values($events);
 
-$max_page=30;    
+  
 $pages=ceil(sizeof($data)/$max_page);
 
 $dY=34;
@@ -57,51 +58,59 @@ for($p=0;$p<$pages;$p++){
 
         if($c%2 ==0){
             $pdf->SetFillColor(240,240,240);
-            $pdf->Rect(5, $dY+3+($n-1)*8, $pdf->w - 10, 8, "F");
+            $pdf->Rect(10, $dY+3+($n-1)*8, $pdf->w - 20, 8, "F");
         }
         
         $pdf->SetLineWidth(0.1);
         if($n>0){
-            $pdf->Line(5, $dY+3+($n-1)*8 , $pdf->w - 5, $dY+3+($n-1)*8);
+            //$pdf->Line(10, $dY+3+($n-1)*8 , $pdf->w - 10, $dY+3+($n-1)*8);
         }
-        $pdf->Line(5, $dY+3+$n*8 , $pdf->w - 5, $dY+3+$n*8);
+        //$pdf->Line(10, $dY+3+$n*8 , $pdf->w - 10, $dY+3+$n*8);
     
         $pdf->SetFont('Arial','',12);
-        $pdf->Text(7, $dY+$n*8, iconv('utf-8', 'cp1252//TRANSLIT',$competitor['Competitor']));    
+        $pdf->Text(12, $dY+$n*8, iconv('utf-8', 'cp1252//TRANSLIT',$competitor['Competitor']));    
         
         foreach($events as $e=>$event){
             if(isset($competitor[$event])){
                 if($competitor[$event]==-1){
-                    $pdf->Text(100+$e*10+2, $dY+$n*8, '*');      
+                    $pdf->Text(100+$e*25+2, $dY+$n*8, '*');      
                 }else{
-                    $pdf->Text(100+$e*10+2, $dY+$n*8, Group_Name($competitor[$event]));  
+                    $pdf->Text(100+$e*25+2, $dY+$n*8, Group_Name($competitor[$event]));  
                 }
             }
         }
     
     }
     
-    $pdf->Image("Logo/Logo_Black.png",5,5,20,20,'png');
     
-    $pdf->SetFont('msserif','',26);
-    $pdf->Text(30, 18, iconv('utf-8', 'windows-1251',$Competition_name));
+    $pdf->SetFont('Arial','',16);
+    $pdf->Text(10, 13,($p+1)."/$pages");
+    $pdf->SetFont('Arial','',24);
+    $str=iconv('utf-8', 'cp1252//TRANSLIT', $Competition_name);
+    $pdf->Text(10, 24,$str);
     
-    $pdf->Text(190, 13, ($p+1)."/$pages");
+    
+    #$pdf->SetFont('Arial','',26);
+    #$pdf->Text(5, 18, iconv('utf-8','cp1252//TRANSLIT',$Competition_name));
+    
+    #$pdf->Text(190, 13, ($p+1)."/$pages");
 
     
     $pdf->SetLineWidth(0.1);
-    $pdf->SetFont('Arial','B',10);
+ //   $pdf->SetFont('Arial','B',10);
 //    $pdf->Line(15, 30, 15,32+8*$on_page);
     
 //    $pdf->Line(95, 30, 95,32+8*$on_page);
     
 //    $pdf->Line(135, 30, 135,32+8*$on_page);
-    $pdf->SetFont('Arial','B',14);
-    $pdf->Text(8, $dY, 'Competitor');  
+    $pdf->SetFont('Arial','B',12);
+//    $pdf->Text(8, $dY, 'Competitor');  
     
     
     foreach($events as $e=>$event){
-        $pdf->Image(ImageEventFile($event),100+$e*10,$dY-5,7,7,'jpg');
+        $pdf->Text(100+$e*25,$dY, $event);  
+        
+        #$pdf->Image(ImageEventFile($event),100+$e*10,$dY-5,7,7,'jpg');
     }
     
 }        

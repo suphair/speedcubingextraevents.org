@@ -13,7 +13,6 @@ $competitor=GetCompetitorData();
 DataBaseClass::FromTable("Competitor","WID='". $competitor->id."'");
 $competitor_row=DataBaseClass::QueryGenerate(false);
 if(!$competitor_row['Competitor_ID'] or $ID!=$competitor->id){        
-    SetMessageName('RequestCandidateAdd','Wrong Competitor ID');
     HeaderExit();  
 }
 
@@ -38,6 +37,8 @@ foreach($Fields as $field=>$value){
 }
 
 DataBaseClass::Query("Insert Into RequestCandidateField (RequestCandidate,Field,Value) values ($Request_ID,'wca->email','".DataBaseClass::Escape($competitor->email)."')");
+DataBaseClass::Query("Insert Into RequestCandidateField (RequestCandidate,Field,Value) values ($Request_ID,'wca->name','".DataBaseClass::Escape($competitor->name)."')");
+DataBaseClass::Query("Insert Into RequestCandidateField (RequestCandidate,Field,Value) values ($Request_ID,'wca->wca_id','".DataBaseClass::Escape($competitor->wca_id)."')");
 if($competitor->delegate_status){
     DataBaseClass::Query("Insert Into RequestCandidateField (RequestCandidate,Field,Value) values ($Request_ID,'wca->delegate','".DataBaseClass::Escape($competitor->delegate_status)."')");
 }

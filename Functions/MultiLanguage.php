@@ -41,6 +41,7 @@ function ml($name,$arr=[],$b=true){
     }else{
         $result="{".$Language.":".$name.($arr?("; ".print_r($arr,true)):'')."}";
     }
+    
     if($b){
         return "<!--ML[$name]-->$result";
     }else{

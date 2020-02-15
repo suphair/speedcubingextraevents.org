@@ -20,24 +20,36 @@ function EventRoundView($Competition=0){
             }
                 
             DataBaseClass::Query("Update Event set vRound='$round_out' where ID=".$event['Event_ID']);
+            
         }
 }
 
 
-function EventBlockLinks($Event,$current=""){
+function EventBlockLinks($Event,$current="",$table_exists=false){
     ob_start();  ?>
     
-    <div class="block_comment">
+    <?php if(!$table_exists){ ?><table class="table_info"><?php } ?>
         <?php if(CheckAccess('Event.Settings')){ ?>
-            <a class="<?= $current=='settings'?'select':''?>" href="<?= LinkDiscipline($Event['Discipline_Code'])?>/Settings"><img style="vertical-align: middle" width="15px" src="<?= PageIndex()?>Image/Icons/settings.png"> <?= ml('*.Settings') ?></a>
+            <tr>
+                <td><i class="fas fa-crown"></i></td>
+                <td><a class="<?= $current=='settings'?'select':''?>" href="<?= LinkDiscipline($Event['Discipline_Code'])?>/Settings">Main event setting</a></td>
+            </tr>    
         <?php } ?>
-            
         <?php $status=(isset($Event['Discipline_Status']) and $Event['Discipline_Status']!='Archive'); ?>
-        <?php if($status){ ?>    
-            <a class="<?= $current=='regulations'?'select':''?>" href="<?= PageIndex()?>Regulations#<?= $Event['Discipline_Code'] ?>"> <img style="vertical-align: middle" width="15px"  src="<?= PageIndex()?>Image/Icons/regulation.png"> <?= ml('Competition.Regulation'); ?></a>    
+        <?php if($status){ ?>   
+            <tr>  
+                <td><i class="fas fa-book"></i></td>
+                <td><a class="<?= $current=='regulations'?'select':''?>" href="<?= PageIndex()?>Regulations/#<?= $Event['Discipline_Code'] ?>"><?= ml('Competition.Regulation'); ?></a>    </td>
+            </tr>    
         <?php } ?>
-        <a class="<?= $current=='records'?'select':''?>" href="<?= PageIndex()?>Records/all/<?= $Event['Discipline_Code'] ?>"> <img style="vertical-align: middle" width="15px"  src="<?= PageIndex()?>Image/Icons/record.png"> <?= ml('Event.Records'); ?></a>
-        <a class="<?= $current=='rankings'?'select':''?>" href="<?= LinkDiscipline($Event['Discipline_Code'])?>"> <img style="vertical-align: middle" width="15px"  src="<?= PageIndex()?>Image/Icons/rankings.png"><?= ml('Competition.Rankings'); ?></a>
+        <tr>
+            <td><i class="fas fa-trophy"></i></td>
+            <td><a class="<?= $current=='records'?'select':''?>" href="<?= PageIndex()?>Records/all/<?= $Event['Discipline_Code'] ?>"><?= ml('Event.Records'); ?></a></td>
+        </tr>    
+        <tr>
+            <td><i class="fas fa-signal fa-rotate-90"></i></td>
+            <td><a class="<?= $current=='rankings'?'select':''?>" href="<?= LinkDiscipline($Event['Discipline_Code'])?>"><?= ml('Competition.Rankings'); ?></a></td>
+        </tr>    
         <?php if($status){ ?>    
             <?= scramble_block($Event['Discipline_ID']);?>
             <?= scorecard_block($Event['Discipline_ID']);?>
@@ -47,10 +59,11 @@ function EventBlockLinks($Event,$current=""){
         $exists_Generate=file_exists("Functions/Generate_{$Event['Discipline_CodeScript']}.php");
         $exists_ScriptGenerate=file_exists("Script/{$Event['Discipline_CodeScript']}_generator.js");
         if($exists_GenerateTraining or $exists_Generate or  $exists_ScriptGenerate){ ?>
-            <a class="<?= $current=='training'?'select':''?>" href="<?= PageIndex()?>Event/<?= $Event['Discipline_Code'] ?>/Training"> <img style="vertical-align: middle" width="20px"  src="<?= PageIndex()?>Image/Icons/scramble.png"> <?= ml('TrainingScrambling.Title') ?></a>
-            
+        <tr>
+            <td><i class="fas fa-random"></i></td>
+            <td><a class="<?= $current=='training'?'select':''?>" href="<?= PageIndex()?>Event/<?= $Event['Discipline_Code'] ?>/Training"><?= ml('TrainingScrambling.Title') ?></a></td>            
         <?php } ?>
-    </div><br>
+    <?php if(!$table_exists){ ?></table><?php } ?>
 <?php $return = ob_get_contents();
     ob_end_clean();
     return "<nobr>$return</nobr>";

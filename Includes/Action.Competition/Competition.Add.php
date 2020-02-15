@@ -23,7 +23,6 @@ if(!$competition or isset($competition->error)){
     HeaderExit();  
 }
 
-DataBaseClass::Query("Select ID from `Competition` where `WCA`='$WCA'");
 $delegates=[];
 foreach($competition->delegates as $delegate){
     $delegates[]=$delegate->wca_id;
@@ -53,7 +52,7 @@ if(!DataBaseClass::rowsCount()){
     CompetitionCompetitorsLoad($ID,$WCA,$Name,'Create');
     
 }else{
-   SetMessageName('CompetitionCreate','Competition exists on site '.$WCA); 
+   SetMessageName('CompetitionCreate',"[$WCA] Competition already exists"); 
    HeaderExit(); 
 }
 

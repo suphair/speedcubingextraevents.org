@@ -2,21 +2,27 @@
         var CutoffCheck;
         var Values=[];
         var Amounts=[];
-       
+        var disciptions=[];
+        var descriptions_pre=[];
         for(i=1;i<=Attemption;i++) {
-           disciptions[i]=""; 
+            disciptions[i]=""; 
+            descriptions_pre[i]="";
         }
         
         $("#limit").css('color', 'black'); 
-        
+        $("#limit_pre").css('color', 'black'); 
+        $('#limit_pre').html('<i class="fas fa-check"></i>');
         for(i=1;i<=Attemption;i++) {
             $('#value' + i).css('color', 'black'); 
             Values[i] = $('#value' + i).val();
             Amounts[i] = $('#amount' + i).val();
             if(!limits[i]){
                 $('#value' + i).css('color', 'red');     
-                $('#limit').css('color', 'red');                 
-                disciptions[i]='Not passed Limit';
+                $('#limit').css('color', 'red');     
+                $("#limit_pre").css('color', 'red'); 
+                $('#limit_pre').html('<i class="fas fa-exclamation-circle"></i>');
+                descriptions_pre[i]='<i class="fas fa-exclamation-circle"></i>';
+                disciptions[i]=' Not passed Limit';
             }
         }
         
@@ -36,29 +42,38 @@
                      $('#value' + i).css('color', 'red');
                      //document.getElementById('value'+ i).style.color='red';        
                      if(Values[i]!==""){
+                        descriptions_pre[i]='<i class="fas fa-exclamation-circle"></i>';
                         disciptions[i]='Not passed Cutoff';
                      }
                  }
                 $('#cutoff').css('color', 'red');
+                $('#cutoff_pre').css('color', 'red');
+                $('#cutoff_pre').html('<i class="fas fa-exclamation-circle"></i>');
                 $('#cutoff_hr').css('background', 'red');
              }else{
-                $('#cutoff').css('color', 'green');
+                $('#cutoff').css('color', 'black');
+                $('#cutoff_pre').css('color', 'black');
+                $('#cutoff_pre').html('<i class="fas fa-check"></i>');
                 $('#cutoff_hr').css('background', 'green');
              }                                 
 
         }
         for(i=1;i<=Attemption;i++){
             if((!isCutoff || CutoffCheck || i<CutoffN) && Values[i]===''){
+                descriptions_pre[i]='<i class="fas fa-exclamation-circle"></i>';
                 disciptions[i]='No result';
             }
             if(document.getElementById('amount'+ i)!==null){
                 if(Values[i]==='' && Amounts[i]!==''){
+                    descriptions_pre[i]='<i class="fas fa-exclamation-circle"></i>';
                     disciptions[i]='No time';    
                 }
                 if(Values[i]!=='' && Amounts[i]===''){
+                    descriptions_pre[i]='<i class="fas fa-exclamation-circle"></i>';
                     disciptions[i]='No amount';    
                 }
                 if(Values[i]!=='DNS' && Values[i]!=='DNF' && Amounts[i]==='0'){
+                    descriptions_pre[i]='<i class="fas fa-exclamation-circle"></i>';
                     disciptions[i]='No amount';    
                 }
                 
@@ -69,13 +84,18 @@
         
         submitResult="";
         for(i=1;i<=Attemption;i++){
-            document.getElementById('description'+i).innerHTML=disciptions[i];
+            $('#description'+i).html(disciptions[i]);
+            $('#description'+i+'_pre').html(descriptions_pre[i]);
             if(disciptions[i]!==''){
                 submitResult= submitResult + i+ ': ' +  disciptions[i] +'\n';
                 AttempsWarning = AttempsWarning + i + ','; 
             }
         }
-        
+        if(submitResult!==''){
+            $('#SubmitValue').html('<i class="fas fa-exclamation-triangle"></i> Confirm');
+        }else{
+            $('#SubmitValue').html('<i class="fas fa-check-double"></i> Confirm');
+        }
         $('#AttempsWarning').val(AttempsWarning);
     }
      

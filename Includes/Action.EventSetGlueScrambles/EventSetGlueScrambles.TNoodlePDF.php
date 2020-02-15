@@ -104,26 +104,16 @@ if($_FILES['file']['error']==0 and $_FILES['file']['type'] == 'application/pdf')
         
         $pdf->AddPage();
 
-        $pdf->Image(ImageEventFile($Discipline),5,10,20,20,'jpg');
-        $pdf->Image("Logo/Logo_Color.png",$pdf->w-25,10,20,20,'png');
-
-        $pdf->SetFont('Arial','',16);
-        $pdf->SetTextColor(17,31,135);
+       
+        $pdf->SetFont('Arial','',24);
+        $pdf->Text(10, 13, $data['Discipline_Name'].$data['Event_vRound']);
         $Competition_name=iconv('utf-8', 'cp1252//TRANSLIT', $data['Competition_Name']);
-        $pdf->Text(30, 13, $Competition_name);
-        $pdf->SetFont('msserif','',16);
-        $pdf->SetTextColor(162,0,0);
-        $pdf->Text(30, 20, $data['Discipline_Name'].$data['Event_vRound']);
         $pdf->SetFont('Arial','',16);
-
-        $pdf->SetTextColor(0,182,67);
-        $pdf->Text(30, 27, $Letter[$group+1].' group');
+        $pdf->Text(10, 20,'Group '.$Letter[$group+1]);
+        $pdf->Text(10, 27, $Competition_name);
         $pdf->SetTextColor(0,0,0);
         $pdf->SetFont('Arial','',10);
-        $pdf->Text(80, 286,GetIni('TEXT','print'));
-        $pdf->SetFont('Arial','',10);
-        
-        $pdf->Text(150, 286,$Scramble_Timestamp);
+        $pdf->Text(10, 286,$Scramble_Timestamp);
 
         $pdf_img_Y=$pdf_img_Y0;
         for($attempt=1;$attempt<=$ScamblesOnePage;$attempt++){

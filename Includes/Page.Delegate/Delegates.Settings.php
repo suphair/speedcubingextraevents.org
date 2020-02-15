@@ -1,5 +1,16 @@
-<?php includePage('Navigator'); ?>
-<h1><?= ml('Delegates.Settings.Title') ?></h1>
+<h1>SEE Delegate / Changes</h1>
+
+<?php if(CheckAccess('Delegate.Settings.Ext')){ ?>
+<form method="POST" action="<?= PageAction('Delegates.Change.DeleteAll') ?>" onsubmit="return confirm('Confirm clear')">
+<table class="table_info">
+    <tr>
+        <td>Сlear all votes</td>
+        <td><button><i class="fas fa-crown"></i> Clear</button></td>
+    </td>    
+</table>
+</form>
+<?php } ?>
+
 <?php 
 $Delegate= CashDelegate();
 DataBaseClass::Query("Select * from Delegate where status='Senior' order by Name");
@@ -23,29 +34,35 @@ $Statuses['?']=-1;
 ?>
 <?php foreach([1,-1] as $tr_check){ ?>
 <?php if($tr_check==1){ ?>
-    <h2><?= ml('Delegate.Trainee') ?></h2>
+    <h3>Trainee Delegates</h3>
 <?php } ?>
+<?php if($tr_check!=1){ ?>
+    <h3>Other Delegates</h3>
+<?php } ?>    
 
 <form method="POST" action="<?= PageAction('Delegates.Change.Edit') ?>">
-<table>
-<tr class="tr_title">
+<table class="table_new" width="80%">
+<thead>    
+<tr>
     <td>Name</td>
     <td>Status</td>
-    <td>New</td>
+    <td>Your votes</td>
     <?php foreach($Seniors as $senior)if($senior['ID']==$Delegate['Delegate_ID']){ ?>
-        <td align="center">
-            <b><?= $senior['Name'] ?></b><br>
-        <?= isset($DelegateChangeTime[$senior['ID']])?($DelegateChangeTime[$senior['ID']]):svg_red(10) ?>
+        <td>
+            <?= $senior['Name'] ?><br>
+            <?= isset($DelegateChangeTime[$senior['ID']])?($DelegateChangeTime[$senior['ID']]):'<i class="fas fa-ellipsis-h"></i>' ?>
         </td>
     <?php } ?>
     <?php foreach($Seniors as $senior)if($senior['ID']!=$Delegate['Delegate_ID']){ ?>
-        <td align="center">
-        <?= $senior['Name'] ?><br>
-        <?= isset($DelegateChangeTime[$senior['ID']])?($DelegateChangeTime[$senior['ID']]):svg_red(10) ?>
+        <td>
+            <?= $senior['Name'] ?><br>
+            <?= isset($DelegateChangeTime[$senior['ID']])?($DelegateChangeTime[$senior['ID']]):'<i class="fas fa-ellipsis-h"></i>' ?>
         </td>
     <?php } ?>
-    <td><b>Results</b></td>   
-</tr>    
+    <td>Total votes</td>   
+</tr>   
+</thead>
+<tbody>
 <?php DataBaseClass::Query("Select D.*,C.Country from Delegate D "
         . " join Competitor C on C.WID=D.WID "
         . "where D.Status!='Archive' and D.Status!='Senior' order by C.Country, D.Name");
@@ -70,48 +87,59 @@ $status_news=[]; ?>
             <?php } ?>
         </select>
     </td>
-    <?php foreach($Seniors as $senior)if($senior['ID']==$Delegate['Delegate_ID']){ ?>
-        <td class="border-right-solid" align="center">
+    <?php 
+    $SeniorTmp=$Seniors;
+    $Seniors=[];
+    foreach($SeniorTmp as $senior)if($senior['ID']==$Delegate['Delegate_ID']){
+        $Seniors[]=$senior;
+    }
+    foreach($SeniorTmp as $senior)if($senior['ID']!=$Delegate['Delegate_ID']){
+        $Seniors[]=$senior;
+    }
+    
+    foreach($Seniors as $senior){ ?>
+        <td>
             <?php if(isset($DelegateChange[$senior['ID']][$delegate['ID']])){
                 $status_new=$DelegateChange[$senior['ID']][$delegate['ID']];
-                $status_news[]=$status_new; ?> 
-            <span class="<?= $Statuses[$status_new]!=$Statuses[$delegate['Status']]?($Statuses[$status_new]>$Statuses[$delegate['Status']]?'message':'error'):'' ?>"><?= $status_new ?></span>
+                $status_news[]=$status_new;?> 
+                    <?php if($status_new=='?'){ ?>
+                        <i class="far fa-question-circle"></i>
+                    <?php }else{?>
+                        <?php if($Statuses[$status_new]>$Statuses[$delegate['Status']]){ ?>
+                            <span class="color_green"><i class="fas fa-arrow-alt-circle-up"></i></span>
+                        <?php } ?>
+                        <?php if($Statuses[$status_new]<$Statuses[$delegate['Status']]){ ?>
+                            <span class="color_red"><i class="fas fa-arrow-alt-circle-down"></i></span>
+                        <?php } ?> 
+                        <?= $status_new ?>
+                    <?php } ?>
             <?php }else{ ?>
-                *
+                <i class="far fa-question-circle"></i>
             <?php } ?>            
         </td>
     <?php } ?>
-    <?php foreach($Seniors as $senior)if($senior['ID']!=$Delegate['Delegate_ID']){ ?>
-        <td class="border-right-dotted" align="center">
-            <?php if(isset($DelegateChange[$senior['ID']][$delegate['ID']])){
-                $status_new=$DelegateChange[$senior['ID']][$delegate['ID']];
-                $status_news[]=$status_new; ?> 
-            <span class="<?= $Statuses[$status_new]!=$Statuses[$delegate['Status']]?($Statuses[$status_new]>$Statuses[$delegate['Status']]?'message':'error'):'' ?>"><?= $status_new ?></span>
-            <?php }else{ ?>
-                *
-            <?php } ?>            
-        </td>
-    <?php } ?>
-        <td class="border-left-solid tr_title" align="center">
+        <td>
             <?php $status_news_unique=array_unique($status_news);
-            if(sizeof($status_news_unique)==1 and sizeof($status_news)==sizeof($Seniors)){ ?>
-                <span class="<?= $Statuses[$status_news[0]]!=$Statuses[$delegate['Status']]?($Statuses[$status_news[0]]>$Statuses[$delegate['Status']]?'message':'error'):'' ?>"><?= $status_news[0] ?></span>
+            if(sizeof($status_news)==sizeof($Seniors)){
+                if(sizeof($status_news_unique)==1){ ?>
+                    <?php if($Statuses[$status_news[0]]>$Statuses[$delegate['Status']]){ ?>
+                        <span class="color_green"><i class="fas fa-arrow-alt-circle-up"></i></span>
+                    <?php } ?>
+                    <?php if($Statuses[$status_news[0]]<$Statuses[$delegate['Status']]){ ?>
+                        <span class="color_red"><i class="fas fa-arrow-alt-circle-down"></i></span>
+                    <?php } ?>                                
+                    <?= $status_news[0] ?>
+                <?php }else{ ?>
+                    <i class="far fa-question-circle"></i>
+                <?php } ?> 
             <?php }else{ ?>
-                *
-            <?php } ?> 
+                <i class="fas fa-hourglass-start"></i>
+            <?php } ?>         
         </td>
 </tr>
 <?php } ?>
+<tbody>
 </table>
-    <input type="submit" value="<?= ml($tr_check==1?'Trainee.Save':'*.Save',false)?>">
+    <td><button><i class="fas fa-save"></i> Save votes</button></td>
 </form>
 <?php } ?>
-<?php if(CheckAccess('Delegate.Settings.Ext')){ ?>
-<form method="POST" action="<?= PageAction('Delegates.Change.DeleteAll') ?>" onsubmit="return confirm('Attention: Confirm <?= ml('Delegate.Settings.DeleteAll',false)?>.')">
-    <input class="delete" type="submit" value="<?= ml('Delegate.Settings.DeleteAll',false)?>">
-</form>
-<?php } ?>
-    
-
-<?= mlb('Delegate.Settings.DeleteAll')?>
-<?= mlb('Trainee.Save')?>

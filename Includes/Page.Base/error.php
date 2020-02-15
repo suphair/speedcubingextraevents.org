@@ -1,3 +1,1 @@
-<h3 style="color:red">
-    <?= RequestClass::getError() ?>
-</h3>
+<h2 class="color_red"><i class="fas fa-hand-paper"></i> <?= RequestClass::getError() ?></h2>

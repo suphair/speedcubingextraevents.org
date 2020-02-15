@@ -170,6 +170,7 @@ $typesSimplePage=[
                         }elseif($request[2]!='null'){
                             self::set404();    
                         }else{
+                            self::$titles[2]='Candidates';
                             self::CheckAccess('Delegate.Candidates');
                         }
                         break;
@@ -461,7 +462,7 @@ $typesSimplePage=[
             
             $page=sizeof(explode("/",$page))>1?explode("/",$page)[1]:$page;
             
-            $err="<h3 style='color:red'>You do not have permission [".$type."] to use action [".$page."]</h3>";
+            $err="<h2 style='color:red'>You do not have permission [".$type."] to use action [".$page."]</h2>";
             self::set401($err);
             return $err;
         }

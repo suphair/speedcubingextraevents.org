@@ -45,7 +45,6 @@ if($Discipline=='9x9' or $Discipline=='8x8'){
 
 ?>
 <head>
-    <link rel="icon" href="<?= PageLocal()?><?= ImageEventFile($data['Discipline_CodeScript'])?>" >
     <title><?= $data['Discipline_Name']?><?= $data['Event_vRound']?></title>
     <link rel="stylesheet" href="../../style.css" type="text/css"/>
 </head>
@@ -69,7 +68,7 @@ if($Discipline=='9x9' or $Discipline=='8x8'){
         <input type="file" accept="application/json"  class="file" name="file" multiple="true" onchange="document.forms['EventSetScrambleFile'].submit();"/>
         <input name="ID" type="hidden" value="<?= $data['Event_ID'] ?>" />
         <div class="fakefile" id="fkf">
-            <button class="form_change">Json</button> 
+            <button>JSON</button> 
         </div>
     </div>
 </form>   

@@ -1,4 +1,3 @@
-<?php includePage('Navigator') ?>
 <?php $request=request();
 if(isset($request[1]) and substr($request[1],0,1)!=='_'){
     $country_filter= DataBaseClass::Escape($request[1]);
@@ -55,13 +54,6 @@ if(!isset($DiscipineFilter['Discipline_ID'])){
 DataBaseClass::FromTable('Discipline'); 
 DataBaseClass::Where_current("Status='Active'");
 $disciplines=DataBaseClass::QueryGenerate(); ?>
-<div class="line">
-    <a class="<?= (!$DisciplineCode and !$country_filter)?"line_select":""?>" title="World records" href="<?= PageIndex()?>Records"><?= ImageCountry('', 25); ?></a>
-    <?php foreach($disciplines as $discipline_row){ ?>   
-        <a class="<?= strtolower($discipline_row['Discipline_Code'])==$DisciplineCode?"line_select":""?>" title="<?= $discipline_row['Discipline_Name'] ?>" href="<?= PageIndex()?>Records/<?= $continent_filter?"_$continent_filter":$country_filter?>/<?= $discipline_row['Discipline_Code']?>"><?= ImageEvent($discipline_row['Discipline_CodeScript'],25) ?></a> 
-    <?php } ?>
-</div>
-<hr>
 <?php
     DataBaseClass::FromTable('Competition');   
     DataBaseClass::OrderClear('Competition', 'EndDate');
@@ -73,7 +65,8 @@ $disciplines=DataBaseClass::QueryGenerate(); ?>
     
     foreach($competitions as $competition){      
         DataBaseClass::FromTable("Competition","ID='".$competition['Competition_ID']."'");
-        DataBaseClass::Where_current('Unofficial=0');    
+        DataBaseClass::Where_current('Unofficial=0'); 
+        DataBaseClass::Where_current("WCA not like 't.%'");
         DataBaseClass::Join_current("Event");
         DataBaseClass::Join_current("DisciplineFormat");
         DataBaseClass::Join_current("Format");
@@ -146,70 +139,100 @@ $disciplines=DataBaseClass::QueryGenerate(); ?>
     
     sort($countries); 
     sort($continents); ?>
-<h2>
-    <img src='<?= PageIndex()?>Image/Icons/record.png' width='20px'> 
-    <?php if($country_filter!='all'){ ?>
-        <?= ImageCountry($country_filter, 30); ?>
-        <nobr><?= ml('Records.Title.Country',CountryName($country_filter)) ?></nobr>
-    <?php }elseif($continent_filter){ ?>
-        <nobr><?= ml('Records.Title.Continent',$Continents[$continent_filter]) ?></nobr>
-    <?php }else{ ?>
-        <nobr><?= ml('Records.Title.World') ?></nobr>
-    <?php } ?>
-        
-     <select onchange="document.location='<?= PageIndex()?>' + this.value ">
-        <option <?= ($country_filter=='0' )?'selected':''?> value="Records/all/<?= $DisciplineCode?"/$DisciplineCode":""?>"><?= ml('Records.Select.WorldRecord') ?></option>
-        
-        
-        
-        <option disabled >&#9642; <?= ml('Records.Select.ContinentsRecord') ?></option>
-        <?php 
-        foreach($Continents as $Code=>$Continent){
-            if(in_array($Code,$continents)){ ?>    
-            <option <?= $continent_filter== $Code?'selected':''?>  value="Records/_<?= $Code ?><?= $DisciplineCode?"/$DisciplineCode":""?>">        
-                <?= $Continent ?>
-            </option> 
-        <?php }        
-            if(!in_array($Code,$continents) and $continent_filter==$Code){ ?>
-                <option selected><?= $Continent ?> - <?= ml('Records.Select.ResultNotFound') ?></option>
-            <?php }
-        } ?>        
-        <option disabled >&#9642; <?= ml('Records.Select.NationalsRecord') ?></option>
-        <?php if(!in_array($country_filter,$countries) and $country_filter!='all'){ ?>
-            <option selected><?= CountryName($country_filter) ?> [<?= strtoupper($country_filter) ?>] - <?= ml('Records.Select.ResultNotFound') ?></option>
-        <?php } ?>            
-        <?php foreach($countries as $country){ ?>
-                <option <?= $country_filter==$country?'selected':''?> value="Records/<?= $country?><?= $DisciplineCode?"/$DisciplineCode":""?>">        
-                    <?= CountryName($country) ?> [<?= strtoupper($country) ?>]
-                </option> 
-        <?php } ?>      
-    </select>   
+
+<h1>
     <?php if($DisciplineCode){ ?>
-        <br>
         <?= ImageEvent($DiscipineFilter['Discipline_CodeScript'],50) ?> 
-        <?=$DiscipineFilter['Discipline_Name']?>
+        <?=$DiscipineFilter['Discipline_Name']?> /
     <?php } ?>            
-</h2>
+     <?= ml('Records.Records') ?>   
+</h1>
 <?php if($DiscipineFilter['Discipline_Status']=='Archive'){ ?>
-<h2 class="error">
-    <?=  ml('Event.Archive.Title') ?>
-</h2>   
+    <h2>
+        <i class="fas fa-angle-double-right"></i> <?=  ml('Event.Archive.Title') ?>
+    </h2>   
 <?php } ?>
+<table width="100%"><tr><td>
+    <table class="table_info">
+        <tr>
+            <td><?= ml('Records.Show') ?></td>
+            <td><i class="far fa-check-square"></i> <?= ml('Records.ShowHistory') ?> </td>
+        </tr
+        <tr>
+            <td><?= ml('Records.Region') ?></td>
+            <td>
+                <select onchange="document.location='<?= PageIndex()?>' + this.value ">
+                    <option <?= ($country_filter=='0' )?'selected':''?> value="Records/all/<?= $DisciplineCode?"/$DisciplineCode":""?>"><?= ml('Records.Select.WorldRecord') ?></option>
+
+                    <option disabled >&#9642; <?= ml('Records.Select.ContinentsRecord') ?></option>
+                    <?php 
+                    foreach($Continents as $Code=>$Continent){
+                        if(in_array($Code,$continents)){ ?>    
+                        <option <?= $continent_filter== $Code?'selected':''?>  value="Records/_<?= $Code ?><?= $DisciplineCode?"/$DisciplineCode":""?>">        
+                            <?= $Continent ?>
+                        </option> 
+                    <?php }        
+                        if(!in_array($Code,$continents) and $continent_filter==$Code){ ?>
+                            <option selected><?= $Continent ?> - <?= ml('Records.Select.ResultNotFound') ?></option>
+                        <?php }
+                    } ?>        
+                    <option disabled >&#9642; <?= ml('Records.Select.NationalsRecord') ?></option>
+                    <?php if(!in_array($country_filter,$countries) and $country_filter!='all'){ ?>
+                        <option selected><?= CountryName($country_filter) ?> [<?= strtoupper($country_filter) ?>] - <?= ml('Records.Select.ResultNotFound') ?></option>
+                    <?php } ?>            
+                    <?php foreach($countries as $country){ ?>
+                            <option <?= $country_filter==$country?'selected':''?> value="Records/<?= $country?><?= $DisciplineCode?"/$DisciplineCode":""?>">        
+                                <?= CountryName($country) ?>
+                            </option> 
+                    <?php } ?>      
+                </select>
+            </td>
+        </tr>    
+        <tr>
+            <td><?= ml('Records.ExtraEvent') ?></td>
+            <td>
+                <select onchange="document.location='<?= PageIndex()?>' + this.value ">
+                    <option value="Records/<?= $country_filter ?>">All events</option>
+                <?php foreach($disciplines as $discipline_row){ ?>   
+                    <option value="Records/<?= $country_filter ?>/<?= $discipline_row['Discipline_Code'] ?>" <?= strtolower($discipline_row['Discipline_Code'])==$DisciplineCode?'selected':''?> >
+                        <?= $discipline_row['Discipline_Name'] ?>
+                    </option>
+                <?php } ?>    
+                </select>                
+            </td>
+        </tr>    
+    </table>
+</td><td>
 <?php if($DisciplineCode){ ?>
     <?= EventBlockLinks($DiscipineFilter,'records'); ?>
 <?php } ?>
+</td></tr></table>
+<h2>
+  
+    <?php if($country_filter=='all' and $continent_filter=='') { ?>
+        <?= ml('Event.Country.Title.All'); ?>
+    <?php }elseif($country_filter!='all'){ ?>
+        <?= CountryName($country_filter); ?>  
+    <?php }else{ ?>
+        <?= $Continents[$continent_filter]?>
+    <?php } ?>    
+</h2>   
+
 <?php if(sizeof($results)){ ?>
-<table class="Records">
-                <tr class="tr_title">
+<table class="table_new" width="80%">
+    <thead>
+                <tr >
                 <td><?= ml('Records.Table.Date') ?></td>
-                <?php if(!$DisciplineCode){ ?>
-                    <td><?= ml('Records.Table.Event') ?></td>
-                <?php } ?>
-                <td><?= ml('Records.Table.Single') ?></td>
-                <td><?= ml('Records.Table.Average') ?></td>
+                <td><?= ml('Records.ExtraEvent') ?></td>
+                <td class="table_new_right"><?= ml('Records.Table.Single') ?></td>
+                <td class="table_new_right"><?= ml('Records.Table.Average') ?></td>
                 <td><?= ml('Records.Table.Competitor') ?></td>
+                <td><?= ml('Records.Table.Country') ?></td>
                 <td><?= ml('Records.Table.Competition') ?></td>
+                <td></td>
             </tr>
+    </thead>
+    <tbody>
 <?php $record_out=array();
     foreach($results as $date=>$comp){
         foreach($comp as $ci=>$c)if(strpos($c['Competition_WCA'],'t.')===false){ ?>
@@ -217,66 +240,67 @@ $disciplines=DataBaseClass::QueryGenerate(); ?>
                 <td>
                     <?= date_range($c['Competition_EndDate'],$c['Competition_EndDate']); ?>
                 </td> 
-                <?php if(!$DisciplineCode){ ?>
                 <td>
                     <?= ImageEvent($c['Discipline_CodeScript'],25,$c['Discipline_Name']); ?> 
                     <a href="<?= LinkDiscipline($c['Discipline_Code']) ?>">
                         <?= $c['Discipline_Name'] ?>
                     </a>
                 </td>
-                <?php } ?>
 
                 <?php $class="";
                     if(!in_array($c['Discipline_ID'].'_'.$c['Attempt_Special'],$record_out)){
                         $record_out[]=$c['Discipline_ID'].'_'.$c['Attempt_Special'];
-                        $class="message";
+                        $class="table_new_PB";
                     } ?>   
-                <td class="attempt border-left-solid border-right-solid">
+                <td class="<?= $class ?> table_new_right table_new_bold">
                     <?php if(in_array($c['Attempt_Special'],array('Best','Sum'))){ ?>
-                         <span class="<?= $class ?>"><?= $c['Attempt_vOut'] ?></span>
+                        <?= $c['Attempt_vOut'] ?>
                      <?php } ?>
                 </td>
 
-                <td class="attempt border-left-solid border-right-solid">
+                <td class="<?= $class ?> table_new_right table_new_bold">
                     <?php if(!in_array($c['Attempt_Special'],array('Best','Sum'))){ ?>
-                         <span class="<?= $class ?>"><?= $c['Attempt_vOut'] ?></span>
+                        <?= $c['Attempt_vOut'] ?>
                      <?php } ?>
                 </td>
-                <td>
-                    <?php 
+                    <?php  
                     DataBaseClass::FromTable("Command","ID=".$c['Command_ID']);
                     DataBaseClass::Join_current("CommandCompetitor");
                     DataBaseClass::Join_current("Competitor");
                     DataBaseClass::OrderClear("Competitor","Name");
-                    $competitors=DataBaseClass::QueryGenerate();
-                    foreach($competitors as $competitor){ ?>
+                    $competitors=DataBaseClass::QueryGenerate(); ?>
+                <td>
+                    <?php foreach($competitors as $competitor){ ?>
                         <p>
-                            <img width="24" style="vertical-align: middle" src="<?= PageIndex()?>Image/Flags/<?= strtolower($competitor['Competitor_Country'])?>.png">
-                            <a href="<?= PageIndex() ?>Competitor/<?= $competitor['Competitor_WCAID']?$competitor['Competitor_WCAID']:$competitor['Competitor_ID'] ?>"><?= trim(explode("(",$competitor['Competitor_Name'])[0]) ?></a></p>
+                            <a href="<?= PageIndex() ?>Competitor/<?= $competitor['Competitor_WCAID']?$competitor['Competitor_WCAID']:$competitor['Competitor_ID'] ?>"><?= trim(explode("(",$competitor['Competitor_Name'])[0]) ?></a>
+                        </p>
                     <?php } ?>
-
                 </td>
                 <td>
-                    <img width="25" style="vertical-align: middle" src="<?= PageIndex()?>Image/Flags/<?= strtolower($c['Competition_Country'])?>.png">
+                    <?php foreach($competitors as $competitor){ ?>
+                        <p>
+                            <?= ImageCountry($competitor['Competitor_Country'])?>
+                            <?= CountryName($competitor['Competitor_Country'])?>
+                        </p>
+                    <?php } ?>
+                </td>
+                <td>
+                    <?= ImageCountry($c['Competition_Country'])?>
                     <a href="<?= LinkCompetition($c['Competition_WCA']) ?>">
                         <?= $c['Competition_Name'] ?>
                     </a>
                 </td>
-                <?php if($c['Command_Video']){ ?>    
-                    <td>
-                        <a target=_blank" href="<?= $c['Command_Video'] ?>"><img class="video"  src="<?= PageIndex()?>Image/Icons/Video.png"></a>
-                    </td>    
+                <td>
+                <?php if($c['Command_Video']){ ?>            
+                    <a target=_blank" href="<?= $c['Command_Video'] ?>"><i class="fas fa-video"></i></a>
                 <?php } ?>
+                </td>    
             </tr>
         <?php }
     } ?>
-    </table>
+    </tbody>
+</table>
 <?php }else{ ?>
-<h3><?= ml('Records.NotFound') ?></h3>
+<i class="fas fa-exclamation-circle"></i> <?= ml('Records.NotFound') ?>
 <?php } ?>
  </div>
- 
-<?= mlb('Records.NotFound'); ?>
-<?= mlb('Records.Select.ResultNotFound') ?>
-<?= mlb('Records.Title.Country') ?>
-<?= mlb('Records.Title.Continent') ?>

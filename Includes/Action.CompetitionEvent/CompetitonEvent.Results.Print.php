@@ -29,27 +29,21 @@ if(!isset($requests[2]) or !is_numeric($requests[2])){
     $column_competitor_count=$data['Discipline_Competitors'];
         
     $xPlace=10;
-    $xAttempt=17;
-    $xCompetitor=50; 
-        /*echo $xPlace+$xAttempt*$column_attempt_count+$xCompetitor*$column_competitor_count;
-        echo '<br>$xPlace'.$xPlace;
-        echo '<br>$xAttempt'.$xAttempt;
-        echo '<br>$column_attempt_count'.$column_attempt_count;
-        echo '<br>$xCompetitor'.$xCompetitor;
-        echo '<br>$column_competitor_count'.$column_competitor_count;*/
-    if(($xPlace+$xAttempt*$column_attempt_count+$xCompetitor*$column_competitor_count)>200){
-        $pdf = new FPDF('L','mm'); 
-        $max_page=20;
+    if($data['Attemption']>5){
+        $xAttempt=18;
     }else{
-        $pdf = new FPDF('P','mm');   
-        $max_page=30;
+        $xAttempt=25;
     }
-    $pdf->SetFont('courier');
+    $xCompetitor=50; 
+    
+    $pdf = new FPDF('L','mm'); 
+    $max_page=20;
+    $pdf->SetTextColor(33,33,33);
             
     $pages=ceil(sizeof($commands)/$max_page);
     
-    $xStart=5;
-    $xEnd=$pdf->w - 5;    
+    $xStart=10;
+    $xEnd=$pdf->w - 10;    
     
 for($p=0;$p<$pages;$p++){  
     $start = $p * $max_page;
@@ -68,19 +62,19 @@ for($p=0;$p<$pages;$p++){
         
         if($c%2 ==0){
             $pdf->SetFillColor(240,240,240);
-            $pdf->Rect(5, 38+($n-1)*8, $pdf->w - 10, 8, "F");
+            $pdf->Rect(10, 38+($n-1)*8, $pdf->w - 20, 8, "F");
         }
         $pdf->SetLineWidth(0.3);
         if($n>0){
-            $pdf->Line(5, 38+($n-1)*8 , $pdf->w - 5, 38+($n-1)*8);
+            //$pdf->Line(5, 38+($n-1)*8 , $pdf->w - 5, 38+($n-1)*8);
         }
-        $pdf->Line(5, 38+$n*8 , $pdf->w - 5, 38+$n*8);
+        //$pdf->Line(5, 38+$n*8 , $pdf->w - 5, 38+$n*8);
     
         $pdf->SetFont('Arial','B',12);
-        $pdf->Text(7, 35+$n*8, $command['Place']);
+        $pdf->Text(12, 35+$n*8, $command['Place']);
          
-        $pdf->SetFont('Arial','',10);
-        $pdf->Text(18, 35+$n*8, iconv('utf-8', 'cp1252//TRANSLIT',$command['vName']));
+        $pdf->SetFont('Arial','',12);
+        $pdf->Text(23, 35+$n*8, iconv('utf-8', 'cp1252//TRANSLIT',$command['vName']));
         
         DataBaseClass::Query("select * from `Attempt` A where Command='".$command['ID']."' ");
         $attempt_rows=DataBaseClass::getRows();
@@ -110,16 +104,16 @@ for($p=0;$p<$pages;$p++){
         $dX=1;
         if($data['ExtResult']){
            $i=5;
-           $pdf->SetFont('Arial','',10);
+           $pdf->SetFont('Arial','',12);
            $pdf->Text($xEnd -  $dX * $xAttempt, 35+$n*8, sprintf('%0 10s',$attempts[$data['ExtResult']])); 
            $dX++;
         }
         
-        $pdf->SetFont('Arial','B',10);
+        $pdf->SetFont('Arial','B',12);
         $pdf->Text($xEnd -  $dX * $xAttempt, 35+$n*8, sprintf('%0 10s',$attempts[$data['Result']]));
         $dX++;
         
-        $pdf->SetFont('Arial','',10);
+        $pdf->SetFont('Arial','',12);
         for($i=$data['Attemption']-1;$i>=0;$i--){
             $pdf->Text($xEnd -  $dX * $xAttempt, 35+$n*8, sprintf('%0 10s',$attempts[$i+1]));
             $dX++;
@@ -132,60 +126,62 @@ for($p=0;$p<$pages;$p++){
     //    $pdf->Image("Image/Competition/".$data['Competition_WCA'].'.jpg',5,5,25,25,'jpg');
     //}
     
+    
     if(file_exists(ImageEventFile($data['Discipline_CodeScript']))){
         $pdf->Image(ImageEventFile($data['Discipline_CodeScript']),5,5,20,20,'jpg');
     }
    
-        $pdf->Image("Logo/Logo_Black.png",$pdf->w-25,5,20,20,'png');
+    #$pdf->Image("Logo/Logo_Black.png",$pdf->w-25,5,20,20,'png');
 
     
     $pdf->SetFont('Arial','',16);
     $str=iconv('utf-8', 'cp1252//TRANSLIT', $data['Competition']);
-    $pdf->Text(30, 23, $str);
-    $pdf->Text(30, 13, $data['Discipline'].$data['vRound']);
-    $pdf->SetFont('Arial','',20);
-    $pdf->SetLineWidth(0.3);
-    $pdf->Line(5, 38 , $pdf->w - 5, 38);
+    $pdf->Text(10, 13, $str);
+    $pdf->SetFont('Arial','',24);
+    $pdf->Text(10, 24, $data['Discipline'].$data['vRound']);
+    //$pdf->SetFont('Arial','',20);
+    //$pdf->SetLineWidth(0.3);
+    #$pdf->Line(5, 38 , $pdf->w - 5, 38);
     
-    $pdf->SetLineWidth(0.1);
-    $pdf->SetFont('Arial','',10);
-    $pdf->Text(6, 35, 'Place');
-    $pdf->Line(15, 30, 15,32+8*$on_page);
-    if($data['Discipline_Competitors']>1){
-        $pdf->Text(18, 35, 'Team');    
-    }else{
-        $pdf->Text(18, 35, 'Competitor');
-    }
+    #$pdf->SetLineWidth(0.1);
+    #$pdf->SetFont('Arial','',12);
+    #$pdf->Text(6, 35, 'Place');
+    #$pdf->Line(15, 30, 15,32+8*$on_page);
+    #if($data['Discipline_Competitors']>1){
+    #    $pdf->Text(18, 35, 'Team');    
+    #}else{
+    #    $pdf->Text(18, 35, 'Competitor');
+    #}
     
     $dX=1;
+    $pdf->SetFont('Arial','B',12);
     if($data['ExtResult']){
         $i=5;
-        $pdf->Line($xEnd -  $dX * $xAttempt, 30, $xEnd -  $dX * $xAttempt, 32+8*$on_page);
-        $pdf->SetFont('Arial','',10);
+        #$pdf->Line($xEnd -  $dX * $xAttempt, 30, $xEnd -  $dX * $xAttempt, 32+8*$on_page);
         $pdf->Text($xEnd -  $dX * $xAttempt+5, 35,$data['ExtResult']);
         $dX++;
     }
-    $pdf->Line($xEnd -  $dX * $xAttempt, 30, $xEnd -  $dX * $xAttempt, 32+8*$on_page);
-    $pdf->SetFont('Arial','B',10);
-    $pdf->Text($xEnd -  $dX * $xAttempt+5, 35,  str_replace('Average','Avg',$data['Result']));
+    #$pdf->Line($xEnd -  $dX * $xAttempt, 30, $xEnd -  $dX * $xAttempt, 32+8*$on_page);
+    #$pdf->SetFont('Arial','',12);
+    $pdf->Text($xEnd -  $dX * $xAttempt+2, 35, $data['Result']);
     $dX++;
-    $pdf->SetFont('Arial','',10);
+    #$pdf->SetFont('Arial','',12);
     for($i=$data['Attemption']-1;$i>=0;$i--){
         
         
-        if($image=IconAttempt($data['Discipline_Code'],$i+1)){
-            $pdf->Image($image,$xEnd -  $dX * $xAttempt + 5 ,30,7,7,'png');
+        if($image=IconAttempt($data['Discipline_CodeScript'],$i+1)){
+            $pdf->Image($image,$xEnd -  $dX * $xAttempt + 8 ,30,7,7,'png');
         }else{
             $pdf->Text($xEnd -  $dX * $xAttempt, 35, sprintf('%0 9s',$i+1));
         }
             
-        $pdf->Line($xEnd -  $dX * $xAttempt, 30, $xEnd -  $dX * $xAttempt, 32+8*$on_page);
+        #$pdf->Line($xEnd -  $dX * $xAttempt, 30, $xEnd -  $dX * $xAttempt, 32+8*$on_page);
         $dX++;
     }
     
     
-        $pdf->SetFont('Arial','',10);
-        $pdf->Text(80, 286,GetIni('TEXT','print'));
+   //     $pdf->SetFont('Arial','',10);
+   //     $pdf->Text(80, 286,GetIni('TEXT','print'));
 }        
 $pdf->Output($data['Competition_WCA'].'_Results_'.$data['Discipline_Code'].".pdf",'I'); 
 $pdf->Close();

@@ -2,21 +2,27 @@
             $News=DataBaseClass::getRows();
  
  if(sizeof($News)){ ?>
-<div class='form2'>
+<table class="table_info">
+    <tbody>
     <?php foreach($News as $news){ ?>
+    <tr>
            <?php $text=ml_json($news['Text']);
            $text_new=$text;
            $text_line=explode("\n",$text);
            if(isset($text_line[0])){
                $text_new=$text_line[0];
            } ?>
-           <p><b><?= date_range($news['Date']) ?></b>&nbsp;&nbsp;<?= $text_new ?>    
-           <?php if($text_new!=$text){ ?>
-               <a href='<?= PageIndex()?>News'><?= ml('News.Announce.More') ?></a>
-           <?php } ?>
-           </p>
+           <td><i class="far fa-newspaper"></i> <?= date_range($news['Date']) ?></td>
+           <td>    
+               <?= $text_new ?>
+               <?php if($text_new!=$text){ ?>
+                   <a href='<?= PageIndex()?>News'><?= ml('News.Announce.More') ?></a>
+               <?php } ?>
+           </td>
+    </tr>       
    <?php  }  ?>
-</div>
+    </tbody>
+</table>
 <?php } ?>
  
 <?= mlb('News.Announce.More') ?>

@@ -10,7 +10,7 @@ $error='';
 foreach($_POST['Events'] as $row){
    $arr= json_decode($row);
    if(!is_array($arr) or sizeof($arr)!=2 or !is_numeric($arr[0]) or!is_numeric($arr[1]) or !in_array($arr[1],[1,2,3,4])){
-       $error.="$row is wrong . ";
+       $error.="$row is wrong.";
    }else{
        $Events[]=$arr;
    }
@@ -23,12 +23,14 @@ foreach($Events as $row){
     DataBaseClass::FromTable("DisciplineFormat","Discipline=".$Event);
     $EventFormat=DataBaseClass::QueryGenerate(false);
     if(is_array($EventFormat)){    
-        DataBaseClass::Query("Select E.ID from `Event` E "
-        . "join DisciplineFormat DF on E.DisciplineFormat=DF.ID where"
+        DataBaseClass::Query("Select E.ID,D.Name from `Event` E "
+        . " join DisciplineFormat DF on E.DisciplineFormat=DF.ID"
+        . " join Discipline D on DF.Discipline=D.ID"
+        . " where"
         . " E.`Competition`='$Competition' and DF.Discipline='$Event' and E.Round=$round");
         
         if(DataBaseClass::rowsCount()>0){
-            $error.="$Event round $round exists. ";
+            $error.='Event '.DataBaseClass::getRow()['Name']." round $round already exists.";
         }else{
             DataBaseClass::Query("Insert into  `Event` "
                     . " (`Competition`,`DisciplineFormat`,`Secret`,`Round`)"
@@ -46,5 +48,5 @@ if($error){
     SetMessageName('CompetitionEvents.Add.Error', $error);
 }
 
-header('Location: '.$_SERVER['HTTP_REFERER']);
+header('Location: '.$_SERVER['HTTP_REFERER'].'#CompetitionEvent.Action');
 exit();  

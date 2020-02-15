@@ -1,14 +1,17 @@
 <?php
-
 CheckPostIsset('ID','CutoffMinute','CutoffSecond','LimitMinute','LimitSecond','Competitors','Groups','Format');
-CheckPostNotEmpty('ID','CutoffMinute','CutoffSecond','LimitMinute','LimitSecond','Competitors','Groups','Format');
-CheckPostIsNumeric('ID','CutoffMinute','CutoffSecond','LimitMinute','LimitSecond','Competitors','Groups','Format');
+CheckPostNotEmpty('ID','CutoffMinute','CutoffSecond','LimitMinute','LimitSecond','Groups','Format');
+CheckPostIsNumeric('ID','CutoffMinute','CutoffSecond','LimitMinute','LimitSecond','Groups','Format');
 $ID=$_POST['ID'];
 $CutoffMinute=$_POST['CutoffMinute'];
 $CutoffSecond=$_POST['CutoffSecond'];
 $LimitMinute=$_POST['LimitMinute'];
 $LimitSecond=$_POST['LimitSecond'];
-$Competitors=$_POST['Competitors'];
+if(!is_numeric($_POST['Competitors']) or !$_POST['Competitors']){
+    $Competitors=500;
+}else{
+    $Competitors=$_POST['Competitors'];
+}
 $Groups=$_POST['Groups'];
 $Format=$_POST['Format'];
     
@@ -31,5 +34,5 @@ if(isset($row['Event_Competition'])){
             . " where ID='$ID' ");
 }
 SetMessage("");
-header('Location: '.$_SERVER['HTTP_REFERER']);
+header('Location: '.$_SERVER['HTTP_REFERER'].'#CompetitionEvent.Action');
 exit();  

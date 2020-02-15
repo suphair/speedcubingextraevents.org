@@ -1,4 +1,4 @@
-<H1><?= ml('Access.Title'); ?></h1>
+<H1>Access</h1>
 
 <?php
 $GrandRoles=[];
@@ -19,21 +19,28 @@ join `GrandGroupMember` GGM on GGM.Group=GG.ID
 join Delegate D on D.ID=GGM.Delegate
 order by 1,2");
 ?>
-<table>
-    <tr class="tr_title">
+<table class="table_new">
+    <thead>
+    <tr>
         <td>Description</td>
-        <td colspan="2">Have the right</td>
+        <td>Competition</td>
+        <td>Have the right</td>
         <td>Code</td>
     </tr>
+    </thead>
+    <tbody>
 <?php foreach(DataBaseClass::getRows() as $row){ ?>
     <tr>
-        <td class='border-right-solid'><?= $row['Description'] ?></td>
-        <td><?php if($row['Competition']){?><img width='15px' src='<?= PageIndex() ?>Image/Icons/competitions.png'><?php } ?></td>
+        <td><?= $row['Description'] ?></td>
+        <td><?php if($row['Competition']){?>Competition<?php } ?></td>
         <td>
             <?= isset($GrandRoles[$row['Level']])?implode(", ",$GrandRoles[$row['Level']]):''?>
-            <span class='message'><?= $row['Name'] ?></span>
+            <?php if($row['Name']){ ?>
+                <i class="fas fa-user-tie"></i> <?= $row['Name'] ?>
+            <?php } ?>
         </td>
-        <td class='border-left-solid'><?= $row['Type'] ?></td>
+        <td><?= $row['Type'] ?></td>
     </tr>
 <?php }?>
+    <tbody>
 </table>

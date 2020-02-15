@@ -1,6 +1,6 @@
 <?php
 RequestClass::CheckAccessExit(__FILE__, 'aNews');
-CheckPostIsset('anews','ID');
+CheckPostIsset('ID');
 CheckPostNotEmpty('ID');
 CheckPostIsNumeric('ID');
 
@@ -8,7 +8,7 @@ $ID= $_POST['ID'];
 
 if(isset($_POST['Delete'])){
     DataBaseClass::Query("Delete from `News` where ID=$ID");
-}else{
+}elseif(isset($_POST['anews'])){
     $Anews= $_POST['anews'];
     foreach($Anews as $c=>$anews){
         if(DataBaseClass::Escape($anews)){

@@ -1,13 +1,38 @@
+<?php
+$Request= Request();
+$Settings=(isset($Request[2]) and $Request[2]=='settings');
+$Event_line = ObjectClass::getObject('PageEvent');
+
+DataBaseClass::FromTable('Discipline'); 
+DataBaseClass::OrderClear('Discipline','Name'); 
+DataBaseClass::Where_current("Status='Active'");    
+$disciplines=DataBaseClass::QueryGenerate();
+$TrainingEvents=[];
+?>
+<h2>     
+    <?php foreach($disciplines as $d=>$discipline_row){ ?>   
+        <?php if(
+                (file_exists("Functions/Generate_{$discipline_row['Discipline_CodeScript']}.php")  or
+                file_exists("Functions/GenerateTraining_{$discipline_row['Discipline_CodeScript']}.php") or
+                file_exists("Script/{$discipline_row['Discipline_CodeScript']}_generator.js"))
+                and file_exists("Scramble/{$discipline_row['Discipline_CodeScript']}.php")){     
+                    ?>
+        <a class="<?= $discipline_row['Discipline_ID']==$Event_line['Discipline_ID']?"select":""?>" title="<?= $discipline_row['Discipline_Name'] ?>" href="<?= LinkDiscipline($discipline_row['Discipline_Code']) ?>/Training"><?= ImageEvent($discipline_row['Discipline_CodeScript'],25) ?></a> 
+        <?php 
+            $TrainingEvents[]=$discipline_row;
+        } ?>
+    <?php } ?>
+</h2>
+
 <script>
     scramble='';
 </script>    
-<?php includePage('Navigator'); ?>
-<?php includePage('Events.Trainig_Line'); ?>
-<?php $Event=ObjectClass::getObject('PageEvent');
+<?php 
+$Event=ObjectClass::getObject('PageEvent');
 $Event_CodeScript=$Event['Discipline_CodeScript'];
 ?>
 <hr>
-<h1><?= ImageEvent($Event_CodeScript,50)?> <?= $Event['Discipline_Name']; ?> / <?= ml('TrainingScrambling.Title') ?></h1>
+<h1><?= ImageEvent($Event_CodeScript)?> <?= $Event['Discipline_Name']; ?> / <?= ml('TrainingScrambling.Title') ?></h1>
 <?php
 $exists_GenerateTraining=file_exists("Functions/GenerateTraining_{$Event_CodeScript}.php");
 $exists_Generate=file_exists("Functions/Generate_{$Event_CodeScript}.php");
@@ -34,28 +59,54 @@ if(($exists_GenerateTraining or $exists_Generate or $exists_ScriptGenerate)
             scramble=getscrambles(1);
         </script>
         
-    <?php }
-    
-    ?>
+    <?php } ?>
+        
+        
 <table width="100%">
-    <tr>
-        <td width="400px">
-            <div style="width:400px;height:300px">
-                <img ID="ScrambleImage" style="max-width: 100%; max-height: 100%;" src="<?= !$exists_ScriptGenerate?(PageIndex().$ScrambleImageFilename.'?t='.time()):''?>">
-            </div>
-            Press the <b>space</b> to generate new scramble
-        </td>
-        <td>    
-            <span class="form" ID="Scramble" style="font-size:20px;">   
-            <?= str_replace("&","<br>",$Scramble); ?></span>
-            <?php $Instructions=$Event['Discipline_ScrambleComment'];
-            if($Instructions){ ?>
-                <div><?= str_replace("\n","<br>",$Instructions); ?></div>
-            <?php  }?>
-        </td>
-    </tr>
-</table>
-<?= EventBlockLinks($Event,'training'); ?>
+<tr>
+<td>
+    <table class="table_info">
+        <tr>
+            <td>Extra event</td>
+            <td>
+                <select onchange="document.location='<?= PageIndex()?>' + this.value ">
+                <?php
+                foreach($TrainingEvents as $event){?>   
+                    <option value="Event/<?= $event['Discipline_Code'] ?>/Training" <?= $event['Discipline_CodeScript']==$Event_CodeScript?'selected':''?> >
+                        <?= $event['Discipline_Name'] ?>
+                    </option>
+                <?php } ?>    
+                </select>                
+            </td>
+        </tr> 
+        <?php $Instructions=$Event['Discipline_ScrambleComment'];
+        if($Instructions){ ?>
+        <tr>
+            <td>Inctruction</td>
+            <td><?= str_replace("\n","<br>",$Instructions); ?></td>
+        </tr>
+        <?php } ?>
+        <tr>
+            <td>Scramble</td>
+            <td style="font-size:18px; font-family: monospace; border:1px solid black">
+                <span ID="Scramble"><?= str_replace("&","<br>",$Scramble); ?></span>
+            </td>    
+        </tr>    
+        <tr>
+            <td>Next scramble</td>
+            <td>Press the [SPACE] to generate new scramble</td>
+        </tr>    
+        <tr><td><hr></td><td><hr></td></tr>
+        <?= EventBlockLinks($Event,'training',true); ?>
+    </table> 
+</td><td>            
+    <div style="width:400px;height:300px">
+        <img ID="ScrambleImage" style="max-width: 100%; max-height: 100%;" src="<?= !$exists_ScriptGenerate?(PageIndex().$ScrambleImageFilename.'?t='.time()):''?>">
+    </div>   
+</td>
+</tr>
+</table>        
+        
 <script>
     if(scramble){
         $('#Scramble').html(scramble);
@@ -77,6 +128,6 @@ function moveRect(e){
 addEventListener("keydown", moveRect);
 </script>            
 <?php }else{ ?>
-    <snap class="error">The event uses an external scramble generator.</span>
+    <i class="fas fa-exclamation-triangle"></i> The event uses an external scramble generator.
 <?php }?>
 

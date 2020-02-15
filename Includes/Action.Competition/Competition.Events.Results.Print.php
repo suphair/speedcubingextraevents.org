@@ -10,8 +10,8 @@ if(!isset($requests[2]) or !is_numeric($requests[2])){
 RequestClass::CheckAccessExit(__FILE__, 'Competition.Settings',$ID);
 
     
-@$pdf = new FPDF('P','mm');
-$pdf->SetFont('courier');
+@$pdf = new FPDF('L','mm');
+$pdf->SetTextColor(33,33,33);
 
 DataBaseClass::FromTable("Competition");
 DataBaseClass::Where_current("ID=$ID");
@@ -40,22 +40,19 @@ if(!sizeof($disciplines)){
 $pdf->AddPage();
 
 
-$pdf->Image("Logo/Logo_Black.png",5,5,20,20,'png');
-
-$pdf->SetFont('msserif','',26);
-$pdf->Text(30, 18, iconv('utf-8', 'windows-1251',$competition['Competition_Name']));
-$pdf->SetFont('Arial','',16);
-$text =date("d.m.Y H:i",time());
-$pdf->Text(30, 25,$text);
-$Y_header=30;
+$pdf->SetFont('Arial','',24);
+$str=iconv('utf-8', 'cp1252//TRANSLIT', $competition['Competition_Name']);
+$pdf->Text(10, 14, $str);
+    
+$Y_header=20;
     
 $DY=min(($pdf->h-$Y_header-15)/sizeof($disciplines),30);
-$X_left=5+$DY;
+
 
 foreach($disciplines as $n=>$discipline){
     $sy=$DY*$n+$Y_header;
     $ey=$DY*($n+1)+$Y_header;
-    $pdf->line(5,$sy,$pdf->w-5,$sy);
+    #$pdf->line(5,$sy,$pdf->w-5,$sy);
 
 
     DataBaseClass::FromTable("Event");
@@ -84,31 +81,31 @@ foreach($disciplines as $n=>$discipline){
     
     //$competitors=DataBaseClass::QueryGenerate();
 
-
-    if(file_exists(ImageEventFile($discipline['CodeScript']))){
-        $pdf->Image(ImageEventFile($discipline['CodeScript']),5,$sy+5,$DY-10,$DY-10,'jpg');
-    }  
+    
+    $place_y=$DY/(max(array(sizeof($competitors),3))+1)*0.9;
+    $font_size=min(array($place_y*2,14));
+    
     if(sizeof($competitors)){
-        $place_y=$DY/max(array(sizeof($competitors),3))*0.9;    
-
+        $pdf->SetFont('Arial','B',$font_size);
+        $pdf->Text(10, $sy+$place_y,$discipline['Name']);   
 //            $pdf->SetFont('msserif','',min(array($place_y*2,10)));
 //            $text = iconv('utf-8', 'windows-1251',$discipline['Name']);
 //            $pdf->Text($X_left, $sy+$place_y*1,$text);   
 
         foreach($competitors as $n=>$competitor){
-            $pdf->SetFont('Arial','B',min(array($place_y*2,14)));
-            $pdf->Text($X_left, $sy+$place_y*($n+1),$competitor['Place']);   
-            $pdf->SetFont('Arial','',min(array($place_y*2,14)));
-            $pdf->Text($X_left+5, $sy+$place_y*($n+1),sprintf("%10s",$competitor['vOut']));               
-            $pdf->Text($X_left+35, $sy+$place_y*($n+1),iconv('utf-8', 'cp1252//TRANSLIT',$competitor['Name']));   
+            $pdf->SetFont('Arial','B',$font_size);
+            $pdf->Text(15, $sy+$place_y*($n+2),$competitor['Place']);   
+            $pdf->SetFont('Arial','',$font_size);
+            $pdf->Text(20, $sy+$place_y*($n+2),sprintf("%10s",$competitor['vOut']));               
+            $pdf->Text(50, $sy+$place_y*($n+2),iconv('utf-8', 'cp1252//TRANSLIT',$competitor['Name']));   
         }
     }
 }
-$sy=$DY*sizeof($disciplines)+$Y_header;
-$ey=$DY*sizeof($disciplines)+$Y_header;
-$pdf->line(5,$sy,$pdf->w-5,$sy);
-$pdf->SetFont('Arial','',18);
-$pdf->Text(60, 290,GetIni('TEXT','print'));
+#$sy=$DY*sizeof($disciplines)+$Y_header;
+#$ey=$DY*sizeof($disciplines)+$Y_header;
+#$pdf->line(5,$sy,$pdf->w-5,$sy);
+#$pdf->SetFont('Arial','',18);
+#$pdf->Text(60, 190,GetIni('TEXT','print'));
 $pdf->Output($competition['Competition_WCA'].'_'.'Pedestal'.".pdf",'I');              
 $pdf->Close();
 exit();

@@ -1,28 +1,35 @@
 <?php IncludePage('Logs_navigator')?>
-<h1><img src='<?= PageIndex()?>Image/Icons/persons.png' width='30px'> Logs authorisations</h1>
-<table style="white-space:nowrap" >
+<h1>Logs authorisations</h1>
+<table class='table_new'>
 <thead>
-<tr class="tr_title">
+<tr>
     <td>DateTime</td>
     <td>Competitor</td>
     <td>Country</td>
+    <td>Action</td>
+    <td>WCA ID <i class="fas fa-external-link-alt"></i></td>
+    <td>WID <i class="fas fa-external-link-alt"></i></td>
 </tr>
 </thead>
+<tbody>
     <?php DataBaseClass::Query("Select "
-            . " A.Object, A.ID, Country.ISO2 Country_ISO2,  Country.Name Country_Name, C.ID Competitor_ID, C.Name Competitor_Name, A.Timestamp"
+            . " A.Object, A.ID, Country.ISO2 Country_ISO2,  Country.Name Country_Name, C.ID Competitor_ID, C.Name Competitor_Name, A.Timestamp,"
+            . " C.WID, C.WCAID "
             . " from WCAauth A "
             . " join Competitor C on C.WID=A.WID "
             . " left outer join Country on Country.ISO2=C.Country "
             . " where date(A.Timestamp)>=DATE_ADD(current_date(),INTERVAL -14 Day)"
             . " union "
-            . " Select L.Object Object, CONCAT('00',L.ID) ID, Country.ISO2 Country_ISO2,  Country.Name Country_Name, C.ID Competitor_ID, C.Name Competitor_Name,L.DateTime"
+            . " Select L.Object Object, CONCAT('00',L.ID) ID, Country.ISO2 Country_ISO2,  Country.Name Country_Name, C.ID Competitor_ID, C.Name Competitor_Name,L.DateTime,"
+            . " C.WID, C.WCAID "
             . " from Logs L "
             . " join Competitor C on C.WID=L.Competitor "
             . " left outer join Country on Country.ISO2=C.Country "
             . " where L.Action='Login' and L.Object='Alternative' "
             . " and date(L.DateTime)>=DATE_ADD(current_date(),INTERVAL -14 Day)"
             . " union "
-            . " Select L.Object Object, CONCAT('00',L.ID) ID, Country.ISO2 Country_ISO2,  Country.Name Country_Name, C.ID Competitor_ID, C.Name Competitor_Name,L.DateTime"
+            . " Select L.Object Object, CONCAT('00',L.ID) ID, Country.ISO2 Country_ISO2,  Country.Name Country_Name, C.ID Competitor_ID, C.Name Competitor_Name,L.DateTime,"
+            . " C.WID, C.WCAID "
             . " from Logs L "
             . " join Competitor C on C.WID=L.Competitor "
             . " left outer join Country on Country.ISO2=C.Country "
@@ -35,18 +42,15 @@
 <td><a href="<?= LinkCompetitor($log['Competitor_ID']) ?>"><?= $log['Competitor_Name'] ?></a></td>
 <td><?php ImageCountry($log['Country_ISO2'],20)?> <?= $log['Country_Name']?></td>
 <?php if($log['Object']=='Alternative'){ ?>
-    <td><span class="message">Altenative</span></td>
+    <td><i class="fas fa-user-secret"></i> Altenative</td>
 <?php }elseif($log['Object']=='WCA_Auth'){ ?>
-    <td><span class="error">Logout</span></td>
+    <td><i class="fas fa-sign-out-alt"></i> Logout</td>
 <?php }else{ ?>
-    <td><a href="#" onclick="$(this).hide(); $('#LogID<?= $log['ID'] ?>').show(); return false;">Auth</a>
-    <tr  ID="LogID<?= $log['ID'] ?>"  style="display: none">    
-    <td colspan="4" width="400px">
-    <div class="block_comment">
-        <?= str_replace(",",",<br>",$log['Object']); ?>
-    </div>
-    </td>
-    </tr>
+    <td><i class="fas fa-sign-in-alt"></i> Auth</td>
 <?php } ?>             
-        <?php } ?>         
+    
+    <td><a target="_blank" href="https://www.worldcubeassociation.org/persons/<?= $log['WCAID'] ?>"><?= $log['WCAID'] ?></a></td>
+    <td class="table_new_right"><a target="_blank" href="https://www.worldcubeassociation.org/api/v0/users/<?= $log['WID'] ?>"><?= $log['WID'] ?></a></td>
+        <?php } ?>    
+</tbody>    
 </table>

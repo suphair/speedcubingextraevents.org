@@ -138,31 +138,22 @@ if($_FILES['file']['error']==0 and $_FILES['file']['type'] == 'application/pdf')
                     $PageNumberPDF++;
                     $pdf->AddPage();
 
-                    $pdf->Image(ImageEventFile($Discipline),5,10,20,20,'jpg');
-                    $pdf->Image("Logo/Logo_Color.png",$pdf->w-25,10,20,20,'png');
-
+                    $pdf->SetFont('Arial','',24);
+                    $pdf->Text(10, 13, $data['Discipline_Name'].$data['Event_vRound']);
+                    
                     $pdf->SetFont('Arial','',16);
-                    $pdf->SetTextColor(17,31,135);
+                    if($attemption<$Attemption+1){                    
+                        $pdf->Text(10, 20, 'Group '.$Letter[$group].' / Attempt '.$attemption.' / Page '.$PageNumberPDF);
+                    }else{
+                        $pdf->Text(10, 20, 'Group '.$Letter[$group].' / Extra attempt / Page '.$PageNumberPDF);
+                    }
                     
                     $Competition_name=iconv('utf-8', 'cp1252//TRANSLIT', $data['Competition_Name']);
-                    $pdf->Text(30, 13, $Competition_name); 
+                    $pdf->Text(10, 27, $Competition_name); 
         
-                    $pdf->SetFont('msserif','',16);
-                    $pdf->SetTextColor(162,0,0);
-                    $pdf->Text(30, 20, $data['Discipline_Name'].$data['Event_vRound']);
-                    $pdf->SetFont('Arial','',16);
-                    
-                    $pdf->SetTextColor(0,182,67);
-                    if($attemption<$Attemption+1){                    
-                        $pdf->Text(30, 27, $Letter[$group].' group                    '. $attemption. ' attempt                    '.$PageNumberPDF.' page');
-                    }else{
-                        $pdf->Text(30, 27, $Letter[$group].' group                    Extra attempt                    '.$PageNumberPDF.' page');
-                    }
                     $pdf->SetTextColor(0,0,0);
                     $pdf->SetFont('Arial','',10);
-                    $pdf->Text(80, 286,GetIni('TEXT','print'));
-                    $pdf->SetFont('Arial','',10);
-                    $pdf->Text(150, 286,$Scramble_Timestamp);
+                    $pdf->Text(10, 286,$Scramble_Timestamp);
                     
                     $pdf_img_Y=$pdf_img_Y0;
                 }
@@ -248,7 +239,7 @@ if($_FILES['file']['error']==0 and $_FILES['file']['type'] == 'application/pdf')
                     $pdf->Line($mguild_X0, $mguild_line[$mguild_i], $mguild_X1, $mguild_line[$mguild_i]);   
                     foreach($mguild_events[$mguild_i] as $code=>$name){
                         $pdf->Line($mguild_ceil[$mguild_i][$code], $mguild_line[$mguild_i], $mguild_ceil[$mguild_i][$code], $mguild_line[$mguild_i+1]);   
-                        $pdf->Image("Image/Events/$code.png",$mguild_ceil[$mguild_i][$code]+5, $mguild_line[$mguild_i]+5, 15, 15);
+                        $pdf->Image("Image/Events/$code.png",$mguild_ceil[$mguild_i][$code]+5, $mguild_line[$mguild_i]+5, 10, 10);
                         $pdf->Text($mguild_ceil[$mguild_i][$code]+5,$mguild_line[$mguild_i]+30, $name);
                     }
                 }

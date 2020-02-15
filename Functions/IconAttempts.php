@@ -11,6 +11,7 @@ function IconAttempt($discipline,$n){
     }
     return false;    
 }
+
 function IconAttempt_DisciplineName($name,$discipline,$k){
     
     $name=str_replace(".png","",$name);

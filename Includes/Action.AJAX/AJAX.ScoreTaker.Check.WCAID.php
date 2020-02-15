@@ -35,20 +35,18 @@ if(isset($row['id'])){ ?>
     if($needAdd){
         DataBaseClass::Query("insert into Competitor (Name,WCAID,Country) values ('".Short_Name($row['name'])."','$WCAID','{$row['iso2']}')");
     } ?>
-    <?= $row['name'] ?> <?= ImageCountry($row['iso2'], 20); ?> 
-    <input class="form_row" type="submit" value="Add registration" style="background-color:lightgreen;"
-    onclick="return confirm('Attention: Add competitor  <?= $WCAID ?>?')">
+    <?= Short_Name($row['name']) ?> <?= ImageCountry($row['iso2'], 20); ?> 
+    <button onclick="return confirm('Attention: Add competitor  <?= $WCAID ?>?')" ><i class="fas fa-users-cog"></i> Add registration</button>
     <?php exit();
 }
 
 $url=GetIni('WCA_API', 'person').'/'.$WCAID;
 $person= json_decode(file_get_contents_curl($url)); ?>
 <?php if(!isset($person->person)){ ?>
-    <a target="_blank" href="<?= $url ?>" class="error">{<?= $WCAID ?>} not found on the WCA</a>
+    <i class="fas fa-exclamation-triangle"></i> <a target="_blank" href="<?= $url ?>">{<?= $WCAID ?>} not found on the WCA</a>
     <?php exit(); ?>
 <?php } ?>
 <?= $person->person->name; ?> <?= ImageCountry($person->person->country_iso2, 20); ?> 
 <?php CompetitorReplace($person->person); ?>    
-<input class="form_row" type="submit" value="Add registration" style="background-color:lightgreen;"
-       onclick="return confirm('Attention: Add competitor <?= $WCAID ?>?')">
+<button onclick="return confirm('Attention: Add competitor  <?= $WCAID ?>?')" ><i class="fas fa-users-cog"></i> Add registration</button>
 <?php exit(); ?>

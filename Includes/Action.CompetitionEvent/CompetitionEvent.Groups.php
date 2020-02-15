@@ -1,3 +1,5 @@
+<!DOCTYPE HTML>
+<html>
 <?php 
 $request=Request();
 if(!isset($request[2]) or !is_numeric($request[2])){
@@ -18,10 +20,13 @@ $data=DataBaseClass::getRow();
 
 ?>
 <head>
-    <link rel="icon" href="<?= PageLocal()?><?= ImageEventFile($data['Discipline_CodeScript'])?>" >
     <title><?= $data['Discipline']?><?= $data['vRound']?></title>
     <link rel="stylesheet" href="../../style.css" type="text/css"/>
+    <link rel="stylesheet" href="../../fontawesome-free-5.12.0-web/css/all.css?t=3" type="text/css"/>
+    <link rel="stylesheet" href="../../icons-extra-event/css/Extra-Events.css?t=3" type="text/css"/>    
+    <link rel="stylesheet" href="../../jQuery/chosen_v1/chosen.css" type="text/css"/>
 </head>  
+<body>
 <?php
 
 $Competition=$data['Competition'];
@@ -36,11 +41,11 @@ RequestClass::CheckAccessExit(__FILE__,'Competition.Event.Settings',$data['Compe
     DataBaseClass::FromTable('Command',"Event='".$Event."'");
     
     $commands=DataBaseClass::QueryGenerate();?>
-    
         <form method="POST" action="<?= PageAction('CompetitionEvent.Groups.Edit')?>">
         <input name="ID" type="hidden" value="<?= $Event ?>" />    
-        <table>
-            <tr class="tr_title">
+        <table class="table_new">
+            <thead>
+            <tr>
                 <td/>
                 <?php 
                 $Group=array(-1=>0);
@@ -50,6 +55,8 @@ RequestClass::CheckAccessExit(__FILE__,'Competition.Event.Settings',$data['Compe
                 <?php } ?>
                  <td></td>   
             </tr>
+            </thead>
+            <tbody>
                 <?php foreach($commands as $command){ 
                     $Group[$command['Command_Group']]++; ?>
                 <tr>
@@ -60,22 +67,22 @@ RequestClass::CheckAccessExit(__FILE__,'Competition.Event.Settings',$data['Compe
                         $names=array();
                         foreach(DataBaseClass::QueryGenerate() as $competitor){  
                             $names[]=$competitor['Competitor_Name']?>
-                            <div class="competitor_td">
-                                <nobr><?= $competitor['Competitor_Name'] ?> &#9642; <?= $competitor['Competitor_WCAID']; ?></nobr>
-                            </div>
+                                <p><?= $competitor['Competitor_Name'] ?> &#9642; <?= $competitor['Competitor_WCAID']; ?></p>
                         <?php } ?>
                     </td>
                     <?php for($i=0;$i<$data['EventGroups'];$i++){  ?>
-                        <td <?= ($command['Command_Group']==$i)?"style='background:var(--light_green)'":"" ?> >
+                        <td <?= ($command['Command_Group']==$i)?"class='backgroundcolor_green'":"" ?> >
                             <input type="radio" <?= ($command['Command_Group']==$i)?"checked":"" ?> name="Command_ID[<?= $command['Command_ID'] ?>]" value="<?= $i ?>">
                         </td>
                     <?php } ?>
-                        <td class="border-left-solid" <?= ($command['Command_Group']==-1)?"style='background:var(--light_red)'":"" ?> >
+                        <td <?= ($command['Command_Group']==-1)?"class='backgroundcolor_red'":"" ?> >
                             <input type="radio" <?= ($command['Command_Group']==-1)?"checked":"" ?> name="Command_ID[<?= $command['Command_ID'] ?>]" value="-1">
                         </td>            
                 </tr>
                 <?php } ?>
-            <tr class="tr_title">
+            </tbody>
+            <tfoot>
+            <tr>
                 <td/>
                 <?php 
                 for($i=0;$i<$data['EventGroups'];$i++){ ?>
@@ -83,13 +90,15 @@ RequestClass::CheckAccessExit(__FILE__,'Competition.Event.Settings',$data['Compe
                 <?php } ?>
                  <td><?= $Group[-1] ?></td>   
             </tr>
-
+            </tfoot>
         </table>
-        <input type="submit" value="Save group distribution">
+        <button><i class="fas fa-save"></i> Save</button>
     </form>
-    <form method="POST" action="<?= PageAction('CompetitionEvent.Groups.Delete')?>">
+    <form method="POST" action="<?= PageAction('CompetitionEvent.Groups.Delete')?>" onsubmit="return confirm('Attention: Confirm Reset')">
         <input name="ID" type="hidden" value="<?= $Event ?>" />   
-        <input class="delete" type="submit" value="Reset group distribution">
+        <button class="delete"><i class="fas fa-eraser"></i> Reset</button>
     </form>
 
-<?php exit();
+<?php exit(); ?>
+</body>
+</html>

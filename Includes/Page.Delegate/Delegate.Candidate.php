@@ -1,4 +1,3 @@
-<?php includePage('Navigator'); ?>
 <?php
     $competitor= GetCompetitorData(); 
     $Language=$_SESSION['language_select'];
@@ -11,25 +10,27 @@
         $RequestCandidateFields=DataBaseClass::QueryGenerate();
     } ?>    
     
-        <h1><?= ml('Delegate.Candidate.Title') ?></h1>
+        <h1>Send an application to become a SEE Delegate</h1>
         <?php if(!$competitor){ ?>
-            <span class="error"><?= ml('Delegate.Candidate.SignIn') ?> <a href="<?= GetUrlWCA(); ?>"><?= ml('Competitor.SignIn') ?></a></span>
+            <i class="fas fa-sign-in-alt"></i> <a href="<?= GetUrlWCA(); ?>"><?= ml('Competitor.SignIn') ?></a>
         <?php }elseif(!$competitor->wca_id){ ?>
-                    <span class="error"><?= ml('Delegate.Candidate.noWCAID') ?></span>  
+                    <h2><i class="fas fa-hand-paper"></i> You must have a WCA ID</h2>
            <?php }elseif(sizeof($RequestCandidateFields) and $RequestCandidateFields[0]['RequestCandidate_Status']==-1){ ?>
-                    <span class="error"><?= ml('Delegate.Candidate.Declined', date_range(date('Y-m-d',strtotime($RequestCandidateFields[0]['RequestCandidate_Datetime']." +1 year ")))) ?></span><br>       
+                    <h2><i class="fas fa-hand-paper"></i> Your request was rejected, you can try again in a year (after <?= date_range(date('Y-m-d',strtotime($RequestCandidateFields[0]['RequestCandidate_Datetime']." +1 year "))) ?>)</h2>
             <?php }else{ ?>
-            <?php if($competitor->delegate_status){ 
-                $delegate_block= GetBlockText('DelegateWCA.Candidate'); ?>
-                    <?php if($delegate_block){ ?>
-                        <div class="form2"><?= Parsedown($delegate_block,false) ?></div>
-                    <?php } ?>
-            <?php } ?>
-                    
-            <h2><?= $competitor->name; ?> &#9642; <?= $competitor->wca_id; ?> &#9642; <?= CountryName($competitor->country_iso2) ?></h2>
-            <div class='form'>
                 <form method="POST" action="<?= PageAction('Delegate.Candidate.Add')?>">
                     <input type="hidden" name='ID' value="<?= $competitor->id ?>">
+                    <table class="table_info">
+                    <?php if($competitor->delegate_status){ 
+                    $delegate_block= GetBlockText('DelegateWCA.Candidate'); ?>
+                    <?php if($delegate_block){ ?>
+                        <tr>
+                            <td><i class="fas fa-info-circle"></i> Info for WCA Delegate</td>
+                            <td><?php Parsedown($delegate_block) ?></td>
+                    <?php } ?>
+                    <?php } ?>
+                        
+                        
                     <?php
                     DataBaseClass::FromTable("RequestCandidateTemplate","Language='$Language'");
                     $templates=DataBaseClass::QueryGenerate();
@@ -39,38 +40,40 @@
                     }
                     
                     foreach($templates as $template){ ?>
-                        <div class="form_field">
+                        <tr>
+                        <td>
                             <?= $template['RequestCandidateTemplate_Name'] ?>
-                        </div>
-                    <div class="form_input">
+                        </td>
+                        <td>
                         <?php if($template['RequestCandidateTemplate_Type']=='input'){ ?>
                             <input required name="Fields[<?= DataBaseClass::Escape($template['RequestCandidateTemplate_Name']) ?>]" value="" type="text">
                         <?php }else{ ?>
                                 <textarea required name="Fields[<?= DataBaseClass::Escape($template['RequestCandidateTemplate_Name']) ?>]"></textarea>
                         <?php } ?>
-                    </div>
+                        </td>
+                        </tr>
                     <?php } ?>        
-                    <div class="form_change">
-                        <input type="submit" value="<?= ml('Delegate.Candidate.Save',false) ?>">
-                    </div>
+                    <tr>
+                        <td>Send an application</td>
+                        <td>
+                            <button><i class="fas fa-share-square"></i> Send</button>
+                        </td>
+                    </tr>
                 </form>
-                <?php $err=GetMessage("RequestCandidateAdd");
-                    if($err){ ?>
-                        <br><span class="error"><?= $err?></span>
-                    <?php } ?>
-            </div>
+                </table>        
         <?php } ?>           
-<br>
-<?php if(isset($RequestCandidateFields) and sizeof($RequestCandidateFields)){ ?>
-<h2><?= ml('Delegate.Candidate.Sent') ?> <?= $RequestCandidateFields[0]['RequestCandidate_Datetime']?></h2>
 
-<?php foreach($RequestCandidateFields as $RequestCandidateField){ ?>
-    <p>
-        <?= $RequestCandidateField['RequestCandidateField_Field'] ?> &#9642;
-        <?= $RequestCandidateField['RequestCandidateField_Value'] ?>
-    </p>  
-<?php } 
-} ?>
+<?php if(isset($RequestCandidateFields) and sizeof($RequestCandidateFields)){ ?>
+    <h3>Your application was sent at <?= $RequestCandidateFields[0]['RequestCandidate_Datetime']?></h3>
+    <table class="table_info">
+    <?php foreach($RequestCandidateFields as $RequestCandidateField){ ?>
+        <tr>
+            <td><?= $RequestCandidateField['RequestCandidateField_Field'] ?></td>
+            <td><?= $RequestCandidateField['RequestCandidateField_Value'] ?></td>
+        </tr>  
+    <?php } ?> 
+    </table>
+<?php } ?>
 <?= mlb('Delegate.Candidate.SignIn') ?>
 <?= mlb('Delegate.Candidate.Save') ?>
 <?= mlb('Delegate.Candidate.Sent') ?>

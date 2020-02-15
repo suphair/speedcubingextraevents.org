@@ -1,42 +1,46 @@
-<?php includePage('Navigator'); ?>
 <?php $Delegate=ObjectClass::getObject('PageDelegate'); 
  DataBaseClass::FromTable('Competitor','WID='.$Delegate['Delegate_WID']);
  $competitor=DataBaseClass::QueryGenerate(false);
 ?>
 
-<?php if(CheckAccess('Delegate.Settings')){ ?>
-    <a class='Settings' href="<?= LinkDelegate($Delegate['Delegate_WCA_ID']) ?>/Settings"><img style="vertical-align: middle" width="20px" src="<?= PageIndex()?>Image/Icons/settings.png"> <?= ml('*.Settings') ?></a>
-<?php } ?>
 
-<table class="no_border">
+<h1>
+    <?php if($competitor['Competitor_Country']){ ?><?= ImageCountry($competitor['Competitor_Country'])?><?php } ?>  
+    <?= $competitor['Competitor_Name'] ?>
+</h1>  
+    <table class="table_info">
+    <?php if(CheckAccess('Delegate.Settings')){ ?>
     <tr>
-        <td>
-            <?php if($competitor['Competitor_Avatar']){?>
-                <img style="border-radius: 20px" src="<?= $competitor['Competitor_Avatar'] ?>" valign=top>
-            <?php } ?>
-        </td>
-        <td>
-<h1><?= $competitor['Competitor_Name'] ?></h1>  
-<h3>
-<?php if($competitor['Competitor_Country']){ ?>
-    <?= ImageCountry($competitor['Competitor_Country'], 20)?> <?= CountryName($competitor['Competitor_Country']) ?>
-<?php } ?>  
-<?php if ($competitor['Competitor_WCAID']){ ?>    
-    &#9642; <a target="_blank" href="https://www.worldcubeassociation.org/persons/<?= $competitor['Competitor_WCAID'] ?>"><?= $competitor['Competitor_WCAID'] ?><img src="<?=  PageIndex() ?>Image/Icons/externallink.png" align="top" width="10px"></a>
-<?php } ?>  
-    &#9642; <a href="<?= LinkCompetitor($Delegate['Delegate_WCA_ID']) ?>"><?= ml('Delegate.Results') ?></a>
-</h3>    
-<h3><?= ml('Delegate.'.$Delegate['Delegate_Status']) ?></h3>
-
-        </td>
+        <td><i class="fas fa-cog"></i></td>
+        <td><a href="<?= LinkDelegate($Delegate['Delegate_WCA_ID']) ?>/Settings"> Settings</a></td>
+    </tr>   
+    <?php } ?>
+    <td><?= ml('Delegate.Delegate'); ?></td>        
+    <td><?= ml('Delegate.'.$Delegate['Delegate_Status']) ?></td>
+    <tr>
+        <?php if($competitor['Competitor_Country']){ ?>
+            <td><?= ml('Delegate.Country'); ?></td>        
+            <td><?= CountryName($competitor['Competitor_Country']) ?></td>
+        <?php } ?>
     </tr>
-</table>    
-    
-<?php if($Delegate['Delegate_Contact']){ ?>
-    <div class="form"><?= Parsedown($Delegate['Delegate_Contact']) ?></div>
-<?php } ?>
+    <?php if ($competitor['Competitor_WCAID']){ ?>    
+    <tr>
+        <td>WCA ID</td>
+        <td><a target="_blank" href="https://www.worldcubeassociation.org/persons/<?= $competitor['Competitor_WCAID'] ?>"><?= $competitor['Competitor_WCAID'] ?> <i class="fas fa-external-link-alt"></i></a></td>
+    </tr>
+    <?php } ?>  
+    <tr>
+        <td><?= ml('Delegate.Competitor'); ?></td>        
+        <td><a href="<?= LinkCompetitor($competitor['Competitor_ID'])?>">Competitor's page</a></td>    
+    </tr>
+    <?php if($Delegate['Delegate_Contact']){ ?>
+    <tr>
+        <td><?= ml('Delegate.Contacts'); ?></td>        
+        <td><?= Parsedown($Delegate['Delegate_Contact']) ?></td>
+    <tr>
+    <?php } ?>    
+</table>
 <?php
-
 $CheckHidden=CheckAccess('Competitions.Hidden');
 
     DataBaseClass::FromTable('Delegate',"ID='".$Delegate['Delegate_ID']."'");
@@ -49,19 +53,22 @@ $CheckHidden=CheckAccess('Competitions.Hidden');
     $competitions=DataBaseClass::QueryGenerate(); 
     ?>
 <?php if(sizeof($competitions)){ ?>
-    <table class="Competitions">
-        <tr class="tr_title">
+<br>
+<h2><?= ml('Delegate.Competitions'); ?></h2>    
+    <table class="table_new" width="80%">
+        <thead>
+        <tr>
             <td><?= ml('Delegate.Table.Date')?></td>
             <td><?= ml('Delegate.Table.Competition')?></td>
             <td><?= ml('Delegate.Table.Country')?></td>
             <td><?= ml('Delegate.Table.Events')?></td>
          </tr>   
+         </thead>
+         <tbody>
             <?php foreach($competitions as $competition){ ?>
             <tr>
-                <td>
-                    <span class="<?= $competition['Competition_Status']!='1'?"error":""; ?>">
-                        <b><?= date_range($competition['Competition_StartDate'],$competition['Competition_EndDate']); ?></b>
-                    </span>
+                <td class="table_new_bold">
+                   <?= date_range($competition['Competition_StartDate'],$competition['Competition_EndDate']); ?>
                 </td>   
                 <td>
                     <a href="<?= LinkCompetition($competition['Competition_WCA']) ?>">
@@ -69,7 +76,7 @@ $CheckHidden=CheckAccess('Competitions.Hidden');
                     </a>
                 </td>
                 <td>
-                    <b><?= CountryName($competition['Competition_Country']) ?></b>, <?= CountryName($competition['Competition_City']) ?>
+                    <?= CountryName($competition['Competition_Country']) ?>, <?= CountryName($competition['Competition_City']) ?>
                 <td>
                 <?php DataBaseClass::FromTable("Event","Competition=".$competition['Competition_ID']);
                       DataBaseClass::Join_current("DisciplineFormat");
@@ -78,12 +85,12 @@ $CheckHidden=CheckAccess('Competitions.Hidden');
                       DataBaseClass::Select("distinct D.*");
 
                       foreach(DataBaseClass::QueryGenerate() as $discipline){ ?>
-                            <a href="<?= LinkDiscipline($discipline['Code']) ?>"><?= ImageEvent($discipline['CodeScript'],25,$discipline['Name']);?></a>
+                            <?= ImageEvent($discipline['CodeScript'],1,$discipline['Name']);?>
                       <?php } ?>
                 </td>
             </tr>    
             <?php } ?>
-        
+        </tbody>
     </table>
 <?php } ?>
 

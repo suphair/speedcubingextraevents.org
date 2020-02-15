@@ -1,14 +1,14 @@
-<?php 
+&nbsp;<?php 
 $Competitor=GetCompetitorData();
 $Delegate=CashDelegate(); 
 
 if($Competitor){ ?>
     <?= Short_Name($Competitor->name) ?> 
-        <a href="<?= PageIndex() ?>Competitor/<?= $Competitor->local_id ?>"><img src='<?= PageIndex()?>Image/Icons/noavatar.png' width='12px'> <?= ml('Competitor.MyResults') ?></a>
-        <a href="<?= PageIndex() ?>Competitions/My"><img src='<?= PageIndex()?>Image/Icons/mycompetitions.png' width='12px'> <?= ml('Competitor.MyCompetitions') ?></a>   
+        <a href="<?= PageIndex() ?>Competitor/<?= $Competitor->local_id ?>"><i class="fas fa-user"></i> <?= ml('Competitor.MyResults') ?></a>
+        <a href="<?= PageIndex() ?>Competitions/My"><i class="fas fa-cube"></i> <?= ml('Competitor.MyCompetitions') ?></a>   
         <?php if($Delegate){ ?>
-            <nobr>&#9642; <a href="<?= LinkDelegate($Delegate['Delegate_WCA_ID']); ?>">
-                <?= ml('Competitor.Login.Delegate') ?>
+            <nobr><a href="<?= LinkDelegate($Delegate['Delegate_WCA_ID']); ?>"><i class="fas fa-user-tie"></i> 
+                Delegate page
             </a></nobr>
         <?php } ?> 
 
@@ -17,7 +17,7 @@ if($Competitor){ ?>
                         . " left outer join RequestCandidateVote RCV on RCV.Competitor=RC.Competitor and RCV.Delegate=".$Delegate['Delegate_ID']
                         . " where RC.Status=0 and coalesce(RCV.Status,-2)=-2"); ?>
             <?php if(sizeof(DataBaseClass::getRows())){ ?>
-                <nobr>&#9642; <a href='<?= LinkDelegate("Candidates") ?>'><?= ml('Competitor.Delegate.Candidates') ?></a> <span class="badge"><?= sizeof(DataBaseClass::getRows());?></span></nobr>
+                <nobr><a href='<?= LinkDelegate("Candidates") ?>'><i class="fas fa-baby"></i> <?= sizeof(DataBaseClass::getRows());?> New candidates</a></nobr>
             <?php } ?> 
         <?php } ?> 
                 
@@ -26,18 +26,17 @@ if($Competitor){ ?>
                          . " Left outer join Regulation R on D.ID=R.Event"
                          . " where D.Status='Active'  and R.ID is null"); ?>
             <?php if(sizeof(DataBaseClass::getRows())){ ?>
-                <nobr>&#9642; <a href='<?= PageIndex() ?>Regulations'><?= ml('Competitor.Delegate.Regulations') ?></a> <span class="badge"><?= sizeof(DataBaseClass::getRows());?></span></nobr>
+                <nobr><a href='<?= PageIndex() ?>Regulations'><i class="fas fa-book"></i> <?= sizeof(DataBaseClass::getRows());?> Events without regulations </a></nobr>
             <?php } ?> 
         <?php } ?> 
-                
-<?php }else{ ?>
-    <?php  $_SESSION['ReferAuth']=$_SERVER['REQUEST_URI']; ?> 
-    <a href="<?= GetUrlWCA(); ?>"><img src='<?= PageIndex()?>Image/Icons/signin.png' width='12px'> <?= ml('Competitor.SignIn')?></a>
 <?php } ?>
 <form class='form_inline' method="POST" action="<?=PageAction('Language.Set')?> "> 
     <?php if($Competitor){ ?>
-        <a href="<?= PageIndex() ?>Actions/Competitor.Logout"><img src='<?= PageIndex()?>Image/Icons/signout.png' width='12px'> <font color="red"><?= ml('Competitor.SignOut')?></font></a>&nbsp;
-    <?php } ?>
+        <a href="<?= PageIndex() ?>Actions/Competitor.Logout"><i class="fas fa-sign-out-alt"></i> <?= ml('Competitor.SignOut')?></a>&nbsp;
+    <?php }else{ ?>
+        <?php  $_SESSION['ReferAuth']=$_SERVER['REQUEST_URI']; ?> 
+        <a href="<?= GetUrlWCA(); ?>"><i class="fas fa-sign-in-alt"></i> <?= ml('Competitor.SignIn')?></a>&nbsp;
+    <?php } ?>   
     <?php $Language=$_SESSION['language_select']; ?>    
     <?= ImageCountry($Language,20); ?>
     <select style="width:85px;" onchange="form.submit()" name='language'>
@@ -46,5 +45,3 @@ if($Competitor){ ?>
         <?php } ?>
     </select>
 </form>    
-    
-    <?= mlb('Competitor.SignIn')?>

@@ -21,9 +21,8 @@ if(!isset($row['Competition_ID']) or ! CheckAccess('Competition.Event.Settings',
 DataBaseClass::FromTable('Competitor',"WCAID='$WCAID'");
 $row=DataBaseClass::QueryGenerate(false);
 if(isset($row['Competitor_ID'])){ ?>
-    <?= $row['Competitor_Name'] ?> <?= ImageCountry($row['Competitor_Country'], 20); ?> 
-    <input class="form_row" type="submit" value="<?= ml('*.Link',false); ?>" style="margin:0px; padding:1px 2px;"
-     onclick="return confirm('Attention: Link with <?= $WCAID ?>?')">
+    <?= $row['Competitor_Name'] ?> / <?= CountryName($row['Competitor_Country']); ?> 
+    <button onclick="return confirm('Attention: Link with <?= $WCAID ?>?')"><i class="fas fa-link"></i> Link</button>
     <?php exit();
 }
 
@@ -31,20 +30,18 @@ DataBaseClassWCA::Query(" Select P.*,C.iso2 from Persons P join Countries C on C
 $row=DataBaseClassWCA::getRow();
 if(isset($row['id'])){ ?>
     <?php DataBaseClass::Query("insert into Competitor (Name,WCAID,Country) values ('".Short_Name($row['name'])."','$WCAID','{$row['iso2']}')")?>
-    <?= $row['name'] ?> <?= ImageCountry($row['iso2'], 20); ?> 
-    <input class="form_row" type="submit" value="<?= ml('*.Link',false); ?>" style="margin:0px; padding:1px 2px;"
-    onclick="return confirm('Attention: Link with <?= $WCAID ?>?')">
+    <?= $row['name'] ?> / <?= CountryName($row['iso2']); ?> 
+    <button onclick="return confirm('Attention: Link with <?= $WCAID ?>?')"><i class="fas fa-link"></i> Link</button>
     <?php exit();
 }
 
 $url=GetIni('WCA_API', 'person').'/'.$WCAID;
 $person= json_decode(file_get_contents_curl($url)); ?>
 <?php if(!isset($person->person)){ ?>
-    <a target="_blank" href="<?= $url ?>" class="error">{<?= strtoupper($WCAID) ?>} not found on the WCA</a>
+    <i class="fas fa-exclamation-triangle"></i> <a target="_blank" href="<?= $url ?>">{<?= strtoupper($WCAID) ?>} not found on the WCA</a>
     <?php exit(); ?>
 <?php } ?>
-<?= $person->person->name; ?> <?= ImageCountry($person->person->country_iso2, 20); ?> 
-<?php CompetitorReplace($person->person); ?>    
-<input class="form_row" type="submit" value="<?= ml('*.Link',false); ?>" style="margin:0px; padding:1px 2px;"
-       onclick="return confirm('Attention: Link with <?= $WCAID ?>?')">
+<?= $person->person->name; ?> / <?= CountryName($person->person->country_iso2); ?> 
+<?php CompetitorReplace($person->person); ?>        
+<button onclick="return confirm('Attention: Link with <?= $WCAID ?>?')"><i class="fas fa-link"></i> Link</button>
 <?php exit(); ?>

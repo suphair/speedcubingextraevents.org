@@ -1,7 +1,8 @@
 <?php
 function random_string($length) {
     $key = '';
-    $keys = array_merge(range(0, 9), range('a', 'z'));
+    $keys = [2,3,4,5,6,7,8,9,'A','B','C','D','E','F','G','K','L','M','N','P','R','S','T','W','X','Y','Z'];
+    
 
     for ($i = 0; $i < $length; $i++) {
         $key .= $keys[array_rand($keys)];

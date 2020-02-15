@@ -1,6 +1,8 @@
-<?php includePage('Navigator'); ?>
 <?php 
-
+DataBaseClass::FromTable('Discipline'); 
+DataBaseClass::OrderClear('Discipline','Name'); 
+DataBaseClass::Where_current("Status='Active'");    
+$disciplines=DataBaseClass::QueryGenerate();
 $Event = ObjectClass::getObject('PageEvent');
 
 $ID=$Event['Discipline_ID'];
@@ -27,10 +29,6 @@ DataBaseClass::Query(""
         . " and Result='Sum'");
 
 $FormatSum=isset(DataBaseClass::getRow()['ID']);
-
-include "Events_Line.php" ?>
-<hr>
-<?php
 
 $request=getRequest();
 if(isset($request[2]) and $request[2]=='single'){
@@ -282,85 +280,104 @@ if($FilterResults!='Results'){
     <?= $Event['Discipline_Name'] ?> / <?= ml('Event.Rankings') ?>
 </h1>
 <?php if($Event['Discipline_Status']=='Archive'){ ?>
-<h2 class="error">
-    <?=  ml('Event.Archive.Title') ?>
+<h2>
+    <i class="fas fa-angle-double-right"></i> <?=  ml('Event.Archive.Title') ?>
 </h2>   
 <?php } ?>
-<?= EventBlockLinks($Event,'rankings'); ?>
-    <?php
-        DataBaseClass::Query("
-            select distinct Cn.Unofficial, Cn.ID, Cn.Name, Cn.WCA, Cn.Country, Cn.StartDate, Cn.EndDate, Cn.City,Cn.Status
-            from `Discipline` D 
-            join DisciplineFormat DF on D.ID=DF.Discipline 
-            join Event E on DF.ID=E.DisciplineFormat 
-            join Competition Cn on Cn.ID=E.Competition and Cn.WCA not like 't.%'
-            where D.ID='$ID' and Cn.StartDate>now() ".(!CheckAccess('Competitions.Hidden')?'and Cn.Status=0':'')." order by Cn.StartDate ");
-        $EventsAll=DataBaseClass::getRows();
-            
-        if(sizeof($EventsAll)){ ?>
-    <div class="form">
-        <h3><?= ml('Event.Competition.Upcoming') ?></h3>
-            <?php foreach($EventsAll as $competition){ ?> 
-                <nobr>&nbsp;
-                    <img width="30" style="vertical-align: middle" src="<?= PageIndex()?>Image/Flags/<?= strtolower($competition['Country'])?>.png">
-                    <a href="<?= LinkCompetition($competition['WCA'])?>/<?= $Event['Discipline_Code'] ?>" >
-                        <span class="<?= $competition['Unofficial']?'unofficial':'' ?>"><?= $competition['Name']; ?></span></a>
-                    </a>
-                </nobr>
+<table width="100%"><tr><td>     
+    <table class="table_info">
+        <form name="Filter">
+        <tr>
+            <td>Type</td>
+            <td>
+                <?php if(!$FormatSum){
+                    foreach(['Average','Single'] as $type){ ?> 
+                        <p>
+                            <?php if($type==$FilterAverage){ ?>
+                            <input hidden value="<?= $type ?>" type="radio" class='FilterAverage' checked ID="FilterAverage_<?= $type ?>" name="FilterAverage">
+                                <i class="far fa-check-square"></i> <?= ml('Event.Filter.'.$type) ?>
+                            <?php }else{  ?>
+                                <input hidden value="<?= $type ?>" type="radio" class='FilterAverage' ID="FilterAverage_<?= $type ?>" name="FilterAverage" onchange="reload();">
+                                <a href="#"><i class="far fa-square"></i> <label  onclick="reload();" for="FilterAverage_<?= $type ?>"><?= ml('Event.Filter.'.$type) ?></label></a>
+                            <?php } ?>
+                        </p>
+                    <?php } ?>    
+                <?php } ?>    
+            </td>
+        </tr>
+        <tr>
+            <td>Show</td>
+            <td>
+                <?php foreach(['Persons','Results'] as $type){ ?> 
+                    <p>
+                        <?php if($type==$FilterResults){ ?>
+                            <input hidden value="<?= $type ?>" type="radio" class='FilterResults' checked ID="FilterResults_<?= $type ?>" name="FilterResults" onchange="reload();">
+                            <i class="far fa-check-square"></i> <?= ml('Event.Filter.'.$type) ?>
+                        <?php }else{ ?>
+                            <input hidden value="<?= $type ?>" type="radio" class='FilterResults'  ID="FilterResults_<?= $type ?>" name="FilterResults" onchange="reload();">
+                            <a href="#"><i class="far fa-square"></i> <label  onclick="reload();" for="FilterResults_<?= $type ?>"><?= ml('Event.Filter.'.$type) ?></label></a>
+                        <?php } ?>    
+                    </p>
+                <?php } ?>   
+            </td>
+        </tr>
+        <tr>
+            <td>Country</td>
+            <td>
+               <select ID="FilterCountry" onchange="reload();">
+                    <?php foreach($Countries as $countryName=>$countryAttempts){ ?>
+                    <option value="<?= $countryName ?>" <?= strtolower($countryName)==strtolower($FilterCountry)?'selected':'' ?> >
+                        <?= $countryAttempts['Name'] ?> 
+                        <?php if ($FormatSum){ ?>
+                            [ <?= $countryAttempts['Sum'] ?> ]                 
+                        <?php } else { ?>
+                             [ <?= $countryAttempts['Average'] ?> / <?= $countryAttempts['Single'] ?> ] 
+                        <?php } ?>
+                    </option>
+                    <?php } ?>
+                </select> 
+            </td>
+        </tr>
+        <tr>
+            <td>Extra event</td>
+            <td>
+                <select ID="FilterEvent" onchange="reload();">
+                <?php foreach($disciplines as $discipline_row){ ?>   
+                    <option value="<?= $discipline_row['Discipline_Code'] ?>" <?= strtolower($discipline_row['Discipline_Code'])==$Code?'selected':''?> >
+                        <?= $discipline_row['Discipline_Name'] ?>
+                    </option>
+                <?php } ?>    
+                </select>                
+            </td>
+        </tr>  
+        
+        <script>
+        function reload(){
+            let str = [];
+
+            var FilterCountry=$('#FilterCountry').val();
+            var FilterResults=$('.FilterResults:checked').val();
+            var FilterEvent=$('#FilterEvent').val();
+
+            <?php if($FilterAverage!='Sum'){ ?>
+            var FilterAverage=$('.FilterAverage:checked').val();
+            var url= '<?= PageIndex() ?>Event/'+FilterEvent+'/'+FilterAverage +'/'+ FilterResults +'/' + FilterCountry ;
+            <?php }else{ ?>
+                var url= '<?= PageIndex() ?>Event/'+FilterEvent+'/sum/'+ FilterResults +'/' + FilterCountry ;
             <?php } ?>
-    </div>            
-<?php }  ?>    
-<?php
-DataBaseClass::Query("
-    select distinct Cn.Unofficial, Cn.ID, Cn.Name, Cn.WCA, Cn.Country, Cn.StartDate, Cn.EndDate, Cn.City,Cn.Status
-    from `Discipline` D 
-    join DisciplineFormat DF on D.ID=DF.Discipline 
-    join Event E on DF.ID=E.DisciplineFormat 
-    join Competition Cn on Cn.ID=E.Competition and Cn.WCA not like 't.%'
-    where D.ID='$ID' and Cn.EndDate>=now() and Cn.StartDate<=now() order by Cn.EndDate desc ");
-$EventsAll=DataBaseClass::getRows();
-
-if(sizeof($EventsAll)){ ?>
-<div class="form">
-    <h3><?= ml('Event.Competition.Progress') ?></h3>
-        <?php foreach($EventsAll as $competition){ ?> 
-            <nobr>&nbsp;
-                <img width="30" style="vertical-align: middle" src="<?= PageIndex()?>Image/Flags/<?= strtolower($competition['Country'])?>.png">
-                <a href="<?= LinkCompetition($competition['WCA'])?>/<?= $Event['Discipline_Code'] ?>">
-                    <span class="<?= $competition['Unofficial']?'unofficial':'' ?>"><?= $competition['Name']; ?></span>
-                </a>
-            </nobr>
-        <?php } ?>
-</div>            
-<?php }  ?>
-    
-<?php
-DataBaseClass::Query("
-    select distinct Cn.Unofficial, Cn.ID, Cn.Name, Cn.WCA, Cn.Country, Cn.StartDate, Cn.EndDate, Cn.City,Cn.Status
-    from `Discipline` D 
-    join DisciplineFormat DF on D.ID=DF.Discipline 
-    join Event E on DF.ID=E.DisciplineFormat 
-    join Competition Cn on Cn.ID=E.Competition and Cn.WCA not like 't.%'
-    where D.ID='$ID' and Cn.EndDate<now() order by Cn.EndDate desc ");
-$EventsAll=DataBaseClass::getRows();
-
-if(sizeof($EventsAll)){ ?>
-<div class="form">
-    <h3><?= ml('Event.Competition.Past') ?></h3>
-        <?php foreach($EventsAll as $competition){ ?> 
-            <nobr>&nbsp;
-                <img width="30" style="vertical-align: middle" src="<?= PageIndex()?>Image/Flags/<?= strtolower($competition['Country'])?>.png">
-                <a href="<?= LinkCompetition($competition['WCA'])?>/<?= $Event['Discipline_Code'] ?>">
-                    <span class="<?= $competition['Unofficial']?'unofficial':'' ?>"><?= $competition['Name']; ?></span>
-                </a>
-            </nobr>
-        <?php } ?>
-</div>            
-<?php }  ?>
+            location.href = url;
+        }    
+        </script>
+    </form>
+    </table>
+    </td><td>
+<?= EventBlockLinks($Event,'rankings'); ?>
+    </td>
+    </tr>
+</table>    
 
 <h2>
     <?php if($FilterCountry!='all') { ?>
-    <img width="30" style="vertical-align: middle" src="<?= PageIndex()?>Image/Flags/<?= strtolower($FilterCountry)?>.png">
         <?= CountryName($FilterCountry); ?>  
     <?php }else{ ?>
         <?= ml('Event.Country.Title.All'); ?>
@@ -369,88 +386,36 @@ if(sizeof($EventsAll)){ ?>
     <?= ml('Event.Filter.'.$FilterAverage) ?> &#9642;
     <?= ml('Event.Filter.'.$FilterResults) ?>
 </h2>
-<form name="Filter">
-    <select ID="FilterCountry" onchange="reload();">
-        <?php foreach($Countries as $countryName=>$countryAttempts){ ?>
-        <option value="<?= $countryName ?>" <?= strtolower($countryName)==strtolower($FilterCountry)?'selected':'' ?> >
-            <?= $countryAttempts['Name'] ?> 
-            <?php if ($FormatSum){ ?>
-                [ <?= $countryAttempts['Sum'] ?> ]                 
-            <?php } else { ?>
-                 [ <?= $countryAttempts['Average'] ?> / <?= $countryAttempts['Single'] ?> ] 
-            <?php } ?>
-        </option>
-        <?php } ?>
-    </select>
-    &nbsp;&#9642;&nbsp;
-<?php 
-if(!$FormatSum){
-    foreach(['Average','Single'] as $type){ ?> 
-        <input hidden value="<?= $type ?>" type="radio" class='FilterAverage' ID="FilterAverage_<?= $type ?>" name="FilterAverage" <?= $type==$FilterAverage?'checked':'' ?> onchange="reload();">
-            <label  onclick="reload();" for="FilterAverage_<?= $type ?>"><span class='badge <?= $type==$FilterAverage?'select':'' ?>'><?= ml('Event.Filter.'.$type) ?></span></label>
-    <?php } ?>    
-    &nbsp;&#9642;&nbsp;
-<?php } ?>    
-<?php foreach(['Persons','Results'] as $type){ ?> 
-    <input hidden value="<?= $type ?>" type="radio" class='FilterResults'  ID="FilterResults_<?= $type ?>" name="FilterResults" <?= $type==$FilterResults?'checked':'' ?> onchange="reload();">
-        <label  onclick="reload();" for="FilterResults_<?= $type ?>"><span class='badge <?= $type==$FilterResults?'select':'' ?>'><?= ml('Event.Filter.'.$type) ?></span></label>
-<?php } ?>   
-    <script>
-    function reload(){
-        let str = [];
-        
-        var FilterCountry=$('#FilterCountry').val();
-        
-        var FilterResults=$('.FilterResults:checked').val();
-        
-        <?php if($FilterAverage!='Sum'){ ?>
-        var FilterAverage=$('.FilterAverage:checked').val();
-        var url= '<?= PageIndex() ?>Event/<?= $Event['Discipline_Code'] ?>/'+FilterAverage +'/'+ FilterResults +'/' + FilterCountry ;
-        <?php }else{ ?>
-            var url= '<?= PageIndex() ?>Event/<?= $Event['Discipline_Code'] ?>/sum/'+ FilterResults +'/' + FilterCountry ;
-        <?php } ?>
-        location.href = url;
-    }    
-    </script>
-        
-    
-    
-</form>
-
-<table class='result'>
-    <tr class='tr_title'>
+<table class='table_new' width="80%">
+    <thead>
+    <tr>
         <td/>
         <td><?= ml('Event.Table.Competitor')?></td>
-        <td class='attempt select'><?= ml('Event.Table.'.$FilterAverage); ?></td>
+        <td class="table_new_right"><?= ml('Event.Table.'.$FilterAverage); ?></td>
         <td/>
         <td><nobr><?= ml('Event.Table.Country')?></nobr></td>
-        <?php if($FilterResults=='Results'){?>
-            <?php if($FilterAverage=='Single'){ ?>
-                <td><?= ml('Event.Table.Competition')?> &#9642; <?= ml('Event.Table.Round')?>/<?= ml('Event.Table.Attempt')?></td>
-            <?php }else{ ?>
-                <td><?= ml('Event.Table.Competition')?> &#9642; <?= ml('Event.Table.Round')?></td>
-            <?php } ?>
-        <?php }else{ ?>
-            <td><?= ml('Event.Table.Competition')?></td>
-        <?php } ?>
+       <td><?= ml('Event.Table.Competition')?></td>
         <?php if($FilterAverage=='Average'){ ?>
-            <?php for($i=1;$i<=$Event['MaxAttempt'];$i++){ ?>
-                <td align="center"><?= $i ?></td>
-            <?php } ?>
+            <td class="table_new_center" colspan="<?=$Event['MaxAttempt'] ?>">
+                 Solves
+             </td>
         <?php } ?>
         <?php if($FilterAverage=='Sum'){ ?>
-            <?php for($i=1;$i<=$Event['MaxAttempt'];$i++){ ?>
-                    <td align="center">
-                    <?php if($image=IconAttempt($Event['Discipline_CodeScript'],$i)){ ?>
-                          <img src="<?= PageIndex() ?>/<?= $image ?>" width="20px">
-                    <?php }else{ ?>
-                        <?= $i ?>
-                    <?php } ?>
+             <?php if($Event['Discipline_Codes']){ ?>                
+                <?php for($i=0;$i<$Event['MaxAttempt'];$i++) {?>
+                <td class="table_new_center">             
+                    <span class=" cubing-icon event-<?= explode(",",$Event['Discipline_Codes'])[$i]?>"></span>
+                </td>
+                <?php } ?>
+            <?php }else{ ?>
+                <td class="table_new_center" colspan="<?= $attemption ?>">
+                    Solves
                 </td>
             <?php } ?>
         <?php } ?>
         
     </tr>
+    </thead>
 <?php 
 $n=0; $fl=false; $prev=0;
     foreach($Results as $Result){ 
@@ -462,11 +427,7 @@ $n=0; $fl=false; $prev=0;
         $prev=$Result['vOut']; ?>    
     <tr>
         <td>
-        <?php if($fl){ ?>
             <?= $new ?>
-        <?php } else{ ?>
-            <font size=2 style='color:var(--gray)'><?= $new ?></font>
-        <?php } ?>    
         </td>
         <td>
             <?php
@@ -477,40 +438,31 @@ $n=0; $fl=false; $prev=0;
             <?php foreach($Competitors_Name as $i=>$Competitor_Name){ 
                 $Competitor_Name=trim($Competitor_Name);?>
                 <?php ob_start(); ?>
-                
-                <a href='<?= LinkCompetitor( trim($Competitors_ID[$i]) )?>'><?=  $Competitor_Name ?></a>
-                <?php if(sizeof($Competitors_Name)>1 and $i<(sizeof($Competitors_Name)-1)){?>
-                    &#9642;
-                <?php } ?>
-                
+                <p><a href='<?= LinkCompetitor( trim($Competitors_ID[$i]) )?>'><?=  $Competitor_Name ?></a></p>
                 <?php $competitors[]=ob_get_clean(); ?>
             <?php } ?>
             <?= implode("",$competitors); ?>        
         </td>
-        <td class='attempt select'>
+        <td class="table_new_bold table_new_right">
             <?=  $Result['vOut'] ?>
         </td>
-        <td class="border-right-dotted">
+        <td>
             <?php if($Result['Video']){?>    
-                <a target=_blank" href="<?= $Result['Video'] ?>"><img class="video" src="<?= PageIndex()?>Image/Icons/Video.png"></a>
+                <a target=_blank" href="<?= $Result['Video'] ?>"><i class="fas fa-video"></i></a>
             <?php } ?>
         </td>
         <td> <nobr><?php if($Result['vCountry']){ ?>
-                <img width="20" style="vertical-align: middle" src="<?= PageIndex()?>Image/Flags/<?= strtolower($Result['vCountry'])?>.png">
+            <?= ImageCountry($Result['vCountry'])?>
                 <?= CountryName($Result['vCountry']) ?>
             <?php }else{ ?>
                 -
             <?php } ?></nobr>
        </td>                                 
-        <td class="border-right-dotted">
+        <td>
             <nobr>
-                <img width="20" style="vertical-align: middle" src="<?= PageIndex()?>Image/Flags/<?= strtolower($Result['Competition_Country'])?>.png">
+                <?= ImageCountry($Result['Competition_Country'])?>
                 <a href="<?= LinkEvent($Result['Event_ID']) ?>"><?=  $Result['Competition_Name'] ?></a>
                 <?php if($FilterResults=='Results'){?>
-                    <?= $Result['Round'] ?><?php 
-                    if($FilterAverage=='Single' and $ID==$Result['ID']){ 
-                        ?>/<?= $Result['Attempt'] ?>
-                    <?php } ?>
                     <?php if($FilterAverage=='Single' and $ID!=$Result['ID']){ ?> 
                         <?= ImageEvent($Result['CodeScript'],20); ?>       
                     <?php } ?>
@@ -523,19 +475,19 @@ $n=0; $fl=false; $prev=0;
         </td>
         <?php if($FilterAverage=='Average'){
             for($i=1;$i<=$Event['MaxAttempt'];$i++){ ?>
-                <td align="center">
-                    <nobr><?= $Result['Attempt'.$i] ?></nobr>
+                <td class="table_new_right">
+                    <?php if(strpos($Result['Attempt'.$i],"(")!==false){ ?>
+                        <span class='table_new_except table_new_attempt'><?= trim(str_replace(['(',')'],'',$Result['Attempt'.$i])) ?></span>
+                    <?php }else{ ?>
+                        <span class='table_new_attempt'><?= $Result['Attempt'.$i] ?></span>
+                    <?php } ?>
                 </td>
-            <?php }    
-        } ?>
+            <?php } ?>
+        <?php } ?>
         <?php if($FilterAverage=='Sum'){
             for($i=1;$i<=$Event['MaxAttempt'];$i++){ ?>
-                <td align="center">
-                    <?php if($Result['Attempt'.$i]=='DNF'){ ?>
-                        <span class="gray"><?= $Result['Attempt'.$i] ?></span>
-                    <?php }else{ ?>
-                        <?= $Result['Attempt'.$i] ?>
-                    <?php } ?>
+                <td class="table_new_right">
+                    <?= $Result['Attempt'.$i] ?>
                 </td>
             <?php }    
         } ?>

@@ -5,56 +5,129 @@ $CompetitionEvents=ObjectClass::getObject('PageCompetitionEvents');
 $CompetitionEvent=ObjectClass::getObject('PageCompetitionEvent');
 $CompetitionDelegates=ObjectClass::getObject('PageCompetitionDelegates');
 ?>
-<h1><a href="<?= LinkCompetition($Competition['Competition_WCA'])?>"><?= $Competition['Competition_Name'] ?></a></h1>
-<div class="line discipline_line">
-    <?php foreach($CompetitionEvents as $competition_event){?>
-        <nobr>
-            <?= ImageEvent($competition_event['Discipline_CodeScript'],30) ?>
-                <a class="<?= $competition_event['Event_ID']==$CompetitionEvent['Event_ID']?"list_select":""?>"  href="<?= LinkEvent($competition_event['Event_ID']) ?>/Settings"><?= $competition_event['Discipline_Name'] ?><?= $competition_event['Event_vRound'] ?></a>
-        </nobr>
-    <?php } ?>
-</div>
-<hr class='hr_round'>
-<h2>
-    
-    <img style="vertical-align: middle" width="40px" src="<?= PageIndex()?>Image/Icons/settings.png"> <?= ml('*.Settings') ?>:
-    <?= ImageEvent($CompetitionEvent['Discipline_CodeScript'],50) ?> 
-    <a href="<?= LinkEvent($CompetitionEvent['Event_ID']) ?>"><?= $CompetitionEvent['Discipline_Name'] ?><?= $CompetitionEvent['Event_vRound'] ?></a></h1>
-</h2>
+<h1><a href="<?= LinkEvent($CompetitionEvent['Event_ID'])?>"><?= $Competition['Competition_Name'] ?></a></h1>
+<h2><?= $CompetitionEvent['Discipline_Name'] ?><?= $CompetitionEvent['Event_vRound'] ?> / Competition event settings</h2>
         
-        <br>
-<h3><?= ml('Competition.Event.Setting.Block.Preparation') ?></h3>
-<a target="_blank" href="<?= PageAction('CompetitionEvent.Groups' )?>/<?= $CompetitionEvent['Event_ID'] ?>">Distribution of competitors by groups</a><br>
-<br>
-<h3><?= ml('Competition.Event.Setting.Block.Print') ?></h3>
-<a target="_blank" href="<?= PageAction('CompetitionEvent.Competitors.Print')?>/<?= $CompetitionEvent['Event_ID'] ?>">Print the list of competitors</a><br>
-<a target="_blank" href="<?= PageAction('CompetitonEvent.ScoreCards')?>/<?= $CompetitionEvent['Event_ID'] ?>">Print competitors cards</a> <br>  
-<a target="_blank" href="<?= PageAction('CompetitonEvent.ScoreCards')?>/<?= $CompetitionEvent['Event_ID'] ?>/Download">Download competitors cards</a> <br>  
-    
-<br>
-<h3><?= ml('Competition.Event.Setting.Block.Scrambles') ?></h3>
+
+<table class="table_info">
+    <?php if(CheckAccess('Competition.Settings',$Competition['Competition_ID'])){ ?>
+        <tr>
+            <td><i class="fas fa-cog"></i></td>
+            <td><a href="<?= LinkCompetition($Competition['Competition_WCA'])?>/Settings">Competition settings</a> - for settings limits and formats events</td>    
+        </tr>
+    <?php }else{ ?>
+        <tr>
+            <td><i class="fas fa-info-circle"></i></td>
+            <td>Contact senior delegates to settings limits and formats</td>    
+        </tr>
+    <?php } ?>    
+</table>    
+            
+            
+<table width="100%"><tr><td>
+    <table class="table_info">
+        <tr>
+            <td>Extra Events</td><td/>    
+        </tr>    
+    <?php foreach($CompetitionEvents as $competition_event){?>
+        <tr> 
+            <td><?= ImageEvent($competition_event['Discipline_CodeScript'],1.3) ?></td>
+            <td>
+                <a class="<?= $competition_event['Event_ID']==$CompetitionEvent['Event_ID']?"list_select":""?>"  href="<?= LinkEvent($competition_event['Event_ID']) ?>/Settings"><?= $competition_event['Discipline_Name'] ?><?= $competition_event['Event_vRound'] ?></a>    
+            </td>
+        </tr>
+    <?php } ?>   
+    </table>            
+</td><td>        
+    <table class="table_info"> 
+        <tr>
+            <td>Preparation</td><td/>
+        </tr>    
+        <tr>
+            <td><i class="fas fa-expand-arrows-alt"></i></td>
+            <td><a target="_blank" href="<?= PageAction('CompetitionEvent.Groups' )?>/<?= $CompetitionEvent['Event_ID'] ?>">Distribution of competitors by groups</a><br></td>
+        </tr>
+        <tr>
+            <td><i class="fas fa-list"></i></td>
+            <td><a target="_blank" href="<?= PageAction('CompetitionEvent.Competitors.Print')?>/<?= $CompetitionEvent['Event_ID'] ?>">Print the list of competitors</a><br></td>
+        </tr>
+        <tr>
+            <td>Competitors cards</td><td/>
+        </tr>
+        <tr>
+            <td><i class="fas fa-print"></i></td>
+            <td><a target="_blank" href="<?= PageAction('CompetitonEvent.ScoreCards')?>/<?= $CompetitionEvent['Event_ID'] ?>">Print competitors cards</a></td>
+        </tr>    
+        <tr>
+            <td><i class="fas fa-download"></i></td>
+            <td><a target="_blank" href="<?= PageAction('CompetitonEvent.ScoreCards')?>/<?= $CompetitionEvent['Event_ID'] ?>/Download">Download competitors cards</a></td>
+        </tr> 
+        <tr>
+            <td>Scrambles</td><td/>
+        </tr>   
     <?php $file="Image/Scramble/".$CompetitionEvent['Event_ScrambleSalt'].".pdf";         
     if($CompetitionEvent['Event_ScrambleSalt'] and file_exists($file)){ ?>
-            <a target="_blank"  href="<?= PageIndex()?>Scramble/<?= $CompetitionEvent['Event_ID'] ?>">Print scrambles</font></a><br>
-            <a target="_blank"  href="<?= PageIndex()?>Scramble/<?= $CompetitionEvent['Event_ID'] ?>/Download">Download scrambles</font></a>
+        <tr>
+            <td><i class="fas fa-print"></i></td>
+            <td><a target="_blank"  href="<?= PageIndex()?>Scramble/<?= $CompetitionEvent['Event_ID'] ?>">Print scrambles</font></a></td>
+        </tr>    
+        <tr>
+            <td><i class="fas fa-download"></i></td>
+            <td><a target="_blank"  href="<?= PageIndex()?>Scramble/<?= $CompetitionEvent['Event_ID'] ?>/Download">Download scrambles</font></a></td>
+        </tr>
     <?php }else{ ?>
-        <?= svg_red(10) ?> Scrambles not created ▪    
-        <?php if(CheckAccess('Competition.Settings',$Competition['Competition_ID'])){ ?>
-            To create them go to the page <a href="<?= LinkCompetition($Competition['Competition_WCA'])?>/Settings"><?= ml('Competition.Settings') ?></a>
+        <tr>
+            <td><i class="fas fa-exclamation-triangle"></i></td>
+            <td>Scrambles not created</td>
+        </tr>
+         <tr>
+        <?php if(CheckAccess('Competition.Settings',$Competition['Competition_ID']) and $LinkScrambes=GetLinkScrambes($CompetitionEvent)){ ?>
+            <td><i class="fas fa-random"></i></td>
+            <td>
+                <a target="_blank" href="<?= $LinkScrambes ?>/<?= $CompetitionEvent['Event_ID'] ?>">Generate scrambles</a>
+            </td>
         <?php }else{ ?>
-            Senior delgates can create them
+            <td><i class="fas fa-user-tie"></i></td>
+            <td>
+                Contact senior delegates
+            </td>
         <?php } ?>
-    <?php } ?>
-<br><br>
-<h3><?= ml('Competition.Event.Setting.Block.Results') ?></h3>
-   <a href="<?= PageAction('ScoreTaker.Regenerate')?>/<?= $CompetitionEvent['Event_ID'] ?>">Update the link to enter results</a> <nobr>&#9642; If you do not enter the results yourself</nobr><br>   
-   <a target="_blank" href="<?= PageIndex()?>ScoreTaker/<?= $CompetitionEvent['Event_Secret'] ?>">To enter results</a> <nobr>&#9642; <?= $CompetitionEvent['Event_Secret'] ?></nobr>
-   <span class="message"><?= GetMessage("EventGenerateScoreTakerMessage") ?></span><br>     
-   <a target="_blank" href="<?= PageAction('CompetitonEvent.Results.Print')?>/<?= $CompetitionEvent['Event_ID'] ?>">Print the results</a><br>    
+    <?php } ?>     
+        <tr>
+            <td>Results</td><td/> 
+        </tr>
+        <tr>
+            <td><i class="fas fa-edit"></i></td>
+            <td>
+                Enter the results  <a target="_blank" href="<?= PageIndex()?>ScoreTaker/<?= $CompetitionEvent['Event_Secret'] ?>">[link <?= $CompetitionEvent['Event_Secret'] ?>]</a>
+            </td>
+        </tr>
+        <tr>
+            <td/>
+            <td>
+                <form  method="POST" action="<?= PageAction('ScoreTaker.Regenerate')?> " >
+                    <input hidden value="<?= $CompetitionEvent['Event_ID'] ?>" name="ID">
+                    <button>Update the link</button> if you do not enter the results yourself
+                </form>
+            </td>
+        </tr>    
+        <tr>
+            <td><i class="fas fa-print"></i></td>
+            <td>
+                <a target="_blank" href="<?= PageAction('CompetitonEvent.Results.Print')?>/<?= $CompetitionEvent['Event_ID'] ?>">Print the results</a>
+            </td>
+        </tr>          
+    </table>
+</td>
+</tr></table>
 
-   
-<div class="form">
-    <b><?= ml('Competition.Event.Settings.Comment.Title') ?></b>
+
+
+<table class="table_info">
+    <tr>
+        <td>Information for Event</td>
+        <td/>
+    </tr>
     <form method="POST" action="<?= PageAction('CompetitionEvent.Edit.Comment'); ?>">
         <input name="ID" type="hidden" value="<?= $CompetitionEvent['Event_ID'] ?>" />
         <?php 
@@ -63,47 +136,138 @@ $CompetitionDelegates=ObjectClass::getObject('PageCompetitionDelegates');
             $comments[getLanguages()[0]]=$CompetitionEvent['Event_Comment'];
         }
         foreach(getLanguages() as $language){ ?>
+        <tr>
+            <td>
             <b><?= ImageCountry($language,20); ?> <?= CountryName($language,true) ?></b><br>
+            </td>
+            <td>
             <textarea name="Comment[<?= $language ?>]" style="height: 80px;width: 400px"><?= isset($comments[$language])?$comments[$language]:''; ?></textarea><br>
+            </td>
+        </tr>    
         <?php } ?>
-        <input type="submit" name="submit" value="<?= ml('*.Save',false) ?>">
-        <?= mlb('*.Save') ?>
+        <tr>
+            <td></td>
+            <td><button><i class="far fa-save"></i> Save</button></td>
+        </tr>
     </form> 
-</div>
-<br>
+    
+</table>    
 
-<a name="CompetitorEventAdd"></a>
-<div class="form">
-    <form method="POST" action="<?= PageAction('CompetitionEvent.Registration.Add')?>">
-    <?php   $CompetitorsEventAdd=GetMessage("CompetitorsEventAdd");
-            if(!$CompetitorsEventAdd)$CompetitorsEventAdd=array();
-            DataBaseClass::FromTable("Registration","Competition=".$CompetitionEvent['Competition_ID']);
-            DataBaseClass::Join_current("Competitor");
-            DataBaseClass::OrderClear("Competitor", "Name");
-            $registrations=DataBaseClass::QueryGenerate(); ?>
-        
-        
-        <?= ml('CompetitionEvent.Registration.Add',$Competition['Competition_Cubingchina']?'CubingChina':'WCA') ?> <br>
-        <input name="ID" type="hidden" value="<?= $CompetitionEvent['Event_ID'] ?>" />
-        <select style="width: 600px" Name="Competitors[]" data-placeholder="Choose <?= html_spellcount($CompetitionEvent['Discipline_Competitors'], 'competitor', 'competitors', 'competitors')?>" class="chosen-select chosen-select-<?= $CompetitionEvent['Discipline_Competitors'] ?>" multiple>
-            <option value=""></option>
-            <?php foreach($registrations as $competitor){ ?>
-                <option <?= in_array($competitor['Competitor_ID'],$CompetitorsEventAdd)?'selected':'' ?> value="<?= $competitor['Competitor_ID'] ?>"><?= $competitor['Competitor_WCAID'] ?> <?= $competitor['Competitor_Name'] ?></option>    
-            <?php } ?>
-        </select>
-        <input class="form_enter" type="submit" value="<?=ml('*.Register',false) ?>"><?=mlb('*.Register') ?>
-        <p>
-            <span class="message"><?= GetMessage("CompetitorEventAddMessage") ?></font>
-            <span class="error"><?= GetMessage("CompetitorEventAddError") ?></font> 
-        </p>
-    </form>
+<?php 
+DataBaseClass::Query("select Com.ID Command,C.Country, C.ID,C.Name,GROUP_CONCAT(A.vOut order by A.Attempt SEPARATOR ' - ') Attempts "
+        . " from Command Com"
+        . " join CommandCompetitor CC on CC.Command=Com.ID "
+        . " join Competitor C on CC.Competitor=C.ID " 
+        . " join Attempt A on A.Command=Com.ID and A.Attempt is not null"
+        . " where Com.Event=".$CompetitionEvent['Event_ID']." and C.WCAID='' and C.WID is null"
+        . " group by Command,C.Country,C.ID,C.Name "
+        . " order by C.Name");
+
+
+$competitors=DataBaseClass::getRows();
+
+if(sizeof($competitors)){ ?>
+    <h3><?= svg_red() ?> Persons without wca_id and user_id</h3>
+        <table class="table_new">
+            <thead>
+            <tr>
+                <td>Name</td>
+                <td>Country</td>
+                <td class="table_new_center">Solves</td>
+                <td>Enter WCA ID</td>
+            </tr>    
+            </thead>
+            <tbody>
+        <?php foreach($competitors as $row){ ?>
+            <tr>
+                <td>
+                    <?= $row['Name'] ?>
+                 </td>
+                 <td>
+                    <?= CountryName($row['Country']); ?>
+                 </td>
+                <td class="table_new_center">
+                    <?= $row['Attempts'] ?>
+                </td>
+                <form  method="POST" action="<?= PageAction('CompetitionEvent.Registration.WCAID')?> " >
+                <td>
+                    <input name="Competitor" type="hidden" value="<?= $row['ID'] ?>" />
+                    <input name="Competition" type="hidden" value="<?= $Competition['Competition_ID'] ?>" />
+                    <input required="" class="WCAID" placeholder="WCA ID" ID="WCAID<?= $row['ID'] ?>" autocomplete="off" style="width:80px" name="WCAID" value="" 
+                        onkeyup="
+                        if($(this).val().indexOf('_')+1==0){
+                            if($('#WCAIDsearch<?= $row['ID'] ?>').val()!=$('#WCAID<?= $row['ID'] ?>').val()){
+                                $('#tst<?= $row['ID'] ?>').html('search...'); 
+                                $('#tst<?= $row['ID'] ?>').load('<?= PageAction('AJAX.Check.WCAID') ?>?Competitor=<?= $row['ID'] ?>&WCAID=' + $('#WCAID<?= $row['ID'] ?>').val());
+                            }
+                        }else{
+                            $('#tst<?= $row['ID'] ?>').html(''); 
+                        }" />
+                </td>   
+                <td>
+                     <span id="tst<?= $row['ID'] ?>"></span>
+                </td>
+                </form>
+            </tr>    
+        <?php } ?>
+            </tbody>
+        </table>    
+<script>
+    $(function(){
+      $(".WCAID").mask("9999aaaa99");
+    });
+</script>    
+<?php } ?>
+            
+<h3>Registrations</h3>
+
+<table class="table_info">
     <form method='POST' action='<?= PageAction('CompetitionEvent.Competitors.Load')?>'>
-        <input hidden name='ID' value='<?= $Competition['Competition_ID'] ?>'>
-        <input type='submit' value='<?= ml('Registrations.Reload',false) ?>'><?= mlb('*.Reload')?>
-        <?= $Competition['Competition_LoadDateTime'] ?>
+    <tr>
+        <td>Reloaded date</td>
+        <td><?= $Competition['Competition_LoadDateTime'] ?></td>    
+    </tr>
+    <tr>    
+        <td></td>
+        <td>
+            <input hidden name='ID' value='<?= $Competition['Competition_ID'] ?>'>
+            <button><i class="fas fa-sync-alt"></i> Reload</button>
+        </td>
+    </tr>
     </form>
-    <?= mlb('Registrations.Reload') ?>
-</div>
+    <form method="POST" action="<?= PageAction('CompetitionEvent.Registration.Add')?>">
+        <input name="ID" type="hidden" value="<?= $CompetitionEvent['Event_ID'] ?>" />
+    <?php   $CompetitorsEventAdd=GetMessage("CompetitorsEventAdd");
+        if(!$CompetitorsEventAdd)$CompetitorsEventAdd=array();
+        DataBaseClass::FromTable("Registration","Competition=".$CompetitionEvent['Competition_ID']);
+        DataBaseClass::Join_current("Competitor");
+        DataBaseClass::OrderClear("Competitor", "Name");
+        $registrations=DataBaseClass::QueryGenerate(); ?>
+    <tr>
+        <td>Add registration<a name="CompetitorEventAdd"></a></td>
+        <td>You can only add competitors with <?= $Competition['Competition_Cubingchina']?'CubingChina':'WCA'?> registration</td>    
+    </tr>
+    <tr>
+        <td></td>
+        <td>
+            <select style="width: 600px" Name="Competitors[]" data-placeholder="Choose <?= html_spellcount($CompetitionEvent['Discipline_Competitors'], 'competitor', 'competitors', 'competitors')?>" class="chosen-select chosen-select-<?= $CompetitionEvent['Discipline_Competitors'] ?>" multiple>
+                <option value=""></option>
+                <?php foreach($registrations as $competitor){ ?>
+                    <option <?= in_array($competitor['Competitor_ID'],$CompetitorsEventAdd)?'selected':'' ?> value="<?= $competitor['Competitor_ID'] ?>"><?= $competitor['Competitor_WCAID'] ?> <?= $competitor['Competitor_Name'] ?></option>    
+                <?php } ?>
+            </select>            
+        </td>
+    </tr>
+    <tr>
+        <td></td>
+        <td>
+            <p><?= GetMessage("CompetitorEventAddMessage") ?><?= GetMessage("CompetitorEventAddError") ?></p>
+            <button><i class="fas fa-users-cog"></i> Register</button>
+        </td>
+    </tr>
+    </form>
+</table>  
+
 <?php
 DataBaseClass::Query("select GROUP_CONCAT(C.Name order by C.Name SEPARATOR ', ') vName, Decline, count(A.ID) Attempt,"
         . "CardID,`Group`,Decline,Com.ID,Video,Com. Name  "
@@ -129,203 +293,160 @@ foreach($commands as $row){
     }
 }
 
-
-DataBaseClass::Query("select Com.ID Command,C.Country, C.ID,C.Name,GROUP_CONCAT(A.vOut order by A.Attempt SEPARATOR ' | ') Attempts "
-        . " from Command Com"
-        . " join CommandCompetitor CC on CC.Command=Com.ID "
-        . " join Competitor C on CC.Competitor=C.ID " 
-        . " join Attempt A on A.Command=Com.ID and A.Attempt is not null"
-        . " where Com.Event=".$CompetitionEvent['Event_ID']." and C.WCAID='' and C.WID is null"
-        . " group by Command,C.Country,C.ID,C.Name "
-        . " order by C.Name");
-
-
-$competitors=DataBaseClass::getRows();
-
-if(sizeof($competitors)){ ?>
-    <div class="form">
-        <span class="error">Without wca_id and user_id</span>
-        <table>
-            <tr class="tr_title">
-                <td><?= ml('Event.Competitors.Table.Name');?></td>
-                <td><?= ml('Event.Competitors.Table.Country');?></td>
-                <td><?= ml('Event.Competitors.Table.Results');?></td>
-            </tr>    
-        <?php foreach($competitors as $row){ ?>
-            <tr>
-                <td>
-                    <?= $row['Name'] ?>
-                 </td>
-                 <td>
-                    <?= ImageCountry($row['Country'],20) ?> <?= CountryName($row['Country']); ?>
-                 </td>
-                <td class="border-left-solid">
-                    <?= $row['Attempts'] ?>
-                </td>
-                <td>
-                    <form  method="POST" action="<?= PageAction('CompetitionEvent.Registration.WCAID')?> " >
-                        <input name="Competitor" type="hidden" value="<?= $row['ID'] ?>" />
-                        <input name="Competition" type="hidden" value="<?= $Competition['Competition_ID'] ?>" />
-                        <input required="" class="WCAID" placeholder="WCA ID" ID="WCAID<?= $row['ID'] ?>" autocomplete="off" style="width:80px" name="WCAID" value="" 
-                            onkeyup="
-                            if($(this).val().indexOf('_')+1==0){
-                                if($('#WCAIDsearch<?= $row['ID'] ?>').val()!=$('#WCAID<?= $row['ID'] ?>').val()){
-                                    $('#tst<?= $row['ID'] ?>').html('search...'); 
-                                    $('#tst<?= $row['ID'] ?>').load('<?= PageAction('AJAX.Check.WCAID') ?>?Competitor=<?= $row['ID'] ?>&WCAID=' + $('#WCAID<?= $row['ID'] ?>').val());
-                                }
-                            }else{
-                                $('#tst<?= $row['ID'] ?>').html(''); 
-                            }" />
-                         <span id="tst<?= $row['ID'] ?>"></span>
-                    </form>
-                </td>
-            </tr>    
-        <?php } ?>
-        </table>    
-<script>
-    $(function(){
-      $(".WCAID").mask("9999aaaa99");
-    });
-</script>
-    </div>    
-<?php }
-
 if($deleter and sizeof($deleter_names)>0){?>
-<br>
-<div class="form">
+
+<h3><?= svg_red() ?> Declined <?= $CompetitionEvent['Discipline_Competitors']>1?'teams':'competitors' ?></h3>
+<table class="table_new">
+    <tbody>
+        <?php foreach($deleter_names as $deleter_name){ ?>
+        <tr><td><?= $deleter_name ?></td></tr>
+        <?php } ?>
+    </tbody>
+</table>
+
+
     <form method="POST" action="<?= PageAction('CompetitonEvent.Registration.DeleteDeclined')?>" onsubmit="return confirm('Attention: Confirm Delete <?= sizeof($deleter_names)?> declined <?= $CompetitionEvent['Discipline_Competitors']>1?'teams':'competitors' ?> !')">
-       <?= implode("<br>",$deleter_names) ?><br>
        <input name="ID" type="hidden" value="<?= $CompetitionEvent['Event_ID'] ?>" />
-       <input class="delete" type="submit" value="Delete declined <?= $CompetitionEvent['Discipline_Competitors']>1?'teams':'competitors' ?>">
+       <button class="delete"><i class="fas fa-user-slash"></i> Delete</button>
     </form>
-</div>
 <?php } ?>
-<h3><?= ml('Event.Competitors.Title'); ?></h3> 
-<table class="competitions">
-    <tr class="tr_title">
-        <td><?= ml('Event.Competitors.Table.ID'); ?></td>
-        <td><?= ml('Event.Competitors.Table.Group'); ?></td>
-        <td><?= ml('Event.Competitors.Table.Status'); ?></td>
-        <td><?= $CompetitionEvent['Discipline_Competitors']>1?ml('Event.Competitors.Table.Teams'):ml('Event.Competitors.Table.Competitors') ?></td>
-        <td/>
-        <td><?= ml('Event.Competitors.Table.Video'); ?></td>
+
+<h3>Competitors</h3> 
+<table class="table_new" width="80%">
+    <thead>
+    <tr>
+        <td>ID</td>
+        <td class="table_new_center">Group</td>
+        <td></td>
+        <td>Status</td>
+        <td>Name</td>
     </tr>
+    </thead>
     <tbody> 
 <?php
     $n=1;
     
     ?>    
-    <?php foreach($commands as $command){ ?>   
+    <?php foreach($commands as $command){ 
+        DataBaseClass::FromTable('CommandCompetitor',"Command=".$command['ID']);
+        DataBaseClass::Join_current('Competitor');
+        DataBaseClass::OrderClear('Competitor', 'Name');
+        $names=array();
+        $competitors=DataBaseClass::QueryGenerate();?>   
      <tr>  
-         <td>
+         <td class="table_new_bold">
                  <?= $command['CardID']; ?>
          </td>
-         <td>
+         <td class="table_new_center">
                 <?= Group_Name($command['Group']) ?>
          </td>
-         <td>
-             <?php if($command['Decline']){ ?>
-                <span class="error">Decline</span>
-             <?php } ?>
-            <?php if($command['Attempt']){ ?>
-                <span class="message">Result</span>
-             <?php } ?>
-         </td>
-         <td> 
-             <?php if($CompetitionEvent['Discipline_CodeScript']=='cup_team'){ ?>
-                <div class="competitor_td">
-                    <form action="<?= PageAction('CompetitionEvent.Registration.CommandName')?> "  method="POST">
-                        <input name="CommandName" value="<?= $command['Name'] ?>"/>
-                        <input name="ID" type="hidden" value="<?= $command['ID'] ?>" />
-                        <input class="form_row" type="submit" value="<?= ml('*.Save',false); ?>" style="margin:0px; padding:1px 2px;">
-                    </form>
-                </div>
-            <?php } ?>
+         
+            <?php if($command['Decline']){ ?>
+               <td class="table_new_right"><i class="fas fa-user-minus"></i></td><td>Decline</td>
+           <?php }elseif($command['Attempt']){ ?>
+               <td class="table_new_right"><i class="fas fa-check-double"></i></td><td>Result</td>
+            <?php }elseif(sizeof($competitors)!=$CompetitionEvent['Discipline_Competitors']){  ?>
+               <td class="table_new_right"><i class="fas fa-hourglass-half"></i></td><td>Wait teammates</td>
+            <?php }else{ ?>
+               <td class="table_new_right"><i class="fas fa-check"></i></td><td>Register</td>
+            <?php }  ?>
+            <td>
             <?php 
             $WCAIDs=array();
             $Countries=array();
-
-            DataBaseClass::FromTable('CommandCompetitor',"Command=".$command['ID']);
-            DataBaseClass::Join_current('Competitor');
-            DataBaseClass::OrderClear('Competitor', 'Name');
-            $names=array();
-            $competitors=DataBaseClass::QueryGenerate();
             for($i=0;$i<$CompetitionEvent['Discipline_Competitors'];$i++){ ?> 
-                <div class="competitor_td">
-                    <nobr>
-                        <?php if(isset($competitors[$i])){
-                                $competitor=$competitors[$i];
-                                $names[]=$competitor['Competitor_Name']; ?>
-                                <?= $competitor['Competitor_Name'] ?> &#9642; <?= $competitor['Competitor_WCAID']; ?> &#9642; <?= $competitor['Competitor_Country']; ?>
-                                <?php if(!$competitor['CommandCompetitor_CheckStatus']){ ?>
-                                    &#9642; <span class="error">no on WCA</span>
-                                <?php } ?>
-                        <?php }else{ ?>
-                            <?= svg_red(10); ?>
-                        <?php } ?>    
-                    </nobr>
-                </div>
+                <p>
+                <?php if(isset($competitors[$i])){
+                        $competitor=$competitors[$i];
+                        $names[]=$competitor['Competitor_Name']; ?>
+                        <a target="_blank" href="<?= LinkCompetitor($competitor['Competitor_ID'])?>"><?= $competitor['Competitor_Name'] ?></a>
+                        <?php if(!$competitor['CommandCompetitor_CheckStatus']){ ?>
+                            <?= svg_red()?> no registration
+                        <?php } ?>
+                <?php }else{ ?>
+                    <i class="far fa-question-circle"></i>
+                <?php } ?>    
+                </p>    
             <?php } ?>
-        </td>
-       
+            </td>    
         <td>
             <?php if(!$command['Attempt']){ ?>
             <form name="CompetitorRowChange" id="CompetitorRowDelete_<?= $command['ID']?>" method="POST" 
                   action="<?= PageAction('CompetitionEvent.Registration.Delete')?> " 
-                  onsubmit="return confirm('Attention: Confirm deletion!\nDelete <?= implode(", ",$names)?>?')">
+                  onsubmit="return confirm('Attention: Confirm deletion <?= implode(", ",$names)?>?')">
                 <input name="ID" type="hidden" value="<?= $command['ID'] ?>" />
-                <input class="form_row delete" type="submit" value="X">
+                <button class="delete"><i class="fas fa-user-slash"></i> Cancel</button>
             </form>
             <?php }else{ ?>
-                <span id="CompetitorRowDelete_<?= $command['ID']?>"/>
-            <?php } ?>
-        </td>
-        <td>
-            <?php if($command['Attempt']){ ?>
                 <form  method="POST" action="<?= PageAction('CompetitionEvent.Registration.Video')?> " >
                     <input name="ID" type="hidden" value="<?= $command['ID'] ?>" />
-                    <input  name="Video" value="<?= $command['Video'] ?>">
-                    <input class="form_row" type="submit" value="<?= ml('*.Save',false); ?>" style="margin:0px; padding:1px 2px;">
+                    <input  placeholder="Enter link on video" name="Video" value="<?= $command['Video'] ?>">
+                    <button><i class="fas fa-video"></i> Save video</button>    
                 </form>
             <?php } ?>
         </td>
+        <?php if($CompetitionEvent['Discipline_CodeScript']=='cup_team'){ ?>
+            <td>
+                <form action="<?= PageAction('CompetitionEvent.Registration.CommandName')?> "  method="POST">
+                    <input name="CommandName" value="<?= $command['Name'] ?>"/>
+                    <input name="ID" type="hidden" value="<?= $command['ID'] ?>" />
+                    <button><i class="fas fa-users"></i> Set team name</button> 
+                </form>
+            </td>    
+        <?php } ?>
         </tr>
     <?php } ?>
         </tbody>
  </table>
 
-<hr class="hr_round">
 
-    <div class="block_comment">
-        <b><img src='<?= PageIndex()?>Image/Icons/persons.png' width='30px'> History of registrations of competitors</b><br>
-            <?php DataBaseClass::Query("Select Timestamp,Action, Doing,Details from LogsRegistration where Event=".$CompetitionEvent['Event_ID']." order by Timestamp desc" );?>
-        <table>
-            <?php foreach(DataBaseClass::getRows() as $row){ ?>
-            <tr>
-                <td><?= $row['Timestamp']?></td>
-                <td><span style="
-                    <?php if(substr($row['Action'],2,1)=='x' or substr($row['Action'],2,1)=='-'){ ?>
-                          color:var(--red)
-                    <?php } ?>
-                    <?php if(substr($row['Action'],2,1)=='*' or substr($row['Action'],2,1)=='+' ){ ?>
-                          color:var(--green)
-                    <?php } ?>
-                     <?php if(substr($row['Action'],2,1)=='!'){ ?>
-                          color:var(--blue)
-                    <?php } ?>
-                    ">
-                    <?= str_replace(
-                            ['x','-','*','+','!'],
-                            ['Del','Rem','New','Add','Link'],$row['Action']) ?>
-                    </span>
-                </td>
-                <td class="border-left-dotted border-right-dotted"><?= $row['Details']?></td>
-                <td><?= $row['Doing']?></td>
-            </tr>
-            <?php } ?>
-        </table>
-        <span class="badge">C</span> - Competitor <span class="badge">D</span> - Delegate <span class="badge">S</span> - ScoreTaker
-    </div>
+<h3>History of registrations of competitors</h3>
+<table class="table_info">
+    <tr>
+        <td>Legend</td>
+        <td/>
+    </tr>    
+    <tr>
+        <td><i class="far fa-user"></i></td>
+        <td>Competitor</td>
+    </td>    
+    <tr>
+        <td><i class="fas fa-user-tie"></i></td>
+        <td>Delegate</td>
+    </td>    
+    <tr>
+        <td><i class="far fa-list-alt"></i></td>
+        <td>ScoreTaker</td>
+    </td>    
+<table>
+
+<?php DataBaseClass::Query("Select Timestamp,Action, Doing,Details from LogsRegistration where Event=".$CompetitionEvent['Event_ID']." order by Timestamp desc" );?>
+<table class="table_new" width='80%'>
+    <thead>
+        <td>Date</td><td>Action</td><td>Name</td><td>Who did it</td>
+    </thead>
+    <tbody>
+    <?php foreach(DataBaseClass::getRows() as $row){ ?>
+    <tr>
+        <td><?= $row['Timestamp']?></td>
+        <td>
+            <?= str_replace(
+                    ['x','-','*','+','!','C ','D ','S '],
+                    ['Delete','Remove','New','Add','Link',
+                        '<i class="far fa-user"></i> ',
+                        '<i class="far fa-user-tie"></i> ',
+                        '<i class="far fa-list-alt"></i> '],
+                    $row['Action']) ?>
+        </td>
+        <td><?= str_replace([": ",","],[":<br>","<br>"],$row['Details'])?></td>
+        <td><?= str_replace(['Competitor: ','Delegate: ','ScoreTaker'],
+                ['<i class="far fa-user"></i> ','<i class="far fa-user-tie"></i> ','<i class="far fa-list-alt"></i> ScoreTaker'],
+                $row['Doing'] ) ?></td>
+    </tr>
+    <?php } ?>
+    </tbody>
+</table>
+
 </div>
 
 <script>

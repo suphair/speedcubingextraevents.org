@@ -1,7 +1,9 @@
 <link rel="stylesheet" href="<?= PageLocal()?>style.css?t=1" type="text/css"/>
-<style>*{font-family:Arial; !important}</style>
+<style>
+    h3:before{content:none}
+</style>
 <?php if(CheckAccess('MainRegulations.Edit')){ ?>
-    <img style="vertical-align: middle" width="20px" src="<?= PageIndex()?>Image/Icons/settings.png">   <a href="<?= PageIndex() ?>MainRegulations/Edit">Edit</a>
+    <i class="fas fa-cog"></i> <a href="<?= PageIndex() ?>MainRegulations/Edit">Edit</a>
 <?php } ?>
 <form class='form_inline' method="POST" action="<?=PageAction('Language.Set')?> "> 
     <?php $Language=$_SESSION['language_select']; ?>    

@@ -77,11 +77,11 @@ foreach($command_group as $group=>$commands){
         for($i=0;$i<4;$i++){
             $point=$points[$i];
  
-            if(file_exists(ImageEventFile($data['Discipline_CodeScript']))){
-                $pdf->Image(ImageEventFile($data['Discipline_CodeScript']),$point[0],$point[1]+1,10,10,'jpg');
-            }
+            #if(file_exists(ImageEventFile($data['Discipline_CodeScript']))){
+            #    $pdf->Image(ImageEventFile($data['Discipline_CodeScript']),$point[0],$point[1]+1,10,10,'jpg');
+            #}
 
-            $pdf->Image("Logo/Logo_Black.png",$point[0]+$pdf->w /2-20,$point[1]+1,10,10,'png');
+            #$pdf->Image("Logo/Logo_Black.png",$point[0]+$pdf->w /2-20,$point[1]+1,10,10,'png');
 
             if(isset($commands[$i+$l*4])){
                 $command=$commands[$i+$l*4];
@@ -93,8 +93,10 @@ foreach($command_group as $group=>$commands){
             $pdf->SetLineWidth(0.2);
             
             $str=iconv('utf-8', 'cp1252//TRANSLIT', $competition);
-            $pdf->Text($point[0] + 14, $point[1] + 5,$data['Discipline'].$data['vRound']);
-            $pdf->Text($point[0] + 14, $point[1] + 10, $str); 
+            $pdf->Text($point[0] + 5, $point[1] + 5, $str); 
+            $pdf->SetFont('Arial','U',12);
+            $pdf->Text($point[0] + 5, $point[1] + 10,$data['Discipline'].$data['vRound']);
+            
             
             
 

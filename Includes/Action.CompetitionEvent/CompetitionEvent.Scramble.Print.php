@@ -100,20 +100,26 @@ foreach($data as $row){
         if(file_exists(ImageEventFile($row['Discipline_CodeScript']))){
             $pdf->Image(ImageEventFile($row['Discipline_CodeScript']),5,10,20,20,'jpg');
         }
-        $pdf->Image("Logo/Logo_Color.png",$pdf->w-25,10,20,20,'png');
+        $pdf->SetFont('Arial','',24);
+        $pdf->Text(10, 13, $row['Discipline_Name'].$row['Event_vRound']);
         $pdf->SetFont('Arial','',16);
-        $pdf->SetTextColor(162,0,0);
-        $pdf->Text(30, 13, $row['Discipline_Name'].$row['Event_vRound']);
-        $pdf->SetTextColor(0,182,67);
-        $pdf->Text(30, 20, 'Group '.$Letter[$group]);
-        $pdf->SetTextColor(17,31,135);
-        $pdf->Text(30, 27,$Competition_name);
+        $pdf->Text(10, 20, 'Group '.$Letter[$group]);
+        $pdf->Text(10, 27,$Competition_name);
+        
+        
+        
+            $pdf->SetFont('Arial','',16);
+    $str=iconv('utf-8', 'cp1252//TRANSLIT', $data['Competition']);
+    $pdf->Text(10, 13, $str);
+    $pdf->SetFont('Arial','',24);
+    $pdf->Text(10, 24, $data['Discipline'].$data['vRound']);
+        
+        
         
         //Footer
         $pdf->SetFont('Arial','',10);
         $pdf->SetTextColor(0,0,0);
-        $pdf->Text(80, 286,GetIni('TEXT','print'));
-        $pdf->Text(150, 286,$Scramble_Timestamp);
+        $pdf->Text(10, 286,$Scramble_Timestamp);
         $Y=$Y_Content_S;
     }
         

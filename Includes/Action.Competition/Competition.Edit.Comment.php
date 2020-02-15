@@ -18,5 +18,5 @@ foreach($Comments as $c=>$Comment){
 
 DataBaseClass::Query("Update `Competition`set Comment='". DataBaseClass::Escape(json_encode($Comments,JSON_UNESCAPED_UNICODE))."'  where `ID`='$ID'");
 
-header('Location: '.$_SERVER['HTTP_REFERER']);
+header('Location: '.$_SERVER['HTTP_REFERER'].'#Competition.Edit.Comment');
 exit();  

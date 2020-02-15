@@ -1,11 +1,12 @@
-<?php
-$request=Request();
+<!DOCTYPE HTML>
+<html>
+<?php $request=Request();
 if(!isset($request[1])){
     exit();
 }
 $Secret=$request[1];
 
-DataBaseClass::Query("Select FR.Format FormatResult,DF.ID DisciplineFormat,C.Onsite Competition_Onsite, D.Competitors, C.ID Competition_ID, D.Competitors Discipline_Competitors,D.ID Discipline_ID, E.Round, E.vRound, F.Result, F.ExtResult, F.Attemption, F.Name FormatName, C.Name Competition, D.Name Discipline,C.WCA Competition_WCA, D.Code Discipline_Code,D.CodeScript Discipline_CodeScript, F.ID Format, E.ID, E.CutoffSecond, E.CutoffMinute,E.LimitSecond,E.LimitMinute, E.Cumulative "
+DataBaseClass::Query("Select FR.Format FormatResult,DF.ID DisciplineFormat,C.Onsite Competition_Onsite, D.Competitors, C.ID Competition_ID, D.Competitors Discipline_Competitors,D.ID Discipline_ID, E.Round, E.vRound, F.Result, F.ExtResult, F.Attemption, F.Name FormatName, C.Name Competition, D.Name Discipline,C.WCA Competition_WCA, D.Code Discipline_Code,D.CodeScript Discipline_CodeScript, F.ID Format, E.ID, E.CutoffSecond, E.CutoffMinute,E.LimitSecond,E.LimitMinute, E.Cumulative,D.Codes "
         . "from `Competition` C "
         . "join `Event` E on E.Competition=C.ID "
         . "join `DisciplineFormat` DF on DF.ID=E.DisciplineFormat "
@@ -21,14 +22,15 @@ if(DataBaseClass::rowsCount()==0){
 $event=DataBaseClass::getRow();
 
 ?><head>
-    <link rel="icon" href="<?= PageLocal()?><?= ImageEventFile($event['Discipline_CodeScript'])?>" >
     <title><?= $event['Discipline']?><?= $event['vRound']?></title>
-    <link rel="stylesheet" href="<?= PageLocal()?>style.css" type="text/css"/>
-    <link rel="stylesheet" href="<?= PageLocal()?>jQuery/chosen_v1/chosen.css" type="text/css"/>
+    <link rel="icon" href="../Logo/Logo_Color.png" >
+    <link rel="stylesheet" href="../style.css" type="text/css"/>
+    <link rel="stylesheet" href="../fontawesome-free-5.12.0-web/css/all.css?t=3" type="text/css"/>
+    <link rel="stylesheet" href="../icons-extra-event/css/Extra-Events.css?t=3" type="text/css"/>    
+    <link rel="stylesheet" href="../jQuery/chosen_v1/chosen.css" type="text/css"/>
 </head>
-        <?php
-
-
+<body>
+<?php
 $Next=false;
 DataBaseClass::Query("Select E.vRound,E.Round, E.Competitors, count(distinct Com.ID) Commands "
         . " from Event E "
@@ -75,9 +77,9 @@ if($Attemption==2){ $CutoffN=2; }
    
 $FormatResult=$event['FormatResult']; ?>
 
-<h1><?= $event['Competition'] ?> ▪ <?= $event['Discipline']?><?= $event['vRound']?></h1>
+<h2><?= $event['Discipline']?><?= $event['vRound']?> / 
+<?= $event['Competition'] ?>
 <?php if(CheckAccess('Competition.Event.Settings',$event['Competition_ID'])){ ?>
-    <div class="line">
         <?php 
         DataBaseClass::FromTable("Event","Competition=".$event['Competition_ID']);
         DataBaseClass::Join_current("DisciplineFormat");
@@ -85,17 +87,12 @@ $FormatResult=$event['FormatResult']; ?>
         DataBaseClass::OrderClear("Discipline","Code");
         DataBaseClass::Order("Event","Round");
         foreach(DataBaseClass::QueryGenerate() as $discipline){?>
-            <nobr>
-                <a  href="<?= PageIndex()?>ScoreTaker/<?= $discipline['Event_Secret']?>"><span class="<?= $discipline['Event_ID']==$event['ID']?'line_select':'' ?>"><?= ImageEvent($discipline['Discipline_CodeScript'],25) ?></span></a>
-            </nobr>
+            <a  href="<?= PageIndex()?>ScoreTaker/<?= $discipline['Event_Secret']?>"><span class="<?= $discipline['Event_ID']==$event['ID']?'select':'' ?>"><?= ImageEvent($discipline['Discipline_CodeScript'],1) ?></span></a>
         <?php } ?>
-    </div>
-    <br>
 <?php } ?>
+</h2>    
 <script src="<?= PageLocal()?>jQuery/ScoreTaker.js?2" type="text/javascript" charset="utf-8"></script>
-
 <script>
-    
     var formatResult='<?= $FormatResult ?>';
     var submitResult;
     var Attemption=<?= $Attemption ?>;
@@ -109,15 +106,11 @@ $FormatResult=$event['FormatResult']; ?>
     var disciptions=[];
     var CutoffN=<?= $CutoffN ?>;
     var Competitors=<?= $event['Competitors']; ?>;
-                   
-    //for(i=1;i<=Attemption;i++) {
-    //    limits[i]=true;
-    //} 
     </script>    
     <?php if($event['Discipline_Competitors']>1){?>    
-Find the Team using ID on a score card, WCA ID or Name of one of the Team members OR choose the Team from the table (click the table row with the Team member’s Name).
+Find the Team using ID on a score card, WCA ID or Name of one of the Team members OR choose the Team from the table (click Team member’s Name).
     <?php }else{ ?>
-Find the Competitor using ID on a score card, WCA ID or Name OR choose the Competitor from the table (click the table row with Competitor’s Name).
+Find the Competitor using ID on a score card, WCA ID or Name OR choose the Competitor from the table (click Competitor’s Name).
     <?php } ?>
         <br>
         <?php if($event['Competition_Onsite']){ ?>
@@ -126,19 +119,24 @@ Find the Competitor using ID on a score card, WCA ID or Name OR choose the Compe
             <?php }else{ ?>
             Create a new Team using <?= array('','','two','tree','for')[$event['Discipline_Competitors']] ?> WCA Registrations (you can find them by WCA ID or Name).
             <?php } ?>
+        <?php } 
+        $message=GetMessage('ResultsSave'); 
+        $warning= GetMessage('ResultsSaveWarning');
+        if($message){ ?>
+            <p><i class="fas fa-check-circle"></i> <?= $message ?></p>
+        <?php } 
+        if($warning){ ?>
+            <p><i class="fas fa-exclamation-circle"></i> <?= $warning ?></p>
         <?php } ?>
-        <br>    
-        <span class="message"><?= GetMessage('ResultsSave'); ?></span>
-        <span class="error"><?= GetMessage('ResultsSaveWarning'); ?></span>
-<table>
+<table width="100%">
     <tr>            
-        <td>
+        <td width="10%">
             <form method="POST" action="<?= PageAction('ScoreTaker.Add')?>" onkeydown="
             if ((event.which || event.keyCode) === 13) {
                 fn = function (elements, start) {
                     for (var i=start; i < elements.length; i++) {
                         var element = elements[i]
-                        with (element) if (tagName === 'INPUT') { focus(); break;}
+                        with (element) if (tagName === 'INPUT' || tagName === 'BUTTON' ) { focus(); break;}
                     } return i;
                 }
                var current = event.target || event.srcElement;
@@ -194,7 +192,7 @@ Find the Competitor using ID on a score card, WCA ID or Name OR choose the Compe
                             DataBaseClass::OrderClear("Competitor", "Name");
                             $competitors=DataBaseClass::QueryGenerate();
                             ?>
-                            <option style="text-align:left" 
+                            <option
                                     class="CommandSelect"
                                     ID="CommandIDSelect<?= $command['Command_ID'] ?>" 
                                     value="<?= $command['Command_ID'] ?>">
@@ -225,26 +223,28 @@ Find the Competitor using ID on a score card, WCA ID or Name OR choose the Compe
                 </select>  
                 <div style=" margin:10px;">
                     <?php if($isCutoff){ ?>
+                    <span id="cutoff_pre"></span>
                     <span id="cutoff">
-                        <?= " Cutoff - ".$event['CutoffMinute'].":".sprintf("%02d",$event['CutoffSecond']); ?>.00
-                    </span> ▪ 
+                        <?= " Cutoff  ".$event['CutoffMinute'].":".sprintf("%02d",$event['CutoffSecond']); ?>.00
+                    </span> &nbsp; 
                     <?php } ?>
+                    <span id="limit_pre"></span>
                     <span id="limit">
-                        <?= ($event['Cumulative']?"Cumulative limit ":"Limit ")." - ".$event['LimitMinute'].":".sprintf("%02d",$event['LimitSecond']); ?>.00<br>  
+                        <?= ($event['Cumulative']?"Cumulative limit ":"Limit ")." ".$event['LimitMinute'].":".sprintf("%02d",$event['LimitSecond']); ?>.00<br>  
                     </span>
                 </div>
                 <?php for($i=1;$i<=$event['Attemption'];$i++) {?>
-                    
                     <?php if($i==$CutoffN){ ?>
                         <?php if($event['CutoffSecond']+$event['CutoffMinute']>0){?>
                             <hr style="height:2px; background: gray;" id="cutoff_hr">
                         <?php } ?>    
                     <?php } ?>     
-                <?php if($image=IconAttempt($event['Discipline_Code'],$i)){ ?>
-                    <img src="<?= PageIndex() ?>/<?= $image ?>" width="20px">
+                            
+                <?php if($event['Codes']){ ?>                
+                    <font size="6"><span class=" cubing-icon event-<?= explode(",",$event['Codes'])[$i-1]?>"></span></font>
                 <?php }else{ ?>
                     <font size="6"><?= $i ?></font>
-                <?php } ?>
+                <?php } ?>            
    
                 <?php if(strpos($FormatResult,'A')!==false){ ?>
                     &nbsp;&nbsp;&nbsp;<input tabindex="<?=  $i*2 ?>" maxlength='2' autocomplete="off" size="2" style="width:60px;  font-family: monospace; font-size: 35px;text-align: right" name="Amount<?= $i ?>" ID="amount<?= $i ?>" class="amount_input" oninput="AmountEnterOne(<?= $i ?>)" onclick="this.select();" onfocus="this.select();">
@@ -255,21 +255,21 @@ Find the Competitor using ID on a score card, WCA ID or Name OR choose the Compe
                 <?php } ?>
                     
                 <br>
-                
+                <span ID="description<?= $i ?>_pre" class="description" style="color:red"></span>
                 <span ID="description<?= $i ?>" class="description" style="color:red" ></span><br>
                 <?php } ?>
                 <span style="font-size:30px;"> </span>
-                <input  ID="SubmitValue" type='button' disabled value='Confirm' style="width:200px;font-size:30px;"
+                <button  ID="SubmitValue" type='button' disabled style="width:200px;font-size:30px;"
                        onclick="
                                 if(submitResult!==''){ 
                                     if(confirm('Wrong results!\n' + submitResult +'Confirm results anyway?')){
                                        form.submit(); 
                                     }else{
-                                       form.submit();
+                                       return false;
                                     }
                                 }else{ 
                                     form.submit();
-                                }">
+                                }">Confirm</button>
                 <input name="AttempsWarning" ID="AttempsWarning" type="hidden" value="" />
                 <input name="Secret" type="hidden" value="<?= $Secret ?>" />
                 <input name="Type" ID="Type" type="hidden"  value="" />
@@ -278,32 +278,41 @@ Find the Competitor using ID on a score card, WCA ID or Name OR choose the Compe
             <b>DNS</b> - S or /            
             <br>
         </td>
-        <td>
-    <div style='height: 600px;overflow: scroll;border:1px dotted green'>        
-    <table class="row">    
-        <tr class="tr_title"> 
-            <td>ID</td>
+        <td width="90%">
+    <div style='height: 600px;overflow: scroll;border:1px dotted black'>        
+    <table class="table_new" width="100%">    
+        <thead>
+        <tr> 
+            <td>ID</td>            
+            <td></td>
             <td><?= $event['Competitors']>1?('Team : '.(html_spellcount($event['Discipline_Competitors'], 'competitor', 'competitors', 'competitors'))):'Competitor'?></td>
-            <?php for($i=1;$i<=$event['Attemption'];$i++) {?>
-            <td class="attempt">
-                <?php if($image=IconAttempt($event['Discipline_Code'],$i)){ ?>
-                    <img src="<?= PageIndex() ?>/<?= $image ?>" width="20px">
-                <?php }else{ ?>
-                   <?= $i ?>
+            <?php if($event['Codes']){ ?>                
+                <?php for($i=0;$i<$event['Attemption'];$i++) {?>
+                <td class="table_new_right">             
+                    <span class=" cubing-icon event-<?= explode(",",$event['Codes'])[$i]?>"></span>
+                </td>
                 <?php } ?>
-            </td>
+            <?php }else{ ?>
+                <?php for($i=1;$i<=$event['Attemption'];$i++) {?>
+                <td class="table_new_right">  
+                   <?= $i ?>
+                 </td>   
+                <?php } ?>
             <?php } ?>
-            <td class="attempt">
+            </td>
+            <td class="table_new_right">
                 <?= $event['Result']?>
             </td>
             <?php if($event['ExtResult']){ ?>
-                <td class="attempt">
+                <td class="table_new_right">
                     <?= $event['ExtResult']?>
                 </td>
             <?php } ?>
-            <td>Place</td>
+            <td  class="table_new_right">Place</td>
             <td></td>
-        </tr> 
+        </tr>
+        </thead>
+        </tbody>
     <script>
        ValuesSave=[];
         AmountsSave=[];
@@ -359,85 +368,88 @@ foreach(DataBaseClass::QueryGenerate() as $competitor){
 }
 ?>
    
-<tr onclick="ClickRow(<?= $command['ID'] ?>)" 
-    onmouseover=" this.style.cursor='pointer'; this.style.color='green';"
-    onmouseout="this.style.color='black';">
-            <td>
-                <span id="rowCardID<?= $command['ID'] ?>" class="CommandID" style="<?= $command['Warnings']?"color:red;":"";  ?> <?= $command['Onsite']?'text-decoration:underline':''; ?>">
-                    <b><?= $command['CardID'] ?></b>
+<tr>
+            <td class="table_new_bold">
+                <span id="rowCardID<?= $command['ID'] ?>" style="<?= $command['Warnings']?"color:red;":"";  ?>">
+                    <?= $command['CardID'] ?>
                 </span>
             </td>
-            <td class="left border-right-solid">
+            <td>
+                <?php if($command['Onsite']){ ?>
+                    <i class="far fa-building"></i>
+                <?php } ?>
+            </td>
+            <td>
                 <span id="Name<?= $command['ID'] ?>">
-                    <nobr><?= $command['vName'] ?></nobr>
+                    <a href="#" onclick="ClickRow(<?= $command['ID'] ?>)" ><?= $command['vName'] ?></a>
                 </span>
             </td>
             <?php for($i=1;$i<=$event['Attemption'];$i++) {?>
-            <td class="attempt">
-                <nobr><span style="color:red;"><?= in_array($i,explode(",",$command['Warnings']))?"!":"";  ?></span>
-                <span  id="Value<?= $command['ID']."_".$i ?>"><?= $attempts[$i]; ?></span></nobr>
+            <td class="table_new_right">
+                <span  id="Value<?= $command['ID']."_".$i ?>" class="<?= in_array($i,explode(",",$command['Warnings']))?"color_red":"";  ?>"</span>
+                        <?= $attempts[$i]; ?>
+                </span>
             </td>
             <?php } ?>
-            <td class="border-left-solid attempt">
-                <nobr><b><?= $attempts[$event['Result']]?></b></nobr>
+            <td  class="table_new_right table_new_bold">
+                <?= $attempts[$event['Result']]?>
             </td>
             <?php if($event['ExtResult']){ ?>
-                <td class="border-left-solid attempt">
-                    <nobr><?= $attempts[$event['ExtResult']]?></nobr>
+                <td  class="table_new_right"> 
+                    <?= $attempts[$event['ExtResult']]?>
                 </td>
             <?php } ?>
-            <td class="number border-left-solid <?= ($command['Place']<=$commandsWinner and $command['Place']>0)?"podium":""; ?>">
+            <td class="table_new_right <?= ($command['Place']<=$commandsWinner and $command['Place']>0)?"podium":""; ?>">
                 <b><?= $command['Place'] ?></b>
             </td>
             <td>
                 <?php if(!$command['Decline']){ ?>
-                <form class="form_mini " method="POST" action="<?= PageAction('ScoreTaker.Decline')?>"  
+                <form  method="POST" action="<?= PageAction('ScoreTaker.Decline')?>"  
                     onsubmit="
                         <?php if($command['Onsite']){ ?>
-                            return confirm('Attention: Confirm the delete <?= $command['vName'] ?>.')
+                            return confirm('Confirm delete')
                         <?php }else{ ?>
-                            return confirm('Attention: Confirm the refusal <?= $command['vName'] ?>.')
+                            return confirm('Confirm refusal')
                         <?php } ?>
                     ">      
-                    <input  id="ID<?= $command['ID'] ?>" name="ID" type="hidden" value="<?= $command['ID'] ?>" />
+                    <input id="ID<?= $command['ID'] ?>" name="ID" type="hidden" value="<?= $command['ID'] ?>" />
                     <input name="Secret" type="hidden" value="<?= $Secret ?>" />
-                    <input class="delete" type="submit" value="X">
+                    <button class="delete button_row"><i class="fas fa-user-slash"></i></button>                    
                 </form>
-                <?php }else{ ?>
-                <form class="form_mini"  method="POST" action="<?= PageAction('ScoreTaker.Accept')?>">
+            <?php }else{ ?>
+                <form   method="POST" action="<?= PageAction('ScoreTaker.Accept')?>">
                     <input name="ID" type="hidden" value="<?= $command['ID'] ?>" />
                     <input name="Secret" type="hidden" value="<?= $Secret ?>" />
-                    <input style="background-color:lightgreen" type="submit" value="+">
+                    <button  class="button_row"><i class="fas fa-undo-alt"></i></button>                    
                 </form>
                 <?php }?>
             </td>
         </tr>
 <?php } ?>
-        
+    </tbody>   
     </table> 
     </div>   
 <?php if($notAttempts){ ?>
-    <form method="POST" action="<?= PageAction('ScoreTaker.DeclineAll')?>"  onsubmit="return confirm('Attention: Confirm the completion of the event.')">
+    <form method="POST" action="<?= PageAction('ScoreTaker.DeclineAll')?>"  onsubmit="return confirm('Confirm: Complete the event')">
         <input name="ID" type="hidden" value="<?= $event['ID'] ?>" />
         <input name="Secret" type="hidden" value="<?= $Secret ?>" />
-        <input style="background-color:lightblue" type="submit" value="Complete the event">
+        <button>Complete the event</button>
     </form>
 <?php }else{ ?>
     <?php if($Next and $commandsWinner>3 and !$Next['Commands']){ ?>
-        <form method="POST" action="<?= PageAction('ScoreTaker.NewRound')?>"  onsubmit="return confirm('Attention: Confirm the creation of a new round.')">
+        <form method="POST" action="<?= PageAction('ScoreTaker.NewRound')?>"  onsubmit="return confirm('Confirm: Сreate a new round')">
            <input name="ID" type="hidden" value="<?= $event['ID'] ?>" />
            <input name="Secret" type="hidden" value="<?= $Secret ?>" />
-           <input style="background-color:lightblue" type="submit" value="Сreate a new round">
+           <button>Сreate a new round</button>
        </form>
         
     <?php } ?>        
-    <input style="background-color:lightgreen" type='button' value='Print the results' onclick="window.open('<?= PageAction('CompetitonEvent.Results.Print')?>/<?= $event['ID'] ?>', '_blank');">
+        <button onclick="window.open('<?= PageAction('CompetitonEvent.Results.Print')?>/<?= $event['ID'] ?>', '_blank');"><i class="fas fa-print"></i> Print results</button>
 <?php } ?>
 </td></tr></table>
     
     
     <?php if($event['Competition_Onsite'] and CheckAccess('Competition.Event.Settings',$event['Competition_ID'])){ ?>
-            <div class="form2">
                 <form method="POST" action="<?= PageAction('ScoreTaker.Registartion.Add')?>">
                     <?php $message=GetMessage("ScoreTaker.Registartion.Add");
                     if($message){ ?>
@@ -457,7 +469,6 @@ foreach(DataBaseClass::QueryGenerate() as $competitor){
                         }" />
                      <span id="tst"></span>
                 </form>
-            </div>
     <?php } ?>
     
 
@@ -477,3 +488,5 @@ foreach(DataBaseClass::QueryGenerate() as $competitor){
       $(".WCAID").mask("9999aaaa99");
     });
 </script>
+<body>
+</html>

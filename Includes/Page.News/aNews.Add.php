@@ -1,24 +1,28 @@
-<?php includePage('Navigator'); ?>
-<h1><?= ml('aNews.AddTitle') ?></h1>
-The first line is the title.<br>
-HTML tags are allowed<br>
-The newline is replaced with <br>
-
-<div class="wrapper">
-    <div class="form">
-        <form method="POST" action="<?= PageAction('aNews.Add') ?>">
-            <?php foreach(getLanguages() as $language){ ?>
-            <div class="form_input form_input_left">        
-                <?= ImageCountry($language, 30)?>
-                <b><?= CountryName($language,true)?></b><br>
-                <textarea name="anews[<?=$language ?>]"></textarea>
-            </div>
-            <?php } ?>
-            <div>
-                <input type="submit" value="<?= ml('*.Add',false) ?>">
-            </div>
-        </form>
-    </div>
-</div>
-
-<?= mlb('*.Add') ?>
+<h1>News / Add</h1>
+<table class="table_info">
+    <tr>
+        <td></td>
+        <td>The first line is the title</td>
+    </tr>   
+    <tr>
+        <td></td>
+        <td>Markdown is used</td>
+    </tr> 
+    <form method="POST" action="<?= PageAction('aNews.Add') ?>">
+    <?php foreach(getLanguages() as $language){ ?>
+    <tr>
+        <td>
+            <?= ImageCountry($language, 30)?>
+            <?= CountryName($language,true)?>
+        </td>
+        <td>
+            <textarea class="big_data" name="anews[<?=$language ?>]"></textarea>
+        </td>        
+    </tr>    
+    <?php } ?>
+    <tr>
+        <td></td>
+        <td><button><i class="fas fa-plus-circle"></i> Add a news</button></td>
+    </tr> 
+    </form>
+</table>

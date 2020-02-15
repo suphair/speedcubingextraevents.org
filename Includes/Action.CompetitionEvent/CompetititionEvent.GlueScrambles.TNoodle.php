@@ -30,7 +30,6 @@ if(!$data['Discipline_GlueScrambles'] or !$data['Discipline_TNoodle']){
     exit();
 } ?>
 <head>
-    <link rel="icon" href="<?= PageLocal()?><?= ImageEventFile($data['Discipline_CodeScript'])?>" >
     <title><?= $data['Discipline_Name']?><?= $data['Event_vRound']?></title>
     <link rel="stylesheet" href="../../style.css" type="text/css"/>
 </head>
@@ -53,14 +52,14 @@ if(!$data['Discipline_GlueScrambles'] or !$data['Discipline_TNoodle']){
     2. Click the button "<b>Sramble!</b>" in the <a target="_blank" href="<?= $link ?>">TNoodle WCA Scrambler</a> (open at this link)<br><br>
     3. Click the "PDF" button and select the file with the same name in the download folder<br>
     [ <?= $FileName ?> / <b>Printing</b> / <?= $FileName ?> - All Scrambles.<b>pdf</b> ]<br><br>
-    
+    4.Wait for the formation of scramblesWait for the formation of scrambles.<br><br>
     
     <form name="EventSetGlueScramblesTNoodlePDF" enctype="multipart/form-data" method="POST" action="<?= PageIndex()."Actions/EventSetGlueScrambles.TNoodlePDF" ?>">           
         <div class="fileinputs">
             <input type="file" accept="application/pdf" class="file" name="file" multiple="true" onchange="document.forms['EventSetGlueScramblesTNoodlePDF'].submit();"/>
             <input name="ID" type="hidden" value="<?= $data['Event_ID'] ?>" />
             <div class="fakefile" id="fkf">
-                <button class="form_change">PDF</button> 
+                <button>PDF</button> 
             </div>
         </div>
     </form>

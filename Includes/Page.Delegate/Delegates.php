@@ -1,5 +1,4 @@
-<?php includePage('Navigator'); ?>
-<div class="delegates_list" id="Delegates">   
+   
 <?php
 DataBaseClass::Query("Select DATEDIFF(max(C.EndDate),now()) Latestactivity,"
         . " max(C.EndDate)  EndDate,"
@@ -18,30 +17,31 @@ DataBaseClass::Query("Select DATEDIFF(max(C.EndDate),now()) Latestactivity,"
         . " order by case when D.Status='Archive' then 1 else 0 end, DelC.Country, "
         . " case D.Status when 'Senior' then 1  when 'Middle' then 2  when 'Junior' then 3 when 'Trainee' then 4 end  , D.Name");
 $Delegate_rows=DataBaseClass::GetRows();
-?>
-    <h3>
+?>  
+    <h1><?= ml('Navigator.Delegates') ?></h1>
+<h2>
 <?php if(CheckAccess('Delegate.Candidates')){ ?>    
     <a href='<?= LinkDelegate("Candidates") ?>'><?= ml('Footer.Delegate.Candidates') ?></a>    
 <?php }else{ ?>
-    <a href="<?= PageIndex()."Delegate/Candidate" ?>"><span class='error'><?= ml('Delegate.Candidate.Title') ?></span></a>
+    <a href="<?= PageIndex()."Delegate/Candidate" ?>"><?= ml('Delegate.Candidate.Title') ?></a>
 <?php } ?>    
-    </h3>
-    
-    <h2><img src='<?= PageIndex()?>Image/Icons/delegates.png' width='20px'> <?= ml('Navigator.Delegates') ?></h2>
-    
-    <table class="Disciplines">
-        <tr class="tr_title">
+</h2>  
+    <table class="table_new" width="<?= CheckAccess('Delegates.Statistics')?'80%':'40%' ?>">
+        <thead>
+        <tr>
             <td/>
             <td/>
             <td><?=ml('Judgs.Table.Delegate')?></td>
-            <td align="center"><img height="15px"src="Image/Icons/competitions.png"></td>
-            <td align="center"><img height="15px"src="Image/Icons/persons.png"></td>
+            <td class="table_new_center"><i class="fas fa-cube"></i></td>
+            <td class="table_new_center"><i class="fas fa-users"></i></td>
             <?php if(CheckAccess('Delegates.Statistics')){ ?>
-                <td><?= ml('Judgs.Table.Days') ?></td>
-                <td><?= ml('Judgs.Table.CompetitionsInMonth') ?></td>
-                <td><?= ml('Judgs.Table.LatestActivity') ?></td>
+                <td class="table_new_right"><?= ml('Judgs.Table.Days') ?></td>
+                <td class="table_new_right"><?= ml('Judgs.Table.CompetitionsInMonth') ?></td>
+                <td class="table_new_right"><?= ml('Judgs.Table.LatestActivity') ?></td>
             <?php } ?>
         </tr>
+        </thead>
+        <tbody>
         <?php 
             $archive=false;
             $country=false;
@@ -61,9 +61,10 @@ $Delegate_rows=DataBaseClass::GetRows();
                     <td>
                         <b><?= CountryName($delegate['Country'])?></b>
                     </td>
-                    <td/>
-                    <td/>
-                    <td/>
+                    <td/><td/><td/>
+                    <?php if(CheckAccess('Delegates.Statistics')){ ?>
+                    <td/><td/><td/>
+                    <?php } ?>
                 </tr>
             <?php } ?>
             <tr>
@@ -76,47 +77,40 @@ $Delegate_rows=DataBaseClass::GetRows();
                     <a href="<?= LinkDelegate($delegate['WCA_ID'])?>"><?= Short_Name($delegate['Name']) ?></a>
                 </td>
                 <td>
-                    <span class='<?= $delegate['Status']=='Archive'?'archive':'' ?>
-                          <?= $delegate['Status']=='Trainee'?'':'' ?>
-                          <?= $delegate['Status']=='Senior'?'message':'' ?>'>
-                    <?= ml('Delegate.'.$delegate['Status']) ?></span>
+                    <?php if($delegate['Status']=='Archive'){ ?>
+                        <i class="fas fa-ban"></i>
+                    <?php } ?>
+                    <?php if($delegate['Status']=='Senior'){ ?>
+                        <i class="fas fa-user-tie"></i>
+                    <?php } ?>
+                    <?= ml('Delegate.'.$delegate['Status']) ?>
                 </td>
-                <td class="attempt">
+                <td class="table_new_center">
                     <?= $delegate['Count_Competitions'] ?>
                 </td>
-                <td class="attempt">
+                <td class="table_new_center">
                     <?= $delegate['Count_Competitors'] ?>
                 </td>
                 <?php if(CheckAccess('Delegates.Statistics')){ ?>
-                    <td align="right" class="border-left-dotted">    
+                    <td class="table_new_right">    
                         <?= $delegate['Period'] ?>
                     </td>
-                    <td align="right">
+                    <td class="table_new_right">
                         <?php if ($delegate['Count_Competitions']>0 and $delegate['Period']>30){ 
                             $r= round($delegate['Count_Competitions']/$delegate['Period']*30,1); ?>
-                            <span class="
-                                <?= $r<=0.4?'error':''?>
-                                <?= $r>=1?'message':''?>">
-                                <?= $r ?>   
-                            </span>   
-                        <?php } ?>  
+                            <?= $r ?>   
+                        <?php }else{ ?>
+                            -
+                        <?php } ?>
                     </td>    
-                    <td align="right" class="border-right-dotted"> 
-                        <span class="
-                        <?= $delegate['Latestactivity']<-120?'error':''?>
-                        <?= $delegate['Latestactivity']>-30?'message':''?>">
-                            <?= $delegate['Latestactivity'] ?>
-                        </span>
-                        <span class="<?= strtotime($delegate['EndDate'])>time()?'message':'' ?>">
-                        [<?= date_range($delegate['EndDate']); ?>]
-                        </span>
+                    <td class="table_new_right"> 
+                        <?= date_range($delegate['EndDate']); ?>
                     </td>
                 <?php } ?>
             </tr>
         <?php } ?>
+    </tbody>
     </table>
-</div>
-
 <?= mlb('Delegate.Senior') ?>
 <?= mlb('Delegate.Middle') ?>
 <?= mlb('Delegate.Junior') ?>
