@@ -20,7 +20,7 @@
     </td>    
 <table>
             <?php DataBaseClass::Query("Select "
-                    . " D.Code,D.Name, D.CodeScript, LR.Timestamp,LR.Action, LR.Doing,LR.Details,C.Name Competition "
+                    . " E.Round, D.Code,D.Name, D.CodeScript, LR.Timestamp,LR.Action, LR.Doing,LR.Details,C.Name Competition "
                     . " from LogsRegistration LR "
                     . " join Event E on E.ID=LR.Event "
                     . " join Competition C on C.ID=E.Competition "
@@ -30,7 +30,7 @@
                     . " order by LR.Timestamp desc");?>
 <table class="table_new" width='80%'>
     <thead>
-        <td>DateTime</td><td>Action</td><td>Competition</td><td>Event</td><td>Name</td><td>Who did it</td>
+        <td>DateTime</td><td>Action</td><td>Competition</td><td>Event</td><td>Round</td><td>Name</td><td>Who did it</td>
     </thead>
     <?php foreach(DataBaseClass::getRows() as $row){ ?>
     <tr>
@@ -46,6 +46,7 @@
         </td>
         <td><?= $row['Competition']?></td>
         <td><?= ImageEvent($row['CodeScript'])?> <?= $row['Name'] ?></td>
+        <td class="table_new_center"><?= $row['Round'] ?></td>
         <td><?= str_replace([": ",","],[":<br>","<br>"],$row['Details'])?></td>
         <td><?= str_replace(['Competitor: ','Delegate: ','ScoreTaker'],
                 ['<i class="far fa-user"></i> ','<i class="far fa-user-tie"></i> ','<i class="far fa-list-alt"></i> ScoreTaker'],

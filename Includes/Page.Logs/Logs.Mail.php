@@ -5,7 +5,7 @@
     $logs=DataBaseClass::getRows(); ?>
     
 <h1>Logs mail</h1>
-<table class="table_new">
+<table class="table_new" width="100%">
 <thead>
 <tr>
     <td>DateTime</td>
@@ -18,7 +18,7 @@
 <?php foreach($logs as $log){ ?>
     <tr>
         <td><?= $log['DateTime'] ?></td>
-        <td class="table_new_bold"><?= $log['To'] ?></td>
+        <td><?= $log['To'] ?></td>
         <td><?= $log['Subject'] ?></td>
         <td>
             <?php if($log['Result']!=1){ ?>
