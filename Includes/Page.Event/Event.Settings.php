@@ -25,7 +25,7 @@ $disciplines=DataBaseClass::QueryGenerate();
 ?>
 <h1 class="<?= $discipline['Discipline_Status'] ?>"><?= $discipline['Discipline_Name'] ?> / Settings</h1>
 
-<table width="100%"><tr><td width="10%">
+<table width="100%"><tr><td width="10%" style='border-right: 1px solid #333'>
 <table class="table_info" style="white-space: nowrap">
     <?php foreach($disciplines as $d=>$discipline_row){ ?>
         <tr>
@@ -39,7 +39,7 @@ $disciplines=DataBaseClass::QueryGenerate();
         </tr>
     <?php } ?>
 </table>     
-</td><td width="90%">  
+</td><td width="90%" style='padding-left: 10px'>            
 <table class="table_info">
     <tr>
         <td>Image</td>
