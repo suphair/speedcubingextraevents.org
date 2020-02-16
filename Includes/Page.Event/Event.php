@@ -31,10 +31,10 @@ DataBaseClass::Query(""
 $FormatSum=isset(DataBaseClass::getRow()['ID']);
 
 $request=getRequest();
-if(isset($request[2]) and $request[2]=='single'){
-    $FilterAverage='Single';
-}else{
+if(isset($request[2]) and $request[2]=='average'){
     $FilterAverage='Average';
+}else{
+    $FilterAverage='Single';
 }
 
 if(isset($request[3]) and $request[3]=='results'){
@@ -291,7 +291,7 @@ if($FilterResults!='Results'){
             <td>Type</td>
             <td>
                 <?php if(!$FormatSum){
-                    foreach(['Average','Single'] as $type){ ?> 
+                    foreach(['Single','Average'] as $type){ ?> 
                         <p>
                             <?php if($type==$FilterAverage){ ?>
                             <input hidden value="<?= $type ?>" type="radio" class='FilterAverage' checked ID="FilterAverage_<?= $type ?>" name="FilterAverage">
