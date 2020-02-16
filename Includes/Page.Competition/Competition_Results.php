@@ -189,6 +189,8 @@ if( !$Competition['Competition_Unofficial']){
                 <td>
                     <?php if($command['Command_vCountry']){ ?>
                         <?= CountryName($command['Command_vCountry']); ?>
+                    <?php }else{ ?>
+                        Multi-country
                     <?php } ?>
                 </td>
                 <?php for($i=1;$i<=$CompetitionEvent['Format_Attemption'];$i++) {?>
