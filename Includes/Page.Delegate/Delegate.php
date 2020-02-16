@@ -31,7 +31,7 @@
     <?php } ?>  
     <tr>
         <td><?= ml('Delegate.Competitor'); ?></td>        
-        <td><a href="<?= LinkCompetitor($competitor['Competitor_ID'])?>">Competitor's page</a></td>    
+        <td><a href="<?= LinkCompetitor($competitor['Competitor_ID'])?>"><?= ml('Delegate.CompetitorLink'); ?></a></td>    
     </tr>
     <?php if($Delegate['Delegate_Contact']){ ?>
     <tr>

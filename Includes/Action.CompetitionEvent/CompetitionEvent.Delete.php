@@ -18,6 +18,7 @@ if(isset($row['Event_Competition'])){
         DataBaseClass::Query("Delete from  `Scramble` where `Event`=$ID");
         DataBaseClass::Query("Delete from  `Event` where `ID`=$ID");
     }
+    EventRoundView($Competition);
 }
 SetMessage();
     

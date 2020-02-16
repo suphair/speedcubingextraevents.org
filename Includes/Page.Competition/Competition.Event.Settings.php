@@ -27,16 +27,22 @@ $CompetitionDelegates=ObjectClass::getObject('PageCompetitionDelegates');
 <table width="100%"><tr><td>
     <table class="table_info">
         <tr>
-            <td>Extra Events</td><td/>    
-        </tr>    
-    <?php foreach($CompetitionEvents as $competition_event){?>
-        <tr> 
-            <td><?= ImageEvent($competition_event['Discipline_CodeScript'],1.3) ?></td>
+            <td><?= ml('Competition.ExtraEvents') ?></td>
             <td>
-                <a class="<?= $competition_event['Event_ID']==$CompetitionEvent['Event_ID']?"list_select":""?>"  href="<?= LinkEvent($competition_event['Event_ID']) ?>/Settings"><?= $competition_event['Discipline_Name'] ?><?= $competition_event['Event_vRound'] ?></a>    
+                <?php if(!sizeof($CompetitionEvents)){ ?>
+                    <i class="fas fa-ban"></i>
+                <?php } ?>
             </td>
-        </tr>
-    <?php } ?>   
+        </tr>    
+            <?php $countCommands=array();
+            foreach($CompetitionEvents as $competition_event){  ?>
+               <tr>
+                   <td><?= ImageEvent($competition_event['Discipline_CodeScript'],1.3,$competition_event['Discipline_Name']) ?></td>
+                   <td>
+                        <a class="<?= $competition_event['Event_ID']==$CompetitionEvent['Event_ID']?"list_select":""?>"  href="<?= LinkEvent($competition_event['Event_ID'],$competition_event['Event_Round']) ?>/Settings"><?= $competition_event['Discipline_Name'] ?><?= $competition_event['Event_vRound'] ?></a>
+                    </td>
+                </tr>
+            <?php } ?> 
     </table>            
 </td><td>        
     <table class="table_info"> 

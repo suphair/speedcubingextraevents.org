@@ -30,29 +30,31 @@ if($competitor){
 $extraWhere="";
 ?>
 
-
-<h2><a href="<?=PageIndex()?>Events"><?= ml('Events.Title'); ?></a>
-
-<?php  
-if($type_filter=='team') echo '/ '.ml('Events.Team.Title');
-if($type_filter=='puzzles') echo '/ '.ml('Events.Puzzles.Title');
-if($type_filter=='wcapuzzle') echo '/ '.ml('Events.WCAPuzzle.Title');
-if($type_filter=='nonwcapuzzle') echo '/ '.ml('Events.nonWCAPuzzle.Title');
-if($type_filter=='simple') echo '/ '.ml('Events.Simple.Title');
-if($type_filter=='nonsimple') echo '/ '.ml('Events.nonSimple.Title');
-if($type_filter=='inscpection20') echo '/ '.ml('Events.Inscpection20.Title');
-if($type_filter=='333cube') echo '/ '.ml('Events.333Cube.Title');
- ?>
-
-</h2>
-<nobr><a class="<?= $type_filter=='team'?'select':'' ?>" href="<?= PageIndex() ?>Events/Team"><i class="fas fa-users"></i> <?= ml('Events.Team.Title'); ?></a></nobr>&nbsp;
-<nobr><a class="<?= $type_filter=='puzzles'?'select':'' ?>" href="<?= PageIndex() ?>Events/Puzzles"><i class="fas fa-cubes"></i> <?= ml('Events.Puzzles.Title'); ?></a></nobr>&nbsp;
-<nobr><a class="<?= $type_filter=='333cube'?'select':'' ?>" href="<?= PageIndex() ?>Events/333Cube"> <span class=" cubing-icon event-333"></span> <?= ml('Events.333Cube.Title'); ?></a></nobr>&nbsp; 
-<nobr><a class="<?= $type_filter=='wcapuzzle'?'select':'' ?>" href="<?= PageIndex() ?>Events/WCAPuzzle"><i class="far fa-circle"></i> <?= ml('Events.WCAPuzzle.Title'); ?></a></nobr>&nbsp;
-<nobr><a class="<?= $type_filter=='nonwcapuzzle'?'select':'' ?>" href="<?= PageIndex() ?>Events/nonWCAPuzzle"><i class="far fa-times-circle"></i> <?= ml('Events.nonWCAPuzzle.Title'); ?></a></nobr>&nbsp;
-<nobr><a class="<?= $type_filter=='simple'?'select':'' ?>" href="<?= PageIndex() ?>Events/Simple"><i class="fas fa-baby"></i> <?= ml('Events.Simple.Title'); ?></a></nobr>&nbsp;
-<nobr><a class="<?= $type_filter=='nonsimple'?'select':'' ?>" href="<?= PageIndex() ?>Events/nonSimple"><i class="fas fa-user-tie"></i> <?= ml('Events.nonSimple.Title'); ?></a></nobr>&nbsp;
-<nobr><a class="<?= $type_filter=='inscpection20'?'select':'' ?>" href="<?= PageIndex() ?>Events/Inscpection20"><i class="fas fa-stopwatch"></i> <?= ml('Events.Inscpection20.Title'); ?></a></nobr>&nbsp;
+<h1><?= ml('Events.Title'); ?></h1>
+<table class="table_info">
+    <?php if(CheckAccess('Event.Add')){?>
+    <tr>
+        <td><i class="fas fa-plus-square"></i></td>
+        <td><a href='<?= PageIndex()?>Event/Add'>Add Event</a></td>
+    </tr>    
+    <?php } ?>
+    <tr>
+        <td><i class="fas fa-filter"></i> <?= ml('Events.Filer'); ?></td>
+        <td>
+            <select onchange="document.location='<?= PageIndex() ?>Events/'+this.value">
+                <option selected value=''><?= ml('Events.All.Title'); ?></option>
+                <option <?= $type_filter=='team'?'selected':'' ?> value='Team'><?= ml('Events.Team.Title'); ?></option>
+                <option <?= $type_filter=='puzzles'?'selected':'' ?> value='Puzzles'><?= ml('Events.Puzzles.Title'); ?></option>
+                <option <?= $type_filter=='333cube'?'selected':'' ?> value='333Cube'><?= ml('Events.333Cube.Title'); ?></option>
+                <option <?= $type_filter=='wcapuzzle'?'selected':'' ?> value='WCAPuzzle'><?= ml('Events.WCAPuzzle.Title'); ?></option>
+                <option <?= $type_filter=='nonwcapuzzle'?'selected':'' ?> value='nonWCAPuzzle'><?= ml('Events.nonWCAPuzzle.Title'); ?></option>
+                <option <?= $type_filter=='simple'?'selected':'' ?> value='Simple'><?= ml('Events.Simple.Title'); ?></option>
+                <option <?= $type_filter=='nonsimple'?'selected':'' ?> value='nonSimple'><?= ml('Events.nonSimple.Title'); ?></option>
+                <option <?= $type_filter=='inscpection20'?'selected':'' ?> value='Inscpection20'><?= ml('Events.Inscpection20.Title'); ?></option>
+            </select>    
+        </td>
+    </tr>
+</table> 
 
 <?php $Competitor=GetCompetitorData();
 
@@ -107,26 +109,24 @@ if($type_filter=='333cube'){
     order by D.Status
     ,count(distinct C.ID) desc, count(distinct E.Competition) desc,  D.Name"); 
     $disciplines= DataBaseClass::getRows(); 
+    
+    DataBaseClass::Query("Select D.* from Discipline D"
+                         . " Left outer join Regulation R on D.ID=R.Event"
+                         . " where D.Status='Active'  and R.ID is null"); 
+    foreach(DataBaseClass::getRows() as $row){ 
+        $eventwithoutregulations[]=$row['CodeScript'];
+    } 
+    
     ?>
-    <table class="table_new" width="100%">
+    <table class="table_new" width="80%">
         <thead>
         <tr>
+            <td></td>
             <td><?= ml('Events.Table.Name') ?></td>
-            <td><i class="fas fa-users"></i></td>
-            <td><i class="fas fa-cube"></i></td>
-            
-            <td class="table_new_right"><?= ml('Events.Table.WorldRecord') ?> <?= ml('Events.Table.Single') ?></td>
-            <?php if($Competitor){ ?>
-                <td class="table_new_right"><?= ml('Events.Table.ContinentRecord') ?> <?= ml('Events.Table.Single') ?></td>
-                <td class="table_new_right"><?= ml('Events.Table.NationalRecord') ?> <?= ml('Events.Table.Single') ?></td>
-                <td class="table_new_right"><?= ml('Events.Table.PersonalRecord') ?> <?= ml('Events.Table.Single') ?></td>
-                
-                <td class="table_new_right"><?= ml('Events.Table.PersonalRecord') ?> <?= ml('Events.Table.Average') ?></td>
-                <td class="table_new_right"><?= ml('Events.Table.NationalRecord') ?> <?= ml('Events.Table.Average') ?></td>
-                <td class="table_new_right"><?= ml('Events.Table.ContinentRecord') ?> <?= ml('Events.Table.Average') ?></td>
-            <?php } ?>
-            <td class="table_new_right"><?= ml('Events.Table.WorldRecord') ?> <?= ml('Events.Table.Average') ?></td>
-            
+            <td class="table_new_right"><?= ml('Events.Table.Single') ?></td>
+            <td class="table_new_right"><?= ml('Events.Table.Average') ?></td>
+            <td class="table_new_center"><?= ml('Events.Table.Persons') ?></td>
+            <td class="table_new_center"><?= ml('Events.Table.Competitions') ?></td>
         </tr>
         </thead>
         <tbody>
@@ -134,23 +134,7 @@ if($type_filter=='333cube'){
     foreach( $disciplines as $d=>$discipline){
             $attempt_exists = $discipline['AttemptExists']; ?>
     <tr>
-    <td>
-        <a href="<?= LinkDiscipline($discipline['Code']) ?>">
-            <?= ImageEvent($discipline['CodeScript'],1.5,$discipline['Name']) ?>
-            <?= $discipline['Name'] ?>
-        </a>
-        <?php if($discipline['Status']=='Archive'){ ?>
-            <i class="fas fa-ban"></i>
-        <?php } ?>
-    </td>
-    <td>
-        <?= $discipline['countCompetitions']?$discipline['countCompetitors']:'0' ?> 
-    </td>
-    <td>     
-        <?= $discipline['countCompetitions']?$discipline['countCompetitions']:'0' ?>
-    </td>
-        <?php 
-        $Record=array();
+        <?php $Record=array();
         $BaseSql="Select A.vOut,Com.vCountry,A.Special from Attempt A "
                 . " join Command Com on Com.ID=A.Command and A.Special in ('@Special') @Country"
                 . " join Event E on E.ID=Com.Event "
@@ -160,134 +144,49 @@ if($type_filter=='333cube'){
                 . " join DisciplineFormat DF on DF.ID=E.DisciplineFormat and DF.Discipline=".$discipline['ID'] 
                 . " where A.Special in (select Result from Format F where F.ID=DF.Format union select ExtResult from Format F where F.ID=DF.Format)   "
                 . " order by A.vOrder limit 1";
-        
+
         $params=array("@Special","@Country","@Competitor");
         $values=array("","","");
-        
+
         $values[0]="Best','Sum";
         DataBaseClass::Query(str_replace($params,$values,$BaseSql));
         $Record[0][0]=DataBaseClass::getRow();
-        
+
         $values[0]="Average','Mean";
         DataBaseClass::Query(str_replace($params,$values,$BaseSql));
-        $Record[0][1]=DataBaseClass::getRow();
+        $Record[0][1]=DataBaseClass::getRow();  ?>
         
-        if($Competitor){
-            $values[1]="and Com.vCountry='".$Competitor->country_iso2."'";
-            
-            $values[0]="Best','Sum";
-            DataBaseClass::Query(str_replace($params,$values,$BaseSql));
-            $Record[1][0]=DataBaseClass::getRow();
-
-            $values[0]="Average','Mean";
-            DataBaseClass::Query(str_replace($params,$values,$BaseSql));
-            $Record[1][1]=DataBaseClass::getRow();
-            
-            $values[1]="and Com.vCountry in ('".implode("','",$Countries_code)."')";
-            
-            $values[0]="Best','Sum";
-            DataBaseClass::Query(str_replace($params,$values,$BaseSql));
-            $Record[3][0]=DataBaseClass::getRow();
-
-            $values[0]="Average','Mean";
-            DataBaseClass::Query(str_replace($params,$values,$BaseSql));
-            $Record[3][1]=DataBaseClass::getRow();
-            
-        } ?>
-        
+        <td><?= ImageEvent($discipline['CodeScript'],1.5,$discipline['Name']) ?></td>    
+        <td>
+            <a href="<?= LinkDiscipline($discipline['Code']) ?>">
+                <?= $discipline['Name'] ?>
+            </a>
+            <?php if($discipline['Status']=='Archive'){ ?>
+                <i class="fas fa-ban"></i>
+            <?php } ?>
+        </td>
         <td class="table_new_right">
         <?php if(isset($Record[0][0]['vOut'])){
             $r=$Record[0][0]; ?>
-                <a href='<?= PageIndex()?>Records/All/<?= $discipline['Code'] ?>'><?= $r['vOut'] ?></a>
-                <?php if( $r['vCountry'] ){ ?>
-                    <?= ImageCountry($r['vCountry'], 20)?>
-                <?php } ?>
+                <?= $r['vOut'] ?>
         <?php } ?>
         </td> 
-        
-        <?php if($Competitor){ 
-            $values[1]="";
-            $values[2]=" and C.wid='".$Competitor->id."'";
 
-            $values[0]="Best','Sum";
-            DataBaseClass::Query(str_replace($params,$values,$BaseSql));
-            $Record[2][0]=DataBaseClass::getRow();
-
-            $values[0]="Average','Mean";
-            DataBaseClass::Query(str_replace($params,$values,$BaseSql));
-            $Record[2][1]=DataBaseClass::getRow();
-            ?>
-        
-            <td class="table_new_right">
-                <?php if(isset($Record[3][0]['vOut'])){
-                    $r=$Record[3][0]; ?>
-                    <a href='<?= PageIndex()?>Records/_<?= $Continent_Code ?>/<?= $discipline['Code'] ?>'><?= $r['vOut']?></a>
-                    <?php if( $r['vCountry'] ){ ?>
-                        <?= ImageCountry($r['vCountry'], 20)?>
-                    <?php } ?>
-                <?php } ?>
-            </td>
-            <td class="table_new_right">
-                <?php if(isset($Record[1][0]['vOut'])){
-                    $r=$Record[1][0]; ?>
-                    <a href='<?= PageIndex()?>Records/<?= $Competitor->country_iso2 ?>/<?= $discipline['Code'] ?>'><?= $r['vOut']?></a>
-                <?php } ?>
-            </td>
-            <td class="table_new_right table_new_bold">
-                <?php if(isset($Record[2][0]['vOut'])){
-                    $r=$Record[2][0]; ?>
-                    <?php if($r['vOut']==$Record[0][0]['vOut']){?>
-                        <span class="table_new_PB"><?= ml('*.WorldRecord') ?></span>
-                    <?php }elseif($r['vOut']==$Record[1][0]['vOut']){?>
-                        <span class="table_new_PB"><?= ml('*.NationalRecord') ?></span>
-                    <?php } ?>
-                        <?= $r['vOut'] ?>
-                <?php } ?>
-            </td>
-            <td class="table_new_right table_new_bold">
-                <?php if(isset($Record[2][1]['vOut'])){
-                    $r=$Record[2][1]; ?>
-                    <?php if($r['vOut']==$Record[0][1]['vOut']){?>
-                        <span class="table_new_PB"><?= ml('*.WorldRecord') ?></span>
-                    <?php }elseif($r['vOut']==$Record[1][1]['vOut']){?>
-                        <span class="table_new_PB"><?= ml('*.NationalRecord') ?></span>
-                    <?php } ?>
-                        <?= $r['vOut'] ?>
-                <?php } ?>
-            </td>                      
-            <td class="table_new_right">
-                 <?php if(isset($Record[1][1]['vOut'])){ 
-                     $r=$Record[1][1]; ?>
-                     <a href='<?= PageIndex()?>Records/<?= $Competitor->country_iso2 ?>/<?= $discipline['Code'] ?>'><?= $r['vOut'] ?></a>
-                <?php } ?>
-            </td>
-            <td class="table_new_right">
-                 <?php if(isset($Record[3][1]['vOut'])){ 
-                     $r=$Record[3][1]; ?>
-                     <a href='<?= PageIndex()?>Records/_<?= $Continent_Code ?>/<?= $discipline['Code'] ?>'><?= $r['vOut'] ?></a>
-                     <?php if( $r['vCountry'] ){ ?>
-                        <?= ImageCountry($r['vCountry'], 20)?>
-                    <?php } ?>
-                <?php } ?>
-            </td>  
-
-        <?php } ?>
-            
         <td class="table_new_right">  
         <?php if(isset($Record[0][1]['vOut'])){ 
             $r=$Record[0][1]; ?>
-                <a href='<?= PageIndex()?>Records/All/<?= $discipline['Code'] ?>'><?= $r['vOut'] ?></a>
-                <?php if($r['vCountry']){ ?>
-                    <?= ImageCountry($r['vCountry'], 20)?>
-                <?php } ?>
+                <?= $r['vOut'] ?>
         <?php } ?>
-        </td>  
+        </td> 
+        <td class="table_new_center">
+            <?= $discipline['countCompetitions']?$discipline['countCompetitors']:'0' ?> 
+        </td>
+        <td class="table_new_center">     
+            <?= $discipline['countCompetitions']?$discipline['countCompetitions']:'0' ?>
+        </td>
     </tr>
 <?php } ?>
     </tbody>
     </table>
     
     
-<?= mlb('*.WorldRecord') ?>
-<?= mlb('*.NationalRecord') ?>
-

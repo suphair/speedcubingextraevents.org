@@ -80,11 +80,11 @@ group by C.WCAID, C.Name, C.Country,C.ID , Country.Name order by $sort C.Name, W
 ");
 
     $competitors_medals=DataBaseClass::getRows(); ?>
-    <h2><?= ml('Competitors.Competitors' )?></h2>
-    
-<table class="table_info">    
+    <h1><?= ml('Competitors.Competitors' )?></h1>
+<table width="100%"><tr><td>    
+    <table class="table_info">    
         <tr>
-            <td><?= ml('Competitors.CitizenOf' )?></td>
+            <td><i class="fas fa-filter"></i> <?= ml('Competitors.CitizenOf' )?></td>
             <td>
                 <select onchange="document.location='<?= PageIndex()?>/' + this.value ">
                     <option <?= ($country_filter=='0')?'selected':''?> value="Competitors"><?= ml('Competitors.Select.All' )?>: <?= $competitors_countries_all ?></option>
@@ -96,89 +96,67 @@ group by C.WCAID, C.Name, C.Country,C.ID , Country.Name order by $sort C.Name, W
                     <?php } ?>      
                 </select>               
             </td>
-        </tr>    
+        </tr>   
         <tr>
-            <td><?= ml('Competitors.FindAndGo' )?></td>
+            <td><i class="fas fa-sort-amount-down"></i> <?= ml('Competitors.Sort' )?></td>
             <td>
-                <select hidden tabindex="1" ID="SelectCompetitors" style="width: 800px"
-                                data-placeholder="<?= ml('Competitors.FindPlaceholder',false )?>" 
-                                class="chosen-select" multiple onchange="if(this.value){
-                       location.href = '<?= PageIndex()?>Competitor/' + this.value;
-                   }">
-                    <?= mlb('Competitors.FindPlaceholder' )?>
-                   <option value=""></option>
-                   <?php 
-                   foreach($competitors as $competitor){ ?>
-                       <option value="<?= $competitor['ID'] ?>"> <?= $competitor['WCAID'] ?> &#9642; <?= $competitor['Name'] ?> &#9642; <?= $competitor['CountryName'] ?>  </option>    
-                   <?php } ?>
+                <select onchange="document.location='<?= PageIndex()?>/Competitors/<?= $country_filter?$country_filter:'' ?>?Sort='+ this.value">
+                    <option value="Name" <?= $sort_name=="Name"?'Selected':'' ?>><?= ml('Competitors.Table.Competitor') ?></option>
+                    <option value="Competitions" <?= $sort_name=="Competitions"?'Selected':'' ?>><?= ml('Competitors.Table.Competitions') ?></option>
+                    <option value="Events" <?= $sort_name=="Events"?'Selected':'' ?>><?= ml('Competitors.Table.Events') ?></option>
+                    <option value="Medals" <?= $sort_name=="Medals"?'Selected':'' ?>><?= ml('Competitors.Table.Medals') ?></option>
                 </select>
             </td>
-         </tr>   
-    </table>
+        </tr>
+    </table>        
+</td><td> 
+    <table class="table_info"> 
+       <tr>
+           <td><i class="fas fa-search"></i> <?= ml('Competitors.FindAndGo' )?></td>
+           <td>
+               <select hidden tabindex="1" ID="SelectCompetitors"
+                               data-placeholder="<?= ml('Competitors.FindPlaceholder',false )?>" 
+                               class="chosen-select" multiple onchange="if(this.value){
+                      location.href = '<?= PageIndex()?>Competitor/' + this.value;
+                  }">
+                   <?= mlb('Competitors.FindPlaceholder' )?>
+                  <option value=""></option>
+                  <?php 
+                  foreach($competitors as $competitor){ ?>
+                      <option value="<?= $competitor['ID'] ?>"> <?= $competitor['WCAID'] ?> &#9642; <?= $competitor['Name'] ?> &#9642; <?= $competitor['CountryName'] ?>  </option>    
+                  <?php } ?>
+               </select>
+           </td>
+        </tr>   
+   </table>
+</td></tr></table>
 
     <table class="table_new" width="80%">
+        <thead>
+            <tr>
+                <td/>
+                <td><?= ml('Competitors.Table.Competitor') ?></td>
+                <td><?= ml('Competitors.Table.WCAID') ?></td>
+                <td><?= ml('Competitors.Table.Country') ?></td>
+                <td class="table_new_center"><?= ml('Competitors.Table.Competitions') ?></td>
+                <td class="table_new_center"><?= ml('Competitors.Table.Events') ?></td>
+                <td class="table_new_center"><?= ml('Competitors.Table.Medals') ?></td>
+            </tr> 
+        </thead>
     <?php 
     foreach($competitors_medals as $i=>$competitors_medal){ ?>
-            <?php if(ceil($i/10)*10==$i){ ?>
-                <thead>
-                <?php if($i==0){ 
-                        $urlSort=PageIndex()."Competitors/?".($country_filter?"&Country=".$country_filter:""); ?>
-                        <tr>
-                        <td/>
-                        <td><a href="<?= $urlSort ?>Name" class="<?= $sort_name!='Name'?'local_link':'select_link'?>"><?= ml('Competitors.Table.Competitor') ?></a></td>
-                        <td><?= ml('Competitors.Table.WCAID') ?> <i class="fas fa-external-link-alt"></i></td>
-                        <td><?= ml('Competitors.Table.Country') ?></td>
-                        <td class="table_new_center"><a href="<?= $urlSort ?>&Sort=Competitions" class="<?= $sort_name!='Competitions'?'local_link':'select_link'?>"><?= ml('Competitors.Table.Competitions') ?></a></td>
-                        <td class="table_new_center"><a href="<?= $urlSort ?>&Sort=Events" class="<?= $sort_name!='Events'?'local_link':'select_link'?>"><?= ml('Competitors.Table.Events') ?></a></td>
-                        <td class="table_new_center"><a href="<?= $urlSort ?>&Sort=Medals" class="<?= $sort_name!='Medals'?'local_link':'select_link'?>"><?= ml('Competitors.Table.Medals') ?></a></td>
-                        <td class="table_new_center"><a href="<?= $urlSort ?>&Sort=Gold" class="<?= $sort_name!='Gold'?'local_link':'select_link'?>"><?= ml('Competitors.Table.Gold') ?></a></td>
-                        <td class="table_new_center"><a href="<?= $urlSort ?>&Sort=Silver" class="<?= $sort_name!='Silver'?'local_link':'select_link'?>"><?= ml('Competitors.Table.Silver') ?></a></td> 
-                        <td class="table_new_center"><a href="<?= $urlSort ?>&Sort=Bronze" class="<?= $sort_name!='Bronze'?'local_link':'select_link'?>"><?= ml('Competitors.Table.Bronze') ?></a></td>
-                    </tr> 
-                    </thead>
-                    <tbody>
-                <?php }else{ ?>
-                    </tbody>
-                    <thead>
-                    <tr>
-                       <td/>
-                       <td><?= ml('Competitors.Table.Competitor') ?></td>
-                       <td><?= ml('Competitors.Table.WCAID') ?></td>
-                       <td><?= ml('Competitors.Table.Country') ?></td>
-                       <td class="table_new_center"><?= ml('Competitors.Table.Competitions') ?></td>
-                       <td class="table_new_center"><?= ml('Competitors.Table.Events') ?></td>
-                       <td class="table_new_center"><?= ml('Competitors.Table.Medals') ?></td>
-                       <td class="table_new_center"><?= ml('Competitors.Table.Gold') ?></td>
-                       <td class="table_new_center"><?= ml('Competitors.Table.Silver') ?></td> 
-                       <td class="table_new_center"><?= ml('Competitors.Table.Bronze') ?></td>
-                   </tr> 
-                   </thead>
-                   <tbody>
-                <?php } ?>
-                </thead>   
-            <?php } ?>
             <tr>
                 <td><?= $i+1 ?></td>
-                <td>
+                <td >
                     <a href="<?= PageIndex() ?>Competitor/<?= $competitors_medal['WCAID']?$competitors_medal['WCAID']:$competitors_medal['ID'] ?>">            
                         <?= trim(explode("(",$competitors_medal['Name'])[0]) ?> 
                     </a>
                 </td>
-                <td>
-                    <?php if($competitors_medal['WCAID']){ ?>
-                        <a target="_blank" href="https://www.worldcubeassociation.org/persons/<?= $competitors_medal['WCAID']; ?>"><?= $competitors_medal['WCAID']; ?></a>
-                    <?php } ?>
-                </td>
-                <td>
-                    <?= ImageCountry($competitors_medal['Country'], 15)?>
-                    <?= $competitors_medal['CountryName'] ?>
-                </td>
+                <td><?= $competitors_medal['WCAID'] ?></td>
+                <td><?= $competitors_medal['CountryName'] ?></td>
                 <td class="table_new_center"><?= $competitors_medal['Competitions']; ?></td>
                 <td class="table_new_center"><?= $competitors_medal['Events']; ?></td>
-                <td class="table_new_center table_new_bold"><?= $competitors_medal['Medals']?$competitors_medal['Medals']:"" ?></td>
-                <td class="table_new_center"><?= $competitors_medal['Gold']?$competitors_medal['Gold']:"" ?></td>
-                <td class="table_new_center"><?= $competitors_medal['Silver']?$competitors_medal['Silver']:"" ?></td>
-                <td class="table_new_center"><?= $competitors_medal['Bronze']?$competitors_medal['Bronze']:"" ?></td>
+                <td class="table_new_center"><?= $competitors_medal['Medals']?$competitors_medal['Medals']:"" ?></td>
             </tr>    
     <?php } ?>
         </tbody>

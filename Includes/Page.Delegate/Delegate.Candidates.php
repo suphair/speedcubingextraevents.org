@@ -1,3 +1,4 @@
+<h1>Candidates for delegates</h1>
 <?php if(CheckAccess('Delegate.Candidates.Settings')){ ?>
 <table class="table_info">
     <tr>
@@ -6,7 +7,6 @@
     <tr>
 </table>
 <?php } ?>
-<h1>Candidates for delegates</h1>
 <?php
 $Delegate= CashDelegate();
 $CheckAccessVote=CheckAccess('Delegate.Candidate.Vote');
@@ -94,8 +94,11 @@ $RequestCandidateFields=DataBaseClass::QueryGenerate();?>
 </td><td width="80%">
 <?php foreach($RequestCandidates as $RequestCandidate)if($RequestCandidate['RequestCandidate_Status']==$status){ ?>    
 <span class="RequestCandidate" ID="RequestCandidate_<?= $RequestCandidate['RequestCandidate_ID'] ?>" style="display:none">    
-<h2><?=$RequestCandidate['Competitor_Name'] ?></h2>
 <table class="table_info">
+    <tr>
+        <td>Name</td>
+        <td><?=$RequestCandidate['Competitor_Name'] ?></td>
+    </tr>    
     <tr>
         <td>Country</td>
         <td><?= ImageCountry($RequestCandidate['Competitor_Country'])?> <?= CountryName($RequestCandidate['Competitor_Country']) ?></td>

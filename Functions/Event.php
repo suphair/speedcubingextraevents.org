@@ -32,23 +32,47 @@ function EventBlockLinks($Event,$current="",$table_exists=false){
         <?php if(CheckAccess('Event.Settings')){ ?>
             <tr>
                 <td><i class="fas fa-crown"></i></td>
-                <td><a class="<?= $current=='settings'?'select':''?>" href="<?= LinkDiscipline($Event['Discipline_Code'])?>/Settings">Main event setting</a></td>
+                <td>
+                    <?php if($current=='settings'){ ?>
+                        Main event setting
+                    <?php }else{  ?>
+                        <a href="<?= LinkDiscipline($Event['Discipline_Code'])?>/Settings">Main event setting</a>
+                    <?php } ?>
+                </td>
             </tr>    
         <?php } ?>
         <?php $status=(isset($Event['Discipline_Status']) and $Event['Discipline_Status']!='Archive'); ?>
         <?php if($status){ ?>   
             <tr>  
                 <td><i class="fas fa-book"></i></td>
-                <td><a class="<?= $current=='regulations'?'select':''?>" href="<?= PageIndex()?>Regulations/#<?= $Event['Discipline_Code'] ?>"><?= ml('Competition.Regulation'); ?></a>    </td>
+                <td>
+                    <?php if($current=='regulations'){ ?>
+                        <?= ml('Competition.Regulation'); ?>
+                    <?php }else{  ?>
+                        <a href="<?= PageIndex()?>Regulations/#<?= $Event['Discipline_Code'] ?>"><?= ml('Competition.Regulation'); ?></a>
+                    <?php } ?>
+                </td>
             </tr>    
         <?php } ?>
         <tr>
             <td><i class="fas fa-trophy"></i></td>
-            <td><a class="<?= $current=='records'?'select':''?>" href="<?= PageIndex()?>Records/all/<?= $Event['Discipline_Code'] ?>"><?= ml('Event.Records'); ?></a></td>
+            <td>
+                <?php if($current=='records'){ ?>
+                    <?= ml('Event.Records'); ?>
+                <?php }else{  ?>
+                    <a href="<?= PageIndex()?>Records/all/<?= $Event['Discipline_Code'] ?>"><?= ml('Event.Records'); ?></a>
+                <?php } ?>
+            </td>
         </tr>    
         <tr>
             <td><i class="fas fa-signal fa-rotate-90"></i></td>
-            <td><a class="<?= $current=='rankings'?'select':''?>" href="<?= LinkDiscipline($Event['Discipline_Code'])?>"><?= ml('Competition.Rankings'); ?></a></td>
+            <td>
+                <?php if($current=='rankings'){ ?>
+                    <?= ml('Competition.Rankings'); ?>
+                <?php }else{  ?>
+                    <a href="<?= LinkDiscipline($Event['Discipline_Code'])?>"><?= ml('Competition.Rankings'); ?></a>
+                <?php } ?>
+            </td>    
         </tr>    
         <?php if($status){ ?>    
             <?= scramble_block($Event['Discipline_ID']);?>

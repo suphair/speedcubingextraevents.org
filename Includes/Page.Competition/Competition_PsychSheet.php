@@ -75,7 +75,7 @@ $countCommands=ObjectClass::getObject('CompetitionEventCommands');
         }
     }    
 ?>
-<h2><?= ml('Competition_PsychSheet.Title') ?></h2>
+<h3><?= ml('Competition_PsychSheet.Title') ?></h3>
     <table class="table_new" width="80%">
         <thead>
             <tr>
@@ -176,24 +176,5 @@ $countCommands=ObjectClass::getObject('CompetitionEventCommands');
     </table>
 
 <?php if(!sizeof($commandsData)){ ?>
-    <?= ml('Compettion.NoCommand');    ?>
+    <i class="fas fa-user-slash"></i> <?= ml('Compettion.NoCommand');    ?>
 <?php } ?>
-
-<?= mlb('Competition.Registration.False') ?>
-<?= mlb('Competition.Registration.True') ?>
-<?= mlb('CompetitionEvent.SelfRegistration.Registered') ?>
-<?= mlb('Competition_PsychSheet.Competitor.SignIn') ?>
-<?= mlb('CompetitionEvent.SelfRegistration.Delete') ?>
-<?= mlb('CompetitionEvent.SelfRegistration.Add') ?>
-<?= mlb('CompetitionEvent.SelfRegistration.AddTeam') ?>
-<?= mlb('CompetitionEvent.SelfRegistration.Team.Submit') ?>
-<?= mlb('CompetitionEvent.SelfRegistration.Team.Placeholder') ?>
-<?= mlb('CompetitionEvent.SelfRegistration.Team.Key') ?>
-<?= mlb('Competition_PsychSheet.Table.Best') ?>
-<?= mlb('Competition_PsychSheet.Table.Mean') ?>
-<?= mlb('Competition_PsychSheet.Table.Average') ?>
-<?= mlb('Competition_PsychSheet.Table.Sum') ?>
-<?= mlb('Competition.Registration.Limit') ?>
-
-<?= mlb('CompetitionEvent.SelfRegistration.Add.KeyError') ?>
-<?= mlb('CompetitionEvent.SelfRegistration.Add.NotFind') ?>

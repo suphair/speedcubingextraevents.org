@@ -126,11 +126,6 @@ for($p=0;$p<$pages;$p++){
     //    $pdf->Image("Image/Competition/".$data['Competition_WCA'].'.jpg',5,5,25,25,'jpg');
     //}
     
-    
-    if(file_exists(ImageEventFile($data['Discipline_CodeScript']))){
-        $pdf->Image(ImageEventFile($data['Discipline_CodeScript']),5,5,20,20,'jpg');
-    }
-   
     #$pdf->Image("Logo/Logo_Black.png",$pdf->w-25,5,20,20,'png');
 
     
@@ -158,12 +153,12 @@ for($p=0;$p<$pages;$p++){
     if($data['ExtResult']){
         $i=5;
         #$pdf->Line($xEnd -  $dX * $xAttempt, 30, $xEnd -  $dX * $xAttempt, 32+8*$on_page);
-        $pdf->Text($xEnd -  $dX * $xAttempt+5, 35,$data['ExtResult']);
+        $pdf->Text($xEnd -  $dX * $xAttempt-1, 35,sprintf('%0 10s',$data['ExtResult']));
         $dX++;
     }
     #$pdf->Line($xEnd -  $dX * $xAttempt, 30, $xEnd -  $dX * $xAttempt, 32+8*$on_page);
     #$pdf->SetFont('Arial','',12);
-    $pdf->Text($xEnd -  $dX * $xAttempt+2, 35, $data['Result']);
+    $pdf->Text($xEnd -  $dX * $xAttempt-1, 35, sprintf('%0 10s',$data['Result']));
     $dX++;
     #$pdf->SetFont('Arial','',12);
     for($i=$data['Attemption']-1;$i>=0;$i--){

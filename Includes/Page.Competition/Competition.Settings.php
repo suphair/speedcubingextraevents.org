@@ -485,7 +485,10 @@ if($error){ ?>
                     <i class="fas fa-ellipsis-h"></i>
                 <?php } ?>
             </td>
-            <td class="table_new_right"><?= sprintf("%02d:%02d",$event['Event_LimitMinute'],$event['Event_LimitSecond']); ?></td>
+            <td class="table_new_right">
+                <?= $event['Event_Cumulative']?'<i class="fas fa-plus"></i>':''?>
+                <?= sprintf("%02d:%02d",$event['Event_LimitMinute'],$event['Event_LimitSecond']); ?>
+            </td>
             <td class="table_new_right"><?= $commands ?> / <?= $event['Event_Competitors']==500?'<i class="fas fa-ellipsis-h"></i>':$event['Event_Competitors']?></td>
             <td class="table_new_right"><?= $losts?$losts:''; ?></td>
             <td class="table_new_left">
@@ -772,7 +775,7 @@ if($error){ ?>
     </td>    
 <table>
             <?php DataBaseClass::Query("Select "
-                    . " D.Code,D.Name, D.CodeScript, LR.Timestamp,LR.Action, LR.Doing,LR.Details "
+                    . " E.Round,D.Code,D.Name, D.CodeScript, LR.Timestamp,LR.Action, LR.Doing,LR.Details "
                     . " from LogsRegistration LR "
                     . " join Event E on E.ID=LR.Event "
                     . " join DisciplineFormat DF on DF.ID=E.DisciplineFormat"
@@ -781,7 +784,7 @@ if($error){ ?>
                     . " order by LR.Timestamp desc");?>
 <table class="table_new" width='80%'>
     <thead>
-        <td>Date</td><td>Action</td><td>Event</td><td>Name</td><td>Who did it</td>
+        <td>Date</td><td>Action</td><td>Event</td><td>Round</td><td>Name</td><td>Who did it</td>
     </thead>
     <?php foreach(DataBaseClass::getRows() as $row){ ?>
     <tr>
@@ -796,6 +799,7 @@ if($error){ ?>
                     $row['Action']) ?>
         </td>
         <td><?= ImageEvent($row['CodeScript'])?> <?= $row['Name'] ?></td>
+        <td class="table_new_center"><?= $row['Round'] ?></td>
         <td><?= str_replace([": ",","],[":<br>","<br>"],$row['Details'])?></td>
         <td><?= str_replace(['Competitor: ','Delegate: ','ScoreTaker'],
                 ['<i class="far fa-user"></i> ','<i class="far fa-user-tie"></i> ','<i class="far fa-list-alt"></i> ScoreTaker'],

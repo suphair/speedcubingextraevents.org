@@ -93,7 +93,7 @@ foreach(DataBaseClass::getRows() as $row){
 <?php 
 DataBaseClass::Query("Select * from Delegate where WID='".$competitor['Competitor_WID']."' and WID is not null");
 $delegate=DataBaseClass::getRow(); ?>
-
+<table width="100%"><tr><td>
 <table class="table_info">
     <tr>
         <td><?= ml('Competitor.Country') ?></td>        
@@ -121,11 +121,43 @@ $delegate=DataBaseClass::getRow(); ?>
     <?php } ?>
     
 </table>
-<br>
+</td><td>
+    <?php if(CheckAccess('Competitor.Reload') and ($competitor['Competitor_WID'] or $competitor['Competitor_WCAID'])){ ?>
+    <form method='POST' action='<?= PageAction('Competitor.Reload')?>'>
+    <input Name="Competitor" hidden value="<?= $competitor['Competitor_ID'] ?>">
+    <table class="table_info">
+        <tr>
+            <td>id</td>
+            <td><?=$competitor['Competitor_ID'] ?></td>
+        </tr>   
+        <tr>
+            <td>user_id</td>
+            <td><a target='_blank' href="https://www.worldcubeassociation.org/api/v0/users/<?= $competitor['Competitor_WID'] ?>"><?= $competitor['Competitor_WID'] ?> <i class="fas fa-external-link-alt"></i></a></td>
+        </tr> 
+        <tr>
+            <td>wca_id</td>
+            <td><a target='_blank' href="https://www.worldcubeassociation.org/api/v0/persons/<?= $competitor['Competitor_WCAID'] ?>"><?= $competitor['Competitor_WCAID'] ?> <i class="fas fa-external-link-alt"></a></td>
+        </tr> 
+        <tr>
+            <td><i class="fas fa-crown"></i></td>
+            <td><button><i class="fas fa-sync-alt"></i> Reload</button></td>
+        </tr>    
+        <?php $message=GetMessage('Competitor.Reload');
+        if($message){ ?>
+        <tr>
+            <td><i class="fas fa-crown"></td>
+            <td><?= $message ?></td>
+         </tr>       
+        <?php } ?>
+    </table>
+    </form>
+<?php } ?>    
+</td></tr></table>    
 <h2><?= ml('Competitor.Rank.Title'); ?></h2>
 <table class="table_new" width="80%">  
     <thead>
     <tr>
+        <td></td>
         <td>
             <?= ml('Competitor.Rank.Table.Event'); ?>
         </td> 
@@ -160,9 +192,17 @@ $delegate=DataBaseClass::getRow(); ?>
 <?php foreach($events as $code=>$event){ ?>
     <tr>
         <td>
-            <a href='<?= PageIndex() ?>Event/<?= $code ?>'>
+            <?= ImageEvent($event['CodeScript'],1.3,$event['Name'] ) ?>
+        </td>    
+        <td>
+            <a class="local_link" href='#' 
+               onclick="
+                    $('.event-block').hide();
+                    $('#event-<?= $event['CodeScript']?>').show();
+                    $('.event-image-block').removeClass('select');
+                    $('#event-image-<?= $event['CodeScript']?>').addClass('select');
+                    return false;">
                 <nobr>
-                    <span style=" font-size:1.3em;"><?= ImageEvent($event['CodeScript'],25,$event['Name'] ) ?></span> 
                     <?= $event['Name'] ?>
                 </nobr>    
             </a>
@@ -219,8 +259,7 @@ $delegate=DataBaseClass::getRow(); ?>
 <?php } ?>
 </tbody>
 </table>
-<br>
-
+<h2><?= ml('Competitor.Results.Title'); ?></h2>
 <?php 
 
 DataBaseClass::FromTable('Competitor',"ID='".$competitor['Competitor_ID']."'");
@@ -240,7 +279,15 @@ DataBaseClass::SelectPre('distinct D.ID Discipline_ID, '
         . 'D.Competitors Discipline_Competitors ');
 
 $disciplines=DataBaseClass::QueryGenerate();?>
-<h2><?= ml('Competitor.Results.Title'); ?></h2>
+
+<?php foreach($disciplines as $d=>$discipline){ ?>
+    <a ID="event-image-<?= $discipline['Discipline_CodeScript']?>"onclick="
+        $('.event-block').hide();
+        $('#event-<?= $discipline['Discipline_CodeScript']?>').show();
+        $('.event-image-block').removeClass('select');
+        $(this).addClass('select');
+        return false;" href="#" class="event-image-block <?= !$d?'select':''?>"><?= ImageEvent($discipline['Discipline_CodeScript'],2, $discipline['Discipline_Name']) ?></a>&nbsp;
+<?php } ?>
 <?php foreach($disciplines as $d=>$discipline){
     
     
@@ -266,26 +313,6 @@ $disciplines=DataBaseClass::QueryGenerate();?>
             $attemption=$a['Attempt_Attempt'];
         }
     }
-   
-   /* 
-    
-    
-    DataBaseClass::FromTable('Discipline',"ID='".$discipline['Discipline_ID']."'");
-    DataBaseClass::Join_current('DisciplineFormat');
-    DataBaseClass::Join_current('Format');
-    DataBaseClass::OrderClear('Format', 'Result');
-    DataBaseClass::SelectPre('distinct F.Result,F.ExtResult,F.Attemption ');
-    $types=array();
-    $attemption=0;
-    foreach(DataBaseClass::QueryGenerate() as $row){        
-        $types[]=$row['Result'];
-        if($row['ExtResult']){
-            $types[]=$row['ExtResult'];    
-        }
-        $attemption=$attemption<$row['Attemption']?$row['Attemption']:$attemption;
-    }
-    */
-    
     
     foreach($types as $t=>$type){
         if($type=='Mean'){
@@ -296,18 +323,12 @@ $disciplines=DataBaseClass::QueryGenerate();?>
     sort($types);
     $types= array_reverse($types);
     ?>
-<hr><br>
-<h2><?= ImageEvent($discipline['Discipline_CodeScript'],1, $discipline['Discipline_Name']) ?>
-        <a href="<?= LinkDiscipline($discipline['Discipline_Code'])?>"> <?= $discipline['Discipline_Name'] ?></a>
-        <?php if($discipline['Discipline_Status']=='Archive'){ ?>
-        <i class="fas fa-angle-double-right"></i> <?= ml('Competitor.Event.Archive')?>
-    <?php } ?>       
-</h2>    
-<table width="90%" class="table_new">
-<thead>           
+<span style="<?= $d?'display:none':''?>" class="event-block" ID="event-<?= $discipline['Discipline_CodeScript']?>">
+<table width="80%" class="table_new">
+<thead>      
         <tr> 
             <td><?= ml('Competitor.Result.Table.Competition');?></td>
-            <td></td>
+            <td><?= ml('Competitor.Result.Table.Round');?></td>
             <td class="table_new_right"><?= ml('Competitor.Result.Table.Place');?></td>
             <?php foreach($types as $type){ ?>
                 <td class="table_new_right">
@@ -330,9 +351,18 @@ $disciplines=DataBaseClass::QueryGenerate();?>
                     <?= ml('Competitior.Solves') ?>
                 </td>
             <?php } ?>
-        </tr>   
+        </tr>  
+        <tr>
+            <td colspan="<?= max($attemption,1) +7?>">
+                <?= ImageEvent($discipline['Discipline_CodeScript'],1.3, $discipline['Discipline_Name']) ?> <?= $discipline['Discipline_Name'] ?>
+                <?php if($discipline['Discipline_Status']=='Archive'){ ?>
+                    <i class="fas fa-ban"></i> <?= ml('Competitor.Event.Archive')?>
+                <?php } ?> 
+            </td>
+        </tr>
  </thead>
  <tbody>
+<tr/>
 <?php             
  //foreach($discipline as $row){
     
@@ -418,7 +448,6 @@ foreach($types as $type){
                  <?php if(!$is_attempt){ ?>
                     <i class="fas fa-hourglass-start"></i> 
                  <?php } ?>
-                 <!--<?= date_range($command['Competition_StartDate'], $command['Competition_EndDate']) ?>-->
                     <a href="<?= LinkEvent($command['Event_ID']) ?>"><?= $command['Competition_Name'] ?></a>
                     <?php if($command['Competition_Unofficial'] and $is_attempt){ ?>
                         <i title="<?= ml('Competitor.Competition.Unofficial',false) ?>" class="fas fa-exclamation-triangle"></i>
@@ -444,7 +473,16 @@ foreach($types as $type){
              <?php }?>
             </nobr></td>
             <td>
-                <?= str_replace(": ","",$command['Event_vRound']) ?> 
+                <?php if(!$command['Event_vRound']){ ?>
+                    <?= ml('Competitor.Final'); ?>
+                <?php }elseif($command['Event_Round']==1){ ?>
+                    <?= ml('Competitor.First'); ?>
+                <?php }elseif($command['Event_Round']==2){ ?>    
+                    <?= ml('Competitor.Second'); ?>
+                <?php }elseif($command['Event_Round']==3){ ?>    
+                    <?= ml('Competitor.Third'); ?>
+                <?php } ?>
+                <?= mlb('Competitor.Third'); ?>
             </td>
             <td class="table_new_right">
                 <?php if($command['Command_Place']){ ?>
@@ -491,7 +529,7 @@ foreach($types as $type){
                 
                    <?php if(isset($attempts[$type])){ ?>
                         <?php if($command['Competition_Unofficial']){ ?>
-                            <td class="table_new_right">
+                            <td class="table_new_right table_new_bold">
                                      <?=  $attempts[$type]; ?>
                             </td>  
                         <?php }else{  ?>
@@ -528,38 +566,9 @@ foreach($types as $type){
     <?php } ?>
     </tbody>    
     </table>
+    </span>
 <?php } ?>
 
 
 
-<?php if(CheckAccess('Competitor.Reload') and ($competitor['Competitor_WID'] or $competitor['Competitor_WCAID'])){ ?>
-    <h3><i class="fas fa-crown"></i> Reload information</h3>
-    <form method='POST' action='<?= PageAction('Competitor.Reload')?>'>
-    <input Name="Competitor" hidden value="<?= $competitor['Competitor_ID'] ?>">
-    <table class="table_info">
-        <tr>
-            <td>id</td>
-            <td><?=$competitor['Competitor_ID'] ?></td>
-        </tr>   
-        <tr>
-            <td>user_id</td>
-            <td><a target='_blank' href="https://www.worldcubeassociation.org/api/v0/users/<?= $competitor['Competitor_WID'] ?>"><?= $competitor['Competitor_WID'] ?> <i class="fas fa-external-link-alt"></i></a></td>
-        </tr> 
-        <tr>
-            <td>wca_id</td>
-            <td><a target='_blank' href="https://www.worldcubeassociation.org/api/v0/persons/<?= $competitor['Competitor_WCAID'] ?>"><?= $competitor['Competitor_WCAID'] ?> <i class="fas fa-external-link-alt"></a></td>
-        </tr> 
-        <tr>
-            <td></td>
-            <td><button><i class="fas fa-sync-alt"></i> Reload</button></td>
-        </tr>    
-        <?php $message=GetMessage('Competitor.Reload');
-        if($message){ ?>
-        <tr>
-            <td></td>
-            <td><?= $message ?></td>
-         </tr>       
-        <?php } ?>
-    </table>
-    </form>
-<?php } ?>    
+

@@ -28,7 +28,7 @@ $attempts_exists=($data['Attempts']>0 or $data['Start']);
  
     <h1>
         <?= ImageCountry($Competition['Competition_Country']) ?></span>
-        <a href="<?= LinkCompetition($Competition['Competition_WCA'])?>"><?= $Competition['Competition_Name'] ?></a>
+        <?= $Competition['Competition_Name'] ?>
     </h1>    
         
         
@@ -112,26 +112,28 @@ $attempts_exists=($data['Attempts']>0 or $data['Start']);
             <?= svg_red(); ?> <?= $Competition['Competition_DelegateWCAOn']?ml('Competition.Unofficial.True'):ml('Competition.Unofficial.TrueTemp') ?>
             </td>
         </tr>    
-        <?php } ?>
+        <?php } ?>   
         <tr>
             <td><?= ml('Competition.ExtraEvents') ?></td>
             <td>
                 <?php if(!sizeof($CompetitionEvents)){ ?>
                     <i class="fas fa-ban"></i>
                 <?php } ?>
+                    <?php if(sizeof($CompetitionEvents)==1){ 
+                        $competition_event=$CompetitionEvents[0]; ?>
+                    <?= ImageEvent($competition_event['Discipline_CodeScript'],1.3,$competition_event['Discipline_Name']) ?>
+                    <?= $competition_event['Discipline_Name'] ?>
+                <?php } ?>
             </td>
         </tr>    
-            
-            <?php $countCommands=array();
-            foreach($CompetitionEvents as $competition_event){  ?>
+            <?php  if(sizeof($CompetitionEvents)>1) foreach($CompetitionEvents as $competition_event){  ?>
                <tr>
                    <td><?= ImageEvent($competition_event['Discipline_CodeScript'],1.3,$competition_event['Discipline_Name']) ?></td>
                    <td>
-                <a class="<?= $competition_event['Event_ID']==$CompetitionEvent['Event_ID']?"list_select":""?>"  href="<?= LinkEvent($competition_event['Event_ID'],$competition_event['Event_Round']) ?>"><?= $competition_event['Discipline_Name'] ?><?= $competition_event['Event_vRound'] ?></a>
+                        <a class="<?= $competition_event['Event_ID']==$CompetitionEvent['Event_ID']?"list_select":""?>"  href="<?= LinkEvent($competition_event['Event_ID'],$competition_event['Event_Round']) ?>"><?= $competition_event['Discipline_Name'] ?><?= $competition_event['Event_vRound'] ?></a>
                     </td>
-                </td>
+                </tr>
             <?php } ?>        
-         </tr>
     </table>  
     </td>
     <td> 
@@ -177,7 +179,7 @@ $attempts_exists=($data['Attempts']>0 or $data['Start']);
     </td></tr></table>     
 
 <?php if(sizeof($CompetitionEvents)){ ?>
-<h1>
+<h2>
     <?= ImageEvent($CompetitionEvent['Discipline_CodeScript'])?>
     <?= $CompetitionEvent['Discipline_Name'] ?><?= $CompetitionEvent['Event_vRound'] ?>
     <?php if($attempts_exists){ ?>
@@ -187,7 +189,7 @@ $attempts_exists=($data['Attempts']>0 or $data['Start']);
            / <?= ml('Competition_PsychSheet.Register') ?>
        <?php } ?>
     <?php } ?>     
-</h1>
+</h2>
 
 <?php
 DataBaseClass::Query("Select coalesce(sum(case Com.Decline when 0 then 1 else 0 end),0) Commands, count(A.ID)+0 Attempts"
@@ -219,6 +221,16 @@ ObjectClass::setObjects('CompetitionEventCommands',$countCommands);
             <td><i class="fas fa-cog"></i></td>
             <td><a href="<?= LinkEvent($CompetitionEvent['Event_ID'])?>/Settings">Competition event settings</a></td>
         </tr>        
+        <tr>
+            <td><i class="fas fa-edit"></i></td>
+            <td><a target="_blank" href="<?= PageIndex()?>ScoreTaker/<?= $CompetitionEvent['Event_Secret'] ?>">Enter the results</a></td>
+        </tr>
+        <tr>        
+            <td><i class="fas fa-print"></i></td>
+            <td>
+                <a target="_blank" href="<?= PageAction('CompetitonEvent.Results.Print')?>/<?= $CompetitionEvent['Event_ID'] ?>">Print the results</a>
+            </td>
+        </tr>    
 <?php } ?>     
 <?php if($CompetitionEvent['Event_Competitors']!=500){ ?>        
         <tr>
@@ -323,7 +335,13 @@ ObjectClass::setObjects('CompetitionEventCommands',$countCommands);
         </tr>         
 <?php } ?>
         <tr>
-            <td><?= ml('Competition.Limit') ?></td>
+            <td>
+            <?php if($CompetitionEvent['Event_Cumulative']){  ?>
+                <?= ml('Competition.CumulativeLimit') ?>
+            <?php }else{ ?>
+                <?= ml('Competition.Limit') ?>
+            <?php } ?>
+            </td>
             <td>
                 <?= $CompetitionEvent['Event_LimitMinute'] ?> <?= ml('Competition.Minutes') ?> 
                 <?= $CompetitionEvent['Event_LimitSecond'] ?> <?= ml('Competition.Seconds') ?>

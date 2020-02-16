@@ -1,5 +1,6 @@
 <?php $Language=$_SESSION['language_select'];?>
-<h2><?= ml('Regulations.Description'); ?></h2>
+<h1><?= ml('Regulations.Title'); ?></h1>
+<i class="fas fa-star"></i> <?= ml('Regulations.Description'); ?>
 <h3><?= ml('Regulations.Documents') ?></h3>
 <table class="table_info">
 
@@ -54,9 +55,8 @@ foreach($disciplines as $discipline_row){
 }
 if(!$event_selected)$event_selected=$disciplines[0]['Code'];
 ?>
-
 <h3><?= ml('Regulations.ExtraEvents') ?></h3>
-<table width="100%"><tr><td width="10%">
+<table width="100%"><tr><td width="10%" style='border-right: 1px solid #333'>
 <table class="table_info" style="white-space: nowrap">
     <?php foreach($disciplines as $d=>$discipline_row){ ?>
         <tr>
@@ -70,7 +70,7 @@ if(!$event_selected)$event_selected=$disciplines[0]['Code'];
         </tr>
     <?php } ?>
 </table>     
-</td><td width="90%">            
+</td><td width="90%" style='padding-left: 10px'>            
     <?php foreach($disciplines as $discipline_row)if($event_selected==$discipline_row['Code']){ 
     $other_language=false;
     if(!$discipline_row['Text'] and isset($discipline_default[$discipline_row['ID']])){
@@ -79,7 +79,7 @@ if(!$event_selected)$event_selected=$disciplines[0]['Code'];
     }?>
 <h2>
    <?= ImageEvent($discipline_row['CodeScript']) ?>
-   <?= $discipline_row['Name'] ?> / Regulations
+   <?= $discipline_row['Name'] ?>
 </h2>
 <table class="table_info">
     <?php if($other_language){ ?>

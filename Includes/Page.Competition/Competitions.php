@@ -86,26 +86,39 @@ if($My==1 and  !GetCompetitorData()){
     order by UpcomingStatus,t.StartDate desc, t.EndDate desc"); 
     $results= DataBaseClass::getRows(true,true);
     ?>
-    <h2> 
+    <h1> 
         <?php if($My){ ?>
             <?= ml('Competitions.My') ?>
         <?php }else{ ?>
             <?= ml('Competitions.Title') ?>
         <?php } ?>
-    </h2>     
-    <select onchange="document.location='<?= PageIndex()?>Competitions/' + this.value ">
-        <option <?= ($country_filter=='0' and $My==0)?'selected':''?> value=""><?= ml('Competitions.All') ?> (<?= $competitions_countries_all ?>)</option>
-        <?php if(GetCompetitorData()){ ?><option <?= $My=='1'?'selected':''?> value="My"><?= ml('Competitions.My') ?><?php if(sizeof($competitor_competitions)-1>0){ ?> (<?= sizeof($competitor_competitions)-1 ?>) <?php } ?></option><?php } ?>
-        <option disabled>------</option>
+    </h1>
+<table class="table_info">
+<?php if(CheckAccess('Competition.Add')){?>
+    <tr>
+        <td><i class="fas fa-plus-square"></i></td>
+        <td><a href='<?= PageIndex()?>Competition/Add'>Add Competition</a></td>
+    </tr>    
+<?php } ?>
+    <tr>
+        <td><?= ml('Competitions.Country') ?></td>
+        <td>
+            <select onchange="document.location='<?= PageIndex()?>Competitions/' + this.value ">
+                <option <?= ($country_filter=='0' and $My==0)?'selected':''?> value=""><?= ml('Competitions.All') ?> (<?= $competitions_countries_all ?>)</option>
+                <?php if(GetCompetitorData()){ ?><option <?= $My=='1'?'selected':''?> value="My"><?= ml('Competitions.My') ?><?php if(sizeof($competitor_competitions)-1>0){ ?> (<?= sizeof($competitor_competitions)-1 ?>) <?php } ?></option><?php } ?>
+                <option disabled>------</option>
 
-        <?php foreach($competitions_countries as $competitions_country)if($competitions_country['Country']){ ?>
-                <option <?= $country_filter==strtolower($competitions_country['Country'])?'selected':''?> value="<?= $competitions_country['Country']?>">        
-                    <?= $competitions_country['CountryName'] ?> (<?= $competitions_country['count'] ?>)
-                </option> 
-        <?php } ?>      
+                <?php foreach($competitions_countries as $competitions_country)if($competitions_country['Country']){ ?>
+                        <option <?= $country_filter==strtolower($competitions_country['Country'])?'selected':''?> value="<?= $competitions_country['Country']?>">        
+                            <?= $competitions_country['CountryName'] ?> (<?= $competitions_country['count'] ?>)
+                        </option> 
+                <?php } ?>      
 
-    </select>
-    <table class="table_new">
+            </select>
+        </td>
+    </tr>
+</table>    
+    <table class="table_new" width="80%">
     <?php 
     $comp_statuses=[];
     foreach($results as $i=>$r){
@@ -136,8 +149,8 @@ if($My==1 and  !GetCompetitorData()){
         <td>            
             <b><?= date_range($r['StartDate'],$r['EndDate']); ?></b>    
         </td>   
-        <td>
-            <?= ImageCountry($r['Country'],20) ?>
+        <td width="1px">
+            <?= ImageCountry($r['Country']) ?>
         </td>
         <td>
             <a href="<?= LinkCompetition($r['WCA']) ?>">
@@ -148,16 +161,14 @@ if($My==1 and  !GetCompetitorData()){
             <b><?= $r['CountryName'] ?></b>, <?= $r['City'] ?>
         </td>
         <td>
-            <b><?= $r['countCompetitors']?$r['countCompetitors']:'' ?></b>
+            <?= $r['countCompetitors']?$r['countCompetitors']:'' ?>
         </td>
-        <td >
-            <?php 
-            
-            foreach(explode('#',$r['events']) as $e=>$event){
+        <td>
+            <?php foreach(explode('#',$r['events']) as $e=>$event){
                 if($e<10){
                     $event_data=explode(';',$event); 
                     if(isset($event_data[2])){?>
-                        <a href="<?= setLinkEvent($r['WCA'],$event_data[1],1) ?>"><?= ImageEvent($event_data[2],1.3,$event_data[0]);?></a>
+                        <?= ImageEvent($event_data[2],1.3,$event_data[0]);?>
                     <?php } 
                 }
             } ?>

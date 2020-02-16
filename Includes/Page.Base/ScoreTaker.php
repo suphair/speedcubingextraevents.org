@@ -433,18 +433,18 @@ foreach(DataBaseClass::QueryGenerate() as $competitor){
     <form method="POST" action="<?= PageAction('ScoreTaker.DeclineAll')?>"  onsubmit="return confirm('Confirm: Complete the event')">
         <input name="ID" type="hidden" value="<?= $event['ID'] ?>" />
         <input name="Secret" type="hidden" value="<?= $Secret ?>" />
-        <button>Complete the event</button>
+        <button><i class="fas fa-tasks"></i> Complete the event</button>
     </form>
 <?php }else{ ?>
     <?php if($Next and $commandsWinner>3 and !$Next['Commands']){ ?>
         <form method="POST" action="<?= PageAction('ScoreTaker.NewRound')?>"  onsubmit="return confirm('Confirm: Сreate a new round')">
            <input name="ID" type="hidden" value="<?= $event['ID'] ?>" />
            <input name="Secret" type="hidden" value="<?= $Secret ?>" />
-           <button>Сreate a new round</button>
+           <button><i class="fas fa-users-cog"></i> Сreate a new round</button>
        </form>
         
     <?php } ?>        
-        <button onclick="window.open('<?= PageAction('CompetitonEvent.Results.Print')?>/<?= $event['ID'] ?>', '_blank');"><i class="fas fa-print"></i> Print results</button>
+        <br><button onclick="window.open('<?= PageAction('CompetitonEvent.Results.Print')?>/<?= $event['ID'] ?>', '_blank');"><i class="fas fa-print"></i> Print results</button>
 <?php } ?>
 </td></tr></table>
     

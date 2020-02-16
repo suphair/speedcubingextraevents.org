@@ -103,19 +103,22 @@ if( !$Competition['Competition_Unofficial']){
 
         DataBaseClass::Query("select * from `Attempt` A where Command='".$command['Command_ID']."' ");
         $attempt_rows=DataBaseClass::getRows();
-        $attempts=array();
+        $attempts=[];
+        $attempts_in=[];
         for($i=1;$i<=$CompetitionEvent['Format_Attemption'];$i++) {
             $attempts[$i]="";
+            $attempts_in[$i]="";
         }
         foreach(DataBaseClass::SelectTableRows("Format") as $format){
             $attempts[$format['Format_Result']]="";    
+            $attempts_in[$format['Format_Result']]="";    
         }
 
 
         foreach($attempt_rows as $attempt_row){
             $attempt=trim($attempt_row['vOut']);
 
-
+            $attempt_in=$attempt;   
             if($attempt_row['Except']){
                 $attempt="<span class='table_new_except table_new_attempt'>$attempt</span>";
             }else{
@@ -123,8 +126,10 @@ if( !$Competition['Competition_Unofficial']){
             }
 
             if($attempt_row['Attempt']){
+               $attempts_in[$attempt_row['Attempt']]= $attempt_in ;
                $attempts[$attempt_row['Attempt']]= $attempt;
             }else{
+               $attempts_in[$attempt_row['Special']]= $attempt_in ;
                $attempts[$attempt_row['Special']]= $attempt; 
             }
         }   ?> 
@@ -151,16 +156,17 @@ if( !$Competition['Competition_Unofficial']){
                 <td class="table_new_attempt table_new_bold">
                     <?= $attempts[$CompetitionEvent['Format_Result']]?>
                 </td>
-                <td>    
-                        <?php if(isset($WRecords[$CompetitionEvent['Format_Result']]) and  $WRecords[$CompetitionEvent['Format_Result']]==$attempts[$CompetitionEvent['Format_Result']]){ ?>
-                                WR</span
+                <td> 
+                    <span class="table_new_PB">
+                        <?php if(isset($WRecords[$CompetitionEvent['Format_Result']]) and  $WRecords[$CompetitionEvent['Format_Result']]==$attempts_in[$CompetitionEvent['Format_Result']]){ ?>
+                                WR
                         <?php }elseif($command['Command_vCountry'] and  isset($CRecords[$Country_Continent[$command['Command_vCountry']]][$CompetitionEvent['Format_Result']]) and
-                                $CRecords[$Country_Continent[$command['Command_vCountry']]][$CompetitionEvent['Format_Result']]==$attempts[$CompetitionEvent['Format_Result']]){ ?>
+                                $CRecords[$Country_Continent[$command['Command_vCountry']]][$CompetitionEvent['Format_Result']]==$attempts_in[$CompetitionEvent['Format_Result']]){ ?>
                                 CR
-                        <?php }elseif($command['Command_vCountry'] and isset($NRecords[$command['Command_vCountry']][$CompetitionEvent['Format_Result']]) and  $NRecords[$command['Command_vCountry']][$CompetitionEvent['Format_Result']]==$attempts[$CompetitionEvent['Format_Result']]){ ?>
+                        <?php }elseif($command['Command_vCountry'] and isset($NRecords[$command['Command_vCountry']][$CompetitionEvent['Format_Result']]) and  $NRecords[$command['Command_vCountry']][$CompetitionEvent['Format_Result']]==$attempts_in[$CompetitionEvent['Format_Result']]){ ?>
                                 NR
                         <?php } ?>
-                    </nobr>
+                    </span>
                 </td>
                 <?php if($CompetitionEvent['Format_ExtResult']){ ?>
                     <td class="table_new_attempt table_new_bold">
@@ -181,7 +187,9 @@ if( !$Competition['Competition_Unofficial']){
                     </td>
                 <?php } ?>
                 <td>
-                    <?=CountryName($competitor['Country']); ?>
+                    <?php if($command['Command_vCountry']){ ?>
+                        <?= CountryName($command['Command_vCountry']); ?>
+                    <?php } ?>
                 </td>
                 <?php for($i=1;$i<=$CompetitionEvent['Format_Attemption'];$i++) {?>
                 <td  class="table_new_attempt" >

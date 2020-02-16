@@ -31,13 +31,13 @@ $Delegate_rows=DataBaseClass::GetRows();
         <tr>
             <td/>
             <td/>
-            <td><?=ml('Judgs.Table.Delegate')?></td>
-            <td class="table_new_center"><i class="fas fa-cube"></i></td>
-            <td class="table_new_center"><i class="fas fa-users"></i></td>
+            <td></td>
+            <td class="table_new_center"><?= ml('Delagates.Competitions') ?></td>
+            <td class="table_new_center"><?= ml('Delagates.Persons') ?></td>
             <?php if(CheckAccess('Delegates.Statistics')){ ?>
-                <td class="table_new_right"><?= ml('Judgs.Table.Days') ?></td>
-                <td class="table_new_right"><?= ml('Judgs.Table.CompetitionsInMonth') ?></td>
-                <td class="table_new_right"><?= ml('Judgs.Table.LatestActivity') ?></td>
+                <td class="table_new_right">Days</td>
+                <td class="table_new_right">Comps per month</td>
+                <td class="table_new_right">Latest activity</td>
             <?php } ?>
         </tr>
         </thead>
