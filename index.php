@@ -93,6 +93,7 @@ if(RequestClass::getError(401)){ header('HTTP/1.1 401 Unauthorized'); } ?>
         <a href="mailto:<?= urlencode(getini('Support','email')) ?>?subject=Support: <?= ml('*.Title',false) ?>"><i class="far fa-envelope"></i> <?= ml('Footer.Contact.Support') ?></a>&nbsp;&nbsp;&nbsp;
         <a href="<?= PageIndex()?>Icons"><i class="fas fa-image"></i> <?= ml('Footer.Icons') ?></a>&nbsp;&nbsp;&nbsp;    
         <a target="_blank" href="https://github.com/suphair/speedcubingextraevents.org"><i class="fab fa-github"></i> GitHub</a>&nbsp;&nbsp;&nbsp;
+        <a href="<?= PageIndex()?>Export"><i class="fas fa-download"></i> <?= ml('Footer.Export') ?></a>&nbsp;&nbsp;&nbsp;
         </center>
     </div>    
         

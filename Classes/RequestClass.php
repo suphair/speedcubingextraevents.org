@@ -58,7 +58,7 @@ $typesSimplePage=[
     'multilanguage','401',
     'news','anews',
     'scramble','scrambleszip',
-    'scoretaker' ,'mainregulations','registrations','scrambles','access','reports','api','logs'
+    'scoretaker' ,'mainregulations','registrations','scrambles','access','reports','api','logs','export'
     ];
 
         if(substr($type,0,1)!='?'){

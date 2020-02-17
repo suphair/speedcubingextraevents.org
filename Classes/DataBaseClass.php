@@ -323,3 +323,47 @@ class DataBaseClassWCA{
     }
 }
 
+
+class DataBaseClassExport{
+    protected static $_instance; 
+    protected static $connection; 
+    protected static $query; 
+
+
+    private function __construct() {        
+    }
+
+    public static function getInstance() {
+        if (self::$_instance === null) {
+            self::$_instance = new self;   
+        }
+ 
+        return self::$_instance;
+    }
+  
+    private function __clone() {
+    }
+
+    private function __wakeup() {
+    }   
+    
+    public static function setConection($connection){
+        self::$connection=$connection;   
+    
+    }
+    
+    public static function Query($sql,$out=false){
+        if (!self::$query=mysqli_query(self::$connection, $sql)) {
+            
+            $time = date("Y-m-d H:i:s");
+            echo "<h1>WCA: <font color='red'>Unexpected error. We'll fix it soon.</font></h1>$time";
+            
+            $handle = fopen("SQLError.txt", "a");
+            fwrite($handle, "\r\n$time\r\n$sql\r\n".mysqli_error(self::$connection));
+            fclose($handle);  
+        }
+        if($out){
+            echo $sql;
+        }
+    }
+}

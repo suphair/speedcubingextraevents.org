@@ -45,6 +45,24 @@ Function DataBaseInit(){
    mysqli_query($connection2,"SET CHARSET UTF8");
    DataBaseClassWCA::setConection($connection2);
    
+   $connection3 = mysqli_init();
+   $success = mysqli_real_connect(
+   $connection3, 
+   GetIni($section,'host'), 
+   GetIni($section,'username'), 
+   GetIni($section,'password'), 
+   GetIni($section,'schema_Export'),
+   GetIni($section,'port')
+   );
+   
+   if(!$success){
+       echo '<h1>Error establishing a database3 connection</h1>';
+       exit();
+   }
+   
+   mysqli_query($connection3,"SET CHARSET UTF8");
+   DataBaseClassExport::setConection($connection3);
+   
    
    
    DataBaseClass::AddTable('Competition','C',array('ID','Name','WCA','City','StartDate','EndDate','WebSite','Registration','Country','Status','MaxCardID','CheckDateTime','LoadDateTime','Comment','Onsite','Unofficial','DelegateWCA','DelegateWCAOn','Cubingchina'));
