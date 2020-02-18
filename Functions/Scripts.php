@@ -1,8 +1,33 @@
 <?php
+
+function Script_backup(){
+    
+    if(strpos($_SERVER['PHP_SELF'],'/'.GetIni('LOCAL','PageBase').'/')!==false){
+       $section="DB_LOCAL";
+    }else{
+       $section="DB";
+    }
+               
+    include_once('ifsnop-mysqldump-php-341050a/src/Ifsnop/Mysqldump/Mysqldump.php');
+    $dump = new Ifsnop\Mysqldump\Mysqldump(
+            'mysql:host='.GetIni($section,'host').';port='.GetIni($section,'port').';dbname='.GetIni($section,'schema_Export'), 
+            GetIni($section,'username'),
+            GetIni($section,'password'),
+            ['add-drop-table' => true]);
+    $filename='Export_sql/SEE_export_'.date('dmY_His').'.sql';
+    $dump->start($filename);  
+    
+    
+    
+    
+    $zip = new ZipArchive();
+    $zip_name = $filename.".zip";
+    $zip->open($zip_name, ZIPARCHIVE::CREATE);    
+    $zip->addFile($filename);
+    $zip->close();
+}
+
 function Script_exportData(){
-    
-    
-    
     DataBaseClass::Query("
     select * ,
     case 
