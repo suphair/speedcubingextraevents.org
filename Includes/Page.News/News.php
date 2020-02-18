@@ -13,16 +13,19 @@
 <?php 
 DataBaseClass::Query("Select N.*,C.Name from News N left outer join Competitor C on C.WID=N.Delegate order by ID desc");
 foreach(DataBaseClass::getRows() as $news){ ?>
-    <tr>    
+    <tr >    
     <?php if(ml_json($news['Text'])){ ?>
            <?php $text=ml_json($news['Text']);
             $text_line=explode("\n",$text); 
             $text_header=$text_line[0];
             unset($text_line[0]);
+            unset($text_line[1]);
             $text_body=implode("<br>",$text_line); ?>
-            <td><?= date_range($news['Date'])?></td>
-            <td class="table_new_bold"><?= $text_header ?></td>
-            <td><?= Parsedown($text_body) ?></td>
+            <td width="10%" style="padding-top: 10px"><?= date_range($news['Date'])?></td>
+            <td width="80%" style="white-space: normal; padding-top: 10px">
+                <b><?= $text_header ?></b>
+                <?= Parsedown($text_body) ?>
+            </td>
         <?php if(CheckAccess('aNews')){ ?>
             <td><?= Short_Name($news['Name']) ?></td>
             <td><button onclick="document.location.href='<?= PageIndex()?>aNews/<?= $news['ID'] ?>'"><i class="fas fa-edit"></i> Edit</button>

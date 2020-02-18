@@ -217,6 +217,7 @@ a:hover{
 .list_select:before{
    font-family: 'Font Awesome 5 Free';
    content: '\f0a9';
+   font-weight: bold;
    padding-right: 5px;
 }
 
