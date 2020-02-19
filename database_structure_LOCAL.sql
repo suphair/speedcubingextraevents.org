@@ -169,7 +169,6 @@ CREATE TABLE `Competitor` (
   `WID` int(11) DEFAULT NULL,
   `Language` varchar(255) DEFAULT NULL,
   `Email` varchar(255) DEFAULT NULL,
-  `Avatar` varchar(255) DEFAULT NULL,
   `UpdateTimestamp` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`ID`,`Name`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=cp1251 ROW_FORMAT=COMPACT;

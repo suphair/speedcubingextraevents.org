@@ -1,26 +1,16 @@
-/*
- Navicat MySQL Data Transfer
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
- Source Server         : local
- Source Server Type    : MySQL
- Source Server Version : 50723
- Source Host           : localhost
- Source Database       : suphair_see
-
- Target Server Type    : MySQL
- Target Server Version : 50723
- File Encoding         : utf-8
-
- Date: 02/19/2020 08:40:58 AM
-*/
-
-SET NAMES utf8mb4;
-SET FOREIGN_KEY_CHECKS = 0;
-
--- ----------------------------
---  Table structure for `Attempt`
--- ----------------------------
-DROP TABLE IF EXISTS `Attempt`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Attempt` (
   `ID` bigint(11) NOT NULL AUTO_INCREMENT,
   `Command` int(11) NOT NULL,
@@ -39,24 +29,22 @@ CREATE TABLE `Attempt` (
   PRIMARY KEY (`ID`),
   KEY `Command` (`Command`),
   CONSTRAINT `Attempt_ibfk_1` FOREIGN KEY (`Command`) REFERENCES `Command` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=59897 DEFAULT CHARSET=cp1251 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB  DEFAULT CHARSET=cp1251 ROW_FORMAT=COMPACT;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
---  Table structure for `BlockText`
--- ----------------------------
-DROP TABLE IF EXISTS `BlockText`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `BlockText` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Name` varchar(255) NOT NULL,
   `Value` text,
   `Country` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ID`,`Name`)
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
---  Table structure for `Command`
--- ----------------------------
-DROP TABLE IF EXISTS `Command`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Command` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Event` int(11) NOT NULL,
@@ -79,12 +67,11 @@ CREATE TABLE `Command` (
   PRIMARY KEY (`ID`),
   KEY `Event` (`Event`),
   CONSTRAINT `competitorevent_ibfk_3` FOREIGN KEY (`Event`) REFERENCES `Event` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=11748 DEFAULT CHARSET=cp1251 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB  DEFAULT CHARSET=cp1251 ROW_FORMAT=COMPACT;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
---  Table structure for `CommandCompetitor`
--- ----------------------------
-DROP TABLE IF EXISTS `CommandCompetitor`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `CommandCompetitor` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Command` int(11) DEFAULT NULL,
@@ -96,12 +83,11 @@ CREATE TABLE `CommandCompetitor` (
   KEY `Competitor` (`Competitor`),
   CONSTRAINT `commandcompetitor_ibfk_1` FOREIGN KEY (`Command`) REFERENCES `Command` (`ID`),
   CONSTRAINT `commandcompetitor_ibfk_2` FOREIGN KEY (`Competitor`) REFERENCES `Competitor` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=17719 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
---  Table structure for `Competition`
--- ----------------------------
-DROP TABLE IF EXISTS `Competition`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Competition` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Name` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
@@ -123,12 +109,11 @@ CREATE TABLE `Competition` (
   `DelegateWCAOn` tinyint(4) DEFAULT '0',
   `Cubingchina` tinyint(4) DEFAULT '0',
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=162 DEFAULT CHARSET=cp1251 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB  DEFAULT CHARSET=cp1251 ROW_FORMAT=COMPACT;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
---  Table structure for `CompetitionDelegate`
--- ----------------------------
-DROP TABLE IF EXISTS `CompetitionDelegate`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `CompetitionDelegate` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Competition` int(11) DEFAULT NULL,
@@ -137,14 +122,14 @@ CREATE TABLE `CompetitionDelegate` (
   UNIQUE KEY `CompetitionDelegate` (`Competition`,`Delegate`) USING BTREE,
   KEY `Competition` (`Competition`),
   KEY `Delegate` (`Delegate`),
+  KEY `Competition_2` (`Competition`,`Delegate`),
   CONSTRAINT `competitiondelegate_ibfk_1` FOREIGN KEY (`Competition`) REFERENCES `Competition` (`ID`),
   CONSTRAINT `competitiondelegate_ibfk_2` FOREIGN KEY (`Delegate`) REFERENCES `Delegate` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=282 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
---  Table structure for `CompetitionReport`
--- ----------------------------
-DROP TABLE IF EXISTS `CompetitionReport`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `CompetitionReport` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Competition` int(11) DEFAULT NULL,
@@ -155,16 +140,15 @@ CREATE TABLE `CompetitionReport` (
   `DelegateWCA` int(11) DEFAULT NULL,
   `Parsedown` tinyint(4) DEFAULT '0',
   PRIMARY KEY (`ID`),
+  KEY `Competition` (`Competition`,`Delegate`),
   KEY `Delegate` (`Delegate`),
-  KEY `Competition` (`Competition`,`Delegate`) USING BTREE,
   CONSTRAINT `CompetitionReport_ibfk_1` FOREIGN KEY (`Competition`) REFERENCES `Competition` (`ID`),
   CONSTRAINT `CompetitionReport_ibfk_2` FOREIGN KEY (`Delegate`) REFERENCES `Delegate` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=91 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
---  Table structure for `CompetitionReportComment`
--- ----------------------------
-DROP TABLE IF EXISTS `CompetitionReportComment`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `CompetitionReportComment` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Delegate` int(11) DEFAULT NULL,
@@ -172,66 +156,61 @@ CREATE TABLE `CompetitionReportComment` (
   `Comment` text,
   `Competition` int(11) DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
---  Table structure for `Competitor`
--- ----------------------------
-DROP TABLE IF EXISTS `Competitor`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Competitor` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Name` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `WCAID` varchar(255) DEFAULT '',
   `Country` varchar(255) DEFAULT NULL,
-  `WID` bigint(11) DEFAULT NULL,
+  `WID` int(11) DEFAULT NULL,
   `Language` varchar(255) DEFAULT NULL,
   `Email` varchar(255) DEFAULT NULL,
-  `Avatar` varchar(255) DEFAULT NULL,
   `UpdateTimestamp` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`ID`,`Name`)
-) ENGINE=InnoDB AUTO_INCREMENT=8200 DEFAULT CHARSET=cp1251 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB  DEFAULT CHARSET=cp1251 ROW_FORMAT=COMPACT;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
---  Table structure for `Continent`
--- ----------------------------
-DROP TABLE IF EXISTS `Continent`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Continent` (
   `Code` varchar(255) NOT NULL,
   `Name` varchar(255) DEFAULT NULL,
   UNIQUE KEY `Code` (`Code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
---  Table structure for `Country`
--- ----------------------------
-DROP TABLE IF EXISTS `Country`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Country` (
   `ISO2` varchar(255) DEFAULT NULL,
   `Name` varchar(255) DEFAULT NULL,
   `Continent` varchar(255) DEFAULT NULL,
   UNIQUE KEY `ISO2` (`ISO2`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
---  Table structure for `Delegate`
--- ----------------------------
-DROP TABLE IF EXISTS `Delegate`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Delegate` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Name` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `Status` varchar(255) DEFAULT NULL,
   `Site` varchar(255) DEFAULT NULL,
   `WCA_ID` varchar(11) NOT NULL,
+  `OrderLine` int(11) DEFAULT '99',
   `WID` int(11) DEFAULT NULL,
   `Contact` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `Secret` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=cp1251 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB  DEFAULT CHARSET=cp1251 ROW_FORMAT=COMPACT;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
---  Table structure for `DelegateChange`
--- ----------------------------
-DROP TABLE IF EXISTS `DelegateChange`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `DelegateChange` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Delegate` int(11) DEFAULT NULL,
@@ -239,12 +218,11 @@ CREATE TABLE `DelegateChange` (
   `Status` varchar(255) DEFAULT NULL,
   `Timestamp` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=81 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
---  Table structure for `Discipline`
--- ----------------------------
-DROP TABLE IF EXISTS `Discipline`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Discipline` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Name` varchar(255) NOT NULL,
@@ -266,12 +244,11 @@ CREATE TABLE `Discipline` (
   PRIMARY KEY (`ID`),
   KEY `FormatResult` (`FormatResult`),
   CONSTRAINT `Discipline_ibfk_1` FOREIGN KEY (`FormatResult`) REFERENCES `FormatResult` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=66 DEFAULT CHARSET=cp1251 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB  DEFAULT CHARSET=cp1251 ROW_FORMAT=COMPACT;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
---  Table structure for `DisciplineFormat`
--- ----------------------------
-DROP TABLE IF EXISTS `DisciplineFormat`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `DisciplineFormat` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Discipline` int(11) DEFAULT NULL,
@@ -281,12 +258,11 @@ CREATE TABLE `DisciplineFormat` (
   KEY `Format` (`Format`),
   CONSTRAINT `disciplineformat_ibfk_1` FOREIGN KEY (`Discipline`) REFERENCES `Discipline` (`ID`),
   CONSTRAINT `disciplineformat_ibfk_2` FOREIGN KEY (`Format`) REFERENCES `Format` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=98 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
---  Table structure for `Event`
--- ----------------------------
-DROP TABLE IF EXISTS `Event`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Event` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `DisciplineFormat` int(11) NOT NULL,
@@ -311,12 +287,11 @@ CREATE TABLE `Event` (
   KEY `Competition` (`Competition`),
   KEY `Discipline` (`DisciplineFormat`),
   CONSTRAINT `event_ibfk_1` FOREIGN KEY (`Competition`) REFERENCES `Competition` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=419 DEFAULT CHARSET=cp1251 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB  DEFAULT CHARSET=cp1251 ROW_FORMAT=COMPACT;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
---  Table structure for `Format`
--- ----------------------------
-DROP TABLE IF EXISTS `Format`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Format` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Result` varchar(255) DEFAULT NULL,
@@ -325,23 +300,21 @@ CREATE TABLE `Format` (
   `ExtResult` varchar(255) DEFAULT NULL,
   `FormatID` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ID`,`Name`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=cp1251 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB  DEFAULT CHARSET=cp1251 ROW_FORMAT=COMPACT;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
---  Table structure for `FormatResult`
--- ----------------------------
-DROP TABLE IF EXISTS `FormatResult`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `FormatResult` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Name` varchar(255) DEFAULT NULL,
   `Format` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
---  Table structure for `GrandAccess`
--- ----------------------------
-DROP TABLE IF EXISTS `GrandAccess`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `GrandAccess` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Type` varchar(255) DEFAULT NULL,
@@ -350,44 +323,40 @@ CREATE TABLE `GrandAccess` (
   `Group` int(11) DEFAULT NULL,
   `Description` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
---  Table structure for `GrandGroup`
--- ----------------------------
-DROP TABLE IF EXISTS `GrandGroup`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `GrandGroup` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Name` varchar(32) DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
---  Table structure for `GrandGroupMember`
--- ----------------------------
-DROP TABLE IF EXISTS `GrandGroupMember`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `GrandGroupMember` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Group` int(11) DEFAULT NULL,
   `Delegate` int(11) DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
---  Table structure for `GrandRole`
--- ----------------------------
-DROP TABLE IF EXISTS `GrandRole`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `GrandRole` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Name` varchar(255) DEFAULT NULL,
   `Level` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
---  Table structure for `LogMail`
--- ----------------------------
-DROP TABLE IF EXISTS `LogMail`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `LogMail` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `To` text,
@@ -396,12 +365,11 @@ CREATE TABLE `LogMail` (
   `DateTime` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `Result` text,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=cp1251 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB  DEFAULT CHARSET=cp1251 ROW_FORMAT=COMPACT;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
---  Table structure for `Logs`
--- ----------------------------
-DROP TABLE IF EXISTS `Logs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Logs` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Competitor` int(11) DEFAULT NULL,
@@ -411,12 +379,11 @@ CREATE TABLE `Logs` (
   `Details` text,
   `IP` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=8782 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
---  Table structure for `LogsPost`
--- ----------------------------
-DROP TABLE IF EXISTS `LogsPost`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `LogsPost` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Timestamp` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
@@ -424,26 +391,24 @@ CREATE TABLE `LogsPost` (
   `Competitor` varchar(255) DEFAULT NULL,
   `Request` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=5185 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
---  Table structure for `LogsRegistration`
--- ----------------------------
-DROP TABLE IF EXISTS `LogsRegistration`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `LogsRegistration` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Event` int(11) DEFAULT NULL,
-  `Action` varchar(12) DEFAULT NULL,
-  `Doing` varchar(255) DEFAULT NULL,
+  `Action` varchar(12) COLLATE utf8_bin DEFAULT NULL,
+  `Details` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `Doing` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   `Timestamp` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `Details` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=207 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
---  Table structure for `MultiLanguage`
--- ----------------------------
-DROP TABLE IF EXISTS `MultiLanguage`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `MultiLanguage` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Name` varchar(255) DEFAULT NULL,
@@ -451,51 +416,48 @@ CREATE TABLE `MultiLanguage` (
   `Language` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `Name` (`Name`,`Language`)
-) ENGINE=InnoDB AUTO_INCREMENT=46223 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
---  Table structure for `News`
--- ----------------------------
-DROP TABLE IF EXISTS `News`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `News` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Date` date DEFAULT NULL,
   `Text` text,
   `Delegate` int(11) DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
---  Table structure for `Registration`
--- ----------------------------
-DROP TABLE IF EXISTS `Registration`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Registration` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Competitor` int(11) DEFAULT NULL,
   `Competition` int(11) DEFAULT NULL,
   PRIMARY KEY (`ID`),
-  UNIQUE KEY `CompetitorCompetition` (`Competitor`,`Competition`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=28849 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+  UNIQUE KEY `CompetitorCompetition` (`Competitor`,`Competition`) USING BTREE,
+  KEY `Competitor` (`Competitor`,`Competition`) USING BTREE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
---  Table structure for `Regulation`
--- ----------------------------
-DROP TABLE IF EXISTS `Regulation`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Regulation` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Event` int(11) DEFAULT NULL,
   `Language` varchar(255) DEFAULT NULL,
   `Text` text,
   PRIMARY KEY (`ID`),
-  UNIQUE KEY `EventLanguage` (`Event`,`Language`),
+  UNIQUE KEY `EventLanguage` (`Event`,`Language`) USING BTREE,
   KEY `Discipline` (`Event`),
   CONSTRAINT `regulation_ibfk_1` FOREIGN KEY (`Event`) REFERENCES `Discipline` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=416 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
---  Table structure for `RequestCandidate`
--- ----------------------------
-DROP TABLE IF EXISTS `RequestCandidate`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `RequestCandidate` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Competitor` int(11) DEFAULT NULL,
@@ -505,12 +467,11 @@ CREATE TABLE `RequestCandidate` (
   KEY `WID` (`Competitor`),
   KEY `Competitor` (`Competitor`),
   CONSTRAINT `requestcandidate_ibfk_1` FOREIGN KEY (`Competitor`) REFERENCES `Competitor` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
---  Table structure for `RequestCandidateField`
--- ----------------------------
-DROP TABLE IF EXISTS `RequestCandidateField`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `RequestCandidateField` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Field` varchar(255) DEFAULT NULL,
@@ -519,24 +480,22 @@ CREATE TABLE `RequestCandidateField` (
   PRIMARY KEY (`ID`),
   KEY `RequestCandidate` (`RequestCandidate`),
   CONSTRAINT `requestcandidatefield_ibfk_1` FOREIGN KEY (`RequestCandidate`) REFERENCES `RequestCandidate` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=344 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
---  Table structure for `RequestCandidateTemplate`
--- ----------------------------
-DROP TABLE IF EXISTS `RequestCandidateTemplate`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `RequestCandidateTemplate` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Name` varchar(1024) DEFAULT NULL,
   `Type` varchar(255) DEFAULT NULL,
   `Language` varchar(255) DEFAULT 'RU',
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
---  Table structure for `RequestCandidateVote`
--- ----------------------------
-DROP TABLE IF EXISTS `RequestCandidateVote`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `RequestCandidateVote` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Competitor` int(11) DEFAULT NULL,
@@ -545,12 +504,11 @@ CREATE TABLE `RequestCandidateVote` (
   `Delegate` int(11) DEFAULT NULL,
   `Reason` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=123 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
---  Table structure for `Scramble`
--- ----------------------------
-DROP TABLE IF EXISTS `Scramble`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Scramble` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Event` int(11) NOT NULL,
@@ -561,55 +519,60 @@ CREATE TABLE `Scramble` (
   PRIMARY KEY (`ID`),
   KEY `EventID` (`Event`),
   CONSTRAINT `scramble_ibfk_1` FOREIGN KEY (`Event`) REFERENCES `Event` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=1326 DEFAULT CHARSET=cp1251 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB  DEFAULT CHARSET=cp1251 ROW_FORMAT=COMPACT;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
---  Table structure for `ScramblePdf`
--- ----------------------------
-DROP TABLE IF EXISTS `ScramblePdf`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `ScramblePdf` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Event` int(11) NOT NULL,
-  `Secret` varchar(255) NOT NULL,
+  `Secret` varchar(255) COLLATE utf8_bin NOT NULL,
   `Timestamp` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `Delegate` int(11) DEFAULT NULL,
-  `Action` varchar(255) DEFAULT NULL,
+  `Action` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=766 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
---  Table structure for `Value`
--- ----------------------------
-DROP TABLE IF EXISTS `Value`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Value` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Name` varchar(255) DEFAULT NULL,
   `Value` text,
   `Timestamp` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=3329 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
---  Table structure for `Visit`
--- ----------------------------
-DROP TABLE IF EXISTS `Visit`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Visit` (
   `IP` varchar(255) DEFAULT NULL,
   `Date` date DEFAULT NULL,
   `User_Agent` varchar(255) DEFAULT NULL,
   `Hidden` tinyint(4) DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
---  Table structure for `WCAauth`
--- ----------------------------
-DROP TABLE IF EXISTS `WCAauth`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `WCAauth` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Timestamp` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `WID` bigint(20) DEFAULT NULL,
-  `Object` varchar(1024) DEFAULT NULL,
+  `Object` varchar(1024) CHARACTER SET utf8 DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=5659 DEFAULT CHARSET=cp1251;
+) ENGINE=InnoDB  DEFAULT CHARSET=cp1251;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-SET FOREIGN_KEY_CHECKS = 1;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
