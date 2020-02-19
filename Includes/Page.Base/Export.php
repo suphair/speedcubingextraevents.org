@@ -12,7 +12,7 @@ $files= array_reverse($files);
 foreach($files as $file=>$time)
     if($time > time() - 60*60*24*7*2){ ?>
     <p>
-      <?= date("F d Y H:i:s",$time)?> (UTC 0)
+      <?= date("F d Y H:i:s",$time)?> (UTC +3)
       <b><a href="<?= PageIndex()?>Export_sql/<?= $file ?>"><i class="fas fa-download"></i> <?= $file ?></a></b>  
       (<?= round(filesize('Export_sql/'.$file)/1024,1); ?> KB)
     </p>  
