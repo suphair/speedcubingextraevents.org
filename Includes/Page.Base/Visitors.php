@@ -8,8 +8,8 @@
     $Total=0;
     DataBaseClass::Query("Select count(distinct V.IP) Count,"
             . " count(distinct V2.IP) CountOld,"
-            . " V.Date Date from `Visit` V"
-            . " left outer join Visit V2 on V2.IP=V.IP and V.Date>V2.Date and V2.Hidden=0"
+            . " V.Date Date from `Visitor` V"
+            . " left outer join Visitor V2 on V2.IP=V.IP and V.Date>V2.Date and V2.Hidden=0"
             . " where V.Hidden=0"
             . " group by V.Date order by V.Date");
     foreach(DataBaseClass::getRows() as $row){

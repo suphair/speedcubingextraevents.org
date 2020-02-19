@@ -54,7 +54,7 @@ $typesSimplePage=[
     'competitors','competitor',
     'records',
     'regulations',
-    'visiters','texts','logs','alternative','icons',
+    'visitors','texts','logs','alternative','icons',
     'multilanguage','401',
     'news','anews',
     'scramble','scrambleszip',
@@ -345,8 +345,8 @@ $typesSimplePage=[
                 self::CheckAccess("Texts"); 
                 break;    
             
-            case 'visiters':
-                self::CheckAccess("Visiters"); 
+            case 'visitors':
+                self::CheckAccess("Visitors"); 
                 break;    
             
             case 'access':

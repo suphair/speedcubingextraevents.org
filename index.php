@@ -27,8 +27,7 @@ if(RequestClass::getError(401)){ header('HTTP/1.1 401 Unauthorized'); } ?>
 <head>
     <meta name="Description" content="Fun Cubing">
     <title><?= RequestClass::getTitle(); ?></title>
-    <link rel="icon" href="<?= PageLocal()?>Logo/Logo_Color.png" >
-    
+    <link rel="icon" href="<?= PageIndex()?>Logo/Logo_Color.png" >
     <link rel="stylesheet" href="<?= PageIndex(); ?>style.css?t=5" type="text/css"/>
     <link rel="stylesheet" href="<?= PageIndex(); ?>fontawesome-free-5.12.0-web/css/all.css?t=3" type="text/css"/>
     <link rel="stylesheet" href="<?= PageIndex(); ?>flag-icon-css/css/flag-icon.css?t=3" type="text/css"/>
@@ -36,13 +35,6 @@ if(RequestClass::getError(401)){ header('HTTP/1.1 401 Unauthorized'); } ?>
     <link rel="stylesheet" href="<?= PageIndex(); ?>jQuery/chosen_v1/chosen.css" type="text/css"/>
     <script src="<?= PageIndex(); ?>jQuery/jquery-3.4.1.min.js" type="text/javascript"></script>
     <script src="<?= PageIndex(); ?>jQuery/chosen_v1/chosen.jquery.js" type="text/javascript"></script>
-    
-    
-<style>
-    body{
-        /*background: linear-gradient(to bottom, <?= GetCompetitorData()?'#bbb,#999':'rgb(225,225,225),rgb(186,186,186)' ?>);*/
-    }
-</style>
 </head>
 <body>    
     <table width='100%'>
@@ -95,11 +87,7 @@ if(RequestClass::getError(401)){ header('HTTP/1.1 401 Unauthorized'); } ?>
         <a target="_blank" href="https://github.com/suphair/speedcubingextraevents.org"><i class="fab fa-github"></i> GitHub</a>&nbsp;&nbsp;&nbsp;
         <a href="<?= PageIndex()?>Export"><i class="fas fa-download"></i> <?= ml('Footer.Export') ?></a>&nbsp;&nbsp;&nbsp;
         </center>
-    </div>    
-        
-    <?php add_visit(); ?>
+    </div>     
+    <?php trackVisitor(); ?>
 </body>
-
-<?php  #echo(DataBaseClass::getCount()); ?>
-
 </html>   

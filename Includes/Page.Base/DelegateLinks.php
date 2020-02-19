@@ -1,6 +1,6 @@
 <?php  $Footer_links=[
             ['Competition.Report','Reports','Reports','<i class="far fa-file-alt"></i>'],
-            ['Visiters','Visiters','Visiters','<i class="fas fa-user-plus"></i>'],
+            ['Visitors','Visitors','Visitors','<i class="fas fa-user-plus"></i>'],
             ['Texts','Texts','Texts','<i class="fas fa-file-alt"></i>'],
             ['Delegates.Settings','Delegates/Settings','Delegate Changes','<i class="fas fa-user-cog"></i>'],
             ['MultiLanguage','MultiLanguage','Multi language','<i class="fas fa-language"></i>'],
