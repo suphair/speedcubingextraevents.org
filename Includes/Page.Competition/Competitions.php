@@ -136,15 +136,19 @@ if($My==1 and  !GetCompetitorData()){
         $comp_status = $r['UpcomingStatus']; ?>
     <tr valign="bottom" class="competition">
         <td>
-            <?php if($comp_status==0){ ?>
-                <span style="color:var(--light_gray)"><i class="fas fa-hourglass-start"></i></span>
-            <?php }?>
-            <?php if($comp_status==1){ ?>
-                <span style="color:var(--green)"><i class="fas fa-hourglass-half"></i></span>
-            <?php }?>
-            <?php if($comp_status==2){ ?>
-                <span style="color:var(--black)"><i class="fas fa-hourglass-end"></i></span>
-            <?php }?>
+            <?php if($r['Status']==0){ ?>
+                <i class="fas fa-eye-slash"></i>
+            <?php }else{ ?>
+                <?php if($comp_status==0){ ?>
+                    <span style="color:var(--light_gray)"><i class="fas fa-hourglass-start"></i></span>
+                <?php }?>
+                <?php if($comp_status==1){ ?>
+                    <span style="color:var(--green)"><i class="fas fa-hourglass-half"></i></span>
+                <?php }?>
+                <?php if($comp_status==2){ ?>
+                    <span style="color:var(--black)"><i class="fas fa-hourglass-end"></i></span>
+                <?php }?>
+            <?php } ?>
         </td>            
         <td>            
             <b><?= date_range($r['StartDate'],$r['EndDate']); ?></b>    
