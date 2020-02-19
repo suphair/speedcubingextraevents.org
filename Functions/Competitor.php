@@ -109,11 +109,6 @@ Function CompetitorReplace($user){
         }else{
             $country='';
         }
-        if(isset($user->avatar)){
-            $avatar=(!$user->avatar->is_default)?$user->avatar->thumb_url:"";
-        }else{
-            $avatar='';
-        }
         $Language=false;
     
         if($wid){
@@ -121,7 +116,7 @@ Function CompetitorReplace($user){
             
             DataBaseClass::FromTable("Competitor","WID='$wid'");
             foreach(DataBaseClass::QueryGenerate() as $competitor_row){
-                DataBaseClass::Query("Update Competitor set Name='$name',WCAID='$wcaid',Country='$country' ".($email?",Email='$email'":"").",WID=$wid,Avatar='$avatar',UpdateTimestamp=now() where ID=".$competitor_row['Competitor_ID']);    
+                DataBaseClass::Query("Update Competitor set Name='$name',WCAID='$wcaid',Country='$country' ".($email?",Email='$email'":"").",WID=$wid,UpdateTimestamp=now() where ID=".$competitor_row['Competitor_ID']);    
                 $Language=$competitor_row['Competitor_Language'];
             }
         }
@@ -131,7 +126,7 @@ Function CompetitorReplace($user){
         
             DataBaseClass::FromTable("Competitor","WCAID='$wcaid'");
             foreach(DataBaseClass::QueryGenerate() as $competitor_row){
-                DataBaseClass::Query("Update Competitor set Name='$name',WCAID='$wcaid',Country='$country' ".($email?",Email='$email'":"").",WID=".($wid?$wid:'null').",Avatar='$avatar',UpdateTimestamp=now() where ID=".$competitor_row['Competitor_ID']);    
+                DataBaseClass::Query("Update Competitor set Name='$name',WCAID='$wcaid',Country='$country' ".($email?",Email='$email'":"").",WID=".($wid?$wid:'null').",UpdateTimestamp=now() where ID=".$competitor_row['Competitor_ID']);    
             }
         }
             
@@ -157,7 +152,7 @@ Function CompetitorReplace($user){
         $Competitor=DataBaseClass::QueryGenerate(false);
         
         if(!$Competitor){
-            DataBaseClass::Query("Insert Into Competitor (WCAID,WID,Country,Name,Email,Avatar) values ('$wcaid',".($wid?$wid:'null').",'$country','$name','$email','$avatar')");    
+            DataBaseClass::Query("Insert Into Competitor (WCAID,WID,Country,Name,Email) values ('$wcaid',".($wid?$wid:'null').",'$country','$name','$email')");    
             $CompetitorID=DataBaseClass::getID();
         }else{
             $CompetitorID=$Competitor['Competitor_ID'];

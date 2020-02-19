@@ -3,7 +3,7 @@
 DataBaseClass::Query("Select DATEDIFF(max(C.EndDate),now()) Latestactivity,"
         . " max(C.EndDate)  EndDate,"
         . " DATEDIFF(case when now()<max(C.EndDate) then max(C.EndDate) else now() end ,min(C.EndDate)) Period, "
-        . "D.*,DelC.Avatar,DelC.Country, count(distinct Cm.ID) Count_Competitors, count(distinct C.ID) Count_Competitions"
+        . "D.*,DelC.Country, count(distinct Cm.ID) Count_Competitors, count(distinct C.ID) Count_Competitions"
         . "   from Delegate D left outer join Competitor DelC on "
         . " ((D.WCA_ID and D.WCA_ID=DelC.WCAID) or (D.WID and D.WID=DelC.WID)) "
         . " left outer join CompetitionDelegate CD on CD.Delegate=D.ID"
@@ -13,7 +13,7 @@ DataBaseClass::Query("Select DATEDIFF(max(C.EndDate),now()) Latestactivity,"
         . " left outer join CommandCompetitor CC on CC.Command=Com.ID"
         . " left outer join Competitor Cm on Cm.ID=CC.Competitor "
         . (!CheckAccess('Delegates.Arhive')?" where D.Status!='Archive' ":"")
-        . " group by D.ID, DelC.Country,DelC.Avatar "
+        . " group by D.ID, DelC.Country "
         . " order by case when D.Status='Archive' then 1 else 0 end, DelC.Country, "
         . " case D.Status when 'Senior' then 1  when 'Middle' then 2  when 'Junior' then 3 when 'Trainee' then 4 end  , D.Name");
 $Delegate_rows=DataBaseClass::GetRows();

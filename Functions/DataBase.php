@@ -83,7 +83,7 @@ Function DataBaseInit(){
    DataBaseClass::SetJoin('CompetitionReport','Competition');
    
    
-   DataBaseClass::AddTable('Competitor','Cm',array('ID','Name','WCAID','Country','WID','Language','Email','Avatar'));
+   DataBaseClass::AddTable('Competitor','Cm',array('ID','Name','WCAID','Country','WID','Language','Email'));
    DataBaseClass::SetOrder('Competitor',' Name');
    
    DataBaseClass::AddTable('Format','F',array('ID','Result','Attemption','Name','ExtResult'));

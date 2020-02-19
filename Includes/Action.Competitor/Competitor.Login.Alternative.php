@@ -15,7 +15,6 @@ if(is_array($Delegate)){
         'wca_id'=>$Delegate['WCA_ID'],
         'id'=>$Delegate['WID'],
         'country_iso2'=>$Delegate['Country'],
-        'avatar'=>(object)['is_default'=>'true'],
         'delegate_status'=>null
     ];
     if(isset($_POST['WCA'])){
