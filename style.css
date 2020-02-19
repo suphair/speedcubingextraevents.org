@@ -294,24 +294,28 @@ a.select_link{
     font-family: 'Font Awesome 5 Free';
     content: '\f0d7';
     padding-left: 5px;
+    font-weight: bold;
 }
 
 .competitor_panel_open_link:after{
     font-family: 'Font Awesome 5 Free';
     content: '\f0d8';
     padding-left: 5px;
+    font-weight: bold;
 }
 
 .news_panel_link:after{
     font-family: 'Font Awesome 5 Free';
     content: '\f0d7';
     padding-left: 0px;
+    font-weight: bold;
 }
 
 .news_panel_open_link:after {
     font-family: 'Font Awesome 5 Free';
     content: '\f0d8';
     padding-left: 0px;
+    font-weight: bold;
 }
 
 .Navigator span{
