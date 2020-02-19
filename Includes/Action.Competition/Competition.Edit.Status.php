@@ -3,12 +3,11 @@
 CheckPostIsset('ID','Status','Registration','Onsite');
 CheckPostNotEmpty('ID');
 CheckPostIsNumeric('ID','Status','Registration','Onsite');
+$ID=$_POST['ID'];
 if(CheckAccess('Competition.Settings.Ext',$ID)){
     CheckPostIsset('Unofficial','DelegateWCAOn','Cubingchina');
     CheckPostIsNumeric('Unofficial','DelegateWCAOn','Cubingchina');
 }
-
-$ID=$_POST['ID'];
 
 RequestClass::CheckAccessExit(__FILE__, 'Competition.Settings',$ID);
 
