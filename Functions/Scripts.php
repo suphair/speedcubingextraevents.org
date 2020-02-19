@@ -1,5 +1,28 @@
 <?php
 
+function Script_Structure(){
+    
+    $filename='database_structure.sql';
+     if(strpos($_SERVER['PHP_SELF'],'/'.GetIni('LOCAL','PageBase').'/')!==false){
+       $section="DB_LOCAL";
+       $filename=str_replace(".sql","_LOCAL.sql",$filename);
+    }else{
+       $section="DB";
+    }      
+    
+    include_once('ifsnop-mysqldump-php-341050a/src/Ifsnop/Mysqldump/Mysqldump.php');
+    $dump = new Ifsnop\Mysqldump\Mysqldump(
+            'mysql:host='.GetIni($section,'host').';port='.GetIni($section,'port').';dbname='.GetIni($section,'schema'), 
+            GetIni($section,'username'),
+            GetIni($section,'password'),
+            [ 'no-data'=>true,
+                'reset-auto-increment'=>true,
+                'skip-comments' => true
+            ]);
+    $dump->start($filename);  
+    
+}
+
 function Script_phpinfo(){
     phpinfo();
 }
