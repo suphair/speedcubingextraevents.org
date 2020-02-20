@@ -378,6 +378,14 @@ ObjectClass::setObjects('CompetitionEventCommands',$countCommands);
        </td>    
     </tr>         
 <?php } ?>        
+    
+    <?php $err=GetMessage("RegistrationError");
+    if($err){ ?>
+     <tr>
+         <td></td>
+        <td><?= svg_red() ?> <?= $err?></td>
+     </td>
+    <?php } ?>
 
 <?php if($Competitor){ ?>        
 <?php 
@@ -397,11 +405,6 @@ ObjectClass::setObjects('CompetitionEventCommands',$countCommands);
            <input name="ID" type="hidden" value="<?=  $CompetitionEvent['Event_ID'] ?>" />
            <i class="fas fa-lock"></i> <input type="text" required style="width: 100px;" placeholder="<?= ml('CompetitionEvent.SelfRegistration.Team.Placeholder',false) ?>" name="Secret" >
            <button><i class="fas fa-sm fa-user-plus"></i> join</button>
-
-           <?php $err=GetMessage("RegistrationError");
-           if($err){ ?>
-               <p><?= svg_red() ?> <?= $err?></p>
-           <?php } ?>
            <?php $err=GetMessage("CompetitionRegistrationKey");
            if($err){ ?>
                <p><?= svg_red() ?> <?= $err?></p>
