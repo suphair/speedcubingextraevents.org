@@ -67,3 +67,118 @@ function GenerateIvyAttempt(){
         }
     }
 }
+
+
+function SolverIvy($Corners,$Centers,$Solve){
+    $tmpCorners=$Corners;
+    $tmpCenters=$Centers;
+
+    
+    foreach($Solve as $move){
+        if($move[0]=='R'){
+           if($move[1]==' '){ 
+                $tmpCenters=array(
+                   'r'=>$tmpCenters['R'],
+                   'D'=>$tmpCenters['r'],
+                   'R'=>$tmpCenters['D'],
+                   'l'=>$tmpCenters['l'],
+                   'L'=>$tmpCenters['L'],
+                   'U'=>$tmpCenters['U']);
+                $tmpCorners['R']++;
+           }else{
+                $tmpCenters=array(
+                   'r'=>$tmpCenters['D'],
+                   'D'=>$tmpCenters['R'],
+                   'R'=>$tmpCenters['r'],
+                   'l'=>$tmpCenters['l'],
+                   'L'=>$tmpCenters['L'],
+                   'U'=>$tmpCenters['U']);
+                $tmpCorners['R']--;
+           }
+        }
+        if($move[0]=='L'){
+            if($move[1]==' '){ 
+                $tmpCenters=array(
+                   'L'=>$tmpCenters['l'],
+                   'l'=>$tmpCenters['D'],
+                   'D'=>$tmpCenters['L'],
+                   'r'=>$tmpCenters['r'],
+                   'R'=>$tmpCenters['R'],
+                   'U'=>$tmpCenters['U']);
+                 $tmpCorners['L']++;
+            }else{
+                $tmpCenters=array(
+                   'L'=>$tmpCenters['D'],
+                   'l'=>$tmpCenters['L'],
+                   'D'=>$tmpCenters['l'],
+                   'r'=>$tmpCenters['r'],
+                   'R'=>$tmpCenters['R'],
+                   'U'=>$tmpCenters['U']);
+                $tmpCorners['L']--;
+            }
+        }
+        if($move[0]=='U'){
+           if($move[1]==' '){                            
+                $tmpCenters=array(
+                   'r'=>$tmpCenters['l'],
+                   'l'=>$tmpCenters['U'],
+                   'U'=>$tmpCenters['r'],
+                   'R'=>$tmpCenters['R'],
+                   'L'=>$tmpCenters['L'],
+                   'D'=>$tmpCenters['D']);
+                 $tmpCorners['U']++;
+           }else{
+                $tmpCenters=array(
+                   'r'=>$tmpCenters['U'],
+                   'l'=>$tmpCenters['r'],
+                   'U'=>$tmpCenters['l'],
+                   'R'=>$tmpCenters['R'],
+                   'L'=>$tmpCenters['L'],
+                   'D'=>$tmpCenters['D']);
+                 $tmpCorners['U']--;
+           }
+        }
+        if($move[0]=='F'){
+           if($move[1]==' '){ 
+                $tmpCenters=array(
+                   'R'=>$tmpCenters['U'],
+                   'L'=>$tmpCenters['R'],
+                   'U'=>$tmpCenters['L'],
+                   'r'=>$tmpCenters['r'],
+                   'l'=>$tmpCenters['l'],
+                   'D'=>$tmpCenters['D']);                
+                $tmpCorners['F']++;
+ 
+            }else{
+                $tmpCenters=array(
+                   'R'=>$tmpCenters['L'],
+                   'L'=>$tmpCenters['U'],
+                   'U'=>$tmpCenters['R'],
+                   'r'=>$tmpCenters['r'],
+                   'l'=>$tmpCenters['l'],
+                   'D'=>$tmpCenters['D']);                                
+                $tmpCorners['F']--;
+ 
+           }
+        }
+    
+    }
+
+
+    return CheckSolveIvy($tmpCorners,$tmpCenters);
+    
+}
+
+function CheckSolveIvy($Corners,$Centers){
+    
+   foreach($Corners as $n=>$t){
+        if($t % 3 !=0) return false;
+   }
+    
+    foreach($Centers as $n=>$t){
+        if($t!=" " and $n!=$t)  return false; 
+    }
+    return true;
+    
+    
+}
