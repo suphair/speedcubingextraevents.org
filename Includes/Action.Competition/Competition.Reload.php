@@ -6,12 +6,10 @@ $WCA=$_POST['WCA'];
 
 RequestClass::CheckAccessExit(__FILE__, 'Competition.Settings',$WCA);
 
-$result=@file_get_contents(GetIni('WCA_API','competition')."/$WCA");
-$competition=json_decode($result);
+$competition=getCompetitionWcaApi($WCA,'competitonReload');
 if(!$competition){
     HeaderExit();  
-    }
-
+}
 
 DataBaseClass::Query("Select ID from `Competition` where `WCA`='$WCA'");
 $delegates=[];

@@ -38,8 +38,7 @@ if(DataBaseClass::rowsCount()){
 }
 
 
-$result = file_get_contents(GetIni('WCA_API','competition')."/".$event['Competition_WCA']."/registrations", false); 
-$registrations=json_decode($result);
+$registrations=getCompetitionRegistrationsWcaApi($event['Competition_WCA'],'competitionEventSelfRegistrationAdd');
 $find=false;
 foreach($registrations as $registration){
     if($registration->user_id==$Competitor->id){

@@ -9,11 +9,8 @@ RequestClass::CheckAccessExit(__FILE__, 'Competition.Settings',$ID);
 DataBaseClass::FromTable("Competition","ID=$ID");
 $Competition= DataBaseClass::QueryGenerate(false);
 
-$result = file_get_contents(GetIni('WCA_API','competition')."/".$Competition['Competition_WCA']."/registrations", false); 
-$registrations=json_decode($result);
+$registrations=getCompetitionRegistrationsWcaApi($Competition['Competition_WCA'],'competitionCompetitorsCheck');
 if($registrations){    
-    $registrations_content = file_get_contents("https://www.worldcubeassociation.org/api/v0/competitions/".$Competition['Competition_WCA']."/registrations", false); 
-    $registrations=json_decode($registrations_content);
     
     DataBaseClass::Query("Update CommandCompetitor set CheckStatus=0 where Command in("
             . " Select Com.ID from Command Com join Event E on E.ID=Com.Event where E.Competition='$ID')");

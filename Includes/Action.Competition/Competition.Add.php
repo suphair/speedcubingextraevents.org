@@ -16,9 +16,9 @@ if(CheckAccess('Competition.Add.Ext')){
 }
 
 $WCA=str_replace(" ","",$WCA);
-$result= file_get_contents_curl(GetIni('WCA_API','competition')."/".$WCA);
-$competition=json_decode($result);
-if(!$competition or isset($competition->error)){
+$competition=getCompetitionWcaApi($WCA,'competitonAdd');
+
+if(!$competition){
     SetMessageName('CompetitionCreate',"[$WCA] competition is not announced on the WCA website");
     HeaderExit();  
 }
@@ -27,7 +27,6 @@ $delegates=[];
 foreach($competition->delegates as $delegate){
     $delegates[]=$delegate->wca_id;
 }
-
 
 $Name= DataBaseClass::Escape($competition->name);
 $City=DataBaseClass::Escape($competition->city);

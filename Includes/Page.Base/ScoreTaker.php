@@ -457,7 +457,7 @@ foreach(DataBaseClass::QueryGenerate() as $competitor){
                     <?php } ?>
                     <?= ml ('ScoreTaker.Registartion.Add') ?>
                     <input name="Competition" type="hidden" value="<?= $event['Competition_ID'] ?>" />
-                    <input required="" class="WCAID" placeholder="WCA ID" ID="WCAID" autocomplete="off" style="width:80px" name="WCAID" value="" 
+                    <input required="" class="WCAID" placeholder="WCA ID" ID="WCAID" autocomplete="off" style="width:100px" name="WCAID" value="" 
                         onkeyup="
                         if($(this).val().indexOf('_')+1==0){
                             if(!$('#WCAIDsearch').val() || $('#WCAIDsearch').val().toUpperCase()!=$('#WCAID').val().toUpperCase()){

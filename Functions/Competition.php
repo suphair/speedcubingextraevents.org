@@ -74,8 +74,8 @@ function UpdateLocalID($competition){
 
 function CompetitionCompetitorsLoad($ID,$WCA,$Name,$type){
     $start=date('H:i:s'); 
-    $registrations_data = file_get_contents_curl(GetIni('WCA_API','competition')."/$WCA/registrations"); 
-    $registrations=json_decode($registrations_data);
+    
+    $registrations=getCompetitionRegistrationsWcaApi($WCA,'competitionCompetitorsLoad');
     if($registrations){    
         foreach($registrations as $registration){
             DataBaseClass::FromTable('Competitor',"WID='{$registration->user_id}'");
@@ -83,16 +83,14 @@ function CompetitionCompetitorsLoad($ID,$WCA,$Name,$type){
             if(isset($Competitor['Competitor_ID'])){
                 $Competitor_ID=$Competitor['Competitor_ID'];
             }else{
-                $user_content = file_get_contents_curl("https://www.worldcubeassociation.org/api/v0/users/".$registration->user_id);   
-                $user=json_decode($user_content);
-                $Competitor_ID=CompetitorReplace($user->user);
+                $user=getUserWcaApi($registration->user_id, 'competitionCompetitorsLoad');
+                $Competitor_ID=CompetitorReplace($user);
             }
             DataBaseClass::Query("REPLACE into Registration (Competitor,Competition) values ($Competitor_ID,$ID)");
         }
     }
-
-    $competitors_data = file_get_contents_curl(GetIni('WCA_API','competition')."/$WCA/competitors"); 
-    $competitors=json_decode($competitors_data);
+    
+    $competitors=getCompetitionCompetitorsWcaApi($WCA,'competitionCompetitorsLoad');
     if($competitors){    
         foreach($competitors as $competitor){
             DataBaseClass::FromTable('Competitor',"WCAID='{$competitor->wca_id}'");

@@ -22,14 +22,13 @@ function CommandDeleter(){
 function Competitors_Reload($ID,$userID){
     if(!$userID or !$ID)return false;
     
-    $user_content = file_get_contents_curl("https://www.worldcubeassociation.org/api/v0/users/".$userID); 
-    $user=json_decode($user_content);
-    if($user and isset($user->user)){     
+    $user=getUserWcaApi($userID,'competitorReload');
+    if($user){    
         DataBaseClass::Query("Update Competitor set "
-       . " Name='". Short_Name(DataBaseClass::Escape($user->user->name))."'"
-       . " ,Country='".$user->user->country_iso2."'"
-       . " ,WID='".$user->user->id."'"
-       .($user->user->wca_id?" , WCAID='".$user->user->wca_id."'":"")
+       . " Name='". Short_Name(DataBaseClass::Escape($user->name))."'"
+       . " ,Country='".$user->country_iso2."'"
+       . " ,WID='".$user->id."'"
+       .($user->wca_id?" , WCAID='".$user->wca_id."'":"")
        . " ,UpdateTimestamp=now() "
         . " where ID=$ID");
         
@@ -76,6 +75,7 @@ function Competitors_RemoveDuplicates(){
 
 
 Function CompetitorReplace($user){
+   
     if(isset($user->email)){
         $email=$user->email;
     }else{

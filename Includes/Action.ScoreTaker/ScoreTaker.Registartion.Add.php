@@ -22,10 +22,9 @@ $Competitor=DataBaseClass::QueryGenerate(false);
 if(isset($Competitor['Competitor_ID'])){
     $Competitor_ID=$Competitor['Competitor_ID'];    
 }else{
-    $user_content = file_get_contents_curl("https://www.worldcubeassociation.org/api/v0/users/".$WCAID); 
-    $user=json_decode($user_content);
-    if($user and isset($user->user)){
-        $Competitor_ID=CompetitorReplace($user->user);
+    $user=getUserWcaApi($WCAID, 'scoreTakerRegistration');
+    if($user){
+        $Competitor_ID=CompetitorReplace($user);
     }else{
         SetMessageName("ScoreTaker.Registartion.Add", "$WCAID not found");   
         header('Location: '.$_SERVER['HTTP_REFERER']);

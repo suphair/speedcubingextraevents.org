@@ -43,7 +43,11 @@ $attempts_exists=($data['Attempts']>0 or $data['Start']);
                 DataBaseClass::FromTable('Competitor',"WCAID='".trim($delegate)."'");
                 $row=DataBaseClass::QueryGenerate(false);
                 if(isset($row['Competitor_Name'])){
-                    $delegatesWCA_out[]="<a href='mailto:".$row['Competitor_Email']."'><i class='far fa-envelope'></i> ".$row['Competitor_Name']."</a>";   
+                    if($row['Competitor_Email']){
+                        $delegatesWCA_out[]="<a href='mailto:".$row['Competitor_Email']."'><i class='far fa-envelope'></i> ".$row['Competitor_Name']."</a>";   
+                    }else{
+                        $delegatesWCA_out[]=$row['Competitor_Name'];   
+                    }
                 }
             }
         }
