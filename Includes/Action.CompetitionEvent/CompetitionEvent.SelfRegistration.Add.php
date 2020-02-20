@@ -39,17 +39,14 @@ if(DataBaseClass::rowsCount()){
 
 $find=false;
 DataBaseClass::Query("Select * from Registration where Competition=".$event['Competition_ID']." and Competitor='".$Competitor->local_id."'");
-if(DataBaseClass::rowsCount()){ 
-    $find=true;  
-}else{
-    $registrations=getCompetitionRegistrationsWcaApi($event['Competition_WCA'],'competitionEventSelfRegistrationAdd');
-    if($registrations){
-        foreach($registrations as $registration){
-            if($registration->user_id==$Competitor->id){
-              $find=true;  
-            }
-        }
+if(!DataBaseClass::rowsCount()){ 
+    CompetitionCompetitorsLoad($event['Competition_ID'],$event['Competition_WCA'],$event['Competition_Name'],'Competitor');
+    DataBaseClass::Query("Select * from Registration where Competition=".$event['Competition_ID']." and Competitor='".$Competitor->local_id."'");
+    if(DataBaseClass::rowsCount()){ 
+        $find=true;  
     }
+}else{
+    $find=true;
 }
 
 if(!$find){

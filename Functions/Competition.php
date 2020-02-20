@@ -91,6 +91,7 @@ function CompetitionCompetitorsLoad($ID,$WCA,$Name,$type){
     }
     
     $competitors=getCompetitionCompetitorsWcaApi($WCA,'competitionCompetitorsLoad');
+    
     if($competitors){    
         foreach($competitors as $competitor){
             DataBaseClass::FromTable('Competitor',"WCAID='{$competitor->wca_id}'");
@@ -105,11 +106,12 @@ function CompetitionCompetitorsLoad($ID,$WCA,$Name,$type){
         }
     }
 
-    if(sizeof($competitors)){
+    if($competitors){
         $str=sizeof($registrations)." / ".sizeof($competitors);
     }else{
         $str=sizeof($registrations);
     }
+
     $end=date('H:i:s');
     DataBaseClass::Query("Update Competition set LoadDateTime=concat(current_timestamp,' &#9642; ','$str') where ID='$ID'");
     AddLog('LoadRegistrations', $type,"$Name ($str) $start - $end ");

@@ -16,7 +16,7 @@ function getUserWcaApi($userId,$context)
     }else{
         $user=false;
     }
-    logUseWciApi($userId, json_encode($user),'users',$context);
+    logUseWcaApi($userId, json_encode($user),'users',$context);
     return $user;
 }
 
@@ -55,7 +55,7 @@ function getCompetitionWcaApi($competitionId,$context)
     }else{
         $competition=false;
     }
-    logUseWciApi($competitionId, json_encode($competition),'competitions',$context);
+    logUseWcaApi($competitionId, json_encode($competition),'competitions',$context);
     return $competition;
 }
 
@@ -80,7 +80,7 @@ function getCompetitionRegistrationsWcaApi($competitionId,$context)
         $registrations=false;
     }
     
-    logUseWciApi($competitionId, json_encode($registrationsLog),'competitions/registrations',$context);
+    logUseWcaApi($competitionId, json_encode($registrationsLog),'competitions/registrations',$context);
     return $registrations;
 }
 
@@ -114,12 +114,12 @@ function getCompetitionCompetitorsWcaApi($competitionId,$context)
         $competitors=false;
     }
     
-    logUseWciApi($competitionId, json_encode($competitorsLog),'competitions/competitors',$context);
+    logUseWcaApi($competitionId, json_encode($competitorsLog),'competitions/competitors',$context);
     return $competitors;
 }
 
 
-function logUseWciApi($request,$response,$method,$context)
+function logUseWcaApi($request,$response,$method,$context)
 {
     $request=DataBaseClass::Escape($request);
     $response=DataBaseClass::Escape($response);
