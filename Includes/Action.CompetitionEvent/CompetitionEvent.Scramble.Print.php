@@ -72,6 +72,7 @@ $Competition_name=iconv('utf-8', 'cp1252//TRANSLIT', $Competition_name);
 include 'Scramble/'.$data[0]['Discipline_CodeScript'].'.php';
 
 foreach($data as $row){ 
+    $page=1;
     global  $Size;
     if($Size){
         $im=ScrambleImage($row['Scramble_Scramble'],$Size);
@@ -97,9 +98,6 @@ foreach($data as $row){
         }
         
         //Header
-        if(file_exists(ImageEventFile($row['Discipline_CodeScript']))){
-            $pdf->Image(ImageEventFile($row['Discipline_CodeScript']),5,10,20,20,'jpg');
-        }
         $pdf->SetFont('Arial','',24);
         $pdf->Text(10, 13, $row['Discipline_Name'].$row['Event_vRound']);
         $pdf->SetFont('Arial','',16);
@@ -238,9 +236,21 @@ foreach($data as $row){
     $Y+=$D_Att;
     
     $pdf->Rect(17,$Y_Content_S,$X_IMG_1-17,$Y-$Y_Content_S);
+    if($Y+$D_Att>$pdf->h){
+        $page++;
+        $pdf->AddPage();
+        $Y=$Y_Content_S;
+        
+        $pdf->SetFont('Arial','',24);
+        $pdf->Text(10, 13, $row['Discipline_Name'].$row['Event_vRound']);
+        $pdf->Text(170, 13, "Page $page");
+        $pdf->SetFont('Arial','',16);
+        $pdf->Text(10, 20, 'Group '.$Letter[$group]);
+        $pdf->Text(10, 27,$Competition_name);
+        
+    }
     
 }
-
 DataBaseClass::Query("Update Event set ScrambleSalt='$rand' where ID='".$data[0]['Event_ID']."'");
 $file="Image/Scramble/".$rand.".pdf";
 $pdf->Output($file);
