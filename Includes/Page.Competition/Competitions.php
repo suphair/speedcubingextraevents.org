@@ -1,7 +1,7 @@
 <?php includePage('News.Announce'); ?>
 
 <?php     
-    $Competitor=GetCompetitorData(); 
+    $Competitor=getCompetitor(); 
     $competitor_competitions=array(-1);
     if($Competitor){
         DataBaseClass::Query(
@@ -36,7 +36,7 @@ if(isset($request[1])){
         }
     }
 }  
-if($My==1 and  !GetCompetitorData()){
+if($My==1 and  !getCompetitor()){
     $My=0;
 }
     DataBaseClass::Query("Select Cn.Country,Country.Name CountryName, count(*) count from Competition Cn "
@@ -105,7 +105,7 @@ if($My==1 and  !GetCompetitorData()){
         <td>
             <select onchange="document.location='<?= PageIndex()?>Competitions/' + this.value ">
                 <option <?= ($country_filter=='0' and $My==0)?'selected':''?> value=""><?= ml('Competitions.All') ?> (<?= $competitions_countries_all ?>)</option>
-                <?php if(GetCompetitorData()){ ?><option <?= $My=='1'?'selected':''?> value="My"><?= ml('Competitions.My') ?><?php if(sizeof($competitor_competitions)-1>0){ ?> (<?= sizeof($competitor_competitions)-1 ?>) <?php } ?></option><?php } ?>
+                <?php if(getCompetitor()){ ?><option <?= $My=='1'?'selected':''?> value="My"><?= ml('Competitions.My') ?><?php if(sizeof($competitor_competitions)-1>0){ ?> (<?= sizeof($competitor_competitions)-1 ?>) <?php } ?></option><?php } ?>
                 <option disabled>------</option>
 
                 <?php foreach($competitions_countries as $competitions_country)if($competitions_country['Country']){ ?>

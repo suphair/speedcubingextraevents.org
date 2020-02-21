@@ -5,7 +5,7 @@ CheckPostIsNumeric('ID');
 
 $EventID=$_POST['ID'];
 
-$Competitor=GetCompetitorData();
+$Competitor=getCompetitor();
 
 if(!$Competitor){
     SetMessageName("RegistrationDeleteError", "Not completed the WCA authorization");

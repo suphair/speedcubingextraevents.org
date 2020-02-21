@@ -163,7 +163,7 @@ if($_FILES['file']['error']==0 and $_FILES['file']['type'] == 'application/pdf')
     $pdf->Output($file);
     $pdf->Close();
     DeleteFolder("Scramble/HardTmp/$rand");
-    DataBaseClass::Query("Insert into ScramblePdf (Event,Secret,Delegate,Timestamp,Action) values ('".$data['Event_ID']."','$rand','". CashDelegate()['Delegate_ID']."','$Scramble_Timestamp','Generation')");
+    DataBaseClass::Query("Insert into ScramblePdf (Event,Secret,Delegate,Timestamp,Action) values ('".$data['Event_ID']."','$rand','". getDelegate()['Delegate_ID']."','$Scramble_Timestamp','Generation')");
     
     header('Location: '.PageIndex()."Scramble/".$data['Event_ID']);
     exit();

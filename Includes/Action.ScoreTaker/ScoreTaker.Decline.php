@@ -4,7 +4,7 @@ CheckPostNotEmpty('ID','Secret');
 CheckPostIsNumeric('ID');
 $ID=$_POST['ID'];
 $Secret=$_POST['Secret'];
-CheckingScoreTakerCompetitor($ID,$Secret);
+checkingScoreTakerAccess($ID,$Secret);
 
 DataBaseClass::Query("Delete from `Attempt` where Command='$ID' ");
 

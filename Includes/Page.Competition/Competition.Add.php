@@ -1,4 +1,4 @@
-<?php $Delegate= CashDelegate(); ?>
+<?php $Delegate= getDelegate(); ?>
 <h1>Competition / Add</h1>
 <table class="table_info">
     <form method="POST" action="<?= PageAction('Competition.Add') ?>">

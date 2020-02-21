@@ -14,7 +14,7 @@ $data=DataBaseClass::QueryGenerate(false);
 
 if($data['RequestCandidate_ID']){
     $Competitor=$data['RequestCandidate_Competitor'];
-    $Delegate=CashDelegate()['Delegate_ID'];
+    $Delegate=getDelegate()['Delegate_ID'];
     $Vote=$_POST['Status'];
     DataBaseClass::Query("Delete from RequestCandidateVote where Competitor=$Competitor and Delegate=$Delegate");
     DataBaseClass::Query("Insert into RequestCandidateVote (Competitor,Delegate,Status,Reason) values ($Competitor,$Delegate,$Vote,'$Reason')");    

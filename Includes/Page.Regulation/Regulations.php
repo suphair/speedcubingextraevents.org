@@ -104,27 +104,27 @@ if(!$event_selected)$event_selected=$disciplines[0]['Code'];
     <?php if($discipline_row['Competitors']>1){ ?>
     <tr>
         <td>Team</td>
-        <td><?php Parsedown(str_replace("%1",$discipline_row['Competitors'],GetBlockText('Regulation.Competitors',$Language))) ?></td>
+        <td><?php Parsedown(str_replace("%1",$discipline_row['Competitors'],getBlockText('Regulation.Competitors',$Language))) ?></td>
     </tr>       
     <?php } ?>     
    <?php if($discipline_row['Inspection']==20){ ?>
     <tr>
         <td><?= ml('Regulations.Inspect') ?></td>
-        <td><?php Parsedown(GetBlockText('Regulation.Inspect.20',$Language)); ?></td>
+        <td><?php Parsedown(getBlockText('Regulation.Inspect.20',$Language)); ?></td>
     </tr>       
     <?php } ?>
    
    <?php if(strpos($discipline_row['CodeScript'],'mguild')!==false){ ?>
     <tr>
         <td><?= ml('Regulations.Position') ?></td>
-        <td><?php Parsedown(GetBlockText('Regulation.mguild',$Language)); ?></td>
+        <td><?php Parsedown(getBlockText('Regulation.mguild',$Language)); ?></td>
     </tr>       
     <?php } ?>
    
    <?php if($discipline_row['TNoodles']){ ?>
     <tr>
         <td><?= ml('Regulations.Penalties') ?></td>
-        <td><?php Parsedown(GetBlockText('Regulation.puzzles',$Language)) ?></td>
+        <td><?php Parsedown(getBlockText('Regulation.puzzles',$Language)) ?></td>
     </tr>    
     <?php  } ?> 
     <tr>

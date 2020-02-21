@@ -8,7 +8,7 @@ $Delegate=$_POST['Delegate'];
 RequestClass::CheckAccessExit(__FILE__, 'Competition.Report.Comment',$Competition);
 $Comment= DataBaseClass::Escape($_POST['Comment']);
 
-$CommentDelegate=CashDelegate()['Delegate_ID'];
+$CommentDelegate=getDelegate()['Delegate_ID'];
 
 $Comment_ID=false;
 DataBaseClass::Query("Select ID from CompetitionReportComment where Competition='$Competition' and Delegate='$Delegate' and CommentDelegate='$CommentDelegate'");

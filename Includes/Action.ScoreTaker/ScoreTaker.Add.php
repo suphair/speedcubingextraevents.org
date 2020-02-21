@@ -63,7 +63,7 @@ if($Type=='Competitors'){
 
 
 $Warnings=(isset($_POST['AttempsWarning']))?$_POST['AttempsWarning']:'';
-CheckingScoreTakerCompetitor($ID,$Secret);
+checkingScoreTakerAccess($ID,$Secret);
 DataBaseClass::Query("Select FR.Format FormatResult,Com.Event,F.Attemption, F.Result, F.ExtResult "
         . " from `Format` F "
         . " join `DisciplineFormat` DF on DF.Format=F.ID "

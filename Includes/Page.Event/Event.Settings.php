@@ -94,7 +94,7 @@ $disciplines=DataBaseClass::QueryGenerate();
         <td>
             <input  type="checkbox" <?= $format['E']?'disabled':'' ?> <?= $format['DF']?'checked':'' ?> name="Formats[]" value="<?= $format['ID'] ?>" > <?= $format['Result']." of ".$format['Attemption'] ?>
             <?php if($format['E']){?>
-                <i class="fas fa-info-circle"></i> attempts exist
+                <i class="fas fa-info-circle"></i> competitions exist
             <?php } ?>
         </td>
     </tr>

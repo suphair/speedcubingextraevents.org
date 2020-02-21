@@ -3,7 +3,7 @@ $Competition=ObjectClass::getObject('PageCompetition');
 $CompetitionEvents=ObjectClass::getObject('PageCompetitionEvents');
 $CompetitionEvent=ObjectClass::getObject('PageCompetitionEvent');
 $CompetitionDelegates=ObjectClass::getObject('PageCompetitionDelegates');
-$Competitor=GetCompetitorData(); 
+$Competitor=getCompetitor(); 
 
 if(!$CompetitionEvent and isset($CompetitionEvents[0])){
     ObjectClass::setObjects('PageCompetitionEvent',$CompetitionEvents[0]);

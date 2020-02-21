@@ -1,20 +1,25 @@
 <?php
-
-Function GetCompetitorData(){
+function getCompetitor()
+{
     if(isset($_SESSION['Competitor'])){        
         if(!isset($_SESSION['Competitor']->id)){
             unset($_SESSION['Competitor']);
-            return false;        
+            $competitor = false;
         }
-        
-        return $_SESSION['Competitor'];
+        $competitor = $_SESSION['Competitor'];
+    }else{
+        $competitor = false;
     }
-    return false;
+    return $competitor;
 }
 
-
-function CheckingScoreTakerCompetitor($CommandID,$Secret){
-    DataBaseClass::Query("Select Com.ID from `Command` Com join `Event` E on E.ID=Com.Event  where Com.`ID`='$CommandID' and E.Secret='$Secret'");
+function checkingScoreTakerAccess($commandID,$secret)
+{
+    DataBaseClass::Query("Select Com.ID "
+            . " from `Command` Com "
+            . " join `Event` E on E.ID=Com.Event "
+            . " where Com.`ID`='".DataBaseClass::Escape($commandID)."' "
+            . " and E.Secret='".DataBaseClass::Escape($secret)."'");
     if(!DataBaseClass::rowsCount()){  
         SetMessage("score taker access denied");
         HeaderExit(); 
@@ -38,4 +43,65 @@ function CheckingScoreTakerEvent($EventID,$Secret){
         SetMessage("score taker access denied");
         HeaderExit(); 
     }   
+}
+
+function getDelegate(){
+    if(!$delegate = ObjectClass::getObject('Delegate')){
+        if($competitor = getCompetitor()){
+            DataBaseClass::FromTable("Delegate","WCA_ID='".$competitor->wca_id."'");
+            DataBaseClass::Where_current("Status!='Archive'");
+            if($delegate = DataBaseClass::QueryGenerate(false)){
+                ObjectClass::setObjects('Delegate', $delegate);
+            }
+        }
+    }
+    return $delegate;
+}
+
+function CheckAccess($type,$competitionID=false)
+{
+    if(!getCompetitor() and !getDelegate()){
+        return false;
+    }
+        
+    $DelegateID=getDelegate()['Delegate_ID'];
+    
+    if(!$Level=ObjectClass::getObject('GrandRole')){
+        DataBaseClass::Query("Select Level from GrandRole where Name='".getDelegate()['Delegate_Status']."'");
+        $row=DataBaseClass::getRow();
+        if(isset($row['Level'])){
+            $Level=$row['Level'];
+        }else{
+            $Level=0;
+        }
+        ObjectClass::setObjects('GrandRole', $Level);
+    }
+    
+
+    $result=0;
+    
+    
+    DataBaseClass::Query("Select * from GrandGroupMember GGM join GrandGroup GG on GG.ID=GGM.Group join GrandAccess GA on GA.Group=GG.ID where GGM.Delegate='$DelegateID' and Type='$type'");
+    $result+=sizeof(DataBaseClass::getRows());
+    
+    
+    DataBaseClass::Query("Select 1 from GrandAccess where Type='$type' and Level<=$Level and Competition=0 ");
+    $result+=sizeof(DataBaseClass::getRows());
+    if($competitionID){
+        $CompetitionCheck=false;
+        DataBaseClass::Query("Select * from CompetitionDelegate where Competition='".$competitionID."' and Delegate='$DelegateID'");
+        if(isset(DataBaseClass::getRow()['ID'])){$CompetitionCheck=true;}
+        
+        DataBaseClass::Query("Select * from Competition where ID='".$competitionID."' and DelegateWCAOn=1 and DelegateWCA like '%".(getCompetitor()->wca_id)."%'");
+        if(isset(DataBaseClass::getRow()['ID'])){$CompetitionCheck=true;}
+       
+        if($CompetitionCheck){
+            DataBaseClass::Query("Select 1 from GrandAccess where Type='$type' and Level<=$Level and Competition=1");
+            $result+=sizeof(DataBaseClass::getRows());
+
+        }
+        
+        
+    }
+    return $result>0;
 }

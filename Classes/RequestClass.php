@@ -434,7 +434,7 @@ $typesSimplePage=[
                 echo '<pre>';
                     print_r($_POST);
                 echo '</pre>';
-                if($Competitor= GetCompetitorData()){
+                if($Competitor= getCompetitor()){
                     echo '<hr> Your authorization data';
                     echo '<pre>';
                         print_r($Competitor);

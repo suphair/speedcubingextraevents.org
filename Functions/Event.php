@@ -82,7 +82,8 @@ function EventBlockLinks($Event,$current="",$table_exists=false){
         $exists_GenerateTraining=file_exists("Functions/GenerateTraining_{$Event['Discipline_CodeScript']}.php");
         $exists_Generate=file_exists("Functions/Generate_{$Event['Discipline_CodeScript']}.php");
         $exists_ScriptGenerate=file_exists("Script/{$Event['Discipline_CodeScript']}_generator.js");
-        if($exists_GenerateTraining or $exists_Generate or  $exists_ScriptGenerate){ ?>
+        $exists_ScrambleImage=file_exists("Scramble/{$Event['Discipline_CodeScript']}.php");
+        if($exists_ScrambleImage and ($exists_GenerateTraining or $exists_Generate or $exists_ScriptGenerate)){ ?>
         <tr>
             <td><i class="fas fa-random"></i></td>
             <td><a class="<?= $current=='training'?'select':''?>" href="<?= PageIndex()?>Event/<?= $Event['Discipline_Code'] ?>/Training"><?= ml('TrainingScrambling.Title') ?></a></td>            

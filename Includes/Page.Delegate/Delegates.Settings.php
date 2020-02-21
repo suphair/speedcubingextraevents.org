@@ -12,7 +12,7 @@
 <?php } ?>
 
 <?php 
-$Delegate= CashDelegate();
+$Delegate= getDelegate();
 DataBaseClass::Query("Select * from Delegate where status='Senior' order by Name");
 $Seniors=DataBaseClass::getRows(); 
 

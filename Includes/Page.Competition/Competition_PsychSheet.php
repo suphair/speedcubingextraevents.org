@@ -1,7 +1,7 @@
 <?php
 $Competition=ObjectClass::getObject('PageCompetition'); 
 $CompetitionEvent=ObjectClass::getObject('PageCompetitionEvent');
-$Competitor=GetCompetitorData();
+$Competitor=getCompetitor();
 $countCommands=ObjectClass::getObject('CompetitionEventCommands'); 
 
     DataBaseClass::FromTable('Event',"ID='".$CompetitionEvent['Event_ID']."'");

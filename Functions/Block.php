@@ -1,17 +1,20 @@
 <?php
-
-function GetBlockText($Name,$Country=''){
-  $Name= DataBaseClass::Escape($Name);
-  if($Country){
-    DataBaseClass::Query("Select * from BlockText where Name='$Name' and '$Country'=Country");  
-  }else{
-    DataBaseClass::Query("Select * from BlockText where Name='$Name'" );  
-  }
-  if(DataBaseClass::rowsCount()){
-      $value=DataBaseClass::getRow()['Value'];
-      return $value;
-  }  
-   return false; 
+function getBlockText($nameBlock,$language = false)
+{
+    $nameBlock = DataBaseClass::Escape($nameBlock);
     
+    if($language){
+        DataBaseClass::Query("Select * from BlockText where Name='$nameBlock' and Country='$language'");  
+    }else{
+        DataBaseClass::Query("Select * from BlockText where Name='$nameBlock'" );  
+    }
+    
+    if(DataBaseClass::rowsCount()){
+        $valueBlock= DataBaseClass::getRow()['Value'];      
+    }else{
+        $valueBlock=false;
+    }  
+    
+    return $valueBlock;   
 }
 ?>

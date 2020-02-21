@@ -1,5 +1,5 @@
 <?php
-if($Competitor=GetCompetitorData()){
+if($Competitor=getCompetitor()){
     AddLog('WCA_Auth','Logout',$Competitor->name);
     unset($_SESSION['Competitor']);
 }

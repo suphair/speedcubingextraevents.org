@@ -1,6 +1,6 @@
 <?php
 RequestClass::CheckAccessExit(__FILE__, 'Competition.Add');
-$Delegate = CashDelegate();
+$Delegate = getDelegate();
 
 if(CheckAccess('Competition.Add.Ext')){
     CheckPostIsset('WCA','Delegate');

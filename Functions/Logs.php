@@ -1,7 +1,7 @@
 <?php
 Function AddLog($Object,$Action,$Details){
-    if(GetCompetitorData()){
-        $CompetitorID=GetCompetitorData()->id;
+    if(getCompetitor()){
+        $CompetitorID=getCompetitor()->id;
     }else{
         $CompetitorID=0;
     }
@@ -18,11 +18,11 @@ Function LogsRegistration($EventID,$Action,$Details){
     $Details= DataBaseClass::Escape($Details);
     $Doing='ScoreTaker';
             
-    if($Competitor= GetCompetitorData()){
+    if($Competitor= getCompetitor()){
         $Doing='Competitor: '.Short_Name($Competitor->name);
     }
     
-    if($Delegate= CashDelegate()){
+    if($Delegate= getDelegate()){
         $Doing='Delegate: '.Short_Name($Delegate['Delegate_Name']);
     }
     

@@ -10,8 +10,8 @@ $Report= DataBaseClass::Escape($_POST['Report']);
 
 
 $Report_ID=false;
-if(CashDelegate()){
-    $Delegate=CashDelegate()['Delegate_ID'];
+if(getDelegate()){
+    $Delegate=getDelegate()['Delegate_ID'];
     $DelegateWCA='null';
     DataBaseClass::Query("Select ID from CompetitionReport  where Competition=$ID and Delegate=$Delegate");
     $row=DataBaseClass::getRow();
@@ -19,7 +19,7 @@ if(CashDelegate()){
         $Report_ID=$row['ID'];
     }
 }else{
-    $DelegateWCA= GetCompetitorData()->id;
+    $DelegateWCA= getCompetitor()->id;
     $Delegate='null';
     DataBaseClass::Query("Select ID from CompetitionReport  where Competition=$ID and DelegateWCA=$DelegateWCA");
     $row=DataBaseClass::getRow();
@@ -40,7 +40,7 @@ if(!trim($Report)){
 
         DataBaseClass::FromTable("Competition","ID=".$ID);
         $Competition=DataBaseClass::QueryGenerate(false);
-        $Name=GetCompetitorData()->name;
+        $Name=getCompetitor()->name;
 
          SendMail(getini('Seniors','email'), 'SEE: New report '.$Competition['Competition_Name'].' / '.$Name,
                 "<pre>".$Competition['Competition_Name']." / ".$Name."<br><a href='https://". PageIndex()."Competition/".$Competition['Competition_WCA']."/Report'>View report</a>");

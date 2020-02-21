@@ -6,7 +6,7 @@ CheckPostNotEmpty('Name','Code');
 
 $Name=$_POST['Name'];
 $Code= str_replace(" ","",$_POST['Code']);
-$Delegate= CashDelegate();
+$Delegate= getDelegate();
 
 DataBaseClass::Query("Insert into  `Discipline` ( Name,Code,Status,CodeScript) VALUES('$Name','$Code','Archive','$Code')");
 

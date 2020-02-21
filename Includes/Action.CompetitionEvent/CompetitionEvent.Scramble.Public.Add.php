@@ -20,7 +20,7 @@ if(isset($row['Event_Competition'])){
         $file="Image/Scramble/".$rand.".pdf";
 
         copy($_FILES['scramble']['tmp_name'],$file);
-        DataBaseClass::Query("Insert into ScramblePdf (Event,Secret,Delegate,Timestamp,Action) values ('$ID','$rand','". CashDelegate()['Delegate_ID']."','$Scramble_Timestamp','Publication')");  
+        DataBaseClass::Query("Insert into ScramblePdf (Event,Secret,Delegate,Timestamp,Action) values ('$ID','$rand','". getDelegate()['Delegate_ID']."','$Scramble_Timestamp','Publication')");  
         DataBaseClass::Query("Update Event set ScramblePublic='$rand' where ID='$ID'"); 
     }
 }

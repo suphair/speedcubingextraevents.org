@@ -13,7 +13,7 @@ if(isset($row['Event_Competition'])){
     $Scramble_Timestamp=date("Y-m-d H:i:s");    
     $rand= random_string(20);  
 
-    DataBaseClass::Query("Insert into ScramblePdf (Event,Secret,Delegate,Timestamp,Action) values ('$ID','$rand','". CashDelegate()['Delegate_ID']."','$Scramble_Timestamp','Cancel Publication')");  
+    DataBaseClass::Query("Insert into ScramblePdf (Event,Secret,Delegate,Timestamp,Action) values ('$ID','$rand','". getDelegate()['Delegate_ID']."','$Scramble_Timestamp','Cancel Publication')");  
     DataBaseClass::Query("Update Event set ScramblePublic=null where ID='$ID'"); 
 
 }

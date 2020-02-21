@@ -15,5 +15,5 @@
     </select>
 </form> 
 <?php 
-$regulations=GetBlockText("MainRegulation",$Language); 
+$regulations=getBlockText("MainRegulation",$Language); 
 echo Parsedown($regulations); ?>

@@ -1,6 +1,6 @@
 <?php
 $Competition=ObjectClass::getObject('PageCompetition'); 
-$Competitor= GetCompetitorData();
+$Competitor= getCompetitor();
 $request=getRequest();
 
 DataBaseClass::FromTable('Competition',"ID='".$Competition['Competition_ID']."'");
@@ -124,7 +124,7 @@ $Report[$report['Competitor_ID']]=$report['CompetitionReport_Report'];
             <h3>Comment by SEE Senior Delegates</h3>
             <table class="table_info">
             <?php foreach($comments as $row){ 
-                    if($row['CommentDelegate']== CashDelegate()['Delegate_ID']){ 
+                    if($row['CommentDelegate']== getDelegate()['Delegate_ID']){ 
                         $comment= trim($row['Comment']);
                     } ?>
                 <tr>
@@ -156,7 +156,7 @@ if(CheckAccess('Competition.Report.Create',$Competition['Competition_ID']) and $
 <table class="table_info">
     <tr>
         <td>Instruction</td>
-        <td><?= Parsedown(GetBlockText("Report")); ?></td>
+        <td><?= Parsedown(getBlockText("Report")); ?></td>
     </tr>
 </table>
 <br>

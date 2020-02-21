@@ -107,15 +107,6 @@ foreach($data as $row){
         $pdf->Text(10, 27,$Competition_name);
         
         
-        
-            $pdf->SetFont('Arial','',16);
-    $str=iconv('utf-8', 'cp1252//TRANSLIT', $data['Competition']);
-    $pdf->Text(10, 13, $str);
-    $pdf->SetFont('Arial','',24);
-    $pdf->Text(10, 24, $data['Discipline'].$data['vRound']);
-        
-        
-        
         //Footer
         $pdf->SetFont('Arial','',10);
         $pdf->SetTextColor(0,0,0);
@@ -150,8 +141,13 @@ foreach($data as $row){
     $texts=array();
     if(strpos($row['Scramble_Scramble'],"&")===false){
 
-        $scramble_len=strlen($row['Scramble_Scramble']);
-        if($scramble_max>44*3){         $scramble_row=3; $scramble_size=12; 
+        $scramble_len=strlen($row['Scramble_Scramble']); 
+        if($scramble_max>44*8){         $scramble_row=9; $scramble_size=10;
+        }elseif($scramble_max>44*7){    $scramble_row=8; $scramble_size=10;
+        }elseif($scramble_max>44*6){    $scramble_row=7; $scramble_size=10;
+        }elseif($scramble_max>44*5){    $scramble_row=6; $scramble_size=10; 
+        }elseif($scramble_max>44*4){    $scramble_row=5; $scramble_size=10; 
+        }elseif($scramble_max>44*3){    $scramble_row=4; $scramble_size=10; 
         }elseif($scramble_max>38*3){    $scramble_row=3; $scramble_size=12; 
         }elseif($scramble_max>102){     $scramble_row=3; $scramble_size=16; 
         }elseif($scramble_max>90){      $scramble_row=3; $scramble_size=16; 
@@ -160,28 +156,20 @@ foreach($data as $row){
         }elseif($scramble_max>34){      $scramble_row=2; $scramble_size=18; 
         }elseif($scramble_max>20){      $scramble_row=1; $scramble_size=18; 
         }else{                          $scramble_row=1; $scramble_size=20; }
-
         if($scramble_len<10)$scramble_row=1;
         
-        if($scramble_row==3){
-            $d=8;
-            $r1=ceil($scramble_len/3);
-            $r2=ceil($scramble_len/3*2);
-            while(substr($row['Scramble_Scramble'],$r1,1)!=" "){$r1--;}
-            while(substr($row['Scramble_Scramble'],$r2,1)!=' '){$r2--;}
-            $texts[]=trim(substr($row['Scramble_Scramble'],0,$r1));
-            $texts[]=trim(substr($row['Scramble_Scramble'],$r1+1,$r2-$r1));
-            $texts[]=trim(substr($row['Scramble_Scramble'],$r2));
-
-        }elseif($scramble_row==2){
-            $d=10;
-            $r1=ceil($scramble_len/2);
-            while(substr($row['Scramble_Scramble'],$r1,1)!=" "){$r1--;}
-            $texts[]=trim(substr($row['Scramble_Scramble'],0,$r1));
-            $texts[]=trim(substr($row['Scramble_Scramble'],$r1));
-        }else{
-            $texts[]=trim($row['Scramble_Scramble']);
+        $r=[];
+        for($i=1;$i<=$scramble_row-1;$i++){
+            $r[$i]=ceil($scramble_len/$scramble_row*$i);
+            while(substr($row['Scramble_Scramble'],$r[$i],1)!=" "){$r[$i]--;}    
         }
+
+        $texts[]=trim(substr($row['Scramble_Scramble'],0,$r[1]));
+
+        for($i=1;$i<=$scramble_row-2;$i++){
+            $texts[]=trim(substr($row['Scramble_Scramble'],$r[$i]+1,$r[$i+1]-$r[$i]));
+        }
+        $texts[]=trim(substr($row['Scramble_Scramble'],$r[$scramble_row-1]));
 
     }else{
         $texts=explode(" & ",$row['Scramble_Scramble']);
@@ -258,7 +246,7 @@ $file="Image/Scramble/".$rand.".pdf";
 $pdf->Output($file);
 $pdf->Close();
 DeleteFolder("Scramble/HardTmp/$rand");
-DataBaseClass::Query("Insert into ScramblePdf (Event,Secret,Delegate,Timestamp, Action) values ('".$data[0]['Event_ID']."','$rand','". CashDelegate()['Delegate_ID']."','$Scramble_Timestamp','Generation')");
+DataBaseClass::Query("Insert into ScramblePdf (Event,Secret,Delegate,Timestamp, Action) values ('".$data[0]['Event_ID']."','$rand','". getDelegate()['Delegate_ID']."','$Scramble_Timestamp','Generation')");
 header('Location: '.PageIndex()."Scramble/".$data[0]['Event_ID']);
 exit();
     

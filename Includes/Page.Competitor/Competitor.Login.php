@@ -1,7 +1,7 @@
 <div style="display: none" class="competitor-panel">
 <?php 
-$Competitor=GetCompetitorData();
-$Delegate=CashDelegate(); 
+$Competitor=getCompetitor();
+$Delegate=getDelegate(); 
 
 if($Competitor){ ?>
     <a href="<?= PageIndex() ?>Competitor/<?= $Competitor->local_id ?>"><i class="fas fa-user"></i> <?= ml('Competitor.MyResults') ?></a>&nbsp;&nbsp;&nbsp;

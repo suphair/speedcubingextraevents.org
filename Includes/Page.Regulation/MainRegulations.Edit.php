@@ -12,7 +12,7 @@
         <?php } ?>
     </select>
 </form> 
-<?php $regulations=GetBlockText("MainRegulation",$Language); ?>
+<?php $regulations=getBlockText("MainRegulation",$Language); ?>
 <table width="100%">
     <tr>
         <td width="50%" valign="top" style="padding:10px">

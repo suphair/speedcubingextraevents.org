@@ -9,7 +9,7 @@ $Fields=array();
 foreach($_POST['Fields'] as $field=>$value){
     $Fields[DataBaseClass::Escape($field)]=DataBaseClass::Escape($value);
 }
-$competitor=GetCompetitorData();
+$competitor=getCompetitor();
 DataBaseClass::FromTable("Competitor","WID='". $competitor->id."'");
 $competitor_row=DataBaseClass::QueryGenerate(false);
 if(!$competitor_row['Competitor_ID'] or $ID!=$competitor->id){        

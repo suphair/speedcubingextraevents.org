@@ -6,7 +6,7 @@ if(isset($request[1])){
 }else{
     $type_filter='none';
 }
-$competitor= GetCompetitorData(); 
+$competitor= getCompetitor(); 
 if($competitor){
     DataBaseClass::Query("Select Ct.Name,Ct.Code from Country C"
              . " join Continent Ct on Ct.Code=C.Continent where C.ISO2='".$competitor->country_iso2."'");
@@ -56,7 +56,7 @@ $extraWhere="";
     </tr>
 </table> 
 
-<?php $Competitor=GetCompetitorData();
+<?php $Competitor=getCompetitor();
 
 if($type_filter=='simple'){
     $extraWhere=" and Simple=1";

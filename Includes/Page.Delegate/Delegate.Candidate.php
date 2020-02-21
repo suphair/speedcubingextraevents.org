@@ -1,11 +1,11 @@
 <?php
-    $competitor= GetCompetitorData(); 
+    $competitor= getCompetitor(); 
     $Language=$_SESSION['language_select'];
     if($competitor){    
         DataBaseClass::fromTable("RequestCandidateField");
         DataBaseClass::Join_current("RequestCandidate");
         DataBaseClass::Join_current("Competitor");
-        DataBaseClass::Where_current("WID=".GetCompetitorData()->id);
+        DataBaseClass::Where_current("WID=".getCompetitor()->id);
         DataBaseClass::OrderClear("RequestCandidateField", "ID");
         $RequestCandidateFields=DataBaseClass::QueryGenerate();
     } ?>    
@@ -22,7 +22,7 @@
                     <input type="hidden" name='ID' value="<?= $competitor->id ?>">
                     <table class="table_info">
                     <?php if($competitor->delegate_status){ 
-                    $delegate_block= GetBlockText('DelegateWCA.Candidate'); ?>
+                    $delegate_block= getBlockText('DelegateWCA.Candidate'); ?>
                     <?php if($delegate_block){ ?>
                         <tr>
                             <td><i class="fas fa-info-circle"></i> Info for WCA Delegate</td>

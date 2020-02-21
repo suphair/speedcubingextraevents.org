@@ -8,7 +8,7 @@
 </table>
 <?php } ?>
 <?php
-$Delegate= CashDelegate();
+$Delegate= getDelegate();
 $CheckAccessVote=CheckAccess('Delegate.Candidate.Vote');
 $CheckAccessDecline=CheckAccess('Delegate.Candidate.Decline');
 $CheckAccessAccept=CheckAccess('Delegate.Candidate.Accept');

@@ -16,7 +16,7 @@ if(count($event)==0){
 }
 $WCA=$event['Competition_WCA'];
 
-$Competitor=GetCompetitorData();
+$Competitor=getCompetitor();
 
 if(!$Competitor){
     header('Location: '.$_SERVER['HTTP_REFERER']);

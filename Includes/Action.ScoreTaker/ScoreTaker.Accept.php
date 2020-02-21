@@ -5,7 +5,7 @@ CheckPostIsNumeric('ID');
 $ID=$_POST['ID'];
 $Secret=$_POST['Secret'];
 
-CheckingScoreTakerCompetitor($ID,$Secret);
+checkingScoreTakerAccess($ID,$Secret);
 
 DataBaseClass::Query("Update `Command` set Decline=0 where ID='$ID' ");
     

@@ -29,7 +29,7 @@ $CodeScript=$data['Discipline_CodeScript'];
 $Attemption=$data['Format_Attemption'];
 
 $exs=2;
-if($CodeScript=='9x9' or $CodeScript=='8x8'){
+if($Attemption<5){
         $exs=1;
 }
 
