@@ -21,10 +21,11 @@ function GenerateScramble($Event,$training=false){
         return Generate_pyra444();
     }elseif($Event=='fto'){
         return Generate_fto();
+    }elseif($Event=='curvycopter'){
+        return Generate_curvycopter($training);
     }else{
         return false;
     }
-
 }
 
 function DeleteScramble($ID){
