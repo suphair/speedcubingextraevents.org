@@ -169,6 +169,7 @@ for line in h:
     i+=1
 h.close()
 f = open("curvycopter_training_out.txt", 'w')
+#f = open("curvycopter_out.txt", 'w')
 for _ in range(1000):
     #construct a random valid cube shaped state
     start=[[0]*12,[0,1,2,3,4,5,6,7],[0]*8,[0,0,0,0,1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,5]]
@@ -360,6 +361,7 @@ for _ in range(1000):
                 made[i]=edges[real]+"+"
             else:
                 made[i]=edges[real]+"-"
+    made.append("*")            
 
     #add jumbling moves
     bonus=random.choice(poss).split()
@@ -382,22 +384,22 @@ for _ in range(1000):
         if made[i][-1]=="3":
             made[i]=made[i][:-1]
         elif made[i][-1]=="2":
-            made[i]=made[i][:-1]+"+2"
+            made[i]=made[i][:-1]+"++"
         elif len(made[i])==2:
             made[i]+="+"
         elif made[i][-1]=="'":
             if len(made[i])==3:
                 made[i]=made[i][:-1]+"-"
             else:
-                made[i]=made[i][:-2]+"-2"
+                made[i]=made[i][:-2]+"--"
         elif made[i][-1]=="+":
             ind=truemoves[made[i][:-1]][0]
             other1,other2=edgeblock[ind][2],edgeblock[ind][3]
-            made[i]=edges[other1]+"+ "+edges[other2]+"+ "+edges[ind]+" "+edges[other1]+"- "+edges[other2]+"-"
+            made[i]="("+edges[other1]+"+ "+edges[other2]+"+ "+edges[ind]+" "+edges[other1]+"- "+edges[other2]+"-"+")"
         elif made[i][-1]=="-":
             ind=truemoves[made[i][:-1]][0]
             o1,o2=edgeblock[ind][4],edgeblock[ind][5]
-            made[i]=edges[o1]+"- "+edges[o2]+"- "+edges[ind]+" "+edges[o1]+"+ "+edges[o2]+"+"      
+            made[i]="("+edges[o1]+"- "+edges[o2]+"- "+edges[ind]+" "+edges[o1]+"+ "+edges[o2]+"+"+")"      
     print _+1," ".join(made)
     if(_>0):
         f.write("\n")
