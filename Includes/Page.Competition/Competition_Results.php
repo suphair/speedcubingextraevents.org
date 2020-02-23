@@ -174,14 +174,14 @@ if( !$Competition['Competition_Unofficial']){
                             <?= $attempts[$CompetitionEvent['Format_ExtResult']]; ?>
                         <?php }?>        
                     </td>
-                    <td>            
-                        <?php if(isset($WRecords[$CompetitionEvent['Format_ExtResult']]) and  $WRecords[$CompetitionEvent['Format_ExtResult']]==$attempts[$CompetitionEvent['Format_ExtResult']]){ ?>
+                    <td class="table_new_PB">            
+                        <?php if(isset($WRecords[$CompetitionEvent['Format_ExtResult']]) and  $WRecords[$CompetitionEvent['Format_ExtResult']]==$attempts_in[$CompetitionEvent['Format_ExtResult']]){ ?>
                                 WR
                         <?php }elseif($command['Command_vCountry'] and
                                 isset($CRecords[$Country_Continent[$command['Command_vCountry']]][$CompetitionEvent['Format_ExtResult']]) 
-                                and $CRecords[$Country_Continent[$command['Command_vCountry']]][$CompetitionEvent['Format_ExtResult']]==$attempts[$CompetitionEvent['Format_ExtResult']]){ ?>
+                                and $CRecords[$Country_Continent[$command['Command_vCountry']]][$CompetitionEvent['Format_ExtResult']]==$attempts_in[$CompetitionEvent['Format_ExtResult']]){ ?>
                                 CR
-                        <?php }elseif(isset($command['Command_vCountry']) and isset($NRecords[$command['Command_vCountry']][$CompetitionEvent['Format_ExtResult']]) and  $NRecords[$command['Command_vCountry']][$CompetitionEvent['Format_ExtResult']]==$attempts[$CompetitionEvent['Format_ExtResult']]){ ?>
+                        <?php }elseif(isset($command['Command_vCountry']) and isset($NRecords[$command['Command_vCountry']][$CompetitionEvent['Format_ExtResult']]) and  $NRecords[$command['Command_vCountry']][$CompetitionEvent['Format_ExtResult']]==$attempts_in[$CompetitionEvent['Format_ExtResult']]){ ?>
                                 NR
                         <?php } ?>
                     </td>

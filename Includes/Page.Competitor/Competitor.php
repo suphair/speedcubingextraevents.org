@@ -412,11 +412,14 @@ foreach($types as $type){
 
     foreach($commands as $command){ 
         $attempts=array();
+        $attempts_in=array();
         for($i=1;$i<=$attemption;$i++) {
             $attempts[$i]="";
+            $attempts_in[$i]="";
         }
         foreach(DataBaseClass::SelectTableRows("Format") as $format){
             $attempts[$format['Format_Result']]="";    
+            $attempts_in[$format['Format_Result']]="";    
         }
 
         $is_attempt=false;
@@ -424,6 +427,7 @@ foreach($types as $type){
         foreach(DataBaseClass::QueryGenerate() as $attempt_row){
             $is_attempt=true;
             $attempt=trim($attempt_row['Attempt_vOut']);
+            $attempt_in=$attempt;
             if($attempt_row['Attempt_Except']){
                 $attempt="<span class='table_new_except table_new_attempt'>$attempt</span>";
             }else{
@@ -432,6 +436,7 @@ foreach($types as $type){
 
             if($attempt_row['Attempt_Attempt']){
                $attempts[$attempt_row['Attempt_Attempt']]= $attempt;
+               $attempts_in[$attempt_row['Attempt_Attempt']]= $attempt_in;
             }else{
                 if($attempt_row['Attempt_Special']=='Mean'){
                     $type='Average';
@@ -439,6 +444,7 @@ foreach($types as $type){
                     $type=$attempt_row['Attempt_Special'];
                 }
                $attempts[$type]= $attempt; 
+               $attempts_in[$type]= $attempt_in; 
                $attempts_ID[$type]= $attempt_row['Attempt_ID'];
             }
         } ?>
@@ -537,12 +543,12 @@ foreach($types as $type){
                                <?=  $attempts[$type]; ?>
                             </td>  
                         <?php } ?>
-                        <td>
-                            <?php if($WRecord==$attempts[$type]){ ?>
+                        <td class="table_new_PB">
+                            <?php if($WRecord==$attempts_in[$type]){ ?>
                                 WR
-                            <?php }elseif($CRecord==$attempts[$type]){ ?>
+                            <?php }elseif($CRecord==$attempts_in[$type]){ ?>
                                 CR
-                            <?php }elseif($NRecord==$attempts[$type]){ ?>
+                            <?php }elseif($NRecord==$attempts_in[$type]){ ?>
                                 NR
                             <?php } ?>
                         </td>
