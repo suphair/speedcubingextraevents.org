@@ -530,6 +530,12 @@ if($error){ ?>
     <form method="POST" action="<?= PageAction('CompetitionEvent.Edit') ?>">
     <input name="key" type="hidden" value="<?= $event['Discipline_CodeScript']?>_<?= $event['Event_Round']?>" />
     <input name="ID" type="hidden" value="<?= $event['Event_ID'] ?>" />
+    <tr>
+        <td><i class="fas fa-cog"></i></td>
+        <td>
+            <a href="<?= PageIndex() ?>Competition/<?= $Competition['Competition_WCA'] ?>/<?= $event['Discipline_Code'] ?>/<?= $event['Event_Round'] ?>/Settings">Competition event settings</a>
+        </td>
+    </tr>
      <tr>
          <td>Format</td>
          <td>

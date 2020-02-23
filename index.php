@@ -55,7 +55,13 @@ if(RequestClass::getError(401)){ header('HTTP/1.1 401 Unauthorized'); } ?>
                                 $(this).removeClass('competitor_panel_open_link');
                             }
                             return false;
-                            " class="local_link competitor_panel_link"><?= Short_Name($Competitor->name) ?></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            " class="local_link competitor_panel_link">
+                        <?php if(getDelegate()){ ?>
+                            <i class="fas fa-user-tie"></i>
+                        <?php }else{ ?>
+                            <i class="fas fa-user"></i>    
+                        <?php } ?>
+                        <?= Short_Name($Competitor->name) ?></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <a href="<?= PageIndex() ?>Actions/Competitor.Logout"><i class="fas fa-sign-out-alt"></i> <?= ml('Competitor.SignOut')?></a>&nbsp;
                     <?php }else{ ?>
                         <?php  $_SESSION['ReferAuth']=$_SERVER['REQUEST_URI']; ?> 

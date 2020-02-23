@@ -176,6 +176,9 @@ if($My==1 and  !getCompetitor()){
                     <?php } 
                 }
             } ?>
+            <?php if(empty($r['events'])){?>
+                <i class="fas fa-ban"></i>
+            <?php } ?>
         </td>
     </tr>
 <?php } ?>
