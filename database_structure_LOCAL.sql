@@ -64,6 +64,7 @@ CREATE TABLE `Command` (
   `exportId` varchar(40) DEFAULT NULL,
   `exportName` varchar(160) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   `exportCountryId` varchar(50) DEFAULT NULL,
+  `inCup` int(11) DEFAULT '1',
   PRIMARY KEY (`ID`),
   KEY `Event` (`Event`),
   CONSTRAINT `competitorevent_ibfk_3` FOREIGN KEY (`Event`) REFERENCES `Event` (`ID`)
@@ -195,6 +196,58 @@ CREATE TABLE `Country` (
 
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `CupCell` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `Event` int(11) DEFAULT NULL,
+  `CommandWin` int(11) DEFAULT NULL,
+  `Command1` int(11) DEFAULT NULL,
+  `Command2` int(11) DEFAULT NULL,
+  `Round` varchar(255) DEFAULT NULL,
+  `CupCell1` varchar(255) DEFAULT NULL,
+  `CupCell2` varchar(255) DEFAULT NULL,
+  `Number` int(11) DEFAULT NULL,
+  `Status` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `Command1` (`Command1`,`Command2`),
+  KEY `Command1_2` (`Command1`),
+  KEY `Command2` (`Command2`),
+  KEY `CommandWin` (`CommandWin`),
+  KEY `Command1_3` (`Command1`),
+  KEY `Command2_2` (`Command2`),
+  KEY `CommandWin_2` (`CommandWin`),
+  KEY `Command1_4` (`Command1`),
+  KEY `Command2_3` (`Command2`),
+  KEY `CommandWin_3` (`CommandWin`),
+  KEY `Event` (`Event`),
+  KEY `Command1_5` (`Command1`),
+  KEY `Command2_4` (`Command2`),
+  KEY `CommandWin_4` (`CommandWin`),
+  KEY `Event_2` (`Event`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `CupValue` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `CupCell` int(11) DEFAULT NULL,
+  `Value1_1` int(11) DEFAULT NULL,
+  `Value2_1` int(11) DEFAULT NULL,
+  `Value3_1` int(11) DEFAULT NULL,
+  `Sum1` int(11) DEFAULT NULL,
+  `Attempt` int(11) DEFAULT NULL,
+  `Value1_2` int(11) DEFAULT NULL,
+  `Value2_2` int(11) DEFAULT NULL,
+  `Value3_2` int(11) DEFAULT NULL,
+  `Sum2` int(11) DEFAULT NULL,
+  `Point1` int(11) DEFAULT NULL,
+  `Point2` int(11) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Delegate` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Name` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -283,6 +336,7 @@ CREATE TABLE `Event` (
   `Comment` text,
   `ScrambleSalt` varchar(255) DEFAULT NULL,
   `ScramblePublic` varchar(255) DEFAULT NULL,
+  `CommandsCup` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ID`),
   KEY `Competition` (`Competition`),
   KEY `Discipline` (`DisciplineFormat`),
@@ -360,12 +414,25 @@ CREATE TABLE `GrandRole` (
 CREATE TABLE `LogMail` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `To` text,
-  `Subject` text,
-  `Body` text,
+  `Subject` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
+  `Body` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
   `DateTime` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `Result` text,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=cp1251 ROW_FORMAT=COMPACT;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `LogWcaApi` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `timestamp` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `request` varchar(255) DEFAULT NULL,
+  `response` text,
+  `method` varchar(255) DEFAULT NULL,
+  `context` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
