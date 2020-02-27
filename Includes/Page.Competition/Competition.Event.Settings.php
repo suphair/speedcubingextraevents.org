@@ -49,6 +49,7 @@ $CompetitionDelegates=ObjectClass::getObject('PageCompetitionDelegates');
         <tr>
             <td>Preparation</td><td/>
         </tr>    
+        <?php if($CompetitionEvent['Discipline_CodeScript']!='team_cup'){ ?>
         <tr>
             <td><i class="fas fa-expand-arrows-alt"></i></td>
             <td><a target="_blank" href="<?= PageAction('CompetitionEvent.Groups' )?>/<?= $CompetitionEvent['Event_ID'] ?>">Distribution of competitors by groups</a><br></td>
@@ -57,6 +58,16 @@ $CompetitionDelegates=ObjectClass::getObject('PageCompetitionDelegates');
             <td><i class="fas fa-list"></i></td>
             <td><a target="_blank" href="<?= PageAction('CompetitionEvent.Competitors.Print')?>/<?= $CompetitionEvent['Event_ID'] ?>">Print the list of competitors</a><br></td>
         </tr>
+        <?php }else{ ?>
+        <tr>
+            <td><i class="fas fa-expand-arrows-alt"></i></td>
+            <td><a target="_blank" href="<?= PageAction('CompetitionEvent.Grid' )?>/<?= $CompetitionEvent['Event_ID'] ?>">Distribution of teams by grid</a><br></td>
+        </tr>
+        <tr>
+            <td><i class="fas fa-list"></i></td>
+            <td><a target="_blank" href="<?= PageAction('CompetitionEvent.CupCompetitors.Print')?>/<?= $CompetitionEvent['Event_ID'] ?>">Print the list of competitors</a><br></td>
+        </tr>
+        <?php } ?>
         <tr>
             <td>Competitors cards</td><td/>
         </tr>
@@ -116,13 +127,15 @@ $CompetitionDelegates=ObjectClass::getObject('PageCompetitionDelegates');
                     <button>Update the link</button> if you do not enter the results yourself
                 </form>
             </td>
-        </tr>    
+        </tr>
+        <?php if($CompetitionEvent['Discipline_CodeScript']!='team_cup'){ ?>
         <tr>
             <td><i class="fas fa-print"></i></td>
             <td>
                 <a target="_blank" href="<?= PageAction('CompetitonEvent.Results.Print')?>/<?= $CompetitionEvent['Event_ID'] ?>">Print the results</a>
             </td>
         </tr>          
+        <?php } ?>
     </table>
 </td>
 </tr></table>
@@ -276,14 +289,16 @@ if(sizeof($competitors)){ ?>
 
 <?php
 DataBaseClass::Query("select GROUP_CONCAT(C.Name order by C.Name SEPARATOR ', ') vName, Decline, count(A.ID) Attempt,"
-        . "CardID,`Group`,Decline,Com.ID,Video,Com. Name  "
+        . "CardID,`Group`,Decline,Com.ID,Video,Com. Name,Com.Sum333  "
         . " from Command Com"
         . " join CommandCompetitor CC on CC.Command=Com.ID "
         . " join Competitor C on CC.Competitor=C.ID " 
         . " left outer join Attempt A on A.Command=Com.ID"
         . " where Com.Event=".$CompetitionEvent['Event_ID'].""
-        . " group by Com.ID "
-        . " order by 1");
+        . " group by Com.ID order by "
+        .($CompetitionEvent['Discipline_CodeScript']!='team_cup'?" Com.Sum333,":"")
+        . " 1"
+        );
 
 
 $commands=DataBaseClass::getRows();
@@ -391,13 +406,14 @@ if($deleter and sizeof($deleter_names)>0){?>
                 </form>
             <?php } ?>
         </td>
-        <?php if($CompetitionEvent['Discipline_CodeScript']=='cup_team'){ ?>
+        <?php if($CompetitionEvent['Discipline_CodeScript']=='team_cup'){ ?>
             <td>
                 <form action="<?= PageAction('CompetitionEvent.Registration.CommandName')?> "  method="POST">
                     <input name="CommandName" value="<?= $command['Name'] ?>"/>
                     <input name="ID" type="hidden" value="<?= $command['ID'] ?>" />
                     <button><i class="fas fa-users"></i> Set team name</button> 
                 </form>
+                <?= getTimeStrFromValue($command['Sum333']); ?>
             </td>    
         <?php } ?>
         </tr>

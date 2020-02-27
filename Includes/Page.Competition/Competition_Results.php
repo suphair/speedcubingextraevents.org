@@ -10,7 +10,6 @@ if(!isset($CompetitionEvent['Format_ExtResult'])){
     $formats=[$CompetitionEvent['Format_Result'],$CompetitionEvent['Format_ExtResult']];
 }
 
-
 $Country_Continent=[];
 DataBaseClass::Query("Select C.ISO2,Continent from Country C where Continent is not null");
 foreach(DataBaseClass::getRows() as $row){
@@ -99,7 +98,7 @@ if( !$Competition['Competition_Unofficial']){
                 </tr> 
             </thead>
             <tbody>
-        <?php foreach($commands as $command){ 
+        <?php foreach($commands as $command){
 
         DataBaseClass::Query("select * from `Attempt` A where Command='".$command['Command_ID']."' ");
         $attempt_rows=DataBaseClass::getRows();
@@ -137,12 +136,7 @@ if( !$Competition['Competition_Unofficial']){
                 <td>
                     <?= $command['Command_Place']?$command['Command_Place']:'' ?>
                 </td>
-                
-                    <?php if($CompetitionEvent['Discipline_CodeScript']=='cup_team'){ ?>
-                        <td>
-                            <b><?= $command['Command_Name'] ?></b><br>
-                        </td>        
-                    <?php } ?>
+               
                     <?php DataBaseClass::Query("select C.* from `Competitor` C "
                          . " join `CommandCompetitor` CC on CC.Competitor=C.ID where CC.Command='".$command['Command_ID']."' order by C.Name");
                     $competitors=DataBaseClass::getRows();   

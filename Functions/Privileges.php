@@ -26,6 +26,19 @@ function checkingScoreTakerAccess($commandID,$secret)
     }   
 }
 
+function checkingScoreTakerCupAccess($cellID,$secret)
+{
+    DataBaseClass::Query("Select CC.ID "
+            . " from `CupCell` CC "
+            . " join `Event` E on E.ID=CC.Event "
+            . " where CC.`ID`='".DataBaseClass::Escape($cellID)."' "
+            . " and E.Secret='".DataBaseClass::Escape($secret)."'");
+    if(!DataBaseClass::rowsCount()){  
+        SetMessage("score taker access denied");
+        HeaderExit(); 
+    }   
+}
+
 function GetScoreTakerEvent($Secret){
     DataBaseClass::Query("Select ID from `Event` E where E.Secret='$Secret'");
     

@@ -245,6 +245,10 @@ class DataBaseClass{
         return self::$connection->insert_id;
     } 
     
+    public static function getAffectedRows(){
+        return self::$connection->affected_rows;
+    }
+    
     Public static function Escape($str){
         return trim(mysqli_escape_string(self::$connection,$str));
     }

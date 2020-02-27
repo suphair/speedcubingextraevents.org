@@ -205,7 +205,7 @@ $disciplines=DataBaseClass::QueryGenerate();
         </td>
         <td>
             <?php if($discipline['Discipline_Status']=='Active'){ ?>
-              <form method="POST" action="<?= PageAction("Event.Archive") ?>"  onsubmit="return confirm('Confirm delete')">
+              <form method="POST" action="<?= PageAction("Event.Archive") ?>"  onsubmit="return confirm('Confirm archive')">
                   <input name="ID" type="hidden" value="<?= $discipline['Discipline_ID'] ?>" />
                   <button class="delete"><i class="fas fa-ban"></i> Send to archive</button>
               </form>

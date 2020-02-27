@@ -41,12 +41,10 @@ function CommandUpdate($Event='',$Command=''){
 
     
     foreach($rows as $row){
-        $updateName=(strlen($row['Command_Name'])==0 or substr($row['Command_Name'],0,1)==' ');
         unset($commands[$row['Command_ID']]);
         if(!isset($dateUpdate[$row['Command_ID']])){
             $dateUpdate[$row['Command_ID']]['Competitors']=0;
             $dateUpdate[$row['Command_ID']]['Country']=$row['Competitor_Country'];
-            $dateUpdate[$row['Command_ID']]['Name']='';
             $dateUpdate[$row['Command_ID']]['Sum333']=0;
             
         }
@@ -56,17 +54,14 @@ function CommandUpdate($Event='',$Command=''){
              $dateUpdate[$row['Command_ID']]['Country']="";    
         }
         
-        if(strpos($row['Discipline_CodeScript'],'cup_')!==false){
-            DataBaseClassWca::Query("select best from `Results` where `personId`='".$row['Competitor_WCAID']."' and eventId='333' order by best limit 1");
-            $dateUpdate[$row['Command_ID']]['Sum333']+=DataBaseClassWca::getRow()['best'];
-        }
-        
-        if($updateName){
-             if($row['Competitor_WCAID']){
-                 $dateUpdate[$row['Command_ID']]['Name'].=' '.substr($row['Competitor_WCAID'],4,4);
-             }else{
-                 $dateUpdate[$row['Command_ID']]['Name'].=' '.strtoupper(substr($row['Competitor_Name'],0,4));
-             }
+        if(strpos($row['Discipline_CodeScript'],'_cup')!==false){
+            DataBaseClassWca::Query("select best from `RanksAverage` where `personId`='".$row['Competitor_WCAID']."' and eventId='333'");
+            $best=DataBaseClassWca::getRow()['best'];
+            if($best<=0 or $dateUpdate[$row['Command_ID']]['Sum333']==999999){
+                $dateUpdate[$row['Command_ID']]['Sum333']=999999;
+            }else{
+                $dateUpdate[$row['Command_ID']]['Sum333']+=$best;
+            }
         }
     }
     
@@ -74,18 +69,18 @@ function CommandUpdate($Event='',$Command=''){
         DataBaseClass::Query("Delete from Command where ID=".$commandID);
     }
     
-  
+ 
    foreach($dateUpdate as $ID=>$data){
-       
-       
+       if($data['Competitors']!=$row['Discipline_Competitors']){
+           $data['Sum333']=999999;
+       }
        
        DataBaseClass::Query("Update Command set "
                . " vCompetitors='".$data['Competitors']."',"
-               . " vCountry='".$data['Country']."',"
-               . " Name=".(isset($data['Name'])?("'".$data['Name']."'"):"Name").", "
+               . " vCountry='".$data['Country']."',"               
                . " Sum333=".$data['Sum333']." "
-               #. " vCompetitorIDs='". DataBaseClass::Escape($data['ID'])."'"
                . " where ID=$ID");
+       
+       DataBaseClass::Query("Update Command set Name='#$ID' where ID=$ID and Name is null");
    } 
-   
 }

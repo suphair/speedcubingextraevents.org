@@ -43,5 +43,30 @@ function SortCommandOrder($a,$b){
     if($a['ExtResult']['vOrder']!=$b['ExtResult']['vOrder']){
         return $a['ExtResult']['vOrder']>$b['ExtResult']['vOrder'];
     }
+    return $a['ID']>$b['ID'];
+}
+
+function SortCommandCupOrder($a,$b){
+    if($a['Result']['Sum333'] and !$b['Result']['Sum333']){
+        return false;
+    }
+    if(!$a['Result']['Sum333'] and $b['Result']['Sum333']){
+        return true;
+    }
+    
+    if($a['Result']['Sum333']!=$b['Result']['Sum333']){
+        return $a['Result']['Sum333']>$b['Result']['Sum333'];
+    }
+    
     return $a['Name']>$b['Name'];
 }
+
+function SortCommandCupOrderResult($a,$b){
+    
+    if($a['wins']!=$b['wins']){
+        return $a['wins']<$b['wins'];
+    }    
+    return $a['Command_Name']>$b['Command_Name'];
+}
+
+

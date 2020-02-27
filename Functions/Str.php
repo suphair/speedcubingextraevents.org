@@ -44,8 +44,15 @@ function Short_Name($str){
 
 
 function getTimeStrFromValue($value){
+    if($value=='-1') return 'DNF';
+    if($value=='-2') return 'DNS';
+    if($value=='999999') return '-';
     $minute=floor($value/60/100); 
     $second=floor(($value-$minute*60*100)/100); 
     $milisecond=floor($value-$minute*60*100-$second*100); 
-    return sprintf("%02d:%02d.%02d",$minute,$second,$milisecond);
+    if($minute){
+        return sprintf("%d:%02d.%02d",$minute,$second,$milisecond);
+    }else{
+        return sprintf("%d.%02d",$second,$milisecond);
+    }
 }

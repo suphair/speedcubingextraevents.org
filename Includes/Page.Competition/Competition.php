@@ -489,7 +489,11 @@ ObjectClass::setObjects('CompetitionEventCommands',$countCommands);
 </td></tr></table> 
 
 <?php if ($attempts_exists){
+        if($CompetitionEvent['Discipline_CodeScript']=='team_cup'){
+            IncludePage('Competition_ResultsCup');
+        }else{
             IncludePage('Competition_Results');
+        }
     }else{
             IncludePage('Competition_PsychSheet');
     } ?>                        

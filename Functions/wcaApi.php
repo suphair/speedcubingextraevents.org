@@ -95,10 +95,7 @@ function getCompetitionCompetitorsWcaApi($competitionId,$context)
         foreach($competitors as $c=>$competitor){
             unset($competitors[$c]->class);
             unset($competitors[$c]->url);
-            unset($competitors[$c]->id);
-            unset($competitors[$c]->name);
             unset($competitors[$c]->gender);
-            unset($competitors[$c]->country_iso2);
             unset($competitors[$c]->delegate_status);
             unset($competitors[$c]->created_at);
             unset($competitors[$c]->updated_at);

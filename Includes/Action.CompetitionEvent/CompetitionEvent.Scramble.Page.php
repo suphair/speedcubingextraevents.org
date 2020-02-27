@@ -38,9 +38,9 @@ $data=Databaseclass::QueryGenerate(false);
 $Discipline=$data['Discipline_Code'];
 $Attemption=$data['Format_Attemption'];
 
-$ex=2;
-if($Discipline=='9x9' or $Discipline=='8x8'){
-    $ex=1;
+$exs=2;
+if($Attemption<5){
+        $exs=1;
 }
 
 ?>
@@ -50,12 +50,26 @@ if($Discipline=='9x9' or $Discipline=='8x8'){
 </head>
 
 <h1><?= $data['Competition_Name'] ?> ▪ <?= $data['Discipline_Name']?><?= $data['Event_vRound']?></h1>
-<h2>Set scrambles <?= $data['Discipline_TNoodle'] ?> for <?= $data['Event_Groups'] ?> groups ( <?= $data['Format_Attemption']." attempts + ".$ex?> extra )</h2>
+<?php if(strpos($data['Discipline_CodeScript'],'_cup')!==FALSE){
+        DataBaseClass::Query("Select count(*) count"
+            . " from `Event` E join `Command` Com on Com.Event=E.ID "
+            . " where E.ID='$ID'");
+        $commands_count=DataBaseClass::getRow()['count'];
+        if(!$commands_count)$commands_count=8;?>
+    <h2>Set <?= ($commands_count-1) ?> * <?= $data['Discipline_Competitors'] ?> * 5 scrambles <?= $data['Discipline_TNoodle'] ?> for <?= $commands_count ?> teams</h2>
+<?php }else{ ?>
+    <h2>Set scrambles <?= $data['Discipline_TNoodle'] ?> for <?= $data['Event_Groups'] ?> groups ( <?= $data['Format_Attemption']." attempts + ".$exs?> extra )</h2>
+<?php } ?>
 <br>
     <?php $Competition_WCA=str_replace('.','_',$data['Competition_WCA']);
     $FileName=$Competition_WCA."_".$data['Discipline_Code']."_".$data['Event_Round']; 
-    $link="http://localhost:2014/scramble-legacy/#competitionName=".$FileName."&rounds=i('eventID'-'".$data['Discipline_TNoodle']."'_'round'-'1'_'scrambleSetCount'-".$data['Event_Groups']."_'scrambleCount'-".$data['Format_Attemption']."_'extraScrambleCount'-".$ex."_'copies'-1)!&version=1.0" ?>    
-     
+    if(strpos($data['Discipline_CodeScript'],'_cup')!==FALSE){
+        $count=($commands_count-1)* $data['Discipline_Competitors'] * 5;
+        $link="http://localhost:2014/scramble-legacy/#competitionName=".$FileName."&rounds=i('eventID'-'".$data['Discipline_TNoodle']."'_'round'-'1'_'scrambleSetCount'-1_'scrambleCount'-".$count."_'extraScrambleCount'-0_'copies'-1)!&version=1.0";
+     }else{ 
+        $link="http://localhost:2014/scramble-legacy/#competitionName=".$FileName."&rounds=i('eventID'-'".$data['Discipline_TNoodle']."'_'round'-'1'_'scrambleSetCount'-".$data['Event_Groups']."_'scrambleCount'-".$data['Format_Attemption']."_'extraScrambleCount'-".$exs."_'copies'-1)!&version=1.0";
+     }
+    ?>
     1. Prepare TNoodle WCA Scrambler according to the <a target="_blank" href="https://www.worldcubeassociation.org/regulations/scrambles/">instructions</a><br><br>    
     2. Click the button "<b>Sramble!</b>" in the <a target="_blank" href="<?= $link ?>">TNoodle WCA Scrambler</a> (open at this link)<br><br>
     

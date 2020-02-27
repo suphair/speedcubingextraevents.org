@@ -30,17 +30,7 @@ foreach($commands_group as $group=>$commands){
             }else{
                 $command=array('vName'=>'','CardID'=>'','Group'=>-1);
             }
-            //$pdf->SetFont('Arial','',10);
-            //$pdf->Text($point[0] + 25, $point[1] + 140,GetIni('TEXT','print'));
-
-            #$pdf->SetFont('Arial','',10);
             $pdf->SetLineWidth(0.2);
-            #$str=iconv('utf-8', 'cp1252//TRANSLIT', $data['Competition']);
-            #$pdf->Text($point[0] + 14, $point[1] + 10,$str); 
-            
-            #$pdf->SetFont('msserif','',14);
-            #$pdf->Text($point[0] + 14, $point[1] + 5,iconv('utf-8', 'windows-1251',$data['Discipline']));
-            
             
             $pdf->SetFont('Arial','',10);
             $str=iconv('utf-8', 'cp1252//TRANSLIT', $competition);

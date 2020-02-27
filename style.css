@@ -389,7 +389,7 @@ table.table_new td:last-child{
     padding-right: 10px;
 }
 
-table.table_new td.table_new_center{
+td.table_new_center{
     text-align: center;
 }
 
@@ -397,18 +397,24 @@ table.table_new td.table_new_attempt{
     text-align: right;
 }
 
-table.table_new td.table_new_right{
+td.table_new_right{
     text-align: right;
 }
 
 
-table.table_new td.table_new_bold{
+td.table_new_bold{
     font-weight: bold;
 }
 
 table.table_new td.table_new_left{
     font-weight: left;
 }
+
+table.table_new_border>tbody>tr>td{
+    border: 2px solid black;
+    border-radius: 10px;
+}
+
 
 table.table_new  td.table_new_PB,table.table_new  td span.table_new_PB {
     color: var(--red);
@@ -562,4 +568,39 @@ textarea.big_data{
 
 .cubing-icon.event-sq1:before {
     content: "\EA15"
+}
+
+
+.cup_command_select, .cup_command_select:hover{
+    text-decoration: none;
+    border-bottom: none;
+    color:red;
+}
+
+table.table_new_background_white td{
+    background-color: white;
+}
+
+.cell_hover, .cell_hover table td{
+    background-color: #EEEEEE;
+    cursor:pointer;
+}
+
+.cell_hover{
+    border-color:#999;
+}
+
+.cell_selected, .cell_selected table td{
+    background-color:#DFD;
+}
+
+.inputCupValue input{
+    width:50px; 
+    margin:0px; 
+    padding:0px;
+    text-align: right;
+}
+
+.cup_grid td{
+    vertical-align: middle;   
 }

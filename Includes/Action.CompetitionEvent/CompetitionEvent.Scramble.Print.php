@@ -70,9 +70,9 @@ if(isset($_GET['Name'])){
 $Competition_name=iconv('utf-8', 'cp1252//TRANSLIT', $Competition_name);
 
 include 'Scramble/'.$data[0]['Discipline_CodeScript'].'.php';
+$isCup=strpos($data[0]['Discipline_CodeScript'],'_cup')!==FALSE;
 
-foreach($data as $row){ 
-    $page=1;
+foreach($data as $d=>$row){ 
     global  $Size;
     if($Size){
         $im=ScrambleImage($row['Scramble_Scramble'],$Size);
@@ -82,6 +82,7 @@ foreach($data as $row){
     imagePNG($im,"Scramble/HardTmp/$rand/".$row['Scramble_ID'].".png");
     $n++;
     if($group<>$row['Scramble_Group']){
+        $page=1;
         $pdf->AddPage();    
         $group=$row['Scramble_Group'];
         $n=0;
@@ -116,7 +117,7 @@ foreach($data as $row){
 
     $y0=43;
     
-    if($n==$row['Format_Attemption']){
+    if($n==$row['Format_Attemption'] and !$isCup){
         $pdf->SetFont('Arial','',12);
         $pdf->SetFillColor(230,230,230);
         $pdf->Rect(17, $Y , $X_IMG_1-17, 6,'DF');
@@ -156,8 +157,12 @@ foreach($data as $row){
         }else{                          $scramble_row=1; $scramble_size=20; }
         if($scramble_len<10)$scramble_row=1;
         
+        if($isCup){
+           $scramble_size=12; $scramble_row=2;
+        }
+        
         $r=[];
-        for($i=1;$i<=$scramble_row-1;$i++){
+        for($i=1;$i<=$scramble_row;$i++){
             $r[$i]=ceil($scramble_len/$scramble_row*$i);
             while(substr($row['Scramble_Scramble'],$r[$i],1)!=" "){$r[$i]--;}    
         }
@@ -167,7 +172,9 @@ foreach($data as $row){
         for($i=1;$i<=$scramble_row-2;$i++){
             $texts[]=trim(substr($row['Scramble_Scramble'],$r[$i]+1,$r[$i+1]-$r[$i]));
         }
-        $texts[]=trim(substr($row['Scramble_Scramble'],$r[$scramble_row-1]));
+        if($scramble_row>1){
+            $texts[]=trim(substr($row['Scramble_Scramble'],$r[$scramble_row-1]));
+        }
 
     }else{
         $texts=explode(" & ",$row['Scramble_Scramble']);
@@ -188,6 +195,7 @@ foreach($data as $row){
  
     $D_Att=($scramble_row)*$scramble_size*0.3+20;
     if($D_Att<33)$D_Att=33;
+    if($isCup)$D_Att=20;
 
         $t=0;
         if(sizeof($texts)==1){
@@ -216,10 +224,14 @@ foreach($data as $row){
             $pdf->Text(8, $Y+$D_Att/2, $Letter[$group]."".($n+1));
         }
     }else{
-        if($n+1>$row['Format_Attemption']){
+        if($n+1>$row['Format_Attemption'] and !$isCup){
             $pdf->Text(10, $Y+$D_Att/2, "E".($n+1-$row['Format_Attemption']));    
         }else{    
-            $pdf->Text(10, $Y+$D_Att/2, $n+1);
+            if($isCup){
+                $pdf->Text(5, $Y+$D_Att/2, $n+1);
+            }else{
+                $pdf->Text(10, $Y+$D_Att/2, $n+1);
+            }
         }    
     }
     
@@ -236,9 +248,12 @@ foreach($data as $row){
     $Y+=$D_Att;
     
     $pdf->Rect(17,$Y_Content_S,$X_IMG_1-17,$Y-$Y_Content_S);
-    if($Y+$D_Att>$pdf->h){
+    if($Y+$D_Att>$pdf->h-15 and isset($data[$d+1])){
         $page++;
         $pdf->AddPage();
+        $pdf->SetFont('Arial','',10);
+        $pdf->SetTextColor(0,0,0);
+        $pdf->Text(10, 286,$Scramble_Timestamp);
         $Y=$Y_Content_S;
         
         $pdf->SetFont('Arial','',24);

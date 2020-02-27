@@ -93,11 +93,11 @@ Function DataBaseInit(){
    DataBaseClass::SetJoin('DisciplineFormat','Discipline');
    
    
-   DataBaseClass::AddTable('Event','E',array('ID','CutoffMinute','CutoffSecond','LimitMinute','LimitSecond','Secret','Competitors','Competition','Groups','LocalID','Round','vRound','DisciplineFormat','Cumulative','Comment','ScrambleSalt','ScramblePublic'));
+   DataBaseClass::AddTable('Event','E',array('ID','CutoffMinute','CutoffSecond','LimitMinute','LimitSecond','Secret','Competitors','Competition','Groups','LocalID','Round','vRound','DisciplineFormat','Cumulative','Comment','ScrambleSalt','ScramblePublic','CommandsCup'));
    DataBaseClass::SetJoin('Event','Competition');
    DataBaseClass::SetJoin('Event','DisciplineFormat');
    
-   DataBaseClass::AddTable('Command','Com',array('ID','Place','CardID','Decline','Event','Group','Event','Secret','vCompetitors','vCountry','Warnings','Onsite','DateCreated','Video','Name','Sum333'));
+   DataBaseClass::AddTable('Command','Com',array('ID','Place','CardID','Decline','Event','Group','Event','Secret','vCompetitors','vCountry','Warnings','Onsite','DateCreated','Video','Name','Sum333','inCup'));
    DataBaseClass::SetJoin('Command','Event');
   
    DataBaseClass::AddTable('CommandCompetitor','CC',array('ID','Command','Competitor','CheckStatus'));

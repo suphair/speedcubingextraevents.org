@@ -59,8 +59,24 @@ if($data['Discipline_CodeScript']=='pyra222'){
 
 DeleteScramble($ID);
 
+if(strpos($data['Discipline_CodeScript'],'_cup')!==FALSE){
+    foreach($Scrambles_row as $a=>$scramble){
+        $scramble=str_replace("\n","",$scramble);
+        $scramble=DataBaseClass::Escape($scramble);
+        DataBaseClass::Query("Insert into Scramble (`Event`,`Scramble`,`Group`,`Attempt`) values ($ID,'$scramble',1,$a) ");
+    }
+    SetMessage();
+    header('Location: '.PageAction('CompetitionEvent.Scramble.Print')."/$ID");
+    exit();   
+}
+
+$exs=2;
+if($Attemption<5){
+        $exs=1;
+}
+
 for($g=1;$g<=$data['Event_Groups'];$g++){
-    for($a=1;$a<=$data['Format_Attemption']+2;$a++){
+    for($a=1;$a<=$data['Format_Attemption']+$exs;$a++){
         if(isset($Scrambles_row[$r])){
             $scramble=$Scrambles_row[$r];
             $scramble=str_replace("\n","",$scramble);

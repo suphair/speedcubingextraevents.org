@@ -8,7 +8,7 @@ if(!isset($requests[2]) or !is_numeric($requests[2])){
 }
 
             
-    DataBaseClass::Query("Select E.Cumulative, D.Inspection Discipline_Inspection,D.ID Discipline_ID, E.vRound, C.Name Competition,C.ID Competition_ID, D.Name Discipline ,C.WCA Competition_WCA, D.Code Discipline_Code, D.CodeScript Discipline_CodeScript, F.Attemption, F.Result, E.CutoffSecond, E.CutoffMinute, E.LimitSecond, E.LimitMinute, E.LocalID, D.Competitors "
+    DataBaseClass::Query("Select D.CodeScript,E.Cumulative, D.Inspection Discipline_Inspection,D.ID Discipline_ID, E.vRound, C.Name Competition,C.ID Competition_ID, D.Name Discipline ,C.WCA Competition_WCA, D.Code Discipline_Code, D.CodeScript Discipline_CodeScript, F.Attemption, F.Result, E.CutoffSecond, E.CutoffMinute, E.LimitSecond, E.LimitMinute, E.LocalID, D.Competitors "
             . " from `Event` E "
             . " join `DisciplineFormat` DF on E.DisciplineFormat= DF.ID "
             . " join `Discipline` D on D.ID=DF.Discipline "
@@ -47,6 +47,11 @@ if(!isset($requests[2]) or !is_numeric($requests[2])){
         exit();
     }
     
+    if(strpos($data['CodeScript'],'_cup')!==false){
+        include 'CompetitonEvent.ScoreCardsCup.php';
+        exit();
+    }
+    
     @$pdf = new FPDF('P','mm');
 
  
@@ -76,12 +81,6 @@ foreach($command_group as $group=>$commands){
         $pdf->Line($pdf->w /2 ,5, $pdf->w /2, $pdf->h - 5);   
         for($i=0;$i<4;$i++){
             $point=$points[$i];
- 
-            #if(file_exists(ImageEventFile($data['Discipline_CodeScript']))){
-            #    $pdf->Image(ImageEventFile($data['Discipline_CodeScript']),$point[0],$point[1]+1,10,10,'jpg');
-            #}
-
-            #$pdf->Image("Logo/Logo_Black.png",$point[0]+$pdf->w /2-20,$point[1]+1,10,10,'png');
 
             if(isset($commands[$i+$l*4])){
                 $command=$commands[$i+$l*4];

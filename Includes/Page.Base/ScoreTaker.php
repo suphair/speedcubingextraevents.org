@@ -6,7 +6,7 @@ if(!isset($request[1])){
 }
 $Secret=$request[1];
 
-DataBaseClass::Query("Select FR.Format FormatResult,DF.ID DisciplineFormat,C.Onsite Competition_Onsite, D.Competitors, C.ID Competition_ID, D.Competitors Discipline_Competitors,D.ID Discipline_ID, E.Round, E.vRound, F.Result, F.ExtResult, F.Attemption, F.Name FormatName, C.Name Competition, D.Name Discipline,C.WCA Competition_WCA, D.Code Discipline_Code,D.CodeScript Discipline_CodeScript, F.ID Format, E.ID, E.CutoffSecond, E.CutoffMinute,E.LimitSecond,E.LimitMinute, E.Cumulative,D.Codes "
+DataBaseClass::Query("Select D.CodeScript,FR.Format FormatResult,DF.ID DisciplineFormat,C.Onsite Competition_Onsite, D.Competitors, C.ID Competition_ID, D.Competitors Discipline_Competitors,D.ID Discipline_ID, E.Round, E.vRound, F.Result, F.ExtResult, F.Attemption, F.Name FormatName, C.Name Competition, D.Name Discipline,C.WCA Competition_WCA, D.Code Discipline_Code,D.CodeScript Discipline_CodeScript, F.ID Format, E.ID, E.CutoffSecond, E.CutoffMinute,E.LimitSecond,E.LimitMinute, E.Cumulative,D.Codes "
         . "from `Competition` C "
         . "join `Event` E on E.Competition=C.ID "
         . "join `DisciplineFormat` DF on DF.ID=E.DisciplineFormat "
@@ -28,6 +28,7 @@ $event=DataBaseClass::getRow();
     <link rel="stylesheet" href="../fontawesome-free-5.12.0-web/css/all.css?t=3" type="text/css"/>
     <link rel="stylesheet" href="../icons-extra-event/css/Extra-Events.css?t=3" type="text/css"/>    
     <link rel="stylesheet" href="../jQuery/chosen_v1/chosen.css" type="text/css"/>
+    <script src="<?= PageLocal()?>jQuery/jquery-3.3.1.min.js" type="text/javascript"></script>
 </head>
 <body>
 <?php
@@ -77,8 +78,7 @@ if($Attemption==2){ $CutoffN=2; }
    
 $FormatResult=$event['FormatResult']; ?>
 
-<h2><?= $event['Discipline']?><?= $event['vRound']?> / 
-<?= $event['Competition'] ?>
+<h2>
 <?php if(CheckAccess('Competition.Event.Settings',$event['Competition_ID'])){ ?>
         <?php 
         DataBaseClass::FromTable("Event","Competition=".$event['Competition_ID']);
@@ -90,7 +90,13 @@ $FormatResult=$event['FormatResult']; ?>
             <a  href="<?= PageIndex()?>ScoreTaker/<?= $discipline['Event_Secret']?>"><span class="<?= $discipline['Event_ID']==$event['ID']?'select':'' ?>"><?= ImageEvent($discipline['Discipline_CodeScript'],1) ?></span></a>
         <?php } ?>
 <?php } ?>
+<?= $event['Discipline']?><?= $event['vRound']?> / <?= $event['Competition'] ?>
 </h2>    
+    
+<?php if(strpos($event['CodeScript'],'_cup')!==FALSE){
+    include 'ScoreTakerCup.php';
+}else{ ?>
+    
 <script src="<?= PageLocal()?>jQuery/ScoreTaker.js?2" type="text/javascript" charset="utf-8"></script>
 <script>
     var formatResult='<?= $FormatResult ?>';
@@ -469,24 +475,21 @@ foreach(DataBaseClass::QueryGenerate() as $competitor){
                         }" />
                      <span id="tst"></span>
                 </form>
-    <?php } ?>
-    
+    <?php }   ?>
+    <script src="<?= PageLocal()?>jQuery/chosen_v1/chosen.jquery.js" type="text/javascript"></script>
+    <script src="<?= PageLocal()?>jQuery/chosen_v1/docsupport/init.js" type="text/javascript" charset="utf-8"></script>
+    <script src="<?= PageLocal()?>jQuery/maskedinput/jquery.maskedinput.js?4" type="text/javascript"></script>
 
+    <script> 
+        PrepareInputs(false);
+        $('.chosen-search-input').focus();        
+    </script>
 
-<script src="<?= PageLocal()?>jQuery/jquery-3.3.1.min.js" type="text/javascript"></script>
-<script src="<?= PageLocal()?>jQuery/chosen_v1/chosen.jquery.js" type="text/javascript"></script>
-<script src="<?= PageLocal()?>jQuery/chosen_v1/docsupport/init.js" type="text/javascript" charset="utf-8"></script>
-<script src="<?= PageLocal()?>jQuery/maskedinput/jquery.maskedinput.js?4" type="text/javascript"></script>
-    
-<script> 
-    PrepareInputs(false);
-    $('.chosen-search-input').focus();        
-</script>
-
-<script>
-    $(function(){
-      $(".WCAID").mask("9999aaaa99");
-    });
-</script>
+    <script>
+        $(function(){
+          $(".WCAID").mask("9999aaaa99");
+        });
+    </script>      
+<?php }?>
 <body>
 </html>

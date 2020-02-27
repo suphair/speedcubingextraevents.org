@@ -83,8 +83,9 @@ function CompetitionCompetitorsLoad($ID,$WCA,$Name,$type){
             if(isset($Competitor['Competitor_ID'])){
                 $Competitor_ID=$Competitor['Competitor_ID'];
             }else{
-                $user=getUserWcaApi($registration->user_id, 'competitionCompetitorsLoad');
-                $Competitor_ID=CompetitorReplace($user);
+                if($user=getUserWcaApi($registration->user_id, 'competitionCompetitorsLoad')){
+                    $Competitor_ID=CompetitorReplace($user);
+                }
             }
             DataBaseClass::Query("REPLACE into Registration (Competitor,Competition) values ($Competitor_ID,$ID)");
         }
