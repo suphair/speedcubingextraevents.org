@@ -378,7 +378,7 @@ foreach($events as $event){
         <td/>
     </tr>
     <tr>
-        <td><i class="far fa-random"></i></td>
+        <td><i class="fas fa-random"></i></td>
         <td>Generate scrambles</td>
     </td>
     <tr>
@@ -386,7 +386,7 @@ foreach($events as $event){
         <td>Print scrambles</td>
     </td>
     <tr>
-        <td><i class="far fa-download"></i></td>
+        <td><i class="fas fa-download"></i></td>
         <td>Download scrambles</td>
     </td>
     <tr>

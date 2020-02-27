@@ -408,7 +408,7 @@ if($FilterResults!='Results'){
                 </td>
                 <?php } ?>
             <?php }else{ ?>
-                <td class="table_new_center" colspan="<?= $attemption ?>">
+                <td class="table_new_center" colspan="<?= $Event['MaxAttempt'] ?>">
                     Solves
                 </td>
             <?php } ?>
