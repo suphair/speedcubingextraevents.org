@@ -43,7 +43,7 @@ function SortCommandOrder($a,$b){
     if($a['ExtResult']['vOrder']!=$b['ExtResult']['vOrder']){
         return $a['ExtResult']['vOrder']>$b['ExtResult']['vOrder'];
     }
-    return $a['ID']>$b['ID'];
+    return $a['Name']>$b['Name'];
 }
 
 function SortCommandCupOrder($a,$b){
