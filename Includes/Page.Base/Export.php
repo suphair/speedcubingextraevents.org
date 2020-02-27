@@ -1,19 +1,36 @@
 <h1>SEE results export</h1>
-On this page we offer the SEE results for download in format SQL statements, for import into SQL databases.<br>
+On this page we offer the SEE results for download. <br>
 So you can use/analyze them at large. <br>
 The results archive is created daily. <br>
-<br>
+
+<h3>SQL statements, for import into SQL databases</h3>
 <?php            
 $dir = "Export_sql";
 $files = array();
-foreach (scandir($dir) as $file)if(strpos($file,".zip")) $files[$file] = filectime('Export_sql/'.$file);
+foreach (scandir($dir) as $file)if(strpos($file,".zip")) $files[$file] = filectime($dir.'/'.$file);
 asort($files);
 $files= array_reverse($files);
 foreach($files as $file=>$time)
-    if($time > time() - 60*60*24*7*2){ ?>
+    if($time > time() - 60*60*24*2){ ?>
     <p>
       <?= date("F d Y H:i:s",$time)?> (UTC +3)
-      <b><a href="<?= PageIndex()?>Export_sql/<?= $file ?>"><i class="fas fa-download"></i> <?= $file ?></a></b>  
-      (<?= round(filesize('Export_sql/'.$file)/1024,1); ?> KB)
+      <br><a href="<?= PageIndex().$dir?>/<?= $file ?>"><i class="fas fa-download"></i> <?= $file ?></a> 
+      (<?= round(filesize($dir.'/'.$file)/1024,1); ?> KB)
     </p>  
-<?php }
+<?php } ?>
+
+<h3>Tab-separated values, for spreadsheets in OpenOffice.org, Excel, etc.</h3>
+<?php            
+$dir = "Export_tsv";
+$files = array();
+foreach (scandir($dir) as $file)if(strpos($file,".zip")) $files[$file] = filectime($dir.'/'.$file);
+asort($files);
+$files= array_reverse($files);
+foreach($files as $file=>$time)
+    if($time > time() - 60*60*24*2){ ?>
+    <p>
+      <?= date("F d Y H:i:s",$time)?> (UTC +3)
+      <br><a href="<?= PageIndex().$dir ?>/<?= $file ?>"><i class="fas fa-download"></i> <?= $file ?></a>
+      (<?= round(filesize($dir.'/'.$file)/1024,1); ?> KB)
+    </p>  
+<?php } ?>

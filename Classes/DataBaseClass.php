@@ -231,8 +231,8 @@ class DataBaseClass{
     public static function getRows(){
         
         $row=array();
-        for($i=0;$i<DataBaseClass::rowsCount();$i++){
-            $row[$i]=DataBaseClass::getRow();
+        for($i=0;$i<self::rowsCount();$i++){
+            $row[$i]=self::getRow();
         }
         return $row;
     }
@@ -321,7 +321,7 @@ class DataBaseClassWCA{
         
         $row=array();
         for($i=0;$i<self::$query->num_rows;$i++){
-            $row[$i]=DataBaseClassWCA::getRow();
+            $row[$i]=self::getRow();
         }
         return $row;
     }
@@ -370,4 +370,13 @@ class DataBaseClassExport{
             echo $sql;
         }
     }
+    
+    public static function getRows(){
+        $res=[];
+        while ($r = self::$query->fetch_assoc()) {
+            $res[] = $r;
+        }
+        return $res;
+    }
+    
 }

@@ -1,4 +1,48 @@
 <?php
+
+function crateBackupTSV($schema,$folder){
+    if(strpos($_SERVER['PHP_SELF'],'/'.GetIni('LOCAL','PageBase').'/')!==false){
+       $section="DB_LOCAL";
+       $folder=$folder."_LOCAL";
+    }else{
+       $section="DB";
+    }
+    
+    @mkdir($folder);
+    $zip = new ZipArchive();
+    $zip_name = $folder.".tsv.zip";
+    $zip->open($zip_name, ZIPARCHIVE::CREATE);    
+    $filenames=[];
+    $TABLE_SCHEMA=GetIni($section,$schema);
+    DataBaseClassExport::Query("Select * from information_schema.TABLES where TABLE_SCHEMA='$TABLE_SCHEMA'");
+    foreach(DataBaseClassExport::getRows() as $table){
+        $TABLE_NAME=$table['TABLE_NAME'];
+        $filename="$TABLE_NAME.TSV";
+        $filenames[]=$filename;
+        $f = fopen($filename, "a");
+        $columns=[];
+        DataBaseClassExport::Query("Select * from information_schema.COLUMNS where TABLE_SCHEMA='$TABLE_SCHEMA' and TABLE_NAME='$TABLE_NAME' order by ORDINAL_POSITION");
+        foreach(DataBaseClassExport::getRows() as $column){
+            $columns[]=$column['COLUMN_NAME'];
+        }
+        fwrite($f, implode("\t",$columns)."\n");
+        DataBaseClassExport::Query("Select * from $TABLE_NAME");
+        foreach(DataBaseClassExport::getRows() as $row){
+            fwrite($f, str_replace(array("\r\n", "\r", "\n"),"<br>",implode("\t",$row))."\n");    
+        }
+        fclose($f);
+        
+        $zip->addFile($filename);
+    }
+    
+    $zip->close();
+    
+    foreach($filenames as $filename){
+        unlink($filename);
+    }
+    rmdir($folder);
+}
+
 function crateBackup($schema,$filename){
     if(strpos($_SERVER['PHP_SELF'],'/'.GetIni('LOCAL','PageBase').'/')!==false){
        $section="DB_LOCAL";
