@@ -282,6 +282,25 @@ hr{
 a.local_link{
     text-decoration: none;
     border-bottom: 1px dotted  var(--blue);
+    cursor: pointer;
+}
+
+.result_cup_team
+{
+    text-decoration: none;
+    cursor: pointer;
+    color: var(--gray);
+}
+
+.result_cup_team_hover,.result_cup_team_hover:hover
+{       
+    text-decoration: none;
+    color: var(--blue);
+    border-bottom: 1px dotted  var(--blue);
+}
+
+.result_cup_team_select,.result_cup_team_select:hover{
+    color: var(--red);
 }
 
 a.select_link{
@@ -473,6 +492,9 @@ textarea.big_data{
 
 .color_red{
     color:var(--red);
+}
+.color_gold{
+    color:orange;
 }
 
 .backgroundcolor_green{

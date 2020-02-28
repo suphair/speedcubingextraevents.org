@@ -488,14 +488,18 @@ ObjectClass::setObjects('CompetitionEventCommands',$countCommands);
     <?= EventBlockLinks($CompetitionEvent); ?>
 </td></tr></table> 
 
-<?php if ($attempts_exists){
-        if($CompetitionEvent['Discipline_CodeScript']=='team_cup'){
-            IncludePage('Competition_ResultsCup');
-        }else{
-            IncludePage('Competition_Results');
-        }
+<?php 
+if($CompetitionEvent['Discipline_CodeScript']=='team_cup'){
+    if(availableCupChange($CompetitionEvent['Event_ID'])){
+        IncludePage('Competition_PsychSheet');
     }else{
-            IncludePage('Competition_PsychSheet');
-    } ?>                        
-                
+        IncludePage('Competition_ResultsCup');
+    }
+}else{
+    if ($attempts_exists){
+        IncludePage('Competition_Results');        
+    }else{
+        IncludePage('Competition_PsychSheet');
+    }
+} ?>                                
 <?php } ?>                

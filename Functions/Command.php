@@ -62,7 +62,9 @@ function SortCommandCupOrder($a,$b){
 }
 
 function SortCommandCupOrderResult($a,$b){
-    
+    if($a['loses']!=$b['loses']){
+        return $a['loses']>$b['loses'];
+    }
     if($a['wins']!=$b['wins']){
         return $a['wins']<$b['wins'];
     }    

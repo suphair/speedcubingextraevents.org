@@ -161,7 +161,7 @@ $Rounds=$CommandsCup['Round'];
                                     <form  method="POST" action="<?= PageAction('ScoreTakerCup.doneToRun')?>">
                                         <input hidden name="ID" value="<?= $cell['ID'] ?>"/>
                                         <input name="Secret" type="hidden" value="<?= $Secret ?>" />
-                                        <button><i class="fas fa-edit"></i> update</button>
+                                        <button><i class="fas fa-edit"></i> Edit</button>
                                     </form>
                             </td></tr>
                             <tr><td align="center">&nbsp;</td></tr>
@@ -231,7 +231,13 @@ $Rounds=$CommandsCup['Round'];
         <tr>
             <?php for($round=1;$round<=$Rounds;$round++){ ?>
             <td width="200px" class="table_new_center table_new_bold" >
-                Round <?= $round?>
+                <?php if($round==$Rounds){ ?>
+                    Final
+                <?php }elseif($round==$Rounds-1){ ?>
+                    Semifinal
+                <?php }else{ ?>
+                    1 / <?= pow(2,$Rounds-$round)?>
+                <?php } ?>
             </td>
             <?php } ?>
         </tr>  
@@ -270,8 +276,10 @@ $Rounds=$CommandsCup['Round'];
                                     <?php if($comwin==$com){ ?>
                                         <?php if($cell['Status']=='skip'){ ?>
                                             <i class="fas fa-arrow-right"></i>
-                                        <?php }else{ ?>
+                                        <?php }elseif($round!=$Rounds){ ?>
                                             <i class="color_green fas fa-thumbs-up"></i>
+                                        <?php }else{ ?>    
+                                            <i class="color_gold fas fa-trophy"></i>
                                         <?php } ?>    
                                     <?php }else{ ?>
                                         <i class="color_red far fa-times"></i>

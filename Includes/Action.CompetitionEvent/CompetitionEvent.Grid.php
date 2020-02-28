@@ -308,50 +308,6 @@ foreach($cell_rows as $cell){
         <?php } ?>
     </tbody>    
 </table>
-    <?php exit(); ?>
-<table class="table_new table_new_border" >
-    <thead>
-        <tr>
-            <td class="table_new_center table_new_bold">#</td>
-            <td width="100px">Team</td>
-            <?php for($round=1;$round<=$Rounds;$round++){ ?>
-            <td width="100px" class="table_new_center" >
-                Round <?= $round?>
-            </td>
-            <?php } ?>
-            <td style="display: none"></td>        
-        </tr>  
-    </thead>
-    <tbody>
-        <?php for($i=1;$i<=$MaxTeams;$i++){ ?>
-        <tr>
-            <td class="table_new_center table_new_bold">
-                
-            </td>
-            <td>
-                <?= !$none?$commands_name[$n]['Command_Name']:'<i class="fas fa-chevron-right"></i>' ?>
-            </td>
-            <?php for($round=1;$round<=$Rounds;$round++){ ?>
-                <?php if($i%(pow(2,$round))-1==0){ ?>
-                    <td class="table_new_center" style="vertical-align: middle;white-space: normal" rowspan="<?= pow(2,$round) ?>">
-                        <?php $set=[];
-                        for($j=$i;$j<pow(2,$round)+$i;$j++){
-                            $m=$default[$command_count][$j-1];
-                            if($m<=sizeof($commands)){
-                                $set[]=$m;
-                            }   
-                        } 
-                        sort($set)?>
-                        <?= implode(", ",$set);?>
-                    </td>
-                <?php } ?>
-            <?php } ?>
-            <td style="display: none"></td>        
-        </tr>
-        <?php } ?>
-          
-    </tbody>    
-</table>
 </td></tr></table>    
 
 <script>

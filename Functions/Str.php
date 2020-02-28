@@ -44,6 +44,7 @@ function Short_Name($str){
 
 
 function getTimeStrFromValue($value){
+    if($value=='') return '';
     if($value=='-1') return 'DNF';
     if($value=='-2') return 'DNS';
     if($value=='999999') return '-';
