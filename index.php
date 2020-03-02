@@ -26,6 +26,7 @@ if(RequestClass::getError(401)){ header('HTTP/1.1 401 Unauthorized'); } ?>
 <html  lang="<?= $_SESSION['language_select'] ?>">
 <head>
     <meta name="Description" content="Fun Cubing">
+    <meta charset="utf-8">
     <title><?= RequestClass::getTitle(); ?></title>
     <link rel="icon" href="<?= PageIndex()?>Logo/Logo_Color.png" >
     <link rel="stylesheet" href="<?= PageIndex(); ?>style.css?t=5" type="text/css"/>

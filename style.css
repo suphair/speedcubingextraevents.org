@@ -381,9 +381,20 @@ table.table_new tbody tr:nth-of-type(even){
     background-color:var(--white);
 }
 
+
+table.competitions tbody tr.odd{
+    background-color:#e9e9e9;
+}
+
+table.competitions tbody tr.even{
+    background-color:var(--white);
+}
+
 table.table_new thead tr:nth-of-type(even){
     background-color:#e9e9e9;
 }
+
+
 
 table.table_new{
     border-collapse: collapse;
@@ -625,4 +636,24 @@ table.table_new_background_white td{
 
 .cup_grid td{
     vertical-align: middle;   
+}
+
+.competitions_events_select{
+    color: var(--black);
+}
+
+.competitions_events_panel{
+    color: var(--light_gray);
+}
+.competitions_events_panel_all, .competitions_events_panel_none{
+    color:var(--blue);    
+}
+.competitions_events_panel_all:hover, .competitions_events_panel_none:hover{
+    color:var(--light_blue);
+}
+
+
+.competitions_events_panel  i, .competitions_events_panel_all, .competitions_events_panel_none{
+    cursor:pointer;
+    font-size: 1.3em;
 }

@@ -141,12 +141,14 @@ foreach($data as $d=>$row){
     if(strpos($row['Scramble_Scramble'],"&")===false){
 
         $scramble_len=strlen($row['Scramble_Scramble']); 
-        if($scramble_max>44*8){         $scramble_row=9; $scramble_size=10;
-        }elseif($scramble_max>44*7){    $scramble_row=8; $scramble_size=10;
-        }elseif($scramble_max>44*6){    $scramble_row=7; $scramble_size=10;
-        }elseif($scramble_max>44*5){    $scramble_row=6; $scramble_size=10; 
-        }elseif($scramble_max>44*4){    $scramble_row=5; $scramble_size=10; 
-        }elseif($scramble_max>44*3){    $scramble_row=4; $scramble_size=10; 
+        if($scramble_max>53*10){        $scramble_row=11; $scramble_size=10;
+        }elseif($scramble_max>53*9){    $scramble_row=10; $scramble_size=10;
+        }elseif($scramble_max>53*8){    $scramble_row=9; $scramble_size=10;
+        }elseif($scramble_max>53*7){    $scramble_row=8; $scramble_size=10;
+        }elseif($scramble_max>53*6){    $scramble_row=7; $scramble_size=10;
+        }elseif($scramble_max>53*5){    $scramble_row=6; $scramble_size=10; 
+        }elseif($scramble_max>53*4){    $scramble_row=5; $scramble_size=10; 
+        }elseif($scramble_max>53*3){    $scramble_row=4; $scramble_size=10; 
         }elseif($scramble_max>38*3){    $scramble_row=3; $scramble_size=12; 
         }elseif($scramble_max>102){     $scramble_row=3; $scramble_size=16; 
         }elseif($scramble_max>90){      $scramble_row=3; $scramble_size=16; 

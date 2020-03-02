@@ -47,6 +47,9 @@ $Competitor=getCompetitor();
     foreach($commands  as $c=>$command){
         if($command['wins']==0){
             $commands[$c]['place']=($Count/2+1).' - '.sizeof($commands);
+            if(($Count/2+1)==sizeof($commands)){
+                $commands[$c]['place']=sizeof($commands);    
+            }
         }else{
             if($command['loses']==0){
                 $commands[$c]['place']='1 - '.($Count/pow(2,$command['wins']));

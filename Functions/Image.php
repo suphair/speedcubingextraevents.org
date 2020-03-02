@@ -1,16 +1,15 @@
 <?php
 
 function ImageEvent($event,$size='',$name=""){
-       
     $style="";
     if(is_float($size) and $size<2){
         $style=" style='font-size:{$size}em;'";
     }
-    
+  
     if(file_exists("./Svg/$event.svg")){        
         return "<i $style title='$name' class='fas fa-{$size}x ee-$event'></i>";
     }else{
-        return  "<i $style class='fas fa-{$size}x fa-question-circle'></i>";
+        return  "<i $style title='$name' class='fas fa-{$size}x fa-question-circle'></i>";
     }
 }
 
