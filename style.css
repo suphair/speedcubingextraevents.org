@@ -210,17 +210,10 @@ a:hover{
     border-bottom:2px solid  var(--red); 
 }
 
-.list_select{
+a.list_select, td.list_select{
     color: var(--red);
+    font-weight: bold;
 }
-
-.list_select:before{
-   font-family: 'Font Awesome 5 Free';
-   content: '\f0a9';
-   font-weight: bold;
-   padding-right: 5px;
-}
-
 
 .line a img:hover{
     border:2px solid  var(--red);

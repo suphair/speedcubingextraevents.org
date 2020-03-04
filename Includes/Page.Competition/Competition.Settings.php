@@ -468,10 +468,10 @@ if($error){ ?>
                     
                     var selected=$('#Event_edit_td_' + key).hasClass('list_select');
                     $('.Event_edit').hide('fast');
-                    $('.Event_edit_td').removeClass('list_select');
+                    $('.Event_edit_td a').removeClass('list_select');
                     if(!selected){
                         $('#Event_edit_' + key).show('fast');
-                        $('#Event_edit_td_' + key).addClass('list_select');
+                        $(this).addClass('list_select');
                     }
                     return false;"><?= $event['Discipline_Name']; ?></a>
             </td>

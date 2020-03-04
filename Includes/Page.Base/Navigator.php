@@ -15,7 +15,7 @@ if(explode('.',$type)[0]=='Event')$type='Events';
         <nobr><a <?= ($type=='Competitors')?"class='select'":"" ?>  href="<?= PageIndex() ?>Competitors">
         <i class="fas fa-users"></i> <?= ml('Navigator.Competitors') ?></a></nobr>&nbsp;&nbsp;&nbsp;
         <nobr><a <?= ($type=='Events')?"class='select'":"" ?>  href="<?= PageIndex() ?>Events">
-        <i class="fas fa-dice-d20"></i> <?= ml('Navigator.Events') ?></a></nobr>&nbsp;&nbsp;&nbsp;
+        <i class="fas fa-star"></i> <?= ml('Navigator.Events') ?></a></nobr>&nbsp;&nbsp;&nbsp;
         <nobr><a <?= ($type=='Delegates')?"class='select'":"" ?>  href="<?= PageIndex() ?>Delegates">
         <i class="fas fa-sitemap"></i> <?= ml('Navigator.Delegates') ?></a></nobr>&nbsp;&nbsp;&nbsp;
         <nobr><a <?= ($type=='News')?"class='select'":"" ?>  href="<?= PageIndex() ?>News">

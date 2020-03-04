@@ -83,7 +83,7 @@ function getRequest(){
     $request=array_values($request);
     if(isset($request[0]) and $request[0]!='Actions'){
         foreach($request as $k=>$v){
-            $request[$k]= strtolower($v);
+            $request[$k]= DataBaseClass::Escape(strtolower($v));
         }
     }
     return $request;
@@ -95,7 +95,7 @@ function getRequestString(){
 }
 
 function Request(){
-     global $request;
+    global $request;
     return $request;
 }
 

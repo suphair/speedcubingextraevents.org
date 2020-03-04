@@ -228,8 +228,47 @@ class DataBaseClass{
         return self::$query->fetch_assoc();
     }
     
-    public static function getRows(){
-        
+    public static function exists($sql){
+        self::Query($sql);
+        return self::getAffectedRows()>0;
+    }
+    
+    public static function getRowAssoc($sql){
+        self::Query($sql);
+        return self::getRow();
+    }
+    
+    public static function getRowsAssoc($sql,$out=false){
+        self::Query($sql,$out);
+        return self::getRows();
+    }
+    
+    public static function getColumn($sql){
+        self::Query($sql);
+        $rows=self::getRows();
+        if($rows){
+            $column =array_keys($rows[0])[0];
+            return array_column($rows, $column);
+        }
+        return [];
+    }
+    
+    public static function getColumnAssoc($sql){
+        self::Query($sql);
+        $rows=self::getRows();
+        $return=[];
+        if($rows){
+            $columnKey =array_keys($rows[0])[0];
+            $columnValue =array_keys($rows[0])[1];
+            foreach($rows as $row){
+               $return[$row[$columnKey]]=$row[$columnValue]; 
+            }
+        }
+        return $return;
+    }
+    
+    public static function getRows()
+    {
         $row=array();
         for($i=0;$i<self::rowsCount();$i++){
             $row[$i]=self::getRow();
