@@ -69,7 +69,7 @@ $countCommands=ObjectClass::getObject('CompetitionEventCommands');
     }    
 ?>
 <h3><?= ml('Competition_PsychSheet.Title') ?></h3>
-    <table class="table_new" width="80%">
+    <table class="table_new">
         <thead>
             <tr>
             <td/>

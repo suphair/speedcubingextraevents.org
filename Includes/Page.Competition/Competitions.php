@@ -81,7 +81,7 @@ $events = DataBaseClass::getRowsAssoc("
         join `Event` E on E.Competition=Cn.ID
         join `DisciplineFormat` DF on DF.ID=E.DisciplineFormat and E.Round=1
         join `Discipline` D on D.ID=DF.Discipline
-        where Cn.ID in(".implode(',',$competitionsID).")
+        where Cn.ID in(".implode(',',array_merge($competitionsID,[-1])).")
         order by D.Code"
 ); 
 
@@ -160,15 +160,7 @@ OUT;
                         <?php } ?>      
                         </select>
                     </td>
-                </tr>
-            </table>    
-        </td>
-        <td>
-            <table class="table_info">
-                <tr>
-                    <td><?= ml('Competitions.Events');?></td>
                     <td>
-                        <i title="Show all events" class=" competitions_events_panel_all fas fa-star"></i>
                         <span class="competitions_events_panel">
                         <?php foreach($eventsImage as $eventImage){ ?>
                             <?= $eventImage ?>
@@ -185,7 +177,7 @@ OUT;
 <table class="table_new competitions" width="80%">
 <?php foreach( $competitions as $competition){
         $classUnnoficial=($competition['Unofficial'] and $competition['UpcomingStatus']!=-1)?'unofficial':''; ?>
-    <tr class="competition <?= implode(" ",array_column($eventsCompetition[$competition['ID']],'Code')) ?>">
+    <tr class="competition <?= empty($eventsCompetition[$competition['ID']])?'':implode(" ",array_column($eventsCompetition[$competition['ID']],'CodeScript')) ?>">
         <td class="table_new_center">
             <?= $iconCompetitionStatus[$competition['UpcomingStatus']]; ?>
         </td>            
@@ -238,11 +230,6 @@ OUT;
         reload_competitions();
     });
     
-    $('.' + ce_panel+ '_all').on("click",function(){
-        $('.' + ce_panel+ ' i').addClass(ce_select);
-        reload_competitions();
-    });
-    
     function reload_competitions(){
         var events = [];
         $('.' + ce_panel+ ' i.' + ce_select).each(function(){
@@ -250,41 +237,44 @@ OUT;
                 (element) => {
                     var tmp=element.replace('ee-','');
                     if(tmp!==element){
-                        events.push('event_' + tmp);
+                        events.push( tmp);
                     }
                 }
             );
         });
-            
-        $('.competition').hide();    
-        var i=1;
-        $('.competition').each(function() {
-            var show=false;
-            events.forEach(
-                (element) => {
-                if($(this).hasClass(element)){
-                    show=true;
+        
+        if(events.length>0){
+            $('.competition').hide();    
+            var i=1;
+            $('.competition').each(function() {
+                var show=false;
+                events.forEach(
+                    (element) => {
+                    if($(this).hasClass(element)){
+                        show=true;
+                    }
+                });
+                if(show){
+                    $(this).show();
+                    if(i%2!==0){
+                        $(this).addClass('odd');
+                        $(this).removeClass('even');
+                    }else{
+                        $(this).addClass('even');
+                        $(this).removeClass('odd');
+                    }
+                    i=i+1;  
                 }
             });
-            if(show){
-                $(this).show();
-                if(i%2!==0){
-                    $(this).addClass('odd');
-                    $(this).removeClass('even');
-                }else{
-                    $(this).addClass('even');
-                    $(this).removeClass('odd');
-                }
-                i=i+1;  
+            if(i===1){
+                $('#competitionsNotFound').show();
+            }else{
+                $('#competitionsNotFound').hide();
             }
-        });
-        if(i===1){
-            $('#competitionsNotFound').show();
         }else{
-            $('#competitionsNotFound').hide();
+            $('.competition').show();    
         }
     }
-    $('.' + ce_panel+ ' i').addClass(ce_select);
     
     if($('.competition').length>0){
         $('#competitionsNotFound').hide();

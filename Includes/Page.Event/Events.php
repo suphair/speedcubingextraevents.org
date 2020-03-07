@@ -118,7 +118,7 @@ if($type_filter=='333cube'){
     } 
     
     ?>
-    <table class="table_new" width="80%">
+    <table class="table_new">
         <thead>
         <tr>
             <td></td>

@@ -28,7 +28,7 @@
                     . " join Discipline D on D.ID=DF.Discipline"
                     . " where date(LR.Timestamp)>=DATE_ADD(current_date(),INTERVAL -14 Day)  "
                     . " order by LR.Timestamp desc");?>
-<table class="table_new" width='80%'>
+<table class="table_new">
     <thead>
         <td>DateTime</td><td>Action</td><td>Competition</td><td>Event</td><td>Round</td><td>Name</td><td>Who did it</td>
     </thead>

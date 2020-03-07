@@ -131,7 +131,7 @@ group by C.WCAID, C.Name, C.Country,C.ID , Country.Name order by $sort C.Name, W
    </table>
 </td></tr></table>
 
-    <table class="table_new" width="80%">
+    <table class="table_new">
         <thead>
             <tr>
                 <td/>

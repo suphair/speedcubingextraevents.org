@@ -18,7 +18,7 @@ $Competitor=getCompetitor();
 ?>
       
 <h3>Results</h3>
-    <table class="table_new" width="100%">
+    <table class="table_new">
         <thead>
             <tr>
             <td></td>
@@ -113,7 +113,7 @@ $Competitor=getCompetitor();
     <?php } ?>
     </table>
 <h3>Attempts</h3>
- <table class="table_new" width="100%">
+ <table class="table_new">
     <thead>
         <tr>
             <td class="table_new_center" colspan="3">Solves</td>

@@ -70,7 +70,7 @@ if( !$Competition['Competition_Unofficial']){
     }
     
     $commands= array_values($commands); ?>
-        <table class="table_new" width="80%">
+        <table class="table_new">
             <thead>
                 <tr> 
                     <td>#</td>                    

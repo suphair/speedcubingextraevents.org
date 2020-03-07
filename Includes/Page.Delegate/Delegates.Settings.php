@@ -41,7 +41,7 @@ $Statuses['?']=-1;
 <?php } ?>    
 
 <form method="POST" action="<?= PageAction('Delegates.Change.Edit') ?>">
-<table class="table_new" width="80%">
+<table class="table_new">
 <thead>    
 <tr>
     <td>Name</td>

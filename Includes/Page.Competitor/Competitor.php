@@ -154,7 +154,7 @@ $delegate=DataBaseClass::getRow(); ?>
 <?php } ?>    
 </td></tr></table>    
 <h2><?= ml('Competitor.Rank.Title'); ?></h2>
-<table class="table_new" width="80%">  
+<table class="table_new">  
     <thead>
     <tr>
         <td></td>
@@ -324,7 +324,7 @@ $disciplines=DataBaseClass::QueryGenerate();?>
     $types= array_reverse($types);
     ?>
 <span style="<?= $d?'display:none':''?>" class="event-block" ID="event-<?= $discipline['Discipline_CodeScript']?>">
-<table width="80%" class="table_new">
+<table class="table_new">
 <thead>      
         <tr> 
             <td><?= ml('Competitor.Result.Table.Competition');?></td>

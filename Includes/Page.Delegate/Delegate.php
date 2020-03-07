@@ -55,7 +55,7 @@ $CheckHidden=CheckAccess('Competitions.Hidden');
 <?php if(sizeof($competitions)){ ?>
 <br>
 <h2><?= ml('Delegate.Competitions'); ?></h2>    
-    <table class="table_new" width="80%">
+    <table class="table_new">
         <thead>
         <tr>
             <td><?= ml('Delegate.Table.Date')?></td>

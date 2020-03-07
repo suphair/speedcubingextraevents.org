@@ -26,7 +26,7 @@ $Delegate_rows=DataBaseClass::GetRows();
     <a href="<?= PageIndex()."Delegate/Candidate" ?>"><?= ml('Delegate.Candidate.Title') ?></a>
 <?php } ?>    
 </h2>  
-    <table class="table_new" width="<?= CheckAccess('Delegates.Statistics')?'80%':'40%' ?>">
+    <table class="table_new">
         <thead>
         <tr>
             <td/>

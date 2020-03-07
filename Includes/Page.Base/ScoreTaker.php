@@ -286,7 +286,7 @@ Find the Competitor using ID on a score card, WCA ID or Name OR choose the Compe
         </td>
         <td width="90%">
     <div style='height: 600px;overflow: scroll;border:1px dotted black'>        
-    <table class="table_new" width="100%">    
+    <table class="table_new">    
         <thead>
         <tr> 
             <td>ID</td>            

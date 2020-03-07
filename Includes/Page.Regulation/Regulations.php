@@ -58,6 +58,16 @@ if(!$event_selected)$event_selected=$disciplines[0]['Code'];
 <h3><?= ml('Regulations.ExtraEvents') ?></h3>
 <table width="100%"><tr><td width="10%" style='border-right: 1px solid #333'>
 <table class="table_info" style="white-space: nowrap">
+    <td></td>
+    <td>
+         <select ID="FilterEvent" onchange="location.href = '<?= PageIndex()?>Regulations/'+$(this).val();">
+            <?php foreach($disciplines as $discipline_row){ ?>   
+                <option value="<?= $discipline_row['Code'] ?>" <?= strtolower($discipline_row['Code'])==$event_selected?'selected':''?> >
+                    <?= $discipline_row['Name'] ?>
+                </option>
+            <?php } ?>    
+         </select>                
+    </td>
     <?php foreach($disciplines as $d=>$discipline_row){ ?>
         <tr>
             <td><?= ImageEvent($discipline_row['CodeScript'],1) ?></td>

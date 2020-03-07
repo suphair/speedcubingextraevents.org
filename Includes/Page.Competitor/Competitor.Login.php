@@ -5,7 +5,7 @@ $Delegate=getDelegate();
 
 if($Competitor){ ?>
     <a href="<?= PageIndex() ?>Competitor/<?= $Competitor->local_id ?>"><i class="fas fa-user"></i> <?= ml('Competitor.MyResults') ?></a>&nbsp;&nbsp;&nbsp;
-    <a href="<?= PageIndex() ?>Competitions/My"><i class="fas fa-cube"></i> <?= ml('Competitor.MyCompetitions') ?></a>&nbsp;&nbsp;&nbsp;
+    <a href="<?= PageIndex() ?>Competitions/Mine"><i class="fas fa-cube"></i> <?= ml('Competitor.MyCompetitions') ?></a>&nbsp;&nbsp;&nbsp;
     <?php if($Delegate){ ?>
         <nobr><a href="<?= LinkDelegate($Delegate['Delegate_WCA_ID']); ?>"><i class="fas fa-user-tie"></i> 
             Delegate page

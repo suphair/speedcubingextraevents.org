@@ -219,7 +219,7 @@ $disciplines=DataBaseClass::QueryGenerate(); ?>
 </h2>   
 
 <?php if(sizeof($results)){ ?>
-<table class="table_new" width="80%">
+<table class="table_new">
     <thead>
                 <tr >
                 <td><?= ml('Records.Table.Date') ?></td>

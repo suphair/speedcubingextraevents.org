@@ -430,7 +430,7 @@ if($error){ ?>
 <p><?= svg_red() ?> <?=$error ?></p>
 <?php } ?>
 <?php if(sizeof($events)){ ?>
-<table class="table_new" width="100%">
+<table class="table_new">
     <thead>
         <tr>
             <td/>
@@ -788,7 +788,7 @@ if($error){ ?>
                     . " join Discipline D on D.ID=DF.Discipline"
                     . " where E.Competition=".$Competition['Competition_ID']." "
                     . " order by LR.Timestamp desc");?>
-<table class="table_new" width='80%'>
+<table class="table_new">
     <thead>
         <td>Date</td><td>Action</td><td>Event</td><td>Round</td><td>Name</td><td>Who did it</td>
     </thead>

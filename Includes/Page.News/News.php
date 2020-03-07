@@ -8,7 +8,7 @@
     </tr>
 </table> 
 <?php } ?>
-<table class="table_new" width="80%">
+<table class="table_new">
     <tbody>
 <?php 
 DataBaseClass::Query("Select N.*,C.Name from News N left outer join Competitor C on C.WID=N.Delegate order by ID desc");

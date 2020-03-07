@@ -1,21 +1,19 @@
 :root{
-   --red: rgb(162,0,0);
-   --light_red: rgb(230,0,0);
+   --red: #9a2e02;
+   --light_red: #e64503;
    --green: rgb(0,182,67);
-   --blue: rgb(17,31,135);
-   --light_blue: rgb(43,16,229);
+   --blue: #204d74;
+   --light_blue: rgb(49, 112, 143);
    --white: rgb(255,255,255);
    --light_gray: rgb(186,186,186);
    --light_green: rgb(0,226,98);
    --gray: rgb(103,103,103);
-   --black: rgb(51,51,51);
+   --black: rgb(33,33,33);
 }
 
 body {
-    --base_color: rgb(186,186,186);
-    --back_color: rgb(225,225,225);
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    color: #333333;
+    color: var(--black);
     padding:10px 20px;
     margin: 0 auto; 
     width:1200px;
@@ -48,10 +46,6 @@ body div {
     margin:10px 0px;
     padding: 0px;
     vertical-align:top;
-}
-
-.header a, .header a:hover{
-    text-decoration: none;
 }
 
 .content1{
@@ -156,8 +150,7 @@ h1{
     text-align: left;
     margin:0px;
     margin-top:20px;
-    color: var(--blue);
-    
+   
     font-family: inherit;
     font-weight: 500;
     line-height: 1.1;
@@ -167,14 +160,12 @@ h1{
 h2{    
     text-align: left;
     margin:0px;
-    color: var(--blue);
 }
 
 h3{
     text-align: left;
     margin-bottom: 0px;
     margin-top: 20px;
-    color: var(--blue);
 }
 
 h3:before{
@@ -192,8 +183,8 @@ a{
 .competitor-panel{
     padding: 10px;
 }
-.Navigator a,.competitor-panel a{
-   color: #333333; 
+.navigator a,.competitor-panel a{
+   color: var(--black); 
 }
 a:hover{
     text-decoration: underline;
@@ -261,15 +252,41 @@ button.delete:hover{
     float: right;
 }
 
-hr{
-    border: none; 
-    height: 1px; 
-    background-color: var(--back_color);
+.select, .events-navigator a.select, .navigator a.select{
+    color: var(--red);
+}
+
+div.navigator div{
+    color: rgb(119, 119, 119);
+    cursor:pointer;
+}
+
+div.navigator div{
+    display:inline-block;
+    white-space: nowrap;
+    padding:5px 10px;
+    border-radius: 10px;
+}
+
+div.navigator{
+    margin:0px;
+    padding:0px;
+    border-radius: 10px;
+    font-size:18px;
+    background-color: #e7e7e7;
 }
 
 
-.select, .events-navigator a.select, .Navigator a.select{
-    color: var(--red);
+div.navigator div.navigator_hover{
+    background-color: #ccc;
+}
+
+div.navigator .select{
+    background-color: #ccc;
+}    
+
+div.navigator div.select{
+    color: var(--black);
 }
 
 a.local_link{
@@ -330,18 +347,6 @@ a.select_link{
     font-weight: bold;
 }
 
-.Navigator span{
-    color:var(--base_color);
-}
-
-div.Navigator{
-    margin:0px;
-    padding:10px;
-    border-radius: 10px;
-    padding-top:10px;
-    font-size:18px;
-    background-color: rgb(233, 233, 233);
-}
 div.AnnuonceNew {
     margin:0px;
     margin-top:10px;
@@ -393,10 +398,11 @@ table.table_new{
     border-collapse: collapse;
     margin:10px;
     white-space: nowrap;
+    /*width:100%;*/
 }
 
 table.table_new tbody td{
-    padding:3px;
+    padding:3px 10px;
 }
 
 table.table_new thead td,table.table_new tfoot td{

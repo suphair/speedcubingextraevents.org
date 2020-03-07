@@ -5,7 +5,7 @@
     $logs=DataBaseClass::getRows(); ?>
     
 <h1>Logs mail</h1>
-<table class="table_new" width="100%">
+<table class="table_new">
 <thead>
 <tr>
     <td>DateTime</td>

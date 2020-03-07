@@ -333,7 +333,7 @@ if($deleter and sizeof($deleter_names)>0){?>
 <?php } ?>
 
 <h3>Competitors</h3> 
-<table class="table_new" width="80%">
+<table class="table_new">
     <thead>
     <tr>
         <td>ID</td>
@@ -443,7 +443,7 @@ if($deleter and sizeof($deleter_names)>0){?>
 <table>
 
 <?php DataBaseClass::Query("Select Timestamp,Action, Doing,Details from LogsRegistration where Event=".$CompetitionEvent['Event_ID']." order by Timestamp desc" );?>
-<table class="table_new" width='80%'>
+<table class="table_new">
     <thead>
         <td>Date</td><td>Action</td><td>Name</td><td>Who did it</td>
     </thead>
