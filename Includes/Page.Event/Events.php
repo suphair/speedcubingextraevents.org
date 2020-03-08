@@ -91,12 +91,13 @@ if($type_filter=='333cube'){
     $extraWhere=" and (TNoodle='333' or TNoodles='333') and GlueScrambles=1 ";
 }
 
+#TNoodles
 
-
-    DataBaseClass::Query("select D.Simple,D.ID,D.Code,D.CodeScript,D.Status,D.Name,D.Competitors,
+    DataBaseClass::Query("select D.Simple,D.ID,D.Code,D.CodeScript,D.Status,D.Name,D.Competitors,coalesce(D.TNoodles,'') TNoodles,D.Inspection,
     count(distinct C.ID) countCompetitors,
     count(distinct Cn.ID) countCompetitions,
-    (sum(case when Com.Place>0 and Cn.ID is not null then 1 else 0 end)>0) AttemptExists
+    (sum(case when Com.Place>0 and Cn.ID is not null then 1 else 0 end)>0) AttemptExists,
+    case when GlueScrambles=1 and TNoodle then TNoodle else 0 end TNoodle
     from `Discipline` D
     left outer join `DisciplineFormat` DF on DF.Discipline=D.ID
     left outer join `Event` E on E.DisciplineFormat=DF.ID
@@ -123,6 +124,9 @@ if($type_filter=='333cube'){
         <tr>
             <td></td>
             <td><?= ml('Events.Table.Name') ?></td>
+            <td/>
+            <td/>
+            <td/>
             <td class="table_new_right"><?= ml('Events.Table.Single') ?></td>
             <td class="table_new_right"><?= ml('Events.Table.Average') ?></td>
             <td class="table_new_center"><?= ml('Events.Table.Persons') ?></td>
@@ -158,11 +162,24 @@ if($type_filter=='333cube'){
         
         <td><?= ImageEvent($discipline['CodeScript'],1.5,$discipline['Name']) ?></td>    
         <td>
-            <a href="<?= LinkDiscipline($discipline['Code']) ?>">
-                <?= $discipline['Name'] ?>
-            </a>
+            <?= $discipline['Name'] ?>
             <?php if($discipline['Status']=='Archive'){ ?>
                 <i class="fas fa-ban"></i>
+            <?php } ?>
+        </td>
+        <td style="padding:2px; margin:0px">
+            <?php if($discipline['Competitors']>1){ ?>
+                <i class="fas fa-users"></i>
+            <?php } ?>
+        </td>
+        <td style="padding:2px; margin:0px">
+            <?php if($discipline['TNoodles']>1){ ?>
+                <i class="fas fa-cubes"></i>
+            <?php } ?>
+        </td>
+        <td style="padding:2px; margin:0px">
+            <?php if($discipline['Inspection']==20){ ?>
+                <i class="fas fa-stopwatch"></i>
             <?php } ?>
         </td>
         <td class="table_new_right">
@@ -183,6 +200,21 @@ if($type_filter=='333cube'){
         </td>
         <td class="table_new_center">     
             <?= $discipline['countCompetitions']?$discipline['countCompetitions']:'0' ?>
+        </td>
+        <td>
+            <a href="<?= PageIndex() ?>Regulations/<?= $discipline['Code'] ?>">
+                <i class="fas fa-book"></i> <?= ml('Events.Regulations') ?>
+            </a>
+        </td>
+        <td>
+            <a href="<?= LinkDiscipline($discipline['Code']) ?>">
+                <i class="fas fa-signal fa-rotate-90"></i> <?= ml('Events.Rankings') ?>
+            </a>
+        </td>
+        <td>
+            <a href="<?= LinkDiscipline($discipline['Code']) ?>/Settings">
+                <i class="fas fa-cog"></i> <?= ml('Events.Settings') ?>
+            </a>
         </td>
     </tr>
 <?php } ?>
