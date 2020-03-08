@@ -7,31 +7,31 @@ if(explode('.',$type)[0]=='Competition' or $type=='index')$type='Competitions';
 ?>
 <div class="navigator">
         <div data-section="Competitions">
-            <i class="fas fa-cube"></i> <?= ml('Navigator.Competitions') ?>
+            <a href="#"><i class="fas fa-cube"></i> <?= ml('Navigator.Competitions') ?></a>
         </div>
     
         <div data-section="Regulations">
-            <i class="fas fa-book"></i> <?= ml('Navigator.Regulations') ?>
+            <a href="#"><i class="fas fa-book"></i> <?= ml('Navigator.Regulations') ?></a>
         </div>
     
         <div data-section="Records">
-            <i class="fas fa-trophy"></i> <?= ml('Navigator.Records') ?>
+            <a href="#"><i class="fas fa-trophy"></i> <?= ml('Navigator.Records') ?></a>
         </div>
  
         <div data-section="Competitors">
-            <i class="fas fa-users"></i> <?= ml('Navigator.Competitors') ?>
+            <a href="#"><i class="fas fa-users"></i> <?= ml('Navigator.Competitors') ?></a>
         </div>
 
         <div data-section="Events">    
-            <i class="fas fa-star"></i> <?= ml('Navigator.Events') ?>
+            <a href="#"><i class="fas fa-star"></i> <?= ml('Navigator.Events') ?></a>
         </div>
             
         <div data-section="Delegates">
-            <i class="fas fa-sitemap"></i> <?= ml('Navigator.Delegates') ?>
+            <a href="#"><i class="fas fa-sitemap"></i> <?= ml('Navigator.Delegates') ?></a>
         </div>
     
         <div data-section="News">
-            <i class="far fa-newspaper"></i> <?= ml('Navigator.News') ?>
+            <a href="#"><i class="far fa-newspaper"></i> <?= ml('Navigator.News') ?></a>
         </div>
 </div>
 
@@ -50,5 +50,9 @@ if(explode('.',$type)[0]=='Competition' or $type=='index')$type='Competitions';
     });    
     
     $('div.navigator div[data-section="<?= $type ?>"]').addClass("select");
+    $('div.navigator div').each(function( index ) {
+        var section=$(this).data('section');
+        $(this).find('a').attr('href','<?= PageIndex()?>' + section);
+    });
 </script>
 

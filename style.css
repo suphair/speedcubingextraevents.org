@@ -183,9 +183,15 @@ a{
 .competitor-panel{
     padding: 10px;
 }
+
 .navigator a,.competitor-panel a{
    color: var(--black); 
 }
+
+.navigator a,.competitor-panel a:hover{
+   text-decoration: none; 
+}
+
 a:hover{
     text-decoration: underline;
     color:var(--light_blue);
@@ -252,13 +258,16 @@ button.delete:hover{
     float: right;
 }
 
-.select, .events-navigator a.select, .navigator a.select{
+.select, .events-navigator a.select{
     color: var(--red);
 }
 
 div.navigator div{
-    color: rgb(119, 119, 119);
     cursor:pointer;
+}
+
+div.navigator div a {
+    color: rgb(119, 119, 119);
 }
 
 div.navigator div{
@@ -281,11 +290,12 @@ div.navigator div.navigator_hover{
     background-color: #ccc;
 }
 
+
 div.navigator .select{
     background-color: #ccc;
 }    
 
-div.navigator div.select{
+div.navigator div.select a{
     color: var(--black);
 }
 
