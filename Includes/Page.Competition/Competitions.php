@@ -273,6 +273,8 @@ OUT;
             }
         }else{
             $('.competition').show();    
+            $('.competition').removeClass('odd');
+            $('.competition').removeClass('even');
         }
     }
     
