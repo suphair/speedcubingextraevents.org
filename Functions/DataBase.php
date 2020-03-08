@@ -23,7 +23,7 @@ Function DataBaseInit(){
        exit();
    }
    
-   mysqli_query($connection,"SET CHARSET UTF8");
+   mysqli_query($connection,"SET CHARSET utf8mb4");
    DataBaseClass::setConection($connection);
    
    
@@ -42,7 +42,7 @@ Function DataBaseInit(){
        exit();
    }
    
-   mysqli_query($connection2,"SET CHARSET UTF8");
+   mysqli_query($connection2,"SET CHARSET utf8mb4");
    DataBaseClassWCA::setConection($connection2);
    
    $connection3 = mysqli_init();
@@ -60,7 +60,7 @@ Function DataBaseInit(){
        exit();
    }
    
-   mysqli_query($connection3,"SET CHARSET UTF8");
+   mysqli_query($connection3,"SET CHARSET utf8mb4");
    DataBaseClassExport::setConection($connection3);
    
    

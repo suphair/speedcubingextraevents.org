@@ -18,6 +18,7 @@ foreach(DataBaseClassWCA::getRows() as $row){
 DataBaseClass::Query(" Select UpdateTimestamp, ID, WID from Competitor  where  WID is not null and WCAID='' and TO_DAYS(now()) - TO_DAYS(UpdateTimestamp) > $depth
 order by UpdateTimestamp Limit $limitApi");
 
+
 foreach(DataBaseClass::getRows() as $user){
     Competitors_Reload($user['ID'],$user['WID']);
 }
