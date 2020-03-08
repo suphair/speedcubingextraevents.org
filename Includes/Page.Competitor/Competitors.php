@@ -108,33 +108,16 @@ group by C.WCAID, C.Name, C.Country,C.ID , Country.Name order by $sort C.Name, W
                 </select>
             </td>
         </tr>
+        <tr>
+            <td><i class="fas fa-search"></i> <?= ml('Competitors.Find') ?></td>
+            <td><input ID="competitor-find"/></td>
+        </tr>
     </table>        
-</td><td> 
-    <table class="table_info"> 
-       <tr>
-           <td><i class="fas fa-search"></i> <?= ml('Competitors.FindAndGo' )?></td>
-           <td>
-               <select hidden tabindex="1" ID="SelectCompetitors"
-                               data-placeholder="<?= ml('Competitors.FindPlaceholder',false )?>" 
-                               class="chosen-select" multiple onchange="if(this.value){
-                      location.href = '<?= PageIndex()?>Competitor/' + this.value;
-                  }">
-                   <?= mlb('Competitors.FindPlaceholder' )?>
-                  <option value=""></option>
-                  <?php 
-                  foreach($competitors as $competitor){ ?>
-                      <option value="<?= $competitor['ID'] ?>"> <?= $competitor['WCAID'] ?> &#9642; <?= $competitor['Name'] ?> &#9642; <?= $competitor['CountryName'] ?>  </option>    
-                  <?php } ?>
-               </select>
-           </td>
-        </tr>   
-   </table>
 </td></tr></table>
 
-    <table class="table_new">
+    <table class="table_new" data-competitors>
         <thead>
             <tr>
-                <td/>
                 <td><?= ml('Competitors.Table.Competitor') ?></td>
                 <td><?= ml('Competitors.Table.WCAID') ?></td>
                 <td><?= ml('Competitors.Table.Country') ?></td>
@@ -143,13 +126,13 @@ group by C.WCAID, C.Name, C.Country,C.ID , Country.Name order by $sort C.Name, W
                 <td class="table_new_center"><?= ml('Competitors.Table.Medals') ?></td>
             </tr> 
         </thead>
+    <tbody>    
     <?php 
-    foreach($competitors_medals as $i=>$competitors_medal){ ?>
-            <tr>
-                <td><?= $i+1 ?></td>
+    foreach($competitors_medals as $competitors_medal){ ?>
+            <tr data-key="<?= Short_Name($competitors_medal['Name']) ?> <?= $competitors_medal['WCAID'] ?>">
                 <td >
                     <a href="<?= PageIndex() ?>Competitor/<?= $competitors_medal['WCAID']?$competitors_medal['WCAID']:$competitors_medal['ID'] ?>">            
-                        <?= trim(explode("(",$competitors_medal['Name'])[0]) ?> 
+                        <?= Short_Name($competitors_medal['Name']) ?> 
                     </a>
                 </td>
                 <td><?= $competitors_medal['WCAID'] ?></td>
@@ -163,8 +146,30 @@ group by C.WCAID, C.Name, C.Country,C.ID , Country.Name order by $sort C.Name, W
     </table>
 
 <script>
-$("#SelectCompetitors").show();
-</script>
-<script src="<?= PageLocal()?>jQuery/chosen_v1/docsupport/init.js" type="text/javascript" charset="utf-8"></script>
 
-<?= mlb('*.Reload')?>
+$('#competitor-find').on("input",function(){
+    var find=$(this).val().toLowerCase();
+    reload(find);
+});
+
+
+function reload(find){
+    var i=1;
+    $('table[data-competitors] tbody tr').hide();
+    $('table[data-competitors] tbody tr').each(function() {
+        var key=$(this).data('key').toLowerCase();
+        if(key.indexOf(find)!== -1){
+            $(this).show();
+            if(i%2!==0){
+                $(this).addClass('odd');
+                $(this).removeClass('even');
+            }else{
+                $(this).addClass('even');
+                $(this).removeClass('odd');
+            }
+            i=i+1;  
+        }
+    });
+}
+
+</script>
