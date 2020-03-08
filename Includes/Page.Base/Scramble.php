@@ -4,7 +4,7 @@ $EventCode=$request[1];
 
 $Secret=false;
 if(!is_numeric($EventCode)){
-    DataBaseClass::Query("Select Event from ScramblePdf where Secret='$EventCode'");
+    DataBaseClass::Query("Select Event from ScramblePdf where lower(Secret)=lower('$EventCode')");
     $row=DataBaseClass::getRow();
     if(isset($row['Event'])){
         $Secret=$EventCode;
@@ -20,7 +20,11 @@ DataBaseClass::Join_current('Discipline');
 $CompetitionEvent = DataBaseClass::QueryGenerate(false);
 $title=$CompetitionEvent['Competition_WCA'].'_'.$CompetitionEvent['Discipline_Code'].'_'.$CompetitionEvent['Event_Round'].".pdf";
 
-$filename="Image/Scramble/".($Secret?$Secret:$CompetitionEvent['Event_ScrambleSalt']).".pdf";
+$filename="Image/Scramble/". strtolower($Secret?$Secret:$CompetitionEvent['Event_ScrambleSalt']).".pdf";
+$filenameU="Image/Scramble/". strtoupper($Secret?$Secret:$CompetitionEvent['Event_ScrambleSalt']).".pdf";
+if(file_exists($filenameU)){
+    $filename=$filenameU;
+}
 if(file_exists($filename)){
     if(isset($request[2]) and $request[2]=='download'){
         header('Content-Description: File Transfer');

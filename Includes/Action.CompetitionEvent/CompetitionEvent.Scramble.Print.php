@@ -250,7 +250,7 @@ foreach($data as $d=>$row){
     $Y+=$D_Att;
     
     $pdf->Rect(17,$Y_Content_S,$X_IMG_1-17,$Y-$Y_Content_S);
-    if($Y+$D_Att>$pdf->h-15 and isset($data[$d+1])){
+    if($Y+$D_Att>$pdf->h-15 and isset($data[$d+1]) and $group==$data[$d+1]['Scramble_Group']){
         $page++;
         $pdf->AddPage();
         $pdf->SetFont('Arial','',10);

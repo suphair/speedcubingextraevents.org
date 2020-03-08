@@ -87,18 +87,19 @@ $typesSimplePage=[
             case 'scramble':
                $EventCode = $request[1];
                 if(!is_numeric($EventCode)){
-                    DataBaseClass::Query("Select Event from Event E join ScramblePdf SP on SP.Secret=E.ScramblePublic and E.ScramblePublic='$EventCode'");
+                    DataBaseClass::Query("Select Event from Event E join ScramblePdf SP on SP.Secret=E.ScramblePublic and lower(E.ScramblePublic)=lower('$EventCode')");
                     $row=DataBaseClass::getRow();
                     if(isset($row['Event'])){
                         IncludePage('Scramble');
                         exit();
                     }    
                     
-                    DataBaseClass::Query("Select Event,Competition from Event E join ScramblePdf SP on SP.Event=E.ID and SP.Secret='$EventCode'");
+                    DataBaseClass::Query("Select Event,Competition from Event E join ScramblePdf SP on SP.Event=E.ID and lower(SP.Secret)=lower('$EventCode')");
                     $row=DataBaseClass::getRow();
+                    
                     if(isset($row['Event'])){
                         $EventCode=$row['Event'];
-                        if(self::CheckAccess("Scramble","Competition.Event.Settings",$row['Competition'])===true){
+                        if(self::CheckAccess("Scramble","Competition.Settings",$row['Competition'])===true){
                             IncludePage('Scramble');
                             exit();
                         }
