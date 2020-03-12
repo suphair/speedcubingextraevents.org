@@ -43,7 +43,7 @@ if(!$data['Discipline_GlueScrambles'] or !$data['Discipline_TNoodle']){
     <br>
     <?php
     $event_request="('eventID'-'".$data['Discipline_TNoodle']."'_'round'-'1'_'scrambleSetCount'-".$data['Event_Groups']."_'scrambleCount'-".$data['Format_Attemption']."_'extraScrambleCount'-".$ex."_'copies'-1)";
-    $link="http://localhost:2014/scramble-legacy/#competitionName=".str_replace('.','_',$data['Competition_WCA'])."_".$data['Discipline_Code']."_1&rounds=i".
+    $link="http://localhost:2014/scramble-legacy/#competitionName=".str_replace('.','_',$data['Competition_WCA'])."_".$data['Discipline_Code']."_".$data['Event_Round']."&rounds=i".
     $event_request        
     ."!&version=1.0"; ?>
         
