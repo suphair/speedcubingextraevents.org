@@ -156,10 +156,17 @@ $disciplines=DataBaseClass::QueryGenerate();
         <td>Multiplier</td>
         <td><input type="number" min="1" max="10" required="" name="TNoodlesMult" value="<?= $discipline['Discipline_TNoodlesMult'] ?>"></td>
     </tr>    
+    <?php 
+    $comments=json_decode($discipline['Discipline_Comment'],true);
+    foreach(getLanguages() as $language){  
+        if(!isset($comments[$language] )){
+            $comments[$language] ="";
+        } ?>
     <tr>
-        <td>Information for delegates</td>
-        <td><input name="Comment" style="width: 300px" value="<?= $discipline['Discipline_Comment'] ?>"></td>
+        <td>Information for delegates <?= ImageCountry($language)?></td>
+        <td><input name="Comment[<?= $language ?>]" style="width: 300px" value='<?= $comments[$language] ?>'></td>
     </tr>
+    <?php } ?>
     <tr>
         <td>Information for scrambles</td>
         <td><i class="fas fa-info-circle"></i> max 5 rows, maximum of 45 characters per line</td>

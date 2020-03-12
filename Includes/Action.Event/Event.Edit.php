@@ -25,7 +25,15 @@ foreach($_POST['Formats'] as $format){
     $Formats_set[$format]=1;
 }
 
-$Comment= DataBaseClass::Escape($_POST['Comment']);
+$Comments= $_POST['Comment'];
+foreach($Comments as $c=>$Comment){
+    if(DataBaseClass::Escape($Comment)){
+        $Comments[$c]=$Comment;
+    }else{
+        unset($Comments[$c]);
+    }
+}
+
 $Name=$_POST['Name'];
 $Code=$_POST['Code'];
 $Competitors=$_POST['Competitors'];
@@ -72,7 +80,7 @@ DataBaseClass::Query("Update `Discipline` "
         . " CutScrambles=$CutScrambles,"
         . " Simple=$Simple,"
         . " Inspection=$Inspection,"
-        . " Comment='$Comment', "
+        . " Comment='". DataBaseClass::Escape(json_encode($Comments,JSON_UNESCAPED_UNICODE))."', "
         . " ScrambleComment='$ScrambleComment'"
         . " where ID='$ID'");
 DataBaseClass::FromTable('Discipline',"ID=$ID");
