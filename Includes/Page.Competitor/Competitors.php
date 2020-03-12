@@ -110,7 +110,7 @@ group by C.WCAID, C.Name, C.Country,C.ID , Country.Name order by $sort C.Name, W
         </tr>
         <tr>
             <td><i class="fas fa-search"></i> <?= ml('Competitors.Find') ?></td>
-            <td><input ID="competitor-find"/></td>
+            <td><input autocomplete="off" ID="competitor-find"/></td>
         </tr>
     </table>        
 </td></tr></table>
