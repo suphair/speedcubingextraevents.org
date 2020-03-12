@@ -40,7 +40,7 @@
                     ['x','-','*','+','!','C ','D ','S '],
                     ['Delete','Remove','New','Add','Link',
                         '<i class="far fa-user"></i> ',
-                        '<i class="far fa-user-tie"></i> ',
+                        '<i class="fas fa-user-tie"></i> ',
                         '<i class="far fa-list-alt"></i> '],
                     $row['Action']) ?>
         </td>
@@ -49,7 +49,7 @@
         <td class="table_new_center"><?= $row['Round'] ?></td>
         <td><?= str_replace([": ",","],[":<br>","<br>"],$row['Details'])?></td>
         <td><?= str_replace(['Competitor: ','Delegate: ','ScoreTaker'],
-                ['<i class="far fa-user"></i> ','<i class="far fa-user-tie"></i> ','<i class="far fa-list-alt"></i> ScoreTaker'],
+                ['<i class="far fa-user"></i> ','<i class="fas fa-user-tie"></i> ','<i class="far fa-list-alt"></i> ScoreTaker'],
                 $row['Doing'] ) ?></td>
     </tr>
     <?php } ?>

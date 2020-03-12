@@ -645,7 +645,7 @@ if($error){ ?>
         <td><?= ImageCountry($language,20); ?> <?= CountryName($language,true) ?></td>
         <td>
         <?php if(isset($comments[$language])){ ?>
-            <?php Parsedown($comments[$language]) ?>x
+            <?php Parsedown($comments[$language]) ?>
         <?php }else{ ?>
             <i class="fas fa-ban"></i> No information available
         <?php } ?>
@@ -726,7 +726,7 @@ if($error){ ?>
         </thead>
         <tbody>
     <?php DataBaseClass::Query(""
-            . "Select SP.Action, SP.Timestamp, D.WCA_ID,D.Name, SP.Secret,E.ScrambleSalt,E.ScramblePublic, Discipline.Code, Discipline.CodeScript, Discipline.Name, E.vRound,D.Name Delegate from ScramblePdf SP "
+            . "Select SP.Action, SP.Timestamp, D.WCA_ID,D.Name, SP.Secret,E.ScrambleSalt,E.ScramblePublic, Discipline.Code, Discipline.CodeScript, Discipline.Name, E.Round,D.Name Delegate from ScramblePdf SP "
             . " join Event E on SP.Event=E.ID and E.Competition=".$Competition['Competition_ID']
             . " join DisciplineFormat DF on DF.ID=E.DisciplineFormat "
             . " join Discipline on Discipline.ID=DF.Discipline "
@@ -749,7 +749,7 @@ if($error){ ?>
             <?php } ?>
              </td>
             <td><?= ImageEvent($row['CodeScript'],25)?> <?= $row['Name'] ?></td>
-            <td><?= $row['vRound'] ?></td>
+            <td class="table_new_center" ><?= $row['Round'] ?></td>
             <td><?= $row['Timestamp'] ?></td>
             <td><a href="<?= LinkDelegate($row['WCA_ID'])?>"><?= $row['Delegate'] ?></a></td>
             <td><?= $row['Action'] ?></td>
@@ -800,7 +800,7 @@ if($error){ ?>
                     ['x','-','*','+','!','C ','D ','S '],
                     ['Delete','Remove','New','Add','Link',
                         '<i class="far fa-user"></i> ',
-                        '<i class="far fa-user-tie"></i> ',
+                        '<i class="fas fa-user-tie"></i> ',
                         '<i class="far fa-list-alt"></i> '],
                     $row['Action']) ?>
         </td>
@@ -808,22 +808,9 @@ if($error){ ?>
         <td class="table_new_center"><?= $row['Round'] ?></td>
         <td><?= str_replace([": ",","],[":<br>","<br>"],$row['Details'])?></td>
         <td><?= str_replace(['Competitor: ','Delegate: ','ScoreTaker'],
-                ['<i class="far fa-user"></i> ','<i class="far fa-user-tie"></i> ','<i class="far fa-list-alt"></i> ScoreTaker'],
+                ['<i class="far fa-user"></i> ','<i class="fas fa-user-tie"></i> ','<i class="far fa-list-alt"></i> ScoreTaker'],
                 $row['Doing'] ) ?></td>
     </tr>
     <?php } ?>
 </table>
 <script src="<?= PageLocal()?>jQuery/chosen_v1/docsupport/init.js" type="text/javascript" charset="utf-8"></script>
-<?= mlb('*.Delete') ?>
-<?= mlb('Competition.Status.Show.True') ?>
-<?= mlb('Competition.Status.Show.False') ?>
-<?= mlb('Competition.Registration.Open') ?>
-<?= mlb('Competition.Registration.Close') ?>
-<?= mlb('Competition.Onsite.Open') ?>
-<?= mlb('Competition.Onsite.Close') ?>
-<?= mlb('Competition.Unofficial.True') ?>
-<?= mlb('Competition.Unofficial.False') ?>
-<?= mlb('Competition.DelegateWCAOn.True') ?>
-<?= mlb('Competition.DelegateWCAOn.False') ?>
-<?= mlb('Competition.Cubingchina.True') ?>
-<?= mlb('Competition.Cubingchina.False') ?>

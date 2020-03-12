@@ -14,7 +14,7 @@
         </thead>
         <tbody>
     <?php DataBaseClass::Query(""
-            . "Select SP.Action, SP.Timestamp, D.WCA_ID,D.Name, SP.Secret,E.ScrambleSalt,E.ScramblePublic, Discipline.Code, Discipline.CodeScript, Discipline.Name, E.vRound,D.Name Delegate,C.Name Competition "
+            . "Select SP.Action, SP.Timestamp, D.WCA_ID,D.Name, SP.Secret,E.ScrambleSalt,E.ScramblePublic, Discipline.Code, Discipline.CodeScript, Discipline.Name, E.Round,D.Name Delegate,C.Name Competition "
             . " from ScramblePdf SP "
             . " join Event E on SP.Event=E.ID "
             . " join Competition C on C.ID=E.Competition "
@@ -42,7 +42,7 @@
             <?php } ?>
             <td><?= $row['Competition'] ?></td></td>
             <td><?= ImageEvent($row['CodeScript'])?> <?= $row['Name'] ?></td>
-            <td><?= $row['vRound'] ?></td>
+            <td><?= $row['Round'] ?></td>
             <td><a href="<?= LinkDelegate($row['WCA_ID'])?>"><?= $row['Delegate'] ?></a></td>
             <td><?= $row['Action'] ?></td>
 
