@@ -49,7 +49,7 @@ function EventBlockLinks($Event,$current="",$table_exists=false){
                     <?php if($current=='regulations'){ ?>
                         <?= ml('Competition.Regulation'); ?>
                     <?php }else{  ?>
-                        <a href="<?= PageIndex()?>Regulations/#<?= $Event['Discipline_Code'] ?>"><?= ml('Competition.Regulation'); ?></a>
+                        <a href="<?= PageIndex()?>Regulations/<?= $Event['Discipline_Code'] ?>"><?= ml('Competition.Regulation'); ?></a>
                     <?php } ?>
                 </td>
             </tr>    
