@@ -23,6 +23,8 @@ function GenerateScramble($Event,$training=false){
         return Generate_fto();
     }elseif($Event=='curvycopter'){
         return Generate_curvycopter($training);
+    }elseif($Event=='sia113'){
+        return Generate_sia113();    
     }else{
         return false;
     }
