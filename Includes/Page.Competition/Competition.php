@@ -172,7 +172,7 @@ $attempts_exists=($data['Attempts']>0 or $data['Start']);
         <?php if($comment=Parsedown(ml_json($Competition['Competition_Comment']),false)){ ?>
              <tr>
                 <td><?= ml('Competition.Information') ?></td>
-                <td><?= $comment ?></td>
+                <td style="word-wrap: normal"><?= $comment ?></td>
             </tr>    
         <?php } ?>
         <tr>
@@ -354,7 +354,7 @@ ObjectClass::setObjects('CompetitionEventCommands',$countCommands);
 <?php if($comment=Parsedown(ml_json($CompetitionEvent['Event_Comment']),false)){?>
         <tr>
             <td><?= ml('Competition.Information') ?></td>
-            <td><?= $comment ?></td>
+            <td style="word-wrap: normal"><?= $comment ?></td>
         </tr>
 <?php } ?>
 <?php if($CompetitionEvent['Event_ScramblePublic']){ ?>
