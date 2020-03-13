@@ -12,13 +12,11 @@ if($Competitor){ ?>
         </a></nobr>&nbsp;&nbsp;&nbsp;
     <?php } 
     if(CheckAccess('Delegate.Candidate.Vote')){
-        DataBaseClass::Query("Select * from RequestCandidate RC "
+        $count=DataBaseClass::getValue("Select count(*) from RequestCandidate RC "
                     . " left outer join RequestCandidateVote RCV on RCV.Competitor=RC.Competitor and RCV.Delegate=".$Delegate['Delegate_ID']
                     . " where RC.Status=0 and coalesce(RCV.Status,-2)=-2"); ?>
-        <?php if(sizeof(DataBaseClass::getRows())){ ?>
-            <nobr><a href='<?= LinkDelegate("Candidates") ?>'><i class="fas fa-baby"></i> <?= sizeof(DataBaseClass::getRows());?> New candidates</a></nobr>&nbsp;&nbsp;&nbsp;
-        <?php }
-    } 
+        <nobr><a href='<?= LinkDelegate("Candidates") ?>'><i class="fas fa-baby"></i> <?= $count?$count:'' ?> Candidates for delegates</a></nobr>&nbsp;&nbsp;&nbsp;
+    <?php } 
 } 
 $delegateLinks=[
             ['Competition.Report','Reports','Reports','<i class="far fa-file-alt"></i>'],

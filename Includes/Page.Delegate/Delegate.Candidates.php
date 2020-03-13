@@ -94,44 +94,21 @@ $RequestCandidateFields=DataBaseClass::QueryGenerate();?>
 </td><td width="80%">
 <?php foreach($RequestCandidates as $RequestCandidate)if($RequestCandidate['RequestCandidate_Status']==$status){ ?>    
 <span class="RequestCandidate" ID="RequestCandidate_<?= $RequestCandidate['RequestCandidate_ID'] ?>" style="display:none">    
-<table class="table_info">
-    <tr>
-        <td>Name</td>
-        <td><?=$RequestCandidate['Competitor_Name'] ?></td>
-    </tr>    
-    <tr>
-        <td>Country</td>
-        <td><?= ImageCountry($RequestCandidate['Competitor_Country'])?> <?= CountryName($RequestCandidate['Competitor_Country']) ?></td>
-    </tr>
-    <tr>
-        <td>Date</td>
-        <td><?= date_range(date('Y-m-d',strtotime($RequestCandidate['RequestCandidate_Datetime']))); ?></td>
-    </tr>
-    <tr>
-        <td>WCA Profile</td>
-        <td><a target="_blank" href="https://www.worldcubeassociation.org/persons/<?= $RequestCandidate['Competitor_WCAID'] ?>"><?= $RequestCandidate['Competitor_WCAID'] ?> <i class="fas fa-external-link-alt"></i></a></td>
-    </tr>
-    <tr>
-        <td>SEE Profile</td>
-        <td><a target="_blank" href="<?= PageIndex()."Competitor/".$RequestCandidate['Competitor_WCAID'] ?>">SEE Profile</a></td>
-    </tr>                   
+<p><b>Name</b> <?=$RequestCandidate['Competitor_Name'] ?></p>
+<p><b>Country</b> <?= ImageCountry($RequestCandidate['Competitor_Country'])?> <?= CountryName($RequestCandidate['Competitor_Country']) ?></p>
+<p><b>Date</b> <?= date_range(date('Y-m-d',strtotime($RequestCandidate['RequestCandidate_Datetime']))); ?></p>
+<p><b>WCA Profile</b> <a target="_blank" href="https://www.worldcubeassociation.org/persons/<?= $RequestCandidate['Competitor_WCAID'] ?>"><?= $RequestCandidate['Competitor_WCAID'] ?> <i class="fas fa-external-link-alt"></i></a></p>
+<p><b>SEE Profile</b> <a target="_blank" href="<?= PageIndex()."Competitor/".$RequestCandidate['Competitor_WCAID'] ?>">SEE Profile</a></p>
     <?php foreach($RequestCandidateFields as $RequestCandidateField){
         if($RequestCandidateField['RequestCandidateField_RequestCandidate']==$RequestCandidate['RequestCandidate_ID']){ ?>
-            <tr>
-                <td><?= $RequestCandidateField['RequestCandidateField_Field'] ?></td>
-                <td><?= Str_replace(['\r\n',"\'",'\"'],['<br>',"'",'"'],$RequestCandidateField['RequestCandidateField_Value']) ?></td>
-            <tr>
+            <p><b><?= $RequestCandidateField['RequestCandidateField_Field'] ?></b></p>
+            <p><?= Str_replace(['\r\n',"\'",'\"'],['<br>',"'",'"'],$RequestCandidateField['RequestCandidateField_Value']) ?></p>
         <?php }
     } ?>
-    <tr> 
-        <td><hr></td>
-        <td><hr></td>
-    </tr>  
+<hr>
     <?php if($CheckAccessVote){ ?>
     <?php if($status==0){?>
-    <tr>
-        <td>Voting of Senior delegates</td>
-        <td><?= Short_Name($Delegate['Delegate_Name'])?></td>
+<p><b>Voting of Senior delegates</b> <?= Short_Name($Delegate['Delegate_Name'])?></p>
     <form method="POST" action="<?= PageAction('Delegate.Candidate.Vote') ?>">    
    <input type='hidden' name="RequestCandidate" value='<?= $RequestCandidate['RequestCandidate_ID']?>'>    
         <?php 
@@ -142,37 +119,14 @@ $RequestCandidateFields=DataBaseClass::QueryGenerate();?>
             $reason=$RequestCandidateVoteReason[$RequestCandidate['RequestCandidate_Competitor']][$Delegate['Delegate_ID']];
 
         }?>
-    <tr>
-        <td>I'm thinking</td> 
-        <td><input type="radio" <?= $vote==-2?'checked':'' ?> name="Status" value="-2"> </td>
-    </tr>    
-    <tr>
-        <td>I accept</td> 
-        <td><input type="radio" <?= $vote==1?'checked':'' ?> name="Status" value="1"> <i class="fas fa-thumbs-up"></i></td>
-    </tr>                    
-    <tr>
-        <td>I abstained</td> 
-        <td><input type="radio" <?= $vote==0?'checked':'' ?> name="Status" value="0"> <i class="fas fa-balance-scale"></i></td>
-    </tr>                    
-    <tr>
-        <td>I decline</td> 
-        <td><input type="radio" <?= $vote==-1?'checked':'' ?> name="Status" value="-1"> <i class="fas fa-ban"></i></td>
-    </tr>  
-    <tr>
-        <td>Reason</td>
-        <td>
-            <input type="input" value="<?= $reason ?>" name="Reason">
-        </td>
-    </tr>    
-    <tr>
-        <td></td>
-        <td><button><i class="fas fa-vote-yea"></i> Vote</button></td>      
-    </tr>
+<p>I'm thinking <input type="radio" <?= $vote==-2?'checked':'' ?> name="Status" value="-2"></p>
+<p>I accept <input type="radio" <?= $vote==1?'checked':'' ?> name="Status" value="1"> <i class="fas fa-thumbs-up"></i></p>
+<p>I abstained <input type="radio" <?= $vote==0?'checked':'' ?> name="Status" value="0"> <i class="fas fa-balance-scale"></i></p>
+<p>I decline <input type="radio" <?= $vote==-1?'checked':'' ?> name="Status" value="-1"> <i class="fas fa-ban"></i></p>
+<p>Reason <input type="input" value="<?= $reason ?>" name="Reason"> </p>
+<p><button><i class="fas fa-vote-yea"></i> Vote</button></p>
     </form> 
-    <tr> 
-        <td><hr></td>
-        <td><hr></td>
-    </tr>  
+<hr>
     <?php } ?>
     <?php 
     $accept=0;
@@ -181,9 +135,7 @@ $RequestCandidateFields=DataBaseClass::QueryGenerate();?>
     $abstain=0;
     if(isset($RequestCandidateVoteReasons[$RequestCandidate['RequestCandidate_Competitor']])){
         foreach($RequestCandidateVoteReasons[$RequestCandidate['RequestCandidate_Competitor']] as $row){ ?>
-              <tr>
-                  <td><?= $row['Name'] ?></td>
-                  <td>
+              <p><b><?= $row['Name'] ?></b>
               <?php if($row['Status']==-1){ ?>
                 <?php $decline++; ?>
                 <i class="fas fa-ban"></i> Declined
@@ -203,41 +155,28 @@ $RequestCandidateFields=DataBaseClass::QueryGenerate();?>
               <?php if($row['Reason']){ ?>
                 -   <?= $row['Reason']; ?>
               <?php } ?>
-               <td>
-            </tr>      
+               </p>    
         <?php }
         }
     } ?>                    
-        </td>
-    </tr>   
     <?php if($status==0 and $CheckAccessDecline and $decline>0 and $accept==0 and $think==0 and ($decline+$accept+$abstain)==sizeof($Seniors)){ ?>
     <form method="POST" action="<?= PageAction('Delegate.Candidate.Decline') ?>" onsubmit="return confirm('Confirm reject')">
     <input type='hidden' name="RequestCandidate" value='<?= $RequestCandidate['RequestCandidate_ID']?>'>    
-    <tr>
-        <td>Reject application</td>
-        <td><button class="delete"><i class="fas fa-user-alt-slash"></i> Reject</button></td>  
-    </tr>
+    <p> Reject application <button class="delete"><i class="fas fa-user-alt-slash"></i> Reject</button></p>
     </form>
     <?php }  ?>        
     <?php if($status==0 and  $CheckAccessAccept and $decline==0 and $accept>0 and $think==0 and ($decline+$accept+$abstain)==sizeof($Seniors)){ ?>
     <form method="POST" action="<?= PageAction('Delegate.Candidate.Accept') ?>" onsubmit="return confirm('Confirm accept')">
     <input type='hidden' name="RequestCandidate" value='<?= $RequestCandidate['RequestCandidate_ID']?>'>    
-    <tr>
-        <td>Accept application</td>
-        <td><button><i class="fas fa-user-plus"></i> Accept</button></td>  
-    </tr>
+    <p>Accept application <button><i class="fas fa-user-plus"></i> Accept</button></p>
     </form>
     <?php }  ?>    
     <?php if($status==-1 and $CheckAccessDecline){ ?>
     <form method="POST" action="<?= PageAction('Delegate.Candidate.Return') ?>" onsubmit="return confirm('Confirm return')">
     <input type='hidden' name="RequestCandidate" value='<?= $RequestCandidate['RequestCandidate_ID']?>'>    
-    <tr>
-        <td>Return application</td>
-        <td><button><i class="fas fa-undo-alt"></i> Return</button></td>  
-    </tr>
+    <p>Return application <button><i class="fas fa-undo-alt"></i> Return</button></p>
     </form>
-    <?php }  ?> 
-</table>    
+    <?php }  ?>  
 </span>    
 <?php } ?>
 </td></tr></table>    

@@ -253,6 +253,16 @@ class DataBaseClass{
         return [];
     }
     
+    public static function getValue($sql){
+        self::Query($sql);
+        $row=self::getRow();
+        if($row){
+            $column =array_keys($row)[0];
+            return $row[$column];
+        }
+        return false;
+    }
+    
     public static function getColumnAssoc($sql){
         self::Query($sql);
         $rows=self::getRows();
