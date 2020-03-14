@@ -164,10 +164,11 @@ foreach($data as $d=>$row){
         }
         
         $r=[];
-        for($i=1;$i<=$scramble_row;$i++){
+        for($i=1;$i<$scramble_row;$i++){
             $r[$i]=ceil($scramble_len/$scramble_row*$i);
             while(substr($row['Scramble_Scramble'],$r[$i],1)!=" "){$r[$i]--;}    
         }
+        $r[$scramble_row]=$scramble_len;
 
         $texts[]=trim(substr($row['Scramble_Scramble'],0,$r[1]));
 
