@@ -271,6 +271,7 @@ DataBaseClass::Join_current('DisciplineFormat');
 DataBaseClass::Join_current('Discipline');
 DataBaseClass::Join('Event','Competition');
 DataBaseClass::Where_current("WCA not like 't.%'");
+DataBaseClass::Where_current("Status=1");
 DataBaseClass::OrderClear('Discipline', 'Name');
 DataBaseClass::SelectPre('distinct D.ID Discipline_ID, '
         . 'D.Status  Discipline_Status, '
@@ -375,6 +376,7 @@ DataBaseClass::Join_current('DisciplineFormat');
 DataBaseClass::Join_current('Discipline');
 DataBaseClass::Where_current("ID='".$discipline['Discipline_ID']."'");
 DataBaseClass::Join('Event','Competition');
+DataBaseClass::Where_current("Status=1");
 //DataBaseClass::OrderClear('Competition', 'ID Desc');
 DataBaseClass::OrderClear('Competition', 'StartDate desc');
 DataBaseClass::Order('Competition', 'EndDate desc');

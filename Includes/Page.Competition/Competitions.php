@@ -36,7 +36,7 @@ if($competitor){
 $whereCountry = $filterCountry ? "and '$filterCountry'=Cn.Country":"";
 $whereYear = $filterYear ? "and $filterYear=year(StartDate)":"";
 $whereMine = $filterMine ? "and Cn.id in (".implode(",",array_merge($competitorCompetitions,[-1])).")":"";
-$whereHidden = !CheckAccess('Competitions.Hidden')?" and Cn.Status=1":""; 
+$whereHidden = !CheckAccess('Competitions.Hidden')?" and (Cn.Status=1 or Cn.Status=-1)":""; 
 $whereSecret = !CheckAccess('Competitions.Secret')?" and Cn.WCA not like 't.%'":"";
 
 $countryCountCompetitions = DataBaseClass::getRowsAssoc(
@@ -54,6 +54,7 @@ $competitions = DataBaseClass::getRowsAssoc("
     select Cn.*,
     coalesce(Country.Name,'') CountryName,
     case
+        when Cn.Status=-1 then -2
         when Cn.Status=0 then -1
         when current_date < Cn.StartDate then 0
         when current_date >= Cn.StartDate and current_date <= Cn.EndDate then 1
@@ -109,6 +110,9 @@ $title=$filterMine?ml('Competitions.My'):ml('Competitions.Title');
 $accessCompetitionAdd=CheckAccess('Competition.Add');
 
 $iconCompetitionStatus=[];
+$iconCompetitionStatus[-2]=<<<OUT
+    <span style="color:var(--red)"><i class="fas fa-user-nurse"></i></span>
+OUT;
 $iconCompetitionStatus[-1]=<<<OUT
     <span style="color:var(--red)"><i class="fas fa-eye-slash"></i></span>
 OUT;

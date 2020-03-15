@@ -41,10 +41,12 @@ foreach($events as $event){
         <tr>
             <td>Displaying competitions</td>
             <td>
-            <?php if($Competition['Competition_Status']){ ?>
+            <?php if($Competition['Competition_Status']==1){ ?>
                     <i class="fas fa-eye"></i> Competitions are visible
-                <?php }else{ ?>
+                <?php }elseif($Competition['Competition_Status']==0){ ?>
                     <i class="fas fa-eye-slash"></i> Competitions are hidden
+                <?php }elseif($Competition['Competition_Status']==-1){ ?>
+                    <i class="fas fa-user-nurse"></i> Competition canceled because of COVID-19
                 <?php } ?>
             </td>
         </tr>
@@ -120,8 +122,9 @@ foreach($events as $event){
             <td>Displaying competitions</td>
             <td>
                 <select name="Status">   
-                    <option value="0" <?= !$Competition['Competition_Status']?'selected':'' ?>>Competitions are hidden</option>
-                    <option value="1" <?= $Competition['Competition_Status']?'selected':'' ?>>Competitions are visible</option>
+                    <option value="0" <?= $Competition['Competition_Status']==0?'selected':'' ?>>Competitions are hidden</option>
+                    <option value="1" <?= $Competition['Competition_Status']==1?'selected':'' ?>>Competitions are visible</option>
+                    <option value="-1" <?= $Competition['Competition_Status']==-1?'selected':'' ?>>Competition canceled because of COVID-19</option>
                 </select>    
             </td>    
         </tr>

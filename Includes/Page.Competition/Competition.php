@@ -113,7 +113,7 @@ $attempts_exists=($data['Attempts']>0 or $data['Start']);
         <tr>
             <td><?= ml('Competition.Results') ?></td>
             <td>
-            <?= svg_red(); ?> <?= $Competition['Competition_DelegateWCAOn']?ml('Competition.Unofficial.True'):ml('Competition.Unofficial.TrueTemp') ?>
+            <?= svg_red(); ?> <?= $Competition['Competition_DelegateWCAOn']?ml('Competition.Unofficial.TrueTemp'):ml('Competition.Unofficial.True') ?>
             </td>
         </tr>    
         <?php } ?>   
@@ -162,12 +162,19 @@ $attempts_exists=($data['Attempts']>0 or $data['Start']);
             <?php } 
         } ?>
         
-        <?php if(!$Competition['Competition_Status']){?>
+        <?php if($Competition['Competition_Status']==0){?>
         <tr>    
             <td><i class="fas fa-eye-slash"></i></td>
             <td><?=  ml('Competition.Status.Show.False') ?></td>
         </tr>   
         <?php } ?>
+        <?php if($Competition['Competition_Status']==-1){?>
+        <tr>    
+            <td> <i class=" color_red fas fa-user-nurse"></i></td>
+            <td class=" table_new_bold color_red">Competition canceled because of COVID-19</td>
+        </tr>   
+        <?php } ?>
+        
  
         <?php if($comment=Parsedown(ml_json($Competition['Competition_Comment']),false)){ ?>
              <tr>
