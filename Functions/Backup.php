@@ -57,6 +57,7 @@ function crateBackup($schema,$filename){
             GetIni($section,'username'),
             GetIni($section,'password'),
             ['add-drop-table' => true]);
+    
     $dump->start($filename);  
     
     $zip = new ZipArchive();
