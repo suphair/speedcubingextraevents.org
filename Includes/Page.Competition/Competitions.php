@@ -111,7 +111,7 @@ $accessCompetitionAdd=CheckAccess('Competition.Add');
 
 $iconCompetitionStatus=[];
 $iconCompetitionStatus[-2]=<<<OUT
-    <span style="color:var(--red)"><i class="fas fa-user-nurse"></i></span>
+    <span style="color:var(--red)"><i class="fas fa-clinic-medical"></i></span>
 OUT;
 $iconCompetitionStatus[-1]=<<<OUT
     <span style="color:var(--red)"><i class="fas fa-eye-slash"></i></span>

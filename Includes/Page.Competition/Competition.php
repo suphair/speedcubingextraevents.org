@@ -170,7 +170,7 @@ $attempts_exists=($data['Attempts']>0 or $data['Start']);
         <?php } ?>
         <?php if($Competition['Competition_Status']==-1){?>
         <tr>    
-            <td> <i class=" color_red fas fa-user-nurse"></i></td>
+            <td> <i class="fas fa-clinic-medical"></i></td>
             <td class=" table_new_bold color_red">Competition canceled because of COVID-19</td>
         </tr>   
         <?php } ?>
