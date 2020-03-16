@@ -326,7 +326,7 @@ $typesSimplePage=[
                                             }
                                             if($request[4]=='settings'){
                                                 self::$titles[]='Settings';
-                                                self::CheckAccess("Competition.Event.Settings","Competition.Event.Settings",$Competition['Competition_ID']);
+                                                self::CheckAccess("CompetitionEvent.Settings","Competition.Event.Settings",$Competition['Competition_ID']);
                                             }elseif($request[4]!='null'){
                                                 self::set404();    
                                             }
@@ -365,6 +365,10 @@ $typesSimplePage=[
             case 'scrambles':
                 self::CheckAccess('Scrambles');
                 break; 
+            
+            case 'alternative':
+                self::$page='Competitor.Login.Alternative';
+                break;     
             
             case 'multilanguage':
                 self::CheckAccess('MultiLanguage');

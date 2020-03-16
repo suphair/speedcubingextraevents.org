@@ -46,3 +46,12 @@ function ImageCountry($country){
     }    
 }
         
+function countryExists($code) {
+    if (strlen($code) != 2) {
+        return false;
+    }
+    if (! DataBaseClass::exists("select * from Country where ISO2='$code'")) {
+        return false;
+    }
+    return true;
+}

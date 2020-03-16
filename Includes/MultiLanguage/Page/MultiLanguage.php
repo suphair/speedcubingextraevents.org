@@ -48,7 +48,7 @@ foreach($ml_finds as $ml_find){
 }
 ksort($MultiLanguagesOut);
 ?>
-<form method="POST" action="<?= PageAction('Language.Edit') ?>">
+<form method="POST" action="<?= PageAction('MultiLanguage.Edit') ?>">
 <table class="table_new">
     <thead>
     <tr>

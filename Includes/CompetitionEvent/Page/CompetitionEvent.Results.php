@@ -75,10 +75,10 @@ if( !$Competition['Competition_Unofficial']){
                 <tr> 
                     <td>#</td>                    
                     <td colspan="<?= $CompetitionEvent['Discipline_Competitors'] ?>"><?=ml('Competition.Name'); ?></td>
-                    <td class="table_new_right"><?= ml('Competition_Results.Table.'.$CompetitionEvent['Format_Result']) ?></td>
+                    <td class="table_new_center"><?= ml('Competition_Results.Table.'.$CompetitionEvent['Format_Result']) ?></td>
                     <td/>
                     <?php if($CompetitionEvent['Format_ExtResult']){ ?>
-                        <td class="table_new_right"><?= ml('Competition_Results.Table.'.$CompetitionEvent['Format_ExtResult']) ?></td>
+                        <td class="table_new_center"><?= ml('Competition_Results.Table.'.$CompetitionEvent['Format_ExtResult']) ?></td>
                         <td/>
                     <?php } ?>
                         <td>

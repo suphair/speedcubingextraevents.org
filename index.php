@@ -38,6 +38,7 @@ if(RequestClass::getError(401)){ header('HTTP/1.1 401 Unauthorized'); } ?>
     <script src="<?= PageIndex(); ?>jQuery/chosen_v1/chosen.jquery.js" type="text/javascript"></script>
 </head>
 <body>    
+    <span id="pageIndex" data-location="<?= PageIndex() ?>">
     <table width='100%'>
         <tr>
             <td><img class="logo" src="<?= PageIndex() ?>Logo/Logo_Color.png"></td>

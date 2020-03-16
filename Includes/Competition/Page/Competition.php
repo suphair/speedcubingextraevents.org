@@ -498,15 +498,15 @@ ObjectClass::setObjects('CompetitionEventCommands',$countCommands);
 <?php 
 if($CompetitionEvent['Discipline_CodeScript']=='team_cup'){
     if(availableCupChange($CompetitionEvent['Event_ID'])){
-        IncludePage('Competition_PsychSheet');
+        IncludePage('CompetitionEvent.PsychSheet');
     }else{
-        IncludePage('Competition_ResultsCup');
+        IncludePage('CompetitionEvent.ResultsCup');
     }
 }else{
     if ($attempts_exists){
-        IncludePage('Competition_Results');        
+        IncludePage('CompetitionEvent.Results');        
     }else{
-        IncludePage('Competition_PsychSheet');
+        IncludePage('CompetitionEvent.PsychSheet');
     }
 } ?>                                
 <?php } ?>                
