@@ -80,7 +80,7 @@ $typesSimplePage=[
                     $Competition = DataBaseClass::SelectTableRow('Competition', "WCA='$request[3]'");
                     ObjectClass::setObjects('PageCompetition', $Competition);
                     if($Competition){
-                        IncludePage('Api.Competition.Results');
+                        IncludeClass::Page('Api.Competition.Results');
                     }
                 }
                 exit();
@@ -90,7 +90,7 @@ $typesSimplePage=[
                     DataBaseClass::Query("Select Event from Event E join ScramblePdf SP on SP.Secret=E.ScramblePublic and lower(E.ScramblePublic)=lower('$EventCode')");
                     $row=DataBaseClass::getRow();
                     if(isset($row['Event'])){
-                        IncludePage('Scramble');
+                        IncludeClass::Page('Scramble');
                         exit();
                     }    
                     
@@ -100,7 +100,7 @@ $typesSimplePage=[
                     if(isset($row['Event'])){
                         $EventCode=$row['Event'];
                         if(self::CheckAccess("Scramble","Competition.Settings",$row['Competition'])===true){
-                            IncludePage('Scramble');
+                            IncludeClass::Page('Scramble');
                             exit();
                         }
                     }
@@ -114,11 +114,11 @@ $typesSimplePage=[
                 
                 if(isset($CompetitionEvent['Competition_ID'])){
                     if($CompetitionEvent['Competition_ID']==129){
-                       IncludePage('Scramble');
+                       IncludeClass::Page('Scramble');
                        exit();
                     }else{
                         if(self::CheckAccess("Scramble","Competition.Event.Settings",$CompetitionEvent['Competition_ID'])===true){
-                            IncludePage('Scramble');
+                            IncludeClass::Page('Scramble');
                             exit();
                         }
                    }
@@ -128,15 +128,15 @@ $typesSimplePage=[
                 break;
             
             case 'scoretaker':
-                IncludePage('ScoreTaker');
+                IncludeClass::Page('ScoreTaker');
                 exit();
                 break;
             
             case 'mainregulations':
                 if($request[1]=='edit' and self::CheckAccess("MainRegulations.Edit")===true){
-                    IncludePage('MainRegulations.Edit');    
+                    IncludeClass::Page('MainRegulations.Edit');    
                 }else{
-                    IncludePage('MainRegulations');
+                    IncludeClass::Page('MainRegulations');
                 }
                 exit();
                 break;
@@ -144,7 +144,7 @@ $typesSimplePage=[
             case 'scrambleszip':
                $CompetitionCode = $request[1];
                if(self::CheckAccess("Scramble","Competition.Settings",$CompetitionCode)===true);  
-               IncludePage('ScramblesZip');
+               IncludeClass::Page('ScramblesZip');
                exit();
                break;
                
@@ -179,7 +179,8 @@ $typesSimplePage=[
                         self::$page ='Delegate.Candidate';
                         break; 
                     default:
-                        $Delegate = DataBaseClass::SelectTableRow('Delegate', "WCA_ID='$DelegateCode'");
+                       /* $Delegate = DataBaseClass::SelectTableRow('Delegate', "WCA_ID='$DelegateCode'");
+                        
                         ObjectClass::setObjects('PageDelegate', $Delegate);
                         if($Delegate){                            
                             self::$titles[2] = Short_Name($Delegate['Delegate_Name']);
@@ -191,7 +192,7 @@ $typesSimplePage=[
                             }   
                         }else{
                             self::set404();
-                        }                
+                        }*/             
                 endswitch; #$DelegateCode
                 break;
             
@@ -249,7 +250,7 @@ $typesSimplePage=[
                 
                 switch ($aNewsCode):
                     case 'add':
-                        self::CheckAccess('aNews.Add','aNews');
+                        self::CheckAccess('aNews.Edit','aNews');
                         break;
                     default:
                         DataBaseClass::Query("Select N.*,C.Name from News N left outer join Competitor C on C.WID=N.Delegate where N.ID='".$aNewsCode."'");

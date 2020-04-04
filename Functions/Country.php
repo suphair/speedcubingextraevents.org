@@ -55,3 +55,12 @@ function countryExists($code) {
     }
     return true;
 }
+
+
+function getObjectCountry($code) {
+    return arrayToObject([
+        'code' => $code,
+        'name' => CountryName($code),
+        'image' => ImageCountry($code)
+    ]);
+}

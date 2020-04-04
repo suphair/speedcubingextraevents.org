@@ -1,0 +1,1 @@
+$('table[data-access-news-edit != 1] [data-news-edit]').hide();

@@ -1,0 +1,22 @@
+.news_annuonce {
+    margin:0px;
+    margin-top:10px;
+    padding:10px;
+    border-radius: 10px;
+    padding-top:10px;
+    border:2px solid rgb(233, 233, 233);
+}
+
+.news_annuonce p{
+    display:none;
+}
+
+.news_panel_link:after{
+    font-family: 'Font Awesome 5 Free';
+    content: '\f0d7';
+    font-weight: bold;
+}
+
+.news_panel_link.show:after {
+    content: '\f0d8';
+}

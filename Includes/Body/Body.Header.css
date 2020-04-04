@@ -1,0 +1,18 @@
+.logo{
+    width: 60px;
+}
+
+.logo img{
+    width: 40px;   
+    margin:10px 0px;
+    padding: 0px;
+    vertical-align:top;
+}
+
+.title{
+    width: 100%;
+}
+
+.title td{   
+    vertical-align: middle;
+}

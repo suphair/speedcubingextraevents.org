@@ -1,0 +1,3 @@
+<?php
+
+IncludeClass::Page('Competitions');

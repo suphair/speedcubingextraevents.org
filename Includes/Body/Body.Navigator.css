@@ -1,0 +1,28 @@
+.navigator{
+    margin:0px;
+    padding:0px;
+    border-radius: 10px;
+    font-size:18px;
+    background-color: #e7e7e7;
+}
+
+.navigator div{
+    cursor:pointer;
+    display:inline-block;
+    white-space: nowrap;
+    padding:5px 10px;
+    border-radius: 10px;
+}
+
+.navigator a{
+    text-decoration: none; 
+    color: rgb(119, 119, 119);
+}
+
+.navigator .hover, .navigator .select{
+    background-color: #ccc;
+}
+    
+.navigator .select a{
+    color: var(--black);
+}

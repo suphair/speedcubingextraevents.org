@@ -1,14 +1,14 @@
 :root{
-   --red: #9a2e02;
-   --light_red: #e64503;
-   --green: rgb(0,182,67);
-   --blue: #204d74;
-   --light_blue: rgb(49, 112, 143);
-   --white: rgb(255,255,255);
-   --light_gray: rgb(186,186,186);
-   --light_green: rgb(0,226,98);
-   --gray: rgb(103,103,103);
-   --black: rgb(33,33,33);
+    --red: #9a2e02;
+    --light_red: #e64503;
+    --green: rgb(0,182,67);
+    --blue: #204d74;
+    --light_blue: rgb(49, 112, 143);
+    --white: rgb(255,255,255);
+    --light_gray: rgb(186,186,186);
+    --light_green: rgb(0,226,98);
+    --gray: rgb(103,103,103);
+    --black: rgb(33,33,33);
 }
 
 body {
@@ -32,40 +32,16 @@ body div {
     padding: 0px;
 }
 
-.header {
-    text-align: left;
-    height: 60px;
-}
-.header>div{
-    text-align: left;
-    padding:0px;
-}
-
-.logo{
-    height: 40px;   
-    margin:10px 0px;
-    padding: 0px;
-    vertical-align:top;
-}
-
-.content1{
-    text-align: left;
-    clear:both;
-    background: var(--white);
-    padding: 20px;
-    margin: 5px; 
-    border-radius: 20px;
-}
 
 .content{
     text-align: left;
     clear:both;
 }
- 
+
 .wrapper{
-   text-align: center; 
-   padding: 0px;
-   clear:both;
+    text-align: center; 
+    padding: 0px;
+    clear:both;
 }
 
 
@@ -93,7 +69,7 @@ form, p{
 }
 
 .unofficial:after{
-       content: "*";
+    content: "*";
 }
 
 .uploadButton {
@@ -110,27 +86,27 @@ form, p{
 }
 
 div.fileinputs {
-	position: relative;
-	width:100px;	
-	overflow: hidden;
+    position: relative;
+    width:100px;	
+    overflow: hidden;
 }
 
 div.fakefile {
-	position: absolute;
-	top: -2px;
-	left: 0px;
-	z-index: 1;
+    position: absolute;
+    top: -2px;
+    left: 0px;
+    z-index: 1;
 }
 
 
 input.file {
-	position: relative;
-	text-align: right;
-	-moz-opacity:0 ;
-	filter:alpha(opacity: 0);
-	opacity: 0;
-	z-index: 5;
-        padding: 0 0 15px 0;
+    position: relative;
+    text-align: right;
+    -moz-opacity:0 ;
+    filter:alpha(opacity: 0);
+    opacity: 0;
+    z-index: 5;
+    padding: 0 0 15px 0;
 }
 
 .header a{
@@ -141,16 +117,12 @@ input.file {
 }
 
 
-.footer{
-    border-top: 1px solid var(--light_gray);
-}
-
 h1{    
     font-size: 36px;
     text-align: left;
     margin:0px;
     margin-top:20px;
-   
+
     font-family: inherit;
     font-weight: 500;
     line-height: 1.1;
@@ -169,28 +141,21 @@ h3{
 }
 
 h3:before{
-   font-family: 'Font Awesome 5 Free';
-   content: '\f83e';
-   font-weight: bold;
-   padding-right: 5px; 
+    font-family: 'Font Awesome 5 Free';
+    content: '\f83e';
+    font-weight: bold;
+    padding-right: 5px; 
 }
 
 a{
     text-decoration: none;
-     color:var(--blue);
+    color:var(--blue);
 }
 
 .competitor-panel{
     padding: 10px;
 }
 
-.navigator a,.competitor-panel a{
-   color: var(--black); 
-}
-
-.navigator a,.competitor-panel a:hover{
-   text-decoration: none; 
-}
 
 a:hover{
     text-decoration: underline;
@@ -247,11 +212,11 @@ input[type=submit]:disabled{
 
 
 button.delete{
-   background-color: var(--light_red);
-   color: var(--white);
+    background-color: var(--light_red);
+    color: var(--white);
 }
 button.delete:hover{
-   background-color: var(--red);
+    background-color: var(--red);
 }
 
 .form_inline{
@@ -260,43 +225,11 @@ button.delete:hover{
 
 .select, .events-navigator a.select{
     color: var(--red);
+    background-color: white;
 }
 
-div.navigator div{
-    cursor:pointer;
-}
-
-div.navigator div a {
-    color: rgb(119, 119, 119);
-}
-
-div.navigator div{
-    display:inline-block;
-    white-space: nowrap;
-    padding:5px 10px;
-    border-radius: 10px;
-}
-
-div.navigator{
-    margin:0px;
-    padding:0px;
-    border-radius: 10px;
-    font-size:18px;
-    background-color: #e7e7e7;
-}
-
-
-div.navigator div.navigator_hover{
-    background-color: #ccc;
-}
-
-
-div.navigator .select{
-    background-color: #ccc;
-}    
-
-div.navigator div.select a{
-    color: var(--black);
+.select:hover{
+    background-color: white;
 }
 
 a.local_link{
@@ -328,47 +261,8 @@ a.select_link{
     color: var(--red);
 }
 
-
-.competitor_panel_link:after{
-    font-family: 'Font Awesome 5 Free';
-    content: '\f0d7';
-    padding-left: 5px;
-    font-weight: bold;
-}
-
-.competitor_panel_open_link:after{
-    font-family: 'Font Awesome 5 Free';
-    content: '\f0d8';
-    padding-left: 5px;
-    font-weight: bold;
-}
-
-.news_panel_link:after{
-    font-family: 'Font Awesome 5 Free';
-    content: '\f0d7';
-    padding-left: 0px;
-    font-weight: bold;
-}
-
-.news_panel_open_link:after {
-    font-family: 'Font Awesome 5 Free';
-    content: '\f0d8';
-    padding-left: 0px;
-    font-weight: bold;
-}
-
-div.AnnuonceNew {
-    margin:0px;
-    margin-top:10px;
-    padding:10px;
-    border-radius: 10px;
-    padding-top:10px;
-    border:2px solid rgb(233, 233, 233);
-    /*background-color: rgb(233, 233, 233);*/
-}
-
 li {
-  list-style-type: none;
+    list-style-type: none;
 }
 
 ul{
@@ -411,12 +305,11 @@ table.table_new{
     /*width:100%;*/
 }
 
-table.table_new tbody td{
+table.table_new td{
     padding:3px 10px;
 }
 
 table.table_new thead td,table.table_new tfoot td{
-    padding: 5px;
     font-weight: bold;
 }
 
@@ -513,9 +406,23 @@ textarea.big_data{
 .color_red{
     color:var(--red);
 }
+
+.color_orange{
+    color:orange;
+}
+
 .color_gold{
     color:orange;
 }
+
+.color_light_gray{
+    color:var(--light_gray);
+}
+
+.color_blue{
+    color:var(--blue);
+}
+
 
 .backgroundcolor_green{
     background-color: var(--green);
@@ -647,22 +554,23 @@ table.table_new_background_white td{
     vertical-align: middle;   
 }
 
-.competitions_events_select{
-    color: var(--black);
+a{
+    white-space: nowrap;
 }
 
-.competitions_events_panel{
-    color: var(--light_gray);
-}
-.competitions_events_panel_all, .competitions_events_panel_none{
-    color:var(--blue);    
-}
-.competitions_events_panel_all:hover, .competitions_events_panel_none:hover{
-    color:var(--light_blue);
+.hidden{
+    display: none;
 }
 
+.error{
+    color:var(--red);
+}
 
-.competitions_events_panel  i, .competitions_events_panel_all, .competitions_events_panel_none{
-    cursor:pointer;
-    font-size: 1.3em;
+.table_double_info{
+    width: 100%;
+}
+
+.selected a{
+    color:var(--red);
+    text-decoration: none;
 }

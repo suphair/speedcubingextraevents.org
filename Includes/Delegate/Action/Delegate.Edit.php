@@ -2,23 +2,22 @@
 
 RequestClass::CheckAccessExit(__FILE__, 'Delegate.Settings');
 
-CheckPostIsset('ID','Contact','Secret','Status');
-CheckPostNotEmpty('ID','Status');
+CheckPostIsset('ID', 'Contact', 'Secret');
+CheckPostNotEmpty('ID');
 CheckPostIsNumeric('ID');
-$ID=$_POST['ID'];
+$ID = $_POST['ID'];
 
-$Secret=DataBaseClass::Escape($_POST['Secret']);
-$Contact=DataBaseClass::Escape($_POST['Contact']);
-$Status=$_POST['Status'];
+$Secret = DataBaseClass::Escape($_POST['Secret']);
+$Contact = DataBaseClass::Escape($_POST['Contact']);
 
-
-if(CheckAccess('Delegate.Settings.Ext')){
-    if(in_array($Status,['Senior','Middle','Junior','Trainee','Archive'])){
+if (CheckAccess('Delegate.Settings.Ext')) {
+    $Status = $_POST['Status'];
+    if (in_array($Status, ['Senior', 'Middle', 'Junior', 'Trainee', 'Archive'])) {
         DataBaseClass::Query("Update `Delegate` set  Contact='$Contact' , Secret='$Secret',Status='$Status'  where ID='$ID'");
     }
-}else{
+} else {
     DataBaseClass::Query("Update `Delegate` set  Contact='$Contact', Secret='$Secret'  where ID='$ID'");
 }
 SetMessage();
-header('Location: '.$_SERVER['HTTP_REFERER']);
-exit();  
+header('Location: ' . $_SERVER['HTTP_REFERER']);
+exit();
