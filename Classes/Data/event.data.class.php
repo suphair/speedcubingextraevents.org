@@ -6,7 +6,7 @@ Class Event_data {
          AND Discipline.Status = 'Active'  
     ";
 
-    static function getByID($id) {
+    static function getById($id) {
         if (is_numeric($id)) {
             return self::getBy("ID = $id");
         } else {
@@ -15,7 +15,7 @@ Class Event_data {
     }
 
     static function getByCode($code) {
-        return self::getBy("Code = '" . DataBaseClass::Escape($code) . "'");
+        return self::getBy("LOWER(Code) = LOWER('" . DataBaseClass::Escape($code) . "')");
     }
 
     static function getBy($where) {
@@ -24,7 +24,7 @@ Class Event_data {
                 CodeScript codeScript,
                 Name name,
                 ID id,
-                Code code,
+                LOWER(Code) code,
                 CASE
                     WHEN Status='Archive' then true
                     ELSE false
@@ -144,7 +144,7 @@ Class Event_data {
             JOIN DisciplineFormat ON DisciplineFormat.ID = Event.DisciplineFormat
             WHERE DisciplineFormat.Discipline = $eventId
                 " . Competition_data::COMPETIITON_BASE_FILTER . "
-                " . Command_data::COMMAND_BASE_FILTER . "
+                " . Team_data::TEAM_BASE_FILTER . "
          ");
     }
 
@@ -186,6 +186,87 @@ Class Event_data {
 
     static function getWordRecordAverage($eventId) {
         return self::getWordRecord("('Average', 'Mean')", $eventId);
+    }
+
+    static function getEventsRecordByEventId($eventID, $filter) {
+        $where = "";
+        if (isset($filter['country'])) {
+            $where = "AND LOWER(Command.vCountry) = LOWER('" . DataBaseClass::Escape($filter['country']) . "')";
+        }
+        if (isset($filter['continent'])) {
+            $where = "AND LOWER(Country.Continent) = LOWER('" . DataBaseClass::Escape($filter['continent']) . "')";
+        }
+
+        return DataBaseClass::getRowsObject("
+            SELECT 
+                DisciplineFormat.Discipline eventID,
+                t.Special format,
+                Command.ID teamID,
+                Competition.EndDate competitionDate,
+                CASE 
+                    WHEN Competition.WCA LIKE 't.%' THEN 1
+                    ELSE 0
+                END competitionTechnical,
+                t.vOrder value,
+                Attempt.vOut result
+            FROM(
+                    SELECT 
+                            MIN(vOrder) vOrder,
+                            Discipline,
+                            Special,
+                            EndDate
+                    FROM(
+                            SELECT 
+                                    Attempt.vOrder,
+                                    DisciplineFormat.Discipline,
+                                    CASE Attempt.Special
+                                            WHEN 'Mean' THEN 'average'
+                                            WHEN 'Average' THEN 'average'
+                                            WHEN 'Best' THEN 'single'
+                                            WHEN 'Sum' THEN 'single'
+                                    END Special,
+                                    Competition.EndDate
+                            FROM Command
+                            JOIN Attempt ON Attempt.Command = Command.ID
+                            JOIN Event ON Event.ID = Command.Event
+                            JOIN Competition ON Competition.ID=Event.Competition
+                            LEFT OUTER JOIN Country ON Country.ISO2=Command.vCountry
+                            JOIN DisciplineFormat 
+                                ON DisciplineFormat.ID = Event.DisciplineFormat
+                            WHERE 
+                                Attempt.Special IS NOT NULL
+                                AND Attempt.IsDNF = 0
+                                AND DisciplineFormat.Discipline = $eventID
+                                $where
+                    )t
+                    GROUP BY 
+                            Discipline,
+                            Special,
+                            EndDate
+            )t
+            JOIN Attempt
+                    ON Attempt.vOrder = t.vOrder
+                    AND (
+                            (Attempt.Special in ('Mean', 'Average') 
+                                    AND t.Special = 'average')
+                            OR
+                            (Attempt.Special in ('Best', 'Sum') 
+                                    AND t.Special = 'single')
+                    )
+            JOIN Command
+                    ON Command.ID = Attempt.Command       
+            JOIN Event
+                    ON Event.ID = Command.Event
+            JOIN Competition
+                    ON Competition.ID = Event.Competition
+                    AND Competition.EndDate = t.EndDate
+            LEFT OUTER JOIN Country ON Country.ISO2=Command.vCountry
+            JOIN DisciplineFormat 
+                    ON DisciplineFormat.ID = Event.DisciplineFormat
+                    AND DisciplineFormat.Discipline = t.Discipline
+            WHERE 1 = 1
+                $where
+    ");
     }
 
 }

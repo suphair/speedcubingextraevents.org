@@ -9,9 +9,9 @@ Class Continent_data {
         return DataBaseClass::getRowObject("
             SELECT 
                 Name name,
-                Code code
+                LOWER(Code) code
             FROM Continent
-            WHERE Code = UPPER('" . DataBaseClass::Escape($code) . "')
+            WHERE LOWER(Code) = LOWER('" . DataBaseClass::Escape($code) . "')
         ");
     }
 

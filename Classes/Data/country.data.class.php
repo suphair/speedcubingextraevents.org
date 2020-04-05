@@ -9,9 +9,10 @@ Class Country_data {
         return DataBaseClass::getRowObject("
             SELECT 
                 Name countryName,
+                LOWER(ISO2) code,
                 Continent continentCode
             FROM Country
-            WHERE ISO2 = UPPER('" . DataBaseClass::Escape($code) . "')
+            WHERE LOWER(ISO2) = LOWER('" . DataBaseClass::Escape($code) . "')
         ");
     }
 

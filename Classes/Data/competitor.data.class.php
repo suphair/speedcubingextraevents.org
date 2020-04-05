@@ -6,6 +6,14 @@ Class Competitor_data {
         return self::getBy("WCAID = '" . DataBaseClass::Escape($wcaid) . "'");
     }
 
+    static function getById($id) {
+        if (is_numeric($id)) {
+            return self::getBy("ID = $id");
+        } else {
+            return [];
+        }
+    }
+
     static function getByWid($wid) {
         if (is_numeric($wid)) {
             return self::getBy("WID = $wid");
@@ -27,19 +35,11 @@ Class Competitor_data {
         ");
     }
 
-    static function getListCompetitions($id) {
-        if (is_numeric($id)) {
-            
-        } else {
-            return [];
-        }
-    }
+    static function getCountriesCodeByAllCompetitors() {
 
-    static function getCountriesCodeByAllCompetitors(){
-        
         return DataBaseClass::getColumn("
             SELECT DISTINCT
-                Country.ISO2 countryCode
+                LOWER(Country.ISO2) countryCode
             FROM Competitor
             JOIN CommandCompetitor ON CommandCompetitor.Competitor = Competitor.ID 
             JOIN Command ON CommandCompetitor.Command = Command.ID 
@@ -47,10 +47,22 @@ Class Competitor_data {
             JOIN Event ON Event.ID = Command.Event 
             JOIN Competition ON Competition.ID = Event.Competition 
             WHERE 1 = 1
-            " . Command_data::COMMAND_BASE_FILTER . "
+            " . Team_data::TEAM_BASE_FILTER . "
             " . Competition_data::COMPETIITON_BASE_FILTER . " 
             AND (COALESCE(Competitor.WCAID,0) != 0 OR COALESCE(Competitor.WID,0) != 0)  
         ");
     }
-    
+
+    static function getCompetitorsIdByTeamId($teamId) {
+        if (!is_numeric($teamId)) {
+            return false;
+        }
+
+        return DataBaseClass::getColumn("
+            SELECT Competitor
+            FROM CommandCompetitor 
+            WHERE Command=$teamId
+        ");
+    }
+
 }

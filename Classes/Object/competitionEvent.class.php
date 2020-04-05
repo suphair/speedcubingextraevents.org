@@ -24,7 +24,7 @@ Class CompetitionEvent {
     function getCompetition() {
         if ($this->competitionId) {
             $competition = new Competition();
-            $competition->getByID($this->competitionId);
+            $competition->getById($this->competitionId);
             $this->competition = $competition;
         }
     }

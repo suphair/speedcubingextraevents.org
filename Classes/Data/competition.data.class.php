@@ -7,7 +7,7 @@ Class Competition_data {
         AND Competition.WCA NOT LIKE 't.%'
     ";
         
-    static function getByID($id) {
+    static function getById($id) {
         if (is_numeric($id)) {
             return self::getBy("ID = $id");
         } else {
@@ -72,7 +72,16 @@ Class Competition_data {
             %f
         ", self::buildWherebyFilter($filter));
     }
+    
+    static function getCompetitionsId() {
 
+        return DataBaseClass::getColumn("
+            SELECT 
+                Competition.ID
+            FROM Competition
+        ");
+    }
+    
     private static function buildWherebyFilter($filter) {
         $where = [];
         foreach ($filter as $value) {

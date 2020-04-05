@@ -4,7 +4,6 @@ Class Continent {
 
     public $code = false;
     public $name = false;
-    public $codeLower = false;
 
     function getByCode($code) {
         $this->code = $code;
@@ -12,7 +11,6 @@ Class Continent {
         if ($continent) {
             $this->code = $continent->code;
             $this->name = $continent->name;
-            $this->codeLower = strtolower($continent->code);
         }
     }
 

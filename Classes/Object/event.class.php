@@ -9,6 +9,7 @@ Class Event {
     public $isTeam = false;
     public $isArchive = false;
     public $codeScript = false;
+    public $eventsRecord = [];
     public $multiPuzzles = false;
     public $longInspection = false;
     public $countCompetitors = false;
@@ -21,9 +22,9 @@ Class Event {
         }
     }
 
-    function getByID($id) {
-        $event = Event_data::getByID($id);
-        if ($event != new stdClass()){
+    function getById($id) {
+        $event = Event_data::getById($id);
+        if ($event != new stdClass()) {
             $this->SetbyRow($event);
         }
     }
@@ -37,7 +38,7 @@ Class Event {
         $this->codeScript = $event->codeScript;
         $this->multiPuzzles = $event->multiPuzzles;
         $this->longInspection = $event->longInspection;
-        
+
 
         $this->getCompetitorsCount();
         $this->getCompetitionsCount();
@@ -92,7 +93,7 @@ Class Event {
         }
 
         usort($events, function($a, $b) {
-            return strcmp($b->name, $a->name);
+            return strcmp($a->name, $b->name);
         });
 
         return $events;
@@ -113,4 +114,37 @@ Class Event {
         }
         $this->wordRecords = $records;
     }
+
+    function getEventsRecord($filter = []) {
+        $eventsRecord = Event_data::getEventsRecordByEventId($this->id, $filter);
+        $valuesCut = (object) [
+                    'average' => false,
+                    'single' => false
+        ];
+        foreach ($eventsRecord as $eventRecordKey => $eventRecord) {
+            if (!isset($valuesCut->{$eventRecord->format})) {
+                unset($eventsRecord->$eventRecordKey);
+                continue;
+            }
+            $format = $eventRecord->format;
+            if ($valuesCut->$format
+                    and $valuesCut->$format < $eventRecord->value) {
+                unset($eventsRecord->$eventRecordKey);
+            } else {
+                $valuesCut->$format = $eventRecord->value;
+            }
+            $eventRecord->date = date_range($eventRecord->competitionDate);
+        }
+
+        $this->eventsRecord = $eventsRecord;
+    }
+    
+   function getEventsRecordByCountry($countryCode){
+        return $this->getEventsRecord(['country'=>$countryCode]);    
+    }
+    
+    function getEventsRecordByContinent($continentCode){
+        return $this->getEventsRecord(['continent'=>$continentCode]);    
+    }
+
 }

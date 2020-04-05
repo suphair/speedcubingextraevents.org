@@ -6,11 +6,9 @@ Class Country {
     public $name = false;
     public $image = false;
     public $continent = false;
-    public $codeLower=false;
 
     function getByCode($code) {
         $this->code = $code;
-        $this->codeLower = strtolower($code);
         $country = Country_data::getByCode($this->code);
         if ($country) {
             $this->name = $country->countryName;
@@ -23,8 +21,8 @@ Class Country {
 
     function getImage() {
         if ($this->code) {
-            $codeIcon = strtolower($this->code);
-            $this->image = "<span class='flag-icon flag-icon-$codeIcon'></span>";
+            $iconImage = strtolower($this->code);
+            $this->image = "<span class='flag-icon flag-icon-$iconImage'></span>";
         } else {
             $this->image = "<i class='fas fa-globe'></i>";
         }

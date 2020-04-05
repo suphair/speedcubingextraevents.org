@@ -2,7 +2,7 @@
 
 Class CompetitionEvent_data {
 
-    static function getByID($id) {
+    static function getById($id) {
         if (!is_numeric($id)) {
             return [];
         }

@@ -7,13 +7,15 @@ Class Competition {
     public $name = false;
     public $city = false;
     public $date = false;
-    public $startDate = false;
-    public $country = false;
-    public $unofficial = false;
+    public $link = false;
     public $status = false;
     public $events = [];
+    public $endDate = false;
+    public $country = false;
+    public $startDate = false;
+    public $unofficial = false;
 
-    public function getByID($id) {
+    public function getById($id) {
         $competition = Competition_data::getById($id);
         if ($competition) {
             $this->SetbyRow($competition);
@@ -28,17 +30,19 @@ Class Competition {
     }
 
     private function SetbyRow($competition) {
+        $this->country = new Country();
+
         $this->id = $competition->id;
         $this->wca = $competition->wca;
         $this->name = $competition->name;
-        $this->link = PageIndex() . "Competition/$competition->wca";
         $this->city = $competition->city;
         $this->date = date_range($competition->startDate, $competition->endDate);
+        $this->link = PageIndex() . "Competition/$competition->wca";
+        $this->status = $competition->status;
+        $this->endDate = $competition->endDate;
+        $this->country->getByCode($competition->countryCode);
         $this->startDate = $competition->startDate;
         $this->unofficial = $competition->unofficial;
-        $this->status = $competition->status;
-        $this->country = new Country();
-        $this->country->getByCode($competition->countryCode);
     }
 
     function getEvents() {
@@ -68,10 +72,20 @@ Class Competition {
             $competitions[] = $competition;
         }
 
+        return self::SortByDateDesc($competitions);
+    }
+
+    static function SortByDateDesc($competitions) {
         usort($competitions, function($a, $b) {
             return strcmp($b->startDate, $a->startDate);
         });
+        return $competitions;
+    }
 
+    static function SortByDateAsc($competitions) {
+        usort($competitions, function($a, $b) {
+            return strcmp($a->endDate, $b->endDate);
+        });
         return $competitions;
     }
 
@@ -88,6 +102,10 @@ Class Competition {
         $years = Competition_data::getYearsByCompetitionsId($competitionsId);
         rsort($years);
         return $years;
+    }
+
+    static function getCompetitionsId() {
+        return Competition_data::getCompetitionsId();
     }
 
 }

@@ -574,3 +574,7 @@ a{
     color:var(--red);
     text-decoration: none;
 }
+
+.best-result{
+    color: var(--red);
+}

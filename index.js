@@ -37,3 +37,14 @@ $('[data-selected-value]').each(function () {
     $(this).find('[data-selected-condition=' + value + ']').addClass('selected');
 
 })
+
+$('[data-hidden-href-empty]').each(function () {
+    if ($(this).find('a').attr('href') === '') {
+        $(this).hide();
+    }
+});
+
+
+
+
+

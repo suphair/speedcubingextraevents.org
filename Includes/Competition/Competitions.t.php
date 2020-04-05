@@ -39,7 +39,7 @@
                                 <?= ml('Competitions.FilterByCountry.All') ?> 
                             </option>
                             <?php foreach ($data->filter->country->options as $country) { ?>
-                                <option  value="<?= $country->codeLower ?>">        
+                                <option  value="<?= $country->code ?>">        
                                     <?= $country->name ?>
                                 </option> 
                             <?php } ?>
