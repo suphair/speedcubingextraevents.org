@@ -159,9 +159,9 @@
                     <?php } ?>
                 </td>
                 <td>
-                    <?= $record->team->competition->country->image ?>
-                    <a href="<?= $record->team->competition->link ?>">
-                        <?= $record->team->competition->name ?>
+                    <?= $record->team->competitionEvent->competition->country->image ?>
+                    <a href="<?= $record->team->competitionEvent->competition->link ?>">
+                        <?= $record->team->competitionEvent->competition->name ?>
                     </a>
                 </td>
                 <td>   

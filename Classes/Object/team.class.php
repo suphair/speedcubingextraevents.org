@@ -4,9 +4,18 @@ Class Team {
 
     public $id = false;
     public $video = false;
+    public $place = false;
+    public $attempts = [];
     public $competitors = [];
-    public $competition = false;
-    public $competitionEvent = false;
+    public $attemptSingle;
+    public $attemptAverage;
+    public $competitionEvent;
+
+    function __construct() {
+        $this->competitionEvent = new CompetitionEvent();
+        $this->attemptSingle = new Attempt();
+        $this->attemptAverage = new Attempt();
+    }
 
     static function getTeamsIdByEventId($eventId) {
         return Team_data::getTeamsIdByEventId($eventId);
@@ -28,6 +37,7 @@ Class Team {
         if ($team and $team != new stdClass()) {
             $this->id = $team->id;
             $this->video = $team->video;
+            $this->place = $team->place;
             $competitorsId = Competitor::getCompetitorsIdByTeamId($teamId);
             $competitors = [];
             foreach ($competitorsId as $competitorId) {
@@ -36,15 +46,35 @@ Class Team {
                 $competitors[] = $competitor;
             }
             $this->competitors = $competitors;
-
-            $competitionEvent = new CompetitionEvent();
-            $competitionEvent->getByid($team->competitionEventId);
-            $this->competitionEvent = $competitionEvent;
-
-            $competition = new Competition();
-            $competition->getById($competitionEvent->competitionId);
-            $this->competition = $competition;
+            $this->competitionEvent->getByid($team->competitionEventId);
         }
+    }
+
+    function getAttempts() {
+        $unofficial = $this->competitionEvent->competition->unofficial;
+        $this->attemptSingle->getByTeamIdFormat($this->id, 'single', $unofficial);
+        $this->attemptAverage->getByTeamIdFormat($this->id, 'average', $unofficial);
+
+        $this->competitionEvent->event->getAttemptions();
+        $attemptionCount = $this->competitionEvent->event->attemptionCount;
+        $attempts = [];
+        for ($number = 1; $number <= $attemptionCount; $number++) {
+            $attempt = new Attempt();
+            $attempt->getByTeamIdNumber($this->id, $number);
+            $attempts[$number] = $attempt;
+        }
+        $this->attempts = $attempts;
+    }
+
+    static function getTeamsIdByEventIdCompetitorId($eventID, $competitorID) {
+        return Team_data::getTeamsIdByEventIdCompetitorId($eventID, $competitorID);
+    }
+
+    static function sortByCompetition(&$teams) {
+
+        usort($teams, function($a, $b) {
+            return strcmp($b->competitionEvent->competition->startDate, $a->competitionEvent->competition->startDate);
+        });
     }
 
 }

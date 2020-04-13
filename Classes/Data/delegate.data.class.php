@@ -6,7 +6,7 @@ Class Delegate_data {
         if (is_numeric($id)) {
             return self::getBy("ID = $id");
         } else {
-            return [];
+            return false;
         }
     }
 
@@ -14,7 +14,7 @@ Class Delegate_data {
         if (is_numeric($wid)) {
             return self::getBy("WID = $wid");
         } else {
-            return [];
+            return false;
         }
     }
 

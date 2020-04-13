@@ -25,6 +25,7 @@ Class Event_data {
                 Name name,
                 ID id,
                 LOWER(Code) code,
+                LOWER(Codes) codes,
                 CASE
                     WHEN Status='Archive' then true
                     ELSE false
@@ -267,6 +268,48 @@ Class Event_data {
             WHERE 1 = 1
                 $where
     ");
+    }
+
+    static function getEventsIdWithAttemptByCompetitorID($competitorId) {
+        $filter = Competition_data::COMPETIITON_OFFICIAL .
+                Event_data::EVENT_BASE_FILTER .
+                " AND Attempt.Special IS NOT NULL" .
+                " AND CommandCompetitor.Competitor = $competitorId";
+        return self::getEventsIdByCompetitorIDandFilter($filter);
+    }
+
+    static function getEventsIdByCompetitorID($competitorId) {
+        $filter = Competition_data::COMPETIITON_PUBLIC .
+                " AND CommandCompetitor.Competitor = $competitorId";
+        return self::getEventsIdByCompetitorIDandFilter($filter);
+    }
+
+    static function getEventsIdByCompetitorIDandFilter($filter) {
+        return DataBaseClass::getColumn("
+            SELECT DISTINCT Discipline.ID
+            from Competitor
+            join CommandCompetitor on CommandCompetitor.Competitor = Competitor.ID 
+            join Command on CommandCompetitor.Command = Command.ID 
+            join Event on Event.ID = Command.Event 
+            join Competition on Competition.ID = Event.Competition
+            join DisciplineFormat on Event.DisciplineFormat = DisciplineFormat.ID
+            join Discipline on Discipline.ID = DisciplineFormat.Discipline
+            left outer join Attempt on Attempt.Command = Command.ID
+            WHERE 1 =1
+            $filter
+        ");
+    }
+
+    static function getAttemptions($eventId) {
+        if (!is_numeric($eventId)) {
+            return false;
+        }
+        return DataBaseClass::getValue("
+            SELECT MAX(Attemption) attemption
+            FROM DisciplineFormat
+            JOIN Format ON Format.ID = DisciplineFormat.Format
+            WHERE Discipline = $eventId
+        ");
     }
 
 }

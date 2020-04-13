@@ -5,16 +5,18 @@ Class Country {
     public $code = false;
     public $name = false;
     public $image = false;
-    public $continent = false;
+    public $continent;
+
+    function __construct() {
+        $this->continent = new Continent();
+    }
 
     function getByCode($code) {
-        $this->code = $code;
-        $country = Country_data::getByCode($this->code);
+        $country = Country_data::getByCode($code);
         if ($country) {
+            $this->code = $country->code;
             $this->name = $country->countryName;
-            $continent = new Continent();
-            $continent->getByCode($country->continentCode);
-            $this->continent = $continent;
+            $this->continent->getByCode($country->continentCode);
             $this->getImage();
         }
     }
@@ -41,4 +43,5 @@ Class Country {
 
         return $countries;
     }
+
 }

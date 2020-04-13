@@ -3,29 +3,27 @@
 Class CompetitionEvent {
 
     public $id = false;
-    public $competitionId = false;
+    public $link = false;
+    public $event;
     public $round = false;
-    public $competition = false;
-    public $event = false;
-    
+    public $competition;
+    public $competitionId = false;
+
+    function __construct() {
+        $this->competition = new Competition();
+        $this->event = new Event();
+    }
 
     function getByid($id) {
         $competitionEvent = CompetitionEvent_data::getById($id);
         if ($competitionEvent) {
             $this->id = $id;
-            $this->competitionId = $competitionEvent->competitionId;
+            $this->competition->getById($competitionEvent->competitionId);
             $this->round = $competitionEvent->round;
-            $event = new Event();
-            $event->getbyID($competitionEvent->eventId);
-            $this->event = $event;
-        }
-    }
-
-    function getCompetition() {
-        if ($this->competitionId) {
-            $competition = new Competition();
-            $competition->getById($this->competitionId);
-            $this->competition = $competition;
+            $this->event->getbyID($competitionEvent->eventId);
+            $this->link = PageIndex() .
+                    "Competition/{$this->competition->wca}" .
+                    "/{$this->event->code}/{$this->round}";
         }
     }
 

@@ -6,6 +6,14 @@ Class Competition_data {
         AND Competition.Unofficial = 0  
         AND Competition.WCA NOT LIKE 't.%'
     ";
+    
+    CONST COMPETIITON_OFFICIAL = "
+        AND Competition.Unofficial = 0  
+    ";
+    
+    CONST COMPETIITON_PUBLIC = "
+        AND Competition.WCA not like 't.%'
+    ";
         
     static function getById($id) {
         if (is_numeric($id)) {

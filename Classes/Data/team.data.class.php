@@ -31,9 +31,27 @@ Class Team_data {
                 ID id,
                 Event competitionEventId,
                 Secret secret,
-                Video video
+                Video video,
+                Place place
             FROM Command
             WHERE ID = $teamId 
+        ");
+    }
+
+    static function getTeamsIdByEventIdCompetitorId($eventId, $competitorId) {
+        if (!is_numeric($eventId) or ! is_numeric($competitorId)) {
+            return false;
+        }
+
+        return DataBaseClass::getColumn("
+            SELECT 
+                Command.ID
+            FROM Command
+            JOIN CommandCompetitor ON CommandCompetitor.Command = Command.ID
+            JOIN Event on Event.ID=Command.Event
+            JOIN DisciplineFormat on DisciplineFormat.ID=Event.DisciplineFormat
+            WHERE CommandCompetitor.Competitor = $competitorId 
+                AND DisciplineFormat.Discipline= $eventId
         ");
     }
 

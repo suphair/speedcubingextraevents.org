@@ -270,6 +270,7 @@ $typesSimplePage=[
                 
                 switch ($CompetitionCode):
                     case 'add':
+                        self::$page="Competition.Add";  
                         self::CheckAccess('Competition.Add');
                         break;
                     default:

@@ -6,6 +6,7 @@ Class Event {
     public $code = false;
     public $name = false;
     public $image = false;
+    public $codes = false;
     public $isTeam = false;
     public $isArchive = false;
     public $codeScript = false;
@@ -33,6 +34,10 @@ Class Event {
         $this->id = $event->id;
         $this->code = $event->code;
         $this->name = $event->name;
+        $codes = explode(",", $event->codes);
+        if ($codes[0]) {
+            $this->codes = $codes;
+        }
         $this->isTeam = $event->isTeam;
         $this->isArchive = $event->isArchive;
         $this->codeScript = $event->codeScript;
@@ -138,13 +143,17 @@ Class Event {
 
         $this->eventsRecord = $eventsRecord;
     }
-    
-   function getEventsRecordByCountry($countryCode){
-        return $this->getEventsRecord(['country'=>$countryCode]);    
+
+    function getEventsRecordByCountry($countryCode) {
+        return $this->getEventsRecord(['country' => $countryCode]);
     }
-    
-    function getEventsRecordByContinent($continentCode){
-        return $this->getEventsRecord(['continent'=>$continentCode]);    
+
+    function getEventsRecordByContinent($continentCode) {
+        return $this->getEventsRecord(['continent' => $continentCode]);
+    }
+
+    function getAttemptions() {
+        $this->attemptionCount = Event_data::getAttemptions($this->id);
     }
 
 }

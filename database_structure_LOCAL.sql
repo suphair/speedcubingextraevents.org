@@ -26,8 +26,12 @@ CREATE TABLE `Attempt` (
   `vOut` varchar(255) DEFAULT NULL,
   `Amount` double(3,1) DEFAULT '0.0',
   `exportValue` int(11) DEFAULT NULL,
+  `wordRecord` bit(1) DEFAULT b'0',
+  `countryRecord` bit(1) DEFAULT b'0',
+  `continentRecord` bit(1) DEFAULT b'0',
   PRIMARY KEY (`ID`),
   KEY `Command` (`Command`),
+  KEY `vOrder` (`vOrder`),
   CONSTRAINT `Attempt_ibfk_1` FOREIGN KEY (`Command`) REFERENCES `Command` (`ID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=cp1251 ROW_FORMAT=COMPACT;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -67,6 +71,7 @@ CREATE TABLE `Command` (
   `inCup` int(11) DEFAULT '1',
   PRIMARY KEY (`ID`),
   KEY `Event` (`Event`),
+  KEY `ID` (`ID`) USING BTREE,
   CONSTRAINT `competitorevent_ibfk_3` FOREIGN KEY (`Event`) REFERENCES `Event` (`ID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=cp1251 ROW_FORMAT=COMPACT;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -109,7 +114,8 @@ CREATE TABLE `Competition` (
   `DelegateWCA` varchar(255) DEFAULT NULL,
   `DelegateWCAOn` tinyint(4) DEFAULT '0',
   `Cubingchina` tinyint(4) DEFAULT '0',
-  PRIMARY KEY (`ID`)
+  PRIMARY KEY (`ID`),
+  KEY `EndDate` (`EndDate`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=cp1251 ROW_FORMAT=COMPACT;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -171,7 +177,10 @@ CREATE TABLE `Competitor` (
   `Language` varchar(255) DEFAULT NULL,
   `Email` varchar(255) DEFAULT NULL,
   `UpdateTimestamp` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`ID`,`Name`)
+  PRIMARY KEY (`ID`,`Name`),
+  KEY `ID` (`ID`),
+  KEY `WCAID` (`WCAID`),
+  KEY `WID` (`WID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=cp1251 ROW_FORMAT=COMPACT;
 /*!40101 SET character_set_client = @saved_cs_client */;
 

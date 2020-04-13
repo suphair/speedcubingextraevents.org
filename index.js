@@ -28,7 +28,7 @@ $('[data-set-title]').each(function () {
 
 $('[data-location]').html(document.location.href);
 
-$('tr[data-hidden = 1]').hide();
+$('[data-hidden = 1]').hide();
 
 $('[data-selected = 1]').addClass('selected');
 
@@ -36,7 +36,7 @@ $('[data-selected-value]').each(function () {
     var value = $(this).data('selected-value');
     $(this).find('[data-selected-condition=' + value + ']').addClass('selected');
 
-})
+});
 
 $('[data-hidden-href-empty]').each(function () {
     if ($(this).find('a').attr('href') === '') {
@@ -45,6 +45,7 @@ $('[data-hidden-href-empty]').each(function () {
 });
 
 
-
-
-
+$('a[data-external-link]').each(function () {
+    $(this).attr('target', '_blank');
+    $(this).append('<i class="fas fa-external-link-alt"></i>');
+});

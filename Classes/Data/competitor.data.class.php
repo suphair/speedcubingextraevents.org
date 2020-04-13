@@ -28,6 +28,7 @@ Class Competitor_data {
                 ID id,
                 WID wid,
                 WCAID wcaid,
+                Email email,
                 Name name,
                 Country countryCode
             FROM Competitor

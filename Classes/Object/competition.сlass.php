@@ -11,9 +11,13 @@ Class Competition {
     public $status = false;
     public $events = [];
     public $endDate = false;
-    public $country = false;
+    public $country;
     public $startDate = false;
     public $unofficial = false;
+
+    function __construct() {
+        $this->country = new Country();
+    }
 
     public function getById($id) {
         $competition = Competition_data::getById($id);
@@ -30,8 +34,6 @@ Class Competition {
     }
 
     private function SetbyRow($competition) {
-        $this->country = new Country();
-
         $this->id = $competition->id;
         $this->wca = $competition->wca;
         $this->name = $competition->name;

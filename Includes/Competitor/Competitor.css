@@ -1,0 +1,26 @@
+.events-image i{
+    font-size: 1.3em;
+}
+
+.event-select, .event-select:hover {
+    color:var(--red);
+}
+
+.competitor-event-panel a{
+    font-size: 2em;
+    text-decoration: none;
+}
+
+.competitor-event-panel a i {
+    margin-right: 5px;
+}
+
+.event-codes{
+    font-size: 1.2em;
+}
+
+.table_new td.unofficial-result{
+    color: var(--gray);
+    font-weight: normal;
+    text-decoration: line-through;
+}

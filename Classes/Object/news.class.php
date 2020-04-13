@@ -6,7 +6,11 @@ Class News {
     public $text = false;
     public $date = false;
     public $title = false;
-    public $author = false;
+    public $author;
+
+    function __construct() {
+        $this->author = new Delegate();
+    }
 
     static function getNewsIDbyDepth($deepDays = false) {
         return News_data::getNewsIDbyDepth($deepDays);
@@ -35,14 +39,12 @@ Class News {
             $text_new = $text_line[0];
         }
         unset($text_line[0]);
-        $author = new Delegate();
-        $author->getByWid($aNews->delegateWid);
 
         $this->id = $aNews->id;
         $this->text = implode('<br>', $text_line);
         $this->date = date_range($aNews->date);
         $this->title = $text_new;
-        $this->author = $author;
+        $this->author->getByWid($aNews->delegateWid);
     }
 
 }

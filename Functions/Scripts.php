@@ -1,5 +1,11 @@
 <?php
 
+function Script_UpdateRecords(){
+    echo '<pre>';
+    print_r(Attempt::updateRecords());
+    echo '</pre>';
+}
+
 function Script_Structure(){
     
     $filename='database_structure.sql';

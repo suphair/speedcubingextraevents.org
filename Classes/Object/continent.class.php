@@ -6,8 +6,7 @@ Class Continent {
     public $name = false;
 
     function getByCode($code) {
-        $this->code = $code;
-        $continent = Continent_data::getByCode($this->code);
+        $continent = Continent_data::getByCode($code);
         if ($continent) {
             $this->code = $continent->code;
             $this->name = $continent->name;
