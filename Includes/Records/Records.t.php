@@ -119,25 +119,25 @@
         <?php foreach ($data->records as $record) { ?>
             <tr>
                 <td> 
-                    <?= $record->date ?>
+                    <?= $record->team->competitionEvent->competition->endDateFormat ?>
                 </td> 
                 <td>
-                    <?= $record->event->image ?> 
-                    <a href="<?= PageIndex() ?>Event/<?= $record->event->code ?>">
-                        <?= $record->event->name ?>
+                    <?= $record->team->competitionEvent->event->image ?> 
+                    <a href="<?= PageIndex() ?>Event/<?= $record->team->competitionEvent->event->code ?>">
+                        <?= $record->team->competitionEvent->event->name ?>
                     </a>
                 </td>
                 <td class='table_new_right table_new_bold'>
                     <?php if ($record->format == 'single') { ?>
-                        <span data-record-single='<?= $record->event->code ?>'>
-                            <?= $record->result ?>
+                        <span data-record-single='<?= $record->team->competitionEvent->event->code ?>'>
+                            <?= $record->out ?>
                         </span>
                     <?php } ?>
                 </td>
                 <td class='table_new_right table_new_bold'>
                     <?php if ($record->format == 'average') { ?>
-                        <span data-record-average='<?= $record->event->code ?>'>
-                            <?= $record->result ?>
+                        <span data-record-average='<?= $record->team->competitionEvent->event->code ?>'>
+                            <?= $record->out ?>
                         </span>
                     <?php } ?>
                 </td>

@@ -14,6 +14,7 @@ Class Competition {
     public $country;
     public $startDate = false;
     public $unofficial = false;
+    public $endDateFormat = false;
 
     function __construct() {
         $this->country = new Country();
@@ -42,6 +43,7 @@ Class Competition {
         $this->link = PageIndex() . "Competition/$competition->wca";
         $this->status = $competition->status;
         $this->endDate = $competition->endDate;
+        $this->endDateFormat = date_range($competition->endDate);
         $this->country->getByCode($competition->countryCode);
         $this->startDate = $competition->startDate;
         $this->unofficial = $competition->unofficial;

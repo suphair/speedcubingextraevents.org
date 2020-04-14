@@ -16,7 +16,6 @@ if ($request->event) {
 $eventsID = Event::getEventsIdByFilter();
 $events = Event::getEventsByEventsID($eventsID);
 
-
 $results = array();
 $formats = array();
 
@@ -30,32 +29,27 @@ $records = [];
 foreach ($event->id ? [$event] : $events as $eventAtt) {
 
     if ($request->country) {
-        $eventAtt->getEventsRecordByCountry($request->country);
+        foreach (Attempt::getRecordsByEventIdCountryCode($eventAtt->id, $request->country) as $record) {
+            $records[] = $record;
+        }
     } elseif ($request->continent) {
-        $eventAtt->getEventsRecordByContinent($request->continent);
+        foreach (Attempt::getRecordsByEventIdContinentCode($eventAtt->id, $request->continent) as $record) {
+            $records[] = $record;
+        }
     } else {
-        $eventAtt->getEventsRecord();
-    }
-
-    foreach ($eventAtt->eventsRecord as $eventsRecord) {
-        if (!$eventsRecord->competitionTechnical) {
-            $team = new Team();
-            $team->getById($eventsRecord->teamID);
-            $eventsRecord->team = $team;
-            $eventsRecord->event = $eventsRecord->team->competitionEvent->event;
-            unset ($eventsRecord->team->competitionEvent->event);
-            $records[] = $eventsRecord;
+        foreach (Attempt::getRecordsByEventIdWorld($eventAtt->id) as $record) {
+            $records[] = $record;
         }
     }
 
     usort($records, function($a, $b) {
-        if ($a->competitionDate == $b->competitionDate) {
-            if ($a->event->code == $b->event->code) {
+        if ($a->team->competitionEvent->competition->endDate == $b->team->competitionEvent->competition->endDate) {
+            if ($a->team->competitionEvent->event->code == $b->team->competitionEvent->event->code) {
                 return strcmp($a->format, $b->format);
             }
-            return strcmp($a->event->code, $b->event->code);
+            return strcmp($a->team->competitionEvent->event->code, $b->team->competitionEvent->event->code);
         }
-        return strcmp($b->competitionDate, $a->competitionDate);
+        return strcmp($b->team->competitionEvent->competition->endDate, $a->team->competitionEvent->competition->endDate);
     });
 }
 

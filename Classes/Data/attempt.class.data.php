@@ -41,11 +41,18 @@ Class Attempt_data {
         return DataBaseClass::getRowObject("
             SELECT 
                 vOut 'out',
+                Command teamId,
                 vOrder value,
                 Except except,
                 worldRecord,
                 countryRecord,
-                continentRecord
+                continentRecord,
+                CASE Special
+                    WHEN 'Sum' THEN 'single'
+                    WHEN 'Best' THEN 'single'
+                    WHEN 'Mean' THEN 'average'
+                    WHEN 'Average' THEN 'average'
+                END format    
             FROM Attempt 
             $filter   
         ");
@@ -118,8 +125,8 @@ Class Attempt_data {
                 WHERE 1 = 1
                     " . self::getFormat($format) . "
                     " . Competition_data::COMPETIITON_OFFICIAL . "
-                    AND Attempt.vOrder={$record->attemptValue}
-                    AND Competition.EndDate='{$record->endDate}'    
+                    AND Attempt.vOrder = {$record->attemptValue}
+                    AND Competition.EndDate = '{$record->endDate}'    
                     AND Discipline.ID = {$record->eventID}   
                     $where    
             ");
@@ -159,6 +166,39 @@ Class Attempt_data {
             LEFT JOIN Country ON Command.vCountry = Country.ISO2
             LEFT JOIN Continent ON Continent.Code = Country.Continent
         ";
+    }
+
+    static function getAttemptIdRecordByEventIdFilter($eventId, $type, $filter) {
+        $filterType = "";
+        $filterValue = "";
+        switch ($type) {
+            case self::WORLD:
+                $filterType = " AND worldRecord = 1 ";
+                break;
+            case self::COUNTRY:
+                $filterType = " AND countryRecord = 1 ";
+                $filterValue = " AND LOWER(Country.ISO2) = LOWER('$filter') ";
+                break;
+            case self::CONTINENT:
+                $filterType = " AND continentRecord = 1";
+                $filterValue = " AND LOWER(Continent.Code) = LOWER('$filter') ";
+                break;
+        }
+
+        return DataBaseClass::getColumn("
+            SELECT 
+                Attempt.ID
+            FROM
+            " . self::SqlRecord() . "
+            WHERE 1 = 1
+            $filterType
+            $filterValue
+           AND Discipline.ID = $eventId        
+        ");
+    }
+
+    static function getById($attemptId) {
+        return self::getByFilter(" WHERE ID = $attemptId ");
     }
 
 }

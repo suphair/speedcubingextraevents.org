@@ -120,38 +120,6 @@ Class Event {
         $this->wordRecords = $records;
     }
 
-    function getEventsRecord($filter = []) {
-        $eventsRecord = Event_data::getEventsRecordByEventId($this->id, $filter);
-        $valuesCut = (object) [
-                    'average' => false,
-                    'single' => false
-        ];
-        foreach ($eventsRecord as $eventRecordKey => $eventRecord) {
-            if (!isset($valuesCut->{$eventRecord->format})) {
-                unset($eventsRecord->$eventRecordKey);
-                continue;
-            }
-            $format = $eventRecord->format;
-            if ($valuesCut->$format
-                    and $valuesCut->$format < $eventRecord->value) {
-                unset($eventsRecord->$eventRecordKey);
-            } else {
-                $valuesCut->$format = $eventRecord->value;
-            }
-            $eventRecord->date = date_range($eventRecord->competitionDate);
-        }
-
-        $this->eventsRecord = $eventsRecord;
-    }
-
-    function getEventsRecordByCountry($countryCode) {
-        return $this->getEventsRecord(['country' => $countryCode]);
-    }
-
-    function getEventsRecordByContinent($continentCode) {
-        return $this->getEventsRecord(['continent' => $continentCode]);
-    }
-
     function getAttemptions() {
         $this->attemptionCount = Event_data::getAttemptions($this->id);
     }

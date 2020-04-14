@@ -6,15 +6,13 @@ Class Competition_data {
         AND Competition.Unofficial = 0  
         AND Competition.WCA NOT LIKE 't.%'
     ";
-    
     CONST COMPETIITON_OFFICIAL = "
         AND Competition.Unofficial = 0  
     ";
-    
     CONST COMPETIITON_PUBLIC = "
         AND Competition.WCA not like 't.%'
     ";
-        
+
     static function getById($id) {
         if (is_numeric($id)) {
             return self::getBy("ID = $id");
@@ -80,7 +78,7 @@ Class Competition_data {
             %f
         ", self::buildWherebyFilter($filter));
     }
-    
+
     static function getCompetitionsId() {
 
         return DataBaseClass::getColumn("
@@ -89,7 +87,7 @@ Class Competition_data {
             FROM Competition
         ");
     }
-    
+
     private static function buildWherebyFilter($filter) {
         $where = [];
         foreach ($filter as $value) {

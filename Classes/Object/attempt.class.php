@@ -2,10 +2,13 @@
 
 Class Attempt {
 
-    public $value = false;
     public $out = false;
+    public $value = false;
     public $except = false;
     public $record = false;
+    public $team = false;
+    public $format = false;
+    public $competitionEvent = false;
 
     function __construct($attempt = false) {
         if (isset($attempt->value)) {
@@ -27,13 +30,15 @@ Class Attempt {
                 $this->value = $attempt->value;
             }
             $this->out = $attempt->out;
-            if ($attempt->worldRecord) {
-                $this->record = 'world';
-            } elseif ($attempt->continentRecord) {
-                $this->record = 'continent';
-            } elseif ($attempt->countryRecord) {
-                $this->record = 'country';
-            }
+            $this->record = self::getRecordType($attempt);
+
+            #if ($attempt->worldRecord) {
+            #    $this->record = 'world';
+            #} elseif ($attempt->continentRecord) {
+            #    $this->record = 'continent';
+            #} elseif ($attempt->countryRecord) {
+            #    $this->record = 'country';
+            #}
         }
     }
 
@@ -76,6 +81,56 @@ Class Attempt {
                 Attempt_Data::clearRecords($format, $type);
                 Attempt_Data::updateRecords($records, $format, $type);
             }
+        }
+    }
+
+    static function getRecordsByEventIdCountryCode($eventId, $countryCode) {
+        return self::getRecordsByRecordsId(
+                        Attempt_Data::getAttemptIdRecordByEventIdFilter(
+                                $eventId, Attempt_data::COUNTRY, $countryCode));
+    }
+
+    static function getRecordsByEventIdContinentCode($eventId, $continentCode) {
+        return self::getRecordsByRecordsId(
+                        Attempt_Data::getAttemptIDRecordByEventIdFilter(
+                                $eventId, Attempt_data::CONTINENT, $continentCode));
+    }
+
+    static function getRecordsByEventIdWorld($eventId) {
+        return self::getRecordsByRecordsId(
+                        Attempt_Data::getAttemptIDRecordByEventIdFilter(
+                                $eventId, Attempt_data::WORLD, false));
+    }
+
+    static function getRecordsByRecordsId($attemptsID) {
+        $attempts = [];
+        foreach ($attemptsID as $attemptID) {
+            $attempt = new Attempt();
+            $attempt->getById($attemptID);
+            $attempts[] = $attempt;
+        }
+        return $attempts;
+    }
+
+    function getById($attemptID) {
+        $attempt = Attempt_Data::getById($attemptID);
+        $this->out = $attempt->out;
+        $this->value = $attempt->out;
+        $this->except = $attempt->out;
+        $this->record = self::getRecordType($attempt);
+        $team = new Team();
+        $team->getByid($attempt->teamId);
+        $this->team = $team;
+        $this->format = $attempt->format;
+    }
+
+    function getRecordType($attempt) {
+        if ($attempt->worldRecord) {
+            return Attempt_Data::WORLD;
+        } elseif ($attempt->continentRecord) {
+            return Attempt_Data::CONTINENT;
+        } elseif ($attempt->countryRecord) {
+            return Attempt_Data::COUNTRY;
         }
     }
 
