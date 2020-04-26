@@ -51,7 +51,7 @@ Class Team_data {
             JOIN Event on Event.ID=Command.Event
             JOIN DisciplineFormat on DisciplineFormat.ID=Event.DisciplineFormat
             WHERE CommandCompetitor.Competitor = $competitorId 
-                AND DisciplineFormat.Discipline= $eventId
+                AND DisciplineFormat.Discipline = $eventId
         ");
     }
 

@@ -1,4 +1,4 @@
-
+<?php IncludeClass::Page('News.Announce'); ?>
 <h1>
     <?php if ($data->filter->mine) { ?>
         <?= ml('Competitions.Mine'); ?>

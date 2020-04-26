@@ -19,7 +19,7 @@ Class Log {
 
         foreach ($logs as &$log) {
             $competitionEvent = new CompetitionEvent();
-            $competitionEvent->getByid($log->competitionEventID);
+            $competitionEvent->getById($log->competitionEventID);
             $competitionEvent->getCompetition();
             $log->competitionEvent = $competitionEvent;
         }
@@ -30,7 +30,7 @@ Class Log {
         $logs = Log_data::getLogsScrambles(self::DEEP);
         foreach ($logs as &$log) {
             $competitionEvent = new CompetitionEvent();
-            $competitionEvent->getByid($log->competitionEvent);
+            $competitionEvent->getById($log->competitionEvent);
             $competitionEvent->getCompetition();
             $log->competitionEvent = $competitionEvent;
 

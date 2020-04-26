@@ -96,10 +96,96 @@ Class Competitor {
         return Event_data::getEventsIdByCompetitorID($this->id);
     }
 
-    function getRankByEventId($eventID) {
+    function getRankByEventId($eventId) {
         $rank = new Rank();
-        $rank->getRankByCompetitorAndEventId($this, $eventID);
+        $rank->getRankByCompetitorAndEventId($this, $eventId);
         return $rank;
+    }
+
+    static function getCompetitorsByEventId($eventId) {
+        return Competitor::getCompetitorsByCompetitorsId(
+                        Competitor_data::getCompetitorsIdByEventId($eventId));
+    }
+
+    static function getCompetitorsByEventIdCountryCode($eventId, $contryCode) {
+        return Competitor::getCompetitorsByCompetitorsId(
+                        Competitor_data::getCompetitorsIdByEventId(
+                                $eventId, Competitor_data::COUNTRY, $contryCode)
+        );
+    }
+
+    static function getCompetitorsByEventIdContinentCode($eventId, $continentCode) {
+        return Competitor::getCompetitorsByCompetitorsId(
+                        Competitor_data::getCompetitorsIdByEventId(
+                                $eventId, Competitor_data::CONTINENT, $continentCode)
+        );
+    }
+
+    static function getCompetitorsByCompetitorsId($competitorsId) {
+        $competitors = [];
+        foreach ($competitorsId as $competitorId) {
+            $competitor = new Competitor();
+            $competitor->getById($competitorId);
+            $competitors[] = $competitor;
+        }
+        return $competitors;
+    }
+
+    static function getBestAttempts($competitors, $eventId, $filterFormat) {
+
+        foreach ($competitors as $c => $competitor) {
+            $teams = Team::getTeamsByTeamsId(
+                            Team::getTeamsIdByEventIdCompetitorId($eventId, $competitor->id)
+            );
+
+            foreach ($teams as $t => &$team) {
+                if ($team->competitionEvent->competition->unofficial) {
+                    unset($teams[$t]);
+                } else {
+                    if ($filterFormat == Attempt::SINGLE) {
+                        $team->getAttemptsSpecial(Attempt::SINGLE);
+                    } else {
+                        $team->getAttemptsSpecial(Attempt::AVERAGE);
+                        $team->getAttemptsNumeric();
+                    }
+                }
+            }
+
+            usort($teams, function($a, $b) {
+                $value_a = $a->attemptSpecial->value;
+                $value_b = $b->attemptSpecial->value;
+                $strcmp1 = strcmp($value_a, $value_b);
+                if ($strcmp1 !== 0) {
+                    return $strcmp1;
+                }
+
+                $endDate_a = $a->competitionEvent->competition->endDate;
+                $endDate_b = $b->competitionEvent->competition->endDate;
+                $strcmp2 = strcmp($endDate_a, $endDate_b);
+                return $strcmp2;
+            });
+            if ($teams[0]->attemptSpecial->value) {
+                $competitors[$c]->team = $teams[0];
+            } else {
+                unset($competitors[$c]);
+            }
+        }
+
+        usort($competitors, function($a, $b) {
+            $value_a = $a->team->attemptSpecial->value;
+            $value_b = $b->team->attemptSpecial->value;
+            $strcmp1 = strcmp($value_a, $value_b);
+            if ($strcmp1 !== 0) {
+                return $strcmp1;
+            }
+
+            $name_a = $a->name;
+            $name_b = $b->name;
+            $strcmp2 = strcmp($name_a, $name_b);
+            return $strcmp2;
+        });
+
+        return $competitors;
     }
 
 }

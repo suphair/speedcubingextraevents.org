@@ -233,8 +233,8 @@ class DataBaseClass {
         return self::getAffectedRows() > 0;
     }
 
-    public static function getRowAssoc($sql) {
-        self::Query($sql);
+    public static function getRowAssoc($sql, $key = [], $out = false) {
+        self::Query($sql, $out);
         return self::getRow();
     }
 
@@ -265,7 +265,7 @@ class DataBaseClass {
         }
     }
 
-    public static function getColumn($sql, $filter = []) {
+    public static function getColumn($sql, $filter = [], $out = false) {
         $where = "";
         if (is_array($filter)) {
             foreach ($filter as $value) {
@@ -275,7 +275,7 @@ class DataBaseClass {
             $where .= "AND $filter ";
         }
         $sql = str_replace('%f', $where, $sql);
-        self::Query($sql);
+        self::Query($sql, $out);
         $rows = self::getRows();
         if ($rows) {
             $column = array_keys($rows[0])[0];

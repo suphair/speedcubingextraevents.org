@@ -9,4 +9,3 @@ $('table[data-access-event-settings != 1] [data-event-settings]').hide();
 $('[data-event-isTeam = 0]').hide();
 
 $('[data-event-show = 0 ]').hide();
-

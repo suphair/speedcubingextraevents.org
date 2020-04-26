@@ -1,152 +1,63 @@
-<?php $Language=$_SESSION['language_select'];?>
-<h1><?= ml('Regulations.Title'); ?></h1>
-<i class="fas fa-star"></i> <?= ml('Regulations.Description'); ?>
-<h3><?= ml('Regulations.Documents') ?></h3>
-<table class="table_info">
+<?php
 
-    <tr>
-        <td>Speecubing Extra Events</td>
-        <td><a target="_blank" href="<?= PageIndex() ?>MainRegulations"><i class="fas fa-book"></i> SEE Regulations</a></a></td>
-    </tr>
-    <tr>
-        <td>World Cube Association</td>
-        <td><a target="_blank" href="https://www.worldcubeassociation.org/regulations"><i class="fas fa-book"></i> WCA Regulations <i class="fas fa-external-link-alt"></i></a></td>
-    </tr>
-</table>    
+$language = $_SESSION['language_select'];
 
-<?php 
-$event_selected=false;
-$request= getRequest();
-$event_request=false;
-if(isset($request[1])){
-    $event_request=$request[1];
+$events = Event::getEventsByEventsId(
+                Event::getEventsIdByFilter());
+
+$event = new Event();
+$event->getByCode(getPathElement('regulations', 1));
+if (!$event->id) {
+    $event = $events[0];
 }
 
+$event->getRegulation($language);
 
-$discipline_default=[];
-$language_default=[];
-DataBaseClass::Query("Select D.ID, D.Name, D.Code,R.Text,R.Language from Discipline D  "
-        . " left outer join Regulation R on R.Event=D.ID where D.Status='Active' and R.Text!='' order by R.ID");
-foreach(DataBaseClass::getRows() as $row){
-    $discipline_default[$row['ID']]=$row['Text'];
-    $language_default[$row['ID']]=$row['Language'];
-} ?>
-
-
-<?php 
-$eventwithoutregulations=[];
-if(CheckAccess('Event.Settings')){
-DataBaseClass::Query("Select D.* from Discipline D"
-                         . " Left outer join Regulation R on D.ID=R.Event"
-                         . " where D.Status='Active'  and R.ID is null"); 
-foreach(DataBaseClass::getRows() as $row){ 
-    $eventwithoutregulations[]=$row['CodeScript'];
-    } 
-} ?>
-    
-<?php DataBaseClass::Query("Select D.Comment,D.ID, D.Name, D.Code,D.CodeScript,R.Text,D.Inspection,D.Competitors,D.TNoodles from Discipline D  "
-        . " left outer join Regulation R on R.Event=D.ID and R.Language='$Language' where D.Status='Active' order by D.Name");
-$disciplines=DataBaseClass::getRows(); 
-
-foreach($disciplines as $discipline_row){
-    if($event_request==strtolower($discipline_row['Code'])){
-        $event_selected=$discipline_row['Code'];
-    }
+$text = (object) [
+            'team' => false,
+            'mguild' => false,
+            'multiPuzzles' => false,
+            'longInspection' => false,
+];
+if ($event->isTeam) {
+    $text->team = Parsedown(
+            str_replace(
+                    "%1", $event->competitorsTeam, getBlockText(
+                            'Regulation.Competitors', $language)
+            )
+            , false);
 }
-if(!$event_selected)$event_selected=$disciplines[0]['Code'];
-?>
-<h3><?= ml('Regulations.ExtraEvents') ?></h3>
-<table width="100%"><tr><td width="10%" style='border-right: 1px solid #333'>
-<table class="table_info" style="white-space: nowrap">
-    <td></td>
-    <td>
-         <select ID="FilterEvent" onchange="location.href = '<?= PageIndex()?>Regulations/'+$(this).val();">
-            <?php foreach($disciplines as $discipline_row){ ?>   
-                <option value="<?= $discipline_row['Code'] ?>" <?= strtolower($discipline_row['Code'])==$event_selected?'selected':''?> >
-                    <?= $discipline_row['Name'] ?>
-                </option>
-            <?php } ?>    
-         </select>                
-    </td>
-    <?php foreach($disciplines as $d=>$discipline_row){ ?>
-        <tr>
-            <td><?= ImageEvent($discipline_row['CodeScript'],1) ?></td>
-            <td>
-                <a class="<?= $event_selected==$discipline_row['Code']?'list_select':''?>" href="<?= PageIndex()?>Regulations/<?= $discipline_row['Code'] ?>"><?= $discipline_row['Name'] ?></a>
-                <?php if(in_array($discipline_row['CodeScript'],$eventwithoutregulations)){ ?>
-                    <i class="fas fa-exclamation-triangle"></i>
-                <?php } ?>
-            </td>
-        </tr>
-    <?php } ?>
-</table>     
-</td><td width="90%" style='padding-left: 10px'>            
-    <?php foreach($disciplines as $discipline_row)if($event_selected==$discipline_row['Code']){ 
-    $other_language=false;
-    if(!$discipline_row['Text'] and isset($discipline_default[$discipline_row['ID']])){
-        $discipline_row['Text']=$discipline_default[$discipline_row['ID']];
-        $other_language=$language_default[$discipline_row['ID']];
-    }?>
-<h2>
-   <?= ImageEvent($discipline_row['CodeScript']) ?>
-   <?= $discipline_row['Name'] ?>
-</h2>
-<table class="table_info">
-    <?php if($other_language){ ?>
-    <tr>
-        <td><?= ml('Regulations.Language') ?></td>
-        <td><?= ImageCountry($other_language); ?> <?= CountryName($other_language,true)?></td>
-    </td>    
-    <?php } ?>
-    <tr>
-        <td></td>
-        <td>
-        <?php $Text='';
-        
-        if($discipline_row['Text']){
-            $Text.=Parsedown($discipline_row['Text']);
-        }else{
-            $Text.="<i class='fas fa-exclamation-triangle'></i> ".ml('Regulation.Writing')."";
-        } ?>
-            <?= $Text;?>
-   </tr>
-   
-    <?php if($discipline_row['Competitors']>1){ ?>
-    <tr>
-        <td>Team</td>
-        <td><?php Parsedown(str_replace("%1",$discipline_row['Competitors'],getBlockText('Regulation.Competitors',$Language))) ?></td>
-    </tr>       
-    <?php } ?>     
-   <?php if($discipline_row['Inspection']==20){ ?>
-    <tr>
-        <td><?= ml('Regulations.Inspect') ?></td>
-        <td><?php Parsedown(getBlockText('Regulation.Inspect.20',$Language)); ?></td>
-    </tr>       
-    <?php } ?>
-   
-   <?php if(strpos($discipline_row['CodeScript'],'mguild')!==false){ ?>
-    <tr>
-        <td><?= ml('Regulations.Position') ?></td>
-        <td><?php Parsedown(getBlockText('Regulation.mguild',$Language)); ?></td>
-    </tr>       
-    <?php } ?>
-   
-   <?php if($discipline_row['TNoodles']){ ?>
-    <tr>
-        <td><?= ml('Regulations.Penalties') ?></td>
-        <td><?php Parsedown(getBlockText('Regulation.puzzles',$Language)) ?></td>
-    </tr>    
-    <?php  } ?> 
-    <tr>
-        <td><hr></td>
-        <td><hr></td>
-    </tr>    
 
-    <?= EventBlockLinks(['Discipline_CodeScript'=>$discipline_row['CodeScript'] ,'Discipline_Code'=>$discipline_row['Code'] ,'Discipline_ID'=>$discipline_row['ID'],'Discipline_Status'=>'Active'],'regulations',true); ?>
-<br>
-<?php ?>
-</td>
-</tr>
-</table>
-<?php } ?>
-</td></tr></table>
+if ($event->longInspection) {
+    $text->longInspection = Parsedown(
+            getBlockText(
+                    'Regulation.Inspect.20', $language
+            )
+            , false);
+}
+
+if ($event->multiPuzzles) {
+    $text->multiPuzzles = Parsedown(
+            getBlockText(
+                    'Regulation.puzzles', $language
+            )
+            , false);
+}
+
+if (strpos($event->codeScript, 'mguild') !== false) {
+    $text->mguild = Parsedown(
+            getBlockText(
+                    'Regulation.mguild', $language
+            )
+            , false);
+}
+
+$data = arrayToObject([
+    'text' => $text,
+    'event' => $event,
+    'events' => $events,
+    'language' => $language
+        ]);
+
+IncludeClass::Template('Regulations', $data);
+

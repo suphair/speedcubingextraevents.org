@@ -5,5 +5,6 @@ $news = News::getNewsByNewsId(
 
 $data = arrayToObject([
     'news' => $news,
+    'newsExists' => sizeof($news) > 0
         ]);
 IncludeClass::Template('News.Announce', $data);

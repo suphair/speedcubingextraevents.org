@@ -15,6 +15,7 @@ Class Competition {
     public $startDate = false;
     public $unofficial = false;
     public $endDateFormat = false;
+    public $competitionEvents = [];
 
     function __construct() {
         $this->country = new Country();
@@ -51,10 +52,20 @@ Class Competition {
 
     function getEvents() {
         if ($this->id) {
-            foreach (Event::getEventsCodeByCompetitionID($this->id) as $eventCode) {
+            foreach (Event::getEventsCodeByCompetitionId($this->id) as $eventCode) {
                 $event = new Event();
                 $event->getbyCode($eventCode);
                 $this->events[] = $event;
+            }
+        }
+    }
+    
+    function getCompetitionEvents() {
+        if ($this->id) {
+            foreach (CompetitionEvent::getCompetitionEventIdIdByCompetitionId($this->id) as $competitionEventId) {
+                $competitionEvent = new CompetitionEvent();
+                $competitionEvent->getbyId($competitionEventId);
+                $this->competitionEvents[] = $competitionEvent;
             }
         }
     }

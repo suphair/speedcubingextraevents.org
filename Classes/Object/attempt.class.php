@@ -2,6 +2,9 @@
 
 Class Attempt {
 
+    CONST SINGLE = 'single';
+    CONST AVERAGE = 'average';
+
     public $out = false;
     public $value = false;
     public $except = false;
@@ -31,14 +34,6 @@ Class Attempt {
             }
             $this->out = $attempt->out;
             $this->record = self::getRecordType($attempt);
-
-            #if ($attempt->worldRecord) {
-            #    $this->record = 'world';
-            #} elseif ($attempt->continentRecord) {
-            #    $this->record = 'continent';
-            #} elseif ($attempt->countryRecord) {
-            #    $this->record = 'country';
-            #}
         }
     }
 
@@ -119,7 +114,7 @@ Class Attempt {
         $this->except = $attempt->out;
         $this->record = self::getRecordType($attempt);
         $team = new Team();
-        $team->getByid($attempt->teamId);
+        $team->getById($attempt->teamId);
         $this->team = $team;
         $this->format = $attempt->format;
     }
@@ -132,6 +127,14 @@ Class Attempt {
         } elseif ($attempt->countryRecord) {
             return Attempt_Data::COUNTRY;
         }
+    }
+
+    static function getCountriesCodeForAttempts() {
+        return Attempt_data::getCountriesCodeForAttempts();
+    }
+
+    static function getContinentsCodeForAttempts() {
+        return Attempt_data::getContinentsCodeForAttempts();
     }
 
 }

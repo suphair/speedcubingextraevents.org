@@ -1,4 +1,4 @@
-<?php if ($data->news) { ?>
+<?php if ($data->newsExists) { ?>
     <div class="news_annuonce">
         <table class="table_info">
             <tbody>

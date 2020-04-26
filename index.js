@@ -49,3 +49,27 @@ $('a[data-external-link]').each(function () {
     $(this).attr('target', '_blank');
     $(this).append('<i class="fas fa-external-link-alt"></i>');
 });
+
+
+$('select[data-selected-continent]').each(function () {
+    var selected = $(this).data('selected-continent');
+    if (selected) {
+        $(this).find('option[value="' + selected + '"]').prop('selected', true);
+    }
+});
+
+$('select[data-selected-country]').each(function () {
+    var selected = $(this).data('selected-country');
+    if (selected) {
+        $(this).find('option[value="' + selected + '"]').prop('selected', true);
+    }
+});
+
+$('[data-attempt-except]').each(function () {
+    var html = $(this).html().trim();
+    if ($(this).data('attempt-except') === 1) {
+        $(this).html('(' + html + ')');
+    } else {
+        $(this).html("\u00A0" + html + "\u00A0");
+    }
+});

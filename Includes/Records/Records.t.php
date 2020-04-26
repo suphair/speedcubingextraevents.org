@@ -8,15 +8,6 @@
             <table class="table_info">
                 <tr>
                     <td>
-                        <?= ml('Records.Show') ?>
-                    </td>
-                    <td>
-                        <i class="far fa-check-square"></i>
-                        <?= ml('Records.ShowHistory') ?>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
                         <?= ml('Records.Region') ?>
                     </td>
                     <td>

@@ -19,6 +19,10 @@ if ($prefixType == 'Competition'
         or $type == 'index') {
     $type = 'Competitions';
 }
+if ($prefixType == 'Mainregulations') {
+    $type = 'Regulations';
+}
+
 $data->type = $type;
 
 IncludeClass::Template('Body.Navigator', $data);

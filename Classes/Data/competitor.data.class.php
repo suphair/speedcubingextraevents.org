@@ -2,6 +2,9 @@
 
 Class Competitor_data {
 
+    CONST COUNTRY = 'country';
+    CONST CONTINENT = 'continent';
+
     static function getByWcaid($wcaid) {
         return self::getBy("WCAID = '" . DataBaseClass::Escape($wcaid) . "'");
     }
@@ -63,6 +66,45 @@ Class Competitor_data {
             SELECT Competitor
             FROM CommandCompetitor 
             WHERE Command=$teamId
+        ");
+    }
+
+    static function getCompetitorsIdByEventId($eventId, $type = false, $filter = false) {
+        if (!is_numeric($eventId)) {
+            return [];
+        }
+
+        switch ($type) {
+            case self::COUNTRY:
+
+                $where = " AND LOWER(Country.ISO2) = LOWER('" . DataBaseClass::Escape($filter) . "')";
+                break;
+
+            case self::CONTINENT:
+                $where = " AND LOWER(Continent.Code) = LOWER('" . DataBaseClass::Escape($filter) . "')";
+                break;
+
+            default: $where = '';
+        }
+
+        return DataBaseClass::getColumn("
+            SELECT DISTINCT
+                Competitor.ID
+            FROM Competitor
+            JOIN CommandCompetitor ON CommandCompetitor.Competitor = Competitor.ID 
+            JOIN Command ON CommandCompetitor.Command = Command.ID 
+            JOIN Attempt ON Attempt.Command = Command.ID 
+            LEFT OUTER JOIN Country ON Country.ISO2 = Competitor.Country 
+            LEFT OUTER JOIN Continent ON Continent.Code = Country.Continent 
+            JOIN Event ON Event.ID = Command.Event 
+            JOIN DisciplineFormat on DisciplineFormat.ID=Event.DisciplineFormat
+            JOIN Competition ON Competition.ID = Event.Competition 
+            WHERE 1 = 1
+            $where
+            " . Team_data::TEAM_BASE_FILTER . "
+            " . Competition_data::COMPETIITON_BASE_FILTER . " 
+            " . Attempt_data::ATTEMPT_BASE_FILTER . " 
+            AND DisciplineFormat.Discipline=$eventId 
         ");
     }
 

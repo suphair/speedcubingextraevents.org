@@ -45,16 +45,36 @@ Class Team {
                 $competitor->getById($competitorId);
                 $competitors[] = $competitor;
             }
+            usort($competitors, function($a, $b) {
+                return strcmp($a->name, $b->name);
+            });
+
+
             $this->competitors = $competitors;
-            $this->competitionEvent->getByid($team->competitionEventId);
+            $this->competitionEvent->getById($team->competitionEventId);
         }
     }
 
     function getAttempts() {
-        $unofficial = $this->competitionEvent->competition->unofficial;
-        $this->attemptSingle->getByTeamIdFormat($this->id, 'single', $unofficial);
-        $this->attemptAverage->getByTeamIdFormat($this->id, 'average', $unofficial);
+        $this->getAttemptsSpecial(Attempt::SINGLE);
+        $this->getAttemptsSpecial(Attempt::AVERAGE);
+        $this->getAttemptsNumeric();
+    }
 
+    function getAttemptsSpecial($special) {
+        $unofficial = $this->competitionEvent->competition->unofficial;
+        $this->attemptSpecial = new Attempt();
+        if ($special == Attempt::SINGLE) {
+            $this->attemptSingle->getByTeamIdFormat($this->id, Attempt::SINGLE, $unofficial);
+            $this->attemptSpecial = &$this->attemptSingle;
+        }
+        if ($special == Attempt::AVERAGE) {
+            $this->attemptAverage->getByTeamIdFormat($this->id, Attempt::AVERAGE, $unofficial);
+            $this->attemptSpecial = &$this->attemptAverage;
+        }
+    }
+
+    function getAttemptsNumeric() {
         $this->competitionEvent->event->getAttemptions();
         $attemptionCount = $this->competitionEvent->event->attemptionCount;
         $attempts = [];
@@ -66,12 +86,11 @@ Class Team {
         $this->attempts = $attempts;
     }
 
-    static function getTeamsIdByEventIdCompetitorId($eventID, $competitorID) {
-        return Team_data::getTeamsIdByEventIdCompetitorId($eventID, $competitorID);
+    static function getTeamsIdByEventIdCompetitorId($eventID, $competitorId) {
+        return Team_data::getTeamsIdByEventIdCompetitorId($eventID, $competitorId);
     }
 
     static function sortByCompetition(&$teams) {
-
         usort($teams, function($a, $b) {
             return strcmp($b->competitionEvent->competition->startDate, $a->competitionEvent->competition->startDate);
         });

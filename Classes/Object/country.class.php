@@ -6,12 +6,27 @@ Class Country {
     public $name = false;
     public $image = false;
     public $continent;
+    public $isLanguage = false;
 
-    function __construct() {
+    function __construct($isLanguage = false) {
         $this->continent = new Continent();
+        $this->isLanguage = $isLanguage;
     }
 
     function getByCode($code) {
+
+        if ($this->isLanguage) {
+            if (strtolower($code) == 'en') {
+                $this->name = 'English';
+                $this->code = 'gb';
+            }
+            if (strtolower($code) == 'ru') {
+                $this->name = 'Русский';
+                $this->code = 'ru';
+            }
+            $this->getImage();
+            return;
+        }
         $country = Country_data::getByCode($code);
         if ($country) {
             $this->code = $country->code;
@@ -28,6 +43,8 @@ Class Country {
         } else {
             $this->image = "<i class='fas fa-globe'></i>";
         }
+        
+        
     }
 
     static function getCountriesByCountriesCode($listCode) {

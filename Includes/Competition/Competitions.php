@@ -1,7 +1,5 @@
 <?php
 
-IncludeClass::Page('News.Announce');
-
 $competitor = new Competitor;
 $competitor->getCurrent();
 

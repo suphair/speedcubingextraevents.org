@@ -570,6 +570,10 @@ a{
     width: 100%;
 }
 
+.table_double_info td{
+    padding: 10px;
+}
+
 .selected a{
     color:var(--red);
     text-decoration: none;
@@ -578,4 +582,8 @@ a{
 .best-result{
     color: var(--red);
     font-weight: bold;
+}
+
+.td_border_right{
+    border-right: 1px solid #333;
 }

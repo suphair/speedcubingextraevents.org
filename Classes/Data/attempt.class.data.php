@@ -5,6 +5,7 @@ Class Attempt_data {
     CONST WORLD = 'world';
     CONST COUNTRY = 'country';
     CONST CONTINENT = 'continent';
+    CONST ATTEMPT_BASE_FILTER = ' AND Attempt.Special IS NOT NULL';
 
     public static function getFormat($format) {
         if ($format == 'average') {
@@ -199,6 +200,32 @@ Class Attempt_data {
 
     static function getById($attemptId) {
         return self::getByFilter(" WHERE ID = $attemptId ");
+    }
+
+    static function getCountriesCodeForAttempts() {
+        return DataBaseClass::getColumn("
+            SELECT DISTINCT 
+                LOWER(Command.vCountry) countryCode
+            FROM 
+                " . self::SqlRecord() . "
+            WHERE 1 = 1
+                AND Command.vCountry != '' 
+                AND Attempt.Special IS NOT NULL
+                " . Competition_data::COMPETIITON_OFFICIAL . "
+        ");
+    }
+
+    static function getContinentsCodeForAttempts() {
+        return DataBaseClass::getColumn("
+            SELECT DISTINCT 
+                LOWER(Continent.Code) continentCode
+            FROM 
+                " . self::SqlRecord() . "
+            WHERE 1 = 1
+                AND Continent.Code IS NOT NULL
+                AND Attempt.Special IS NOT NULL
+                " . Competition_data::COMPETIITON_OFFICIAL . "
+        ");
     }
 
 }

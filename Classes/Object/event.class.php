@@ -13,6 +13,7 @@ Class Event {
     public $eventsRecord = [];
     public $multiPuzzles = false;
     public $longInspection = false;
+    public $competitorsTeam = 0;
     public $countCompetitors = false;
     public $countCompetitions = false;
 
@@ -43,6 +44,7 @@ Class Event {
         $this->codeScript = $event->codeScript;
         $this->multiPuzzles = $event->multiPuzzles;
         $this->longInspection = $event->longInspection;
+        $this->competitorsTeam = $event->competitorsTeam;
 
 
         $this->getCompetitorsCount();
@@ -81,15 +83,15 @@ Class Event {
         return Event_data::getEventsCodeByCompetitionsId($competitionsID);
     }
 
-    static function getEventsCodeByCompetitionID($competitionID) {
-        return Event_data::getEventsCodeByCompetitionID($competitionID);
+    static function getEventsCodeByCompetitionId($competitionID) {
+        return Event_data::getEventsCodeByCompetitionId($competitionID);
     }
 
     static function getEventsIdByFilter($filter = []) {
         return Event_data::getEventsIdByFilter(arrayToObject($filter));
     }
 
-    static function getEventsByEventsID($eventsId) {
+    static function getEventsByEventsId($eventsId) {
         $events = [];
         foreach ($eventsId as $id) {
             $event = new Event();
@@ -122,6 +124,27 @@ Class Event {
 
     function getAttemptions() {
         $this->attemptionCount = Event_data::getAttemptions($this->id);
+    }
+
+    function getRegulation($language) {
+        $this->regulation = false;
+        $this->regulation_language = false;
+        $regulations = Event_data::getRegulationsByEventId($this->id);
+
+        if (isset($regulations[$language]) and $regulations[$language]['regulation']) {
+            $this->regulation = $regulations[$language]['regulation'];
+            return;
+        }
+
+
+        foreach ($regulations as $regulation) {
+            if ($regulation['regulation']) {
+                $this->regulation = $regulation['regulation'];
+                $this->regulation_language = new Country(true);
+                $this->regulation_language->getByCode($regulation['language']);
+                return;
+            }
+        }
     }
 
 }

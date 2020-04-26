@@ -52,26 +52,17 @@ function eventRecord($this, type) {
     });
 }
 
-$('[data-attempt-except]').each(function () {
-    var html = $(this).html().trim();
-    if ($(this).data('attempt-except') === 1) {
-        $(this).html('(' + html + ')');
-    } else {
-        $(this).html(' ' + html + ' ');
-    }
+$('[data-event-record = country]').each(function () {
+    $(this).html('NR');
+    $(this).addClass('best-result');
 });
 
-$('[data-event-record = country]').each(function(){
-   $(this).html('NR');
-   $(this).addClass('best-result');
+$('[data-event-record = continent]').each(function () {
+    $(this).html('CR');
+    $(this).addClass('best-result');
 });
 
-$('[data-event-record = continent]').each(function(){
-   $(this).html('CR');
-   $(this).addClass('best-result');
-});
-
-$('[data-event-record = world]').each(function(){
-   $(this).html('WR');
-   $(this).addClass('best-result');
+$('[data-event-record = world]').each(function () {
+    $(this).html('WR');
+    $(this).addClass('best-result');
 });

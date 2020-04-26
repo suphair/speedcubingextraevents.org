@@ -1,0 +1,38 @@
+h3:before{
+    content:none !important;
+}
+
+h1{
+    margin-top: 0px !important;    
+}
+
+.main_regulations{
+    border: 2px solid rgb(204, 204, 204);
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+.main_regulation_edit td{
+    width: 50%;
+    vertical-align:top;
+    padding:10px;
+}
+
+.main_regulation_edit .view, 
+.main_regulation_edit .edit{
+    border:1px dotted rgb(204, 204, 204);
+    border-radius: 10px;
+    padding:10px;
+    height: 600px;
+    font-size:14px;
+}
+
+.main_regulation_edit .view{
+    overflow: scroll;
+}
+
+.main_regulation_edit .edit{
+    width: 100%;
+}
+

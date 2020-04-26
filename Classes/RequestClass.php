@@ -131,15 +131,6 @@ $typesSimplePage=[
                 IncludeClass::Page('ScoreTaker');
                 exit();
                 break;
-            
-            case 'mainregulations':
-                if($request[1]=='edit' and self::CheckAccess("MainRegulations.Edit")===true){
-                    IncludeClass::Page('MainRegulations.Edit');    
-                }else{
-                    IncludeClass::Page('MainRegulations');
-                }
-                exit();
-                break;
                
             case 'scrambleszip':
                $CompetitionCode = $request[1];
@@ -215,10 +206,10 @@ $typesSimplePage=[
                           }elseif($request[2]=='training'){   
                               self::$titles[]="Training";
                               self::$page ='Event.Training';
-                          }elseif(in_array($request[2],['average','single','sum'])){
-                              if(!in_array($request[3],['results','persons'])){
-                                   self::set404();    
-                              } 
+                          }elseif(in_array($request[2],['average','single'])){
+                              #if(!in_array($request[3],['results','persons'])){
+                              #     self::set404();    
+                              #} 
                           }elseif($request[2]!='null'){
                                 self::set404();    
                           }  

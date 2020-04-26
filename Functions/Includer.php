@@ -109,6 +109,15 @@ function getPathElement($baseElement, $n) {
     return false;
 }
 
+function getQueryElement($name, $values=false) {
+    $value = filter_input(INPUT_GET, $name);
+    if (!$values or in_array($value, $values)) {
+        return strtolower($value);
+    } else {
+        return strtolower($values[0]);
+    }
+}
+
 function IncluderScript() {
     if (isset($_GET['Script'])) {
         if (CheckAccess('Scripts')) {
@@ -125,7 +134,6 @@ function IncluderScript() {
         }
     }
 }
-
 
 function inputGet($keys) {
     $request = [];

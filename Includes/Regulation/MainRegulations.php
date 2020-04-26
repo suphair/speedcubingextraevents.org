@@ -1,19 +1,25 @@
-<link rel="stylesheet" href="<?= PageLocal()?>style.css?t=1" type="text/css"/>
-<style>
-    h3:before{content:none}
-</style>
-<?php if(CheckAccess('MainRegulations.Edit')){ ?>
-    <i class="fas fa-cog"></i> <a href="<?= PageIndex() ?>MainRegulations/Edit">Edit</a>
-<?php } ?>
-<form class='form_inline' method="POST" action="<?=PageAction('Language.Set')?> "> 
-    <?php $Language=$_SESSION['language_select']; ?>    
-    <?= ImageCountry($Language,20); ?>
-    <select style="width:85px;" onchange="form.submit()" name='language'>
-        <?php foreach(getLanguages() as $language){ ?>
-        <option <?= $Language==$language?'selected':'' ?> value="<?= $language ?>"><?= CountryName($language,true) ?></option>
-        <?php } ?>
-    </select>
-</form> 
-<?php 
-$regulations=getBlockText("MainRegulation",$Language); 
-echo Parsedown($regulations); ?>
+<?php
+
+$language = $_SESSION['language_select'];
+$regulationBlock = getBlockText("MainRegulation", $language);
+
+$data = arrayToObject([
+    'language' => $language,
+    'accessEdit' => CheckAccess('MainRegulations.Edit'),
+    'regulations' => Parsedown($regulationBlock, false)
+        ]);
+
+if (getPathElement('MainRegulations', 1) == 'edit'
+        and CheckAccess('MainRegulations.Edit') === true) {
+
+    $data->regulationsEdit = str_replace(
+            "\n\n", "\n&nbsp;\n", str_replace(
+                    chr(13) . chr(10), "\n", $regulationBlock
+            )
+    );
+
+    IncludeClass::Template('MainRegulations.Edit', $data);
+    IncludeClass::Element('Style', 'MainRegulations.css', 'style');
+} else {
+    IncludeClass::Template('MainRegulations', $data);
+}

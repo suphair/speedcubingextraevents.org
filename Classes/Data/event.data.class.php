@@ -38,6 +38,7 @@ Class Event_data {
                     WHEN Competitors > 1 then true
                     ELSE false
                 END isTeam,
+                Competitors competitorsTeam,
                 CASE
                     WHEN Inspection = 20 then true
                     ELSE false
@@ -48,7 +49,7 @@ Class Event_data {
         ");
     }
 
-    static function getEventsCodeByCompetitionID($competitionId) {
+    static function getEventsCodeByCompetitionId($competitionId) {
         if (!is_numeric($competitionId)) {
             return [];
         }
@@ -229,6 +230,19 @@ Class Event_data {
             JOIN Format ON Format.ID = DisciplineFormat.Format
             WHERE Discipline = $eventId
         ");
+    }
+
+    static function getRegulationsByEventId($eventId) {
+        if (!is_numeric($eventId)) {
+            return [];
+        }
+        return DataBaseClass::getRowsAssoc("
+            SELECT 
+                Regulation.Language language,
+                Regulation.Text regulation
+            FROM Regulation
+            WHERE Regulation.Event = $eventId"
+                        , 'language');
     }
 
 }
