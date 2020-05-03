@@ -10,6 +10,7 @@ Class Competition {
     public $link = false;
     public $status = false;
     public $events = [];
+    public $onsite = false;
     public $endDate = false;
     public $country;
     public $startDate = false;
@@ -23,14 +24,14 @@ Class Competition {
 
     public function getById($id) {
         $competition = Competition_data::getById($id);
-        if ($competition) {
+        if ($competition and $competition != new stdClass()) {
             $this->SetbyRow($competition);
         }
     }
 
     function getByWca($wca) {
         $competition = Competition_data::getByWca($wca);
-        if ($competition) {
+        if ($competition and $competition != new stdClass()) {
             $this->SetbyRow($competition);
         }
     }
@@ -42,6 +43,7 @@ Class Competition {
         $this->city = $competition->city;
         $this->date = date_range($competition->startDate, $competition->endDate);
         $this->link = PageIndex() . "Competition/$competition->wca";
+        $this->onsite = $competition->onsite;
         $this->status = $competition->status;
         $this->endDate = $competition->endDate;
         $this->endDateFormat = date_range($competition->endDate);
@@ -59,7 +61,7 @@ Class Competition {
             }
         }
     }
-    
+
     function getCompetitionEvents() {
         if ($this->id) {
             foreach (CompetitionEvent::getCompetitionEventIdIdByCompetitionId($this->id) as $competitionEventId) {

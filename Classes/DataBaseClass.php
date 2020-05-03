@@ -4,6 +4,8 @@ class DataBaseClass {
 
     protected static $_instance;
     protected static $connection;
+    protected static $connection_see;
+    protected static $connection_wca;
     protected static $query;
     protected static $tables;
     protected static $select;
@@ -36,12 +38,33 @@ class DataBaseClass {
         
     }
 
-    public static function setConection($connection) {
+    /*public static function setConection($connection) {
         self::$connection = $connection;
         self::$count = 0;
         self::$queries = array();
+    }*/
+    
+    public static function setConectionSee($connection) {
+        self::$connection_see = $connection;
+        self::$count = 0;
+        self::$queries = array();
+        self::activateSee();
     }
 
+    public static function setConectionWca($connection) {
+        self::$connection_wca = $connection;
+        self::$count = 0;
+        self::$queries = array();
+    }
+    
+    static function activateSee(){
+        self::$connection = self::$connection_see;
+    }
+    
+    static function activateWca(){
+        self::$connection = self::$connection_wca;
+    }
+    
     public static function getConection() {
         return self::$connection;
     }
@@ -348,7 +371,7 @@ class DataBaseClass {
 
 }
 
-class DataBaseClassWCA {
+class DataBaseClassWCA{
 
     protected static $_instance;
     protected static $connection;
@@ -406,6 +429,20 @@ class DataBaseClassWCA {
         return $row;
     }
 
+    public static function getRowObject($sql, $key = false, $out = false) {
+        $row = self::getRowAssoc($sql, $key, $out);
+        if ($row) {
+            return arrayToObject($row);
+        } else {
+            return (object) [];
+        }
+    }
+    
+    public static function getRowAssoc($sql, $key = [], $out = false) {
+        self::Query($sql, $out);
+        return self::getRow();
+    }
+    
 }
 
 class DataBaseClassExport {
@@ -460,5 +497,5 @@ class DataBaseClassExport {
         }
         return $res;
     }
-
+    
 }

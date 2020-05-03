@@ -42,8 +42,14 @@ Class Attempt_data {
         return DataBaseClass::getRowObject("
             SELECT 
                 vOut 'out',
+                Minute minute,
+                Second second,
+                Milisecond millisecond,
+                IsDNF isDnf,
+                IsDNS isDns,
                 Command teamId,
                 vOrder value,
+                Amount amount,
                 Except except,
                 worldRecord,
                 countryRecord,

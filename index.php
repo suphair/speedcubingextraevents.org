@@ -34,7 +34,7 @@ if (RequestClass::getError(401)) {
         <meta name="Description" content="Speedcubing Extra Events">
         <meta charset="utf-8">
         <title><?= RequestClass::getTitle(); ?></title>
-        <?= IncludeClass::Page('Index.Head.php') ?>
+        <?= IncludeClass::Page('Index.Head') ?>
     </head>
     <body> 
         <span id="variables" data-index="<?= PageIndex() ?>" data-title="<?= GetIni('TEXT', 'title') ?>"/>

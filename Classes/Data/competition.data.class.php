@@ -17,7 +17,7 @@ Class Competition_data {
         if (is_numeric($id)) {
             return self::getBy("ID = $id");
         } else {
-            return [];
+            return false;
         }
     }
 
@@ -30,12 +30,13 @@ Class Competition_data {
             SELECT 
                 ID id,
                 WCA wca,
-                Name name,
-                Country countryCode,
                 City city,
-                StartDate startDate,
+                Name name,
                 EndDate endDate,
+                Country countryCode,
+                StartDate startDate,
                 Unofficial unofficial,
+                Onsite onsite,
                 CASE
                     WHEN WCA like 't.%' THEN 'technical'
                     WHEN Status = -1 THEN 'covid-19'

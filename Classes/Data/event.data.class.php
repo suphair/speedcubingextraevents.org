@@ -42,7 +42,8 @@ Class Event_data {
                 CASE
                     WHEN Inspection = 20 then true
                     ELSE false
-                END longInspection
+                END longInspection,
+                FormatResult formatResultId
             FROM Discipline
             WHERE 
                 $where

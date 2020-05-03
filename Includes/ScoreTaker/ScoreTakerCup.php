@@ -1,8 +1,10 @@
 <?php
 
-if(availableCupChange($event['ID'])){ ?>
+$eventId=$competitionEvent->id;
+
+if(availableCupChange($eventId)){ ?>
     <h2><i class="fas fa-hand-paper"></i> You need to perform a distribution</h2>
-    <a href="<?=PageAction('CompetitionEvent.Grid').'/'.$event['ID'] ?>">Distribution of teams by grid</a>
+    <a href="<?=PageAction('CompetitionEvent.Grid').'/'.$eventId ?>">Distribution of teams by grid</a>
 <?php exit();
     } 
 
@@ -10,7 +12,7 @@ DataBaseClass::Query("Select  group_concat(C.Name order by C.Name separator ', '
         . " join Command Com on Com.Event=E.ID "
         . " join CommandCompetitor CC on CC.Command=Com.ID"
         . " join Competitor C on C.ID=CC.Competitor"
-        . " where E.ID=".$event['ID'].""
+        . " where E.ID=".$eventId.""
         . " group by Com.CardID,Com.ID,E.CommandsCup,E.Round,Com.Name");
 
 $commands=DataBaseClass::getRows();
@@ -25,7 +27,7 @@ foreach($commands as $command){
         . " left outer join Command C1 on CC.Command1=C1.ID "
         . " left outer join Command C2 on CC.Command2=C2.ID "
         . " left outer join CupValue CV on CV.CupCell=CC.ID"
-        . " where CC.Event=".$event['ID'].""
+        . " where CC.Event=".$eventId.""
         . " group by CC.ID,C1.ID,C2.ID");
 $Cells=[];
 $cell_rows=DataBaseClass::getRows();
@@ -382,3 +384,4 @@ $Rounds=$CommandsCup['Round'];
 <br>
 <p><i class="fas fa-info-circle"></i> Double click on an attempt to delete it</p>
 <p><i class="fas fa-info-circle"></i> Enter '-' for DNF</p>
+<?php exit(); ?>

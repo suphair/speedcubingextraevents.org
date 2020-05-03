@@ -29,10 +29,13 @@ Class Team_data {
         return DataBaseClass::getRowObject("
             SELECT 
                 ID id,
+                CardID cardId,
+                Onsite onsite,
                 Event competitionEventId,
                 Secret secret,
                 Video video,
-                Place place
+                Place place,
+                Warnings warnings
             FROM Command
             WHERE ID = $teamId 
         ");

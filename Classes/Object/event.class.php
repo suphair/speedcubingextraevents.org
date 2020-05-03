@@ -7,15 +7,22 @@ Class Event {
     public $name = false;
     public $image = false;
     public $codes = false;
+    public $isCup = false;
     public $isTeam = false;
     public $isArchive = false;
     public $codeScript = false;
+    public $formatResult;
     public $eventsRecord = [];
     public $multiPuzzles = false;
+    public $formatResultId = false;
     public $longInspection = false;
     public $competitorsTeam = 0;
     public $countCompetitors = false;
     public $countCompetitions = false;
+
+    function __construct() {
+        $this->formatResult = new formatResult();
+    }
 
     function getByCode($code) {
         $event = Event_data::getByCode($code);
@@ -39,14 +46,15 @@ Class Event {
         if ($codes[0]) {
             $this->codes = $codes;
         }
+        $this->isCup = strpos($event->codeScript, '_cup');
         $this->isTeam = $event->isTeam;
         $this->isArchive = $event->isArchive;
         $this->codeScript = $event->codeScript;
         $this->multiPuzzles = $event->multiPuzzles;
+        $this->formatResultId = $event->formatResultId;
         $this->longInspection = $event->longInspection;
         $this->competitorsTeam = $event->competitorsTeam;
-
-
+        
         $this->getCompetitorsCount();
         $this->getCompetitionsCount();
 
@@ -54,6 +62,14 @@ Class Event {
             $this->image = "<i title='{$this->name}' class='fas ee-{$this->codeScript}'></i>";
         } else {
             $this->image = "<i title='{$this->name}' class='fas fa-question-circle'></i>";
+        }
+    }
+    
+    function getFormatResult(){
+        if($this->formatResultId){
+            $formatResult = new formatResult();
+            $formatResult->getById($this->formatResultId);
+            $this->formatResult = $formatResult;
         }
     }
 

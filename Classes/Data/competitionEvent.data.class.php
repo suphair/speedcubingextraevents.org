@@ -20,12 +20,31 @@ Class CompetitionEvent_data {
         return DataBaseClass::getRowObject("
             SELECT 
                 Event.ID id,
+                Event.Round round,
                 Event.Secret secret,
+                Event.Cumulative cumulative,
+                Event.LimitSecond limitSecond,
+                Event.LimitMinute limitMinute,
                 Event.Competition competitionId,
-                DisciplineFormat.Discipline eventId,
-                Event.Round round
+                Event.CutoffSecond cutoffSecond,
+                Event.CutoffMinute cutoffMinute,
+                case Format.Result
+                    when 'Sum' then '".CompetitionEvent::FORMAT_SUM."'
+                    when 'Best' then '".CompetitionEvent::FORMAT_BEST."'
+                    when 'Mean' then '".CompetitionEvent::FORMAT_MEAN."'
+                    when 'Average' then '".CompetitionEvent::FORMAT_AVERAGE."'
+                end format1,
+                case Format.ExtResult
+                    when 'Sum' then '".CompetitionEvent::FORMAT_SUM."'
+                    when 'Best' then '".CompetitionEvent::FORMAT_BEST."'
+                    when 'Mean' then '".CompetitionEvent::FORMAT_MEAN."'
+                    when 'Average' then '".CompetitionEvent::FORMAT_AVERAGE."'
+                end format2,
+                Format.Attemption attemptions,
+                DisciplineFormat.Discipline eventId
             FROM Event
-            JOIN DisciplineFormat on DisciplineFormat.ID = Event.DisciplineFormat
+            JOIN DisciplineFormat ON DisciplineFormat.ID = Event.DisciplineFormat
+            JOIN Format ON Format.ID = DisciplineFormat.Format 
             WHERE 1 = 1
             $filter
         ");

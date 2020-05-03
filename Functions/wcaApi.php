@@ -20,6 +20,24 @@ function getUserWcaApi($userId,$context)
     return $user;
 }
 
+function getPersonWcaApi($personWcaid,$context)
+{
+    $contents = file_get_contents_curl("https://www.worldcubeassociation.org/api/v0/persons/".$personWcaid); 
+    $personData=json_decode($contents);
+    if($personData and isset($personData->person)){     
+        $person=$personData->person;
+        unset($person->url);
+        unset($person->gender);
+        unset($person->teams);
+        unset($person->avatar); 
+        $person->name=short_Name($person->name);
+    }else{
+        $person=false;
+    }
+    logUseWcaApi($personWcaid, json_encode($person),'persons',$context);
+    return $person;
+}
+
 function getCompetitionWcaApi($competitionId,$context)
 {
     $contents = file_get_contents_curl("https://www.worldcubeassociation.org/api/v0/competitions/".$competitionId); 

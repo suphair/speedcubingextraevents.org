@@ -1,0 +1,21 @@
+.score_taker_title{
+    margin:0px;
+    padding:5px 10px;
+    border-radius: 10px;
+    background-color: #e7e7e7;
+}
+
+.score_taker_warning{
+    color:var(--red);
+}
+
+.score_taker_warning:after{
+    content:'!';
+    margin-left: 0px;
+}
+
+.score_taker_warning_input{
+    margin-left: 2px;
+    font-size:24px;
+    color:var(--red);
+}

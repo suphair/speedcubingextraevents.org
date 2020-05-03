@@ -6,12 +6,14 @@ Class Attempt {
     CONST AVERAGE = 'average';
 
     public $out = false;
+    public $team = false;
+    public $time = false;
     public $value = false;
+    public $amount = false;
     public $except = false;
     public $record = false;
-    public $team = false;
     public $format = false;
-    public $competitionEvent = false;
+    public $warning = false;
 
     function __construct($attempt = false) {
         if (isset($attempt->value)) {
@@ -41,7 +43,15 @@ Class Attempt {
         $attempt = Attempt_data::getByTeamIdNumber($teamId, $number);
         if ($attempt and $attempt != new stdClass()) {
             $this->out = $attempt->out;
+            if($attempt->isDnf){
+               $this->time = 'DNF'; 
+            }elseif($attempt->isDns){
+                $this->time = 'DNS';
+            }else{
+                $this->time = sprintf("%d:%'.02d.%'.02d", $attempt->minute, $attempt->second,$attempt->millisecond);
+            }
             $this->except = $attempt->except;
+            $this->amount = (int)$attempt->amount;
         }
     }
 

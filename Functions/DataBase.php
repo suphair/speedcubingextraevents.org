@@ -20,7 +20,8 @@ Function DataBaseInit() {
     }
 
     mysqli_query($connection, "SET CHARSET utf8mb4");
-    DataBaseClass::setConection($connection);
+    DataBaseClass::setConectionSee($connection);
+    
 
 
     $connection2 = mysqli_init();
@@ -35,6 +36,8 @@ Function DataBaseInit() {
 
     mysqli_query($connection2, "SET CHARSET utf8mb4");
     DataBaseClassWCA::setConection($connection2);
+    DataBaseClass::setConectionWca($connection2);
+    
 
     $connection3 = mysqli_init();
     $success = mysqli_real_connect(

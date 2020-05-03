@@ -3,13 +3,17 @@
 Class Team {
 
     public $id = false;
+    public $name = false;
     public $video = false;
     public $place = false;
+    public $cardId = false;
+    public $onsite = false;
     public $attempts = [];
     public $competitors = [];
     public $attemptSingle;
     public $attemptAverage;
     public $competitionEvent;
+    public $warnings;
 
     function __construct() {
         $this->competitionEvent = new CompetitionEvent();
@@ -38,12 +42,17 @@ Class Team {
             $this->id = $team->id;
             $this->video = $team->video;
             $this->place = $team->place;
+            $this->onsite = $team->onsite;
+            $this->cardId = $team->cardId;
+            $this->warnings = $team->warnings;
             $competitorsId = Competitor::getCompetitorsIdByTeamId($teamId);
             $competitors = [];
+            $names = [];
             foreach ($competitorsId as $competitorId) {
                 $competitor = new Competitor();
                 $competitor->getById($competitorId);
                 $competitors[] = $competitor;
+                $names[] = $competitor->name;
             }
             usort($competitors, function($a, $b) {
                 return strcmp($a->name, $b->name);
@@ -52,6 +61,7 @@ Class Team {
 
             $this->competitors = $competitors;
             $this->competitionEvent->getById($team->competitionEventId);
+            $this->name = implode(', ', $names);
         }
     }
 
@@ -78,9 +88,14 @@ Class Team {
         $this->competitionEvent->event->getAttemptions();
         $attemptionCount = $this->competitionEvent->event->attemptionCount;
         $attempts = [];
+        $warnings = explode(',', $this->warnings);
         for ($number = 1; $number <= $attemptionCount; $number++) {
             $attempt = new Attempt();
             $attempt->getByTeamIdNumber($this->id, $number);
+            if (in_array($number, $warnings)) {
+                $attempt->warning = true;
+            }
+
             $attempts[$number] = $attempt;
         }
         $this->attempts = $attempts;
@@ -92,7 +107,9 @@ Class Team {
 
     static function sortByCompetition(&$teams) {
         usort($teams, function($a, $b) {
-            return strcmp($b->competitionEvent->competition->startDate, $a->competitionEvent->competition->startDate);
+            return strcmp(
+                    $b->competitionEvent->competition->startDate, $a->competitionEvent->competition->startDate
+            );
         });
     }
 
