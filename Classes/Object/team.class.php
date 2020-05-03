@@ -76,11 +76,11 @@ Class Team {
         $this->attemptSpecial = new Attempt();
         if ($special == Attempt::SINGLE) {
             $this->attemptSingle->getByTeamIdFormat($this->id, Attempt::SINGLE, $unofficial);
-            $this->attemptSpecial = &$this->attemptSingle;
+            $this->attemptSpecial = $this->attemptSingle;
         }
         if ($special == Attempt::AVERAGE) {
             $this->attemptAverage->getByTeamIdFormat($this->id, Attempt::AVERAGE, $unofficial);
-            $this->attemptSpecial = &$this->attemptAverage;
+            $this->attemptSpecial = $this->attemptAverage;
         }
     }
 
