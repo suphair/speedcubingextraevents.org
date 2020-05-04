@@ -6,8 +6,10 @@ Class IncludeClass {
         foreach (scandir('Includes') as $dir) {
             $filename = "Includes/$dir/$file";
             if (!in_array($dir, ['.', '..']) and file_exists($filename)) {
-                echo "\n<!-- start $filename -->\n";
-                echo $tag ? "<$tag>\n" : "";
+                if(strpos($filename,'Scramble.php')===FALSE){
+                    echo "\n<!-- start $filename -->\n";
+                    echo $tag ? "<$tag>\n" : "";
+                }
                 include $filename;
                 echo $tag ? "\n</$tag>" : "";
                 echo "\n<!-- end $filename -->\n";

@@ -13,6 +13,8 @@ if ($data->delegate) {
         } else {
             $data->delegate->candidates->new = $count;
         }
+    }else{
+        $data->delegate->candidates->show = false;
     }
 
     $delegateLinks = [
