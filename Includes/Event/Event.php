@@ -8,6 +8,10 @@ $filterFormat = getPathElement('event', 2);
 $filterCountry = getQueryElement('country');
 $filterContinent = getQueryElement('continent');
 
+if(!$filterFormat){
+    $filterFormat=Attempt::SINGLE;
+}
+
 $events = Event::getEventsByEventsId(
                 Event::getEventsIdByFilter());
 
