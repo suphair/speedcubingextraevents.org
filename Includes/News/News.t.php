@@ -18,7 +18,7 @@
                 </td>
                 <td class="news_text">
                     <span class="news_title"><?= $news->title ?></span>
-                    <?= $news->text ?>
+                    <?= Parsedown($news->text) ?>
                 </td>
                 <td data-news-edit>
                     <?= $news->author->competitor->name ?>
