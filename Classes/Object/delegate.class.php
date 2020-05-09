@@ -16,7 +16,7 @@ Class Delegate {
         $this->competitor = new Competitor();
     }
 
-    public function getById($id) {
+    function getById($id) {
         $delegate = Delegate_data::getById($id);
         if ($delegate and $delegate != new stdClass()) {
             $this->SetbyRow($delegate);
@@ -37,7 +37,7 @@ Class Delegate {
         }
     }
 
-    public function SetbyRow($delegate) {
+    function SetbyRow($delegate) {
         $this->id = $delegate->id;
         $this->wid = $delegate->wid;
         $this->link = PageIndex() . "Delegate/$delegate->wcaid";
@@ -48,12 +48,29 @@ Class Delegate {
         $this->competitor->getByWcaid($delegate->wcaid);
     }
 
-    public function getCompetitionsIdbyDelegate($filterValues = []) {
+    function getCompetitionsIdbyDelegate($filterValues = []) {
         if ($this->id) {
             return Competition::getCompetitionsIdbyDelegate($this->id, $filterValues);
         } else {
             return [];
         }
+    }
+
+    static function getDelegates($withArchive = false) {
+        $delegates = [];
+        foreach (Delegate_data::getDelegatesId($withArchive) as $delegateID) {
+            $delegate = new Delegate();
+            $delegate->getById($delegateID);
+            $delegates[] = $delegate;
+        }
+
+        usort($delegates, function($a, $b) {
+            return strcmp(
+                    $a->competitor->name, $b->competitor->name
+            );
+        });
+
+        return $delegates;
     }
 
 }

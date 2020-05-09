@@ -20,7 +20,12 @@ $WCA = str_replace(" ", "", $WCA);
 $competition = getCompetitionWcaApi($WCA, 'competitonAdd');
 
 if (!$competition) {
-    SetMessageName('CompetitionCreate', "[$WCA] competition is not announced on the WCA website");
+    SetMessageName('CompetitionCreate', "Competition [$WCA] is not announced on the WCA website");
+    HeaderExit();
+}
+
+if (strtotime($competition->start_date) < strtotime('now')) {
+    SetMessageName('CompetitionCreate', "Competition [$WCA] has already started at {$competition->start_date}.");
     HeaderExit();
 }
 

@@ -2,6 +2,8 @@
 
 Class Delegate_data {
 
+    CONST ARCHIVE = 'Archive';
+
     static function getById($id) {
         if (is_numeric($id)) {
             return self::getBy("ID = $id");
@@ -34,6 +36,19 @@ Class Delegate_data {
             FROM Delegate
             WHERE 
                 $where
+        ");
+    }
+
+    static function getDelegatesId($withArchive = false) {
+        $where = '';
+        if (!$withArchive) {
+            $where = " AND Status != '" . self::ARCHIVE . "'";
+        }
+        return DataBaseClass::getColumn("
+            SELECT ID id
+            FROM Delegate
+            WHERE 1 = 1
+            $where 
         ");
     }
 

@@ -21,8 +21,9 @@
                 <select name='Delegate' data-selected='<?= $data->delegate->id ?>'>
                     <?php foreach ($data->delegates as $delegate) { ?>
                         <option value='<?= $delegate->id ?>'>
-                            <?= $delegate->name ?>
+                            <?= $delegate->competitor->name ?>
                             (<?= $delegate->status ?>)
+                            <?= $delegate->competitor->country->name ?>
                         </option>
                     <?php } ?>
                 </select>           

@@ -1,16 +1,7 @@
 <?php
 
 $delegate = getDelegate();
-
-$delegates= DataBaseClass::getRowsObject("
-    SELECT
-        ID id,
-        Name name,
-        Status status
-    FROM Delegate
-    ORDER BY Name
-");
-
+$delegates = Delegate::getDelegates();
 
 $data = arrayToObject([
     'competitionAddExt' => CheckAccess('Competition.Add.Ext'),
@@ -22,4 +13,4 @@ $data = arrayToObject([
     'error' => GetMessage("CompetitionCreate")
         ]);
 
-IncludeClass::Template('Competition.Add', $data); 
+IncludeClass::Template('Competition.Add', $data);
