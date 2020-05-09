@@ -1,7 +1,7 @@
 <?php
 
 $delegate = getDelegate();
-$delegates = Delegate::getDelegates();
+$delegates = Delegate::getDelegates(true);
 
 $data = arrayToObject([
     'competitionAddExt' => CheckAccess('Competition.Add.Ext'),
