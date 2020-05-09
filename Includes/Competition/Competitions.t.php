@@ -16,11 +16,12 @@
                         <td><a href='<?= PageIndex() ?>Competition/Add'>Add Competition</a></td>
                     </tr>    
                 <?php } ?>
+                <?php if($data->competitor->id){ ?>    
                 <tr>
                     <td>
 
                     </td>
-                    <td>
+                    <td class='data-competitions-filter'>
                         <button data-competitions-filter-all>
                             <?= ml('Competitions.All') ?> 
                         </button>
@@ -29,6 +30,7 @@
                         </button>    
                     </td>   
                 </tr>
+                <?php } ?>
                 <tr>
                     <td>
                         <?= ml('Competitions.FilterByCountry') ?>

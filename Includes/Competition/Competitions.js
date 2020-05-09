@@ -92,7 +92,7 @@ $('[data-competitions-filter-all]').click(function () {
 
 var filter = false;
 $('[data-competitions-filter-mine=1]').each(function () {
-    $(this).addClass('select');
+    $(this).addClass('competitions-filter-mine-select');
     filter = true;
 });
 $('[data-competitions-filter][data-selected]').each(function () {
@@ -101,7 +101,7 @@ $('[data-competitions-filter][data-selected]').each(function () {
     }
 })
 if (filter === false) {
-    $('[data-competitions-filter-all]').addClass('select');
+    $('[data-competitions-filter-all]').addClass('competitions-filter-all-select');
 }
 
 

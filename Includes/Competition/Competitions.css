@@ -17,3 +17,15 @@
 .competitions_events_panel  i, .competitions_events_panel_none{
     cursor: pointer;
 }
+
+.data-competitions-filter button{
+background-color:#e7e7e7;
+color: rgb(119, 119, 119);
+}
+
+.data-competitions-filter button.competitions-filter-all-select,
+.data-competitions-filter button.competitions-filter-mine-select,
+.data-competitions-filter button:hover {
+    background-color: #ccc;
+    color: rgb(33, 33, 33);
+}
