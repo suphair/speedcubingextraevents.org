@@ -24,6 +24,11 @@ if (!$competition) {
     HeaderExit();
 }
 
+if (strtotime($competition->start_date) < strtotime('now')) {
+    SetMessageName('CompetitionCreate', "Competition [$WCA] has already started at {$competition->start_date}.");
+    HeaderExit();
+}
+
 $delegates = [];
 foreach ($competition->delegates as $delegate) {
     $delegates[] = $delegate->wca_id;
