@@ -151,7 +151,7 @@
                     <?php
                     if ($data->event->id) {
                         IncludeClass::Page(
-                                'EventLinks', $event, [
+                                'EventLinks', $data->event, [
                             'currentLink' => 'regulations',
                             'eventTitle' => false
                         ]);
