@@ -60,7 +60,7 @@ function EventBlockLinks($Event,$current="",$table_exists=false){
                 <?php if($current=='records'){ ?>
                     <?= ml('Event.Records'); ?>
                 <?php }else{  ?>
-                    <a href="<?= PageIndex()?>Records/all/<?= $Event['Discipline_Code'] ?>"><?= ml('Event.Records'); ?></a>
+                    <a href="<?= PageIndex()?>Records/all/?event=<?= $Event['Discipline_Code'] ?>"><?= ml('Event.Records'); ?></a>
                 <?php } ?>
             </td>
         </tr>    
