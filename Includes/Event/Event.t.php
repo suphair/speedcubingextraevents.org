@@ -52,11 +52,11 @@
                                 data-selected-country='<?= $data->filter->country->value ?>' >
 
                             <option value='' >
-                                <?= ml('Event.WorldRecord') ?>
+                                <?= ml('Event.World') ?>
                             </option>
 
                             <option disabled >
-                                <?= ml('Event.ContinentsRecord') ?>
+                                <?= ml('Event.Continents') ?>
                             </option>
 
                             <?php foreach ($data->filter->continent->values as $continent) { ?>
@@ -66,7 +66,7 @@
                             <?php } ?>        
 
                             <option disabled >
-                                <?= ml('Event.NationalsRecord') ?>
+                                <?= ml('Event.Nationals') ?>
                             </option>
 
                             <?php foreach ($data->filter->country->values as $country) { ?>
