@@ -57,6 +57,12 @@ function SetValueAttempts($ID,$attemption,$result,$ext_result,$values,$amounts){
                $minute=(int)substr($value,0,2); 
                $second=(int)substr($value,2,2); 
                $milisecond=(int)substr($value,4,2);
+               if($second>60){
+                   $addMinute=floor($second/60);
+                   $minute+=$addMinute;
+                   $second-=$addMinute*60;
+               }
+               
                 DataBaseClass::Query("Select ID from `Attempt` where  Command='$ID' and Attempt='$i'");
                 if(DataBaseClass::rowsCount()){
                     DataBaseClass::Query("Update `Attempt` set IsDNF=0, IsDNS=0, Minute='$minute', Second='$second', Milisecond='$milisecond',Amount='$amount' where  Command='$ID' and Attempt='$i'");    

@@ -19,17 +19,26 @@ if($_FILES['file']['error']==0 and $_FILES['file']['type'] == 'application/pdf')
     
     RequestClass::CheckAccessExit(__FILE__,'Competition.Settings',$Competition);
     
-    
     $pdf_file = $_FILES['file']['tmp_name'];
+    $rand = random_string(20);
+    mkdir("Scramble/HardTmp/{$rand}");
+    $tmp_file = "Scramble/HardTmp/{$rand}/tmp.pdf";
+    copy($pdf_file, $tmp_file);
+
+    $im = new imagick();
+    $im->readimage($tmp_file);
+    $Pages=$im->getnumberimages();
+    
+    
+    
     
     $im = new imagick();
     $im->readimage($_FILES['file']['tmp_name']); 
     $Pages=$im->getnumberimages();
-    $rand= random_string(20);
     
     $lines=[];
     
-    mkdir("Scramble/HardTmp/{$rand}");
+    
     for($i=0;$i<$Pages;$i++){
         $im = new imagick();
         $im->setResolution(300,300);
