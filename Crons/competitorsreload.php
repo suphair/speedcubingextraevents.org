@@ -1,78 +1,220 @@
-<?php AddLog('CompetitorsReload', 'Cron','Start');
+<?php
 
-$start=date("H:i:s");
-$limitApi=0;
-$limitBd=1000;
-$depth=14;
+AddLog('CompetitorsReload', 'Cron', 'Start');
 
-DataBaseClassWCA::Query("select C.name,C.iso2,Ct.recordName from `Countries` C join `Continents` Ct on Ct.id=C.continentid");
-foreach(DataBaseClassWCA::getRows() as $row){
-    DataBaseClass::Query("REPLACE into Country (ISO2,Name,Continent) values ('".$row['iso2']."','".DataBaseClass::Escape($row['name'])."','".$row['recordName']."')");
+$start = date("H:i:s");
+$limitApi = 25;
+$limitBd = 1000;
+$depth = 14;
+
+
+# Updating Countries And Continents
+
+DataBaseClass::activateWca();
+
+$continents = DataBaseClass::getRowsObject("
+    SELECT 
+        recordName continentCode,
+        name continentName
+    FROM 
+    Continents
+    ");
+
+$countries = DataBaseClass::getRowsObject("
+    SELECT 
+        Countries.name countryName,
+        Countries.iso2 countryCode,
+        Continents.recordName continentCode 
+    FROM Countries
+    JOIN Continents 
+        ON Continents.id = Countries.continentid
+    ");
+
+DataBaseClass::activateSee();
+
+foreach ($continents as $continent) {
+    $continent->continentName = DataBaseClass::Escape($continent->continentName);
+    DataBaseClass::Query("
+        REPLACE INTO Continent (
+            Code,
+            Name)
+        VALUES (
+            '{$continent->continentCode}',
+            '{$continent->continentName}')
+        ");
 }
 
-DataBaseClassWCA::Query("select Ct.recordName,Ct.`name` from `Continents`Ct ");
-foreach(DataBaseClassWCA::getRows() as $row){
-    DataBaseClass::Query("REPLACE into Continent (Code,Name) values ('".$row['recordName']."','".DataBaseClass::Escape($row['name'])."')");
+foreach ($countries as $country) {
+    $country->countryName = DataBaseClass::Escape($country->countryName);
+    DataBaseClass::Query("
+        REPLACE INTO Country (
+            ISO2,
+            Name,
+            Continent) 
+        VALUES (
+            '{$country->countryCode}',
+            '{$country->countryName}',
+            '{$country->continentCode}')
+        ");
 }
-    
-DataBaseClass::Query(" Select UpdateTimestamp, ID, WID from Competitor  where  WID is not null and WCAID='' and TO_DAYS(now()) - TO_DAYS(UpdateTimestamp) > $depth
-order by UpdateTimestamp Limit $limitApi");
 
+if ($limitApi) {
 
-foreach(DataBaseClass::getRows() as $user){
-    Competitors_Reload($user['ID'],$user['WID']);
-}
+    #Updating a Competitor using getUserWcaApi by WID. With an empty WCAID.
 
-DataBaseClass::Query(" Select UpdateTimestamp, ID, WCAID from Competitor  where  WID is null and WCAID<>'' and TO_DAYS(now()) - TO_DAYS(UpdateTimestamp) > $depth
-order by UpdateTimestamp Limit $limitApi");
+    $usersWid = DataBaseClass::getRowsObject("
+        SELECT 
+            ID id, 
+            WID wid 
+        FROM Competitor
+        WHERE 
+            WID IS NOT NULL 
+            AND WCAID = '' 
+            AND TO_DAYS(now()) - TO_DAYS(UpdateTimestamp) > $depth
+        ORDER BY UpdateTimestamp 
+        LIMIT $limitApi
+    ");
 
-foreach(DataBaseClass::getRows() as $user){
-    Competitors_Reload($user['ID'],$user['WCAID']);
-}
- 
-DataBaseClass::Query("select ID, WCAID, Country, Name from Competitor where WCAID<>'' and TO_DAYS(now()) - TO_DAYS(UpdateTimestamp) > $depth 
-order by UpdateTimestamp limit $limitBd");
+    foreach ($usersWid as $user) {
+        Competitors_Reload(
+                $user->id, $user->wid
+        );
+    }
 
-foreach(DataBaseClass::getRows() as $row){
-    DataBaseClassWCA::Query("select P.id,C.iso2, trim(SUBSTRING_INDEX(P.name,'(',1)) name from Persons P join Countries C on C.id=P.countryId where P.id='{$row['WCAID']}'");    
-    $wca_row=DataBaseClassWCA::getRow();
-    if(isset($wca_row['id'])){
-        if($wca_row['iso2']!=$row['Country']){
-            AddLog('CompetitorsReload', 'Cron',"Update country {$row['WCAID']}: {$row['Country']}->{$wca_row['iso2']}");
-        }
-        if($wca_row['name']!=$row['Name']){
-            AddLog('CompetitorsReload', 'Cron',"Update name {$row['WCAID']}: {$row['Name']}->{$wca_row['name']}");
-        }
-        
-        DataBaseClass::Query("Update Competitor set Country='{$wca_row['iso2']}', Name='".DataBaseClass::Escape($wca_row['name'])."', UpdateTimestamp=now() where ID='{$row['ID']}'");    
-    }else{
-        DataBaseClass::Query("Update Competitor set UpdateTimestamp=now()  where ID='{$row['ID']}'");    
+    #Updating a Competitor using getUserWcaApi by WID. With an empty WID.
+
+    $usersWcaid = DataBaseClass::getRowsObject("
+        SELECT 
+            ID id, 
+            WCAID wcaid 
+        FROM Competitor
+        WHERE  
+            WID IS NULL 
+            AND WCAID <> ''
+            AND TO_DAYS(now()) - TO_DAYS(UpdateTimestamp) > $depth
+        ORDER BY UpdateTimestamp 
+        LIMIT $limitApi
+    ");
+
+    foreach ($usersWcaid as $user) {
+        Competitors_Reload(
+                $user->id, $user->wcaid
+        );
     }
 }
-    
+
+if ($limitBd) {
+
+    #Updating a Competitor using database WCA by WCAID.
+
+    $usersDb = DataBaseClass::getRowsObject("
+        SELECT 
+            ID id, 
+            WCAID wcaid, 
+            Country country, 
+            Name name
+        FROM Competitor 
+        WHERE 
+            WCAID <> '' 
+        AND TO_DAYS(now()) - TO_DAYS(UpdateTimestamp) > $depth 
+        ORDER BY UpdateTimestamp
+        LIMIT $limitBd
+    ");
+
+    foreach ($usersDb as $user) {
+
+        DataBaseClass::activateWca();
+        $userWca = DataBaseClassWCA::getRowObject("
+            SELECT 
+                Persons.id wcaid,
+                Countries.iso2 country,
+                trim(SUBSTRING_INDEX(Persons.name,'(',1)) name 
+            FROM Persons 
+            JOIN Countries 
+                ON Countries.id = Persons.countryId 
+            WHERE Persons.id='{$user->wcaid}'
+        ");
+        DataBaseClass::activateSee();
+
+        if (isset($userWca->wcaid)) {
+            if ($userWca->country != $user->country) {
+                AddLog(
+                        'CompetitorsReload', 'Cron', "Update country {$user->wcaid}: {$user->country}->{$userWca->country}");
+            }
+            if ($userWca->name != $user->name) {
+                AddLog(
+                        'CompetitorsReload', 'Cron', "Update name {$user->wcaid}: {$user->name}->{$userWca->name}");
+            }
+
+            $userWca->name = DataBaseClass::Escape($userWca->name);
+            DataBaseClass::Query("
+                UPDATE Competitor 
+                SET 
+                    Country = '{$userWca->country}',
+                    Name = '{$userWca->name}',
+                    UpdateTimestamp = now() 
+                WHERE ID='{$user->id}'
+            ");
+        } else {
+            DataBaseClass::Query("
+                UPDATE Competitor 
+                SET 
+                    UpdateTimestamp = now() 
+                WHERE ID='{$user->id}'
+            ");
+        }
+    }
+}
+
 Competitors_RemoveDuplicates();
 
-$end=date("H:i:s");
+$end = date("H:i:s");
+
+$countWid = DataBaseClass::getValue("
+    SELECT count(*)
+    from Competitor 
+    where
+        WID is not null 
+        AND WCAID = '' 
+        AND TO_DAYS(now()) - TO_DAYS(UpdateTimestamp) > $depth
+    ");
 
 
-DataBaseClass::Query(" Select UpdateTimestamp, ID, WID from Competitor  where  WID is not null and WCAID='' and TO_DAYS(now()) - TO_DAYS(UpdateTimestamp) > $depth ");
-$count1=DataBaseClass::rowsCount();
+$countWidTotal = DataBaseClass::getValue("
+    SELECT count(*)
+    from Competitor 
+    where
+        WID is not null 
+        AND WCAID='' 
+    ");
 
-DataBaseClass::Query(" Select UpdateTimestamp, ID, WID from Competitor  where  WID is not null and WCAID='' ");
-$count1t=DataBaseClass::rowsCount();
+$countWcaid = DataBaseClass::getValue("
+    SELECT count(*)
+    from Competitor 
+    where
+        WID is null 
+        AND WCAID <> '' 
+        AND TO_DAYS(now()) - TO_DAYS(UpdateTimestamp) > $depth
+    ");
 
 
+$countWcaidTotal = DataBaseClass::getValue("
+    SELECT count(*)
+    from Competitor 
+    where
+        WID is null 
+        AND WCAID <> ''
+    ");
 
-DataBaseClass::Query(" Select UpdateTimestamp, ID, WCAID from Competitor  where  WID is null and WCAID<>'' and TO_DAYS(now()) - TO_DAYS(UpdateTimestamp) > $depth");
-$count2=DataBaseClass::rowsCount();
 
-DataBaseClass::Query(" Select UpdateTimestamp, ID, WCAID from Competitor  where  WID is null and WCAID<>'' ");
-$count2T=DataBaseClass::rowsCount();
+$countDb = DataBaseClass::getValue("
+    SELECT count(*)
+    from Competitor 
+    where
+        WCAID <> '' 
+        AND TO_DAYS(now()) - TO_DAYS(UpdateTimestamp) > $depth
+    ");
 
+AddLog('CompetitorsReload', 'Cron', "End Wid($countWid/$countWidTotal) Wcaid($countWcaid/$countWcaidTotal) Db($countDb) : $start - $end");
 
-DataBaseClass::Query("select ID, WCAID from Competitor where WCAID<>'' and TO_DAYS(now()) - TO_DAYS(UpdateTimestamp) > $depth ");
-$count3=DataBaseClass::rowsCount();
-
-AddLog('CompetitorsReload', 'Cron',"End $count1/$count1t $count2/$count2T $count3 : $start - $end");
-
-exit();  
+exit();
