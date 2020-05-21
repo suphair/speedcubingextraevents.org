@@ -89,6 +89,18 @@ class Log_data {
                 ORDER BY DateTime DESC
            ");
     }
+    
+    static function getLogsCronObjects($deep) {
+        return DataBaseClass::getColumn("
+                SELECT DISTINCT Object
+                FROM Logs 
+                WHERE DATE(DateTime) >= DATE_ADD(current_date(),INTERVAL -$deep Day)
+                AND Action='Cron'
+           ");
+    }
+    
+    
+    
 
     static function getLogsMail($deep) {
         return DataBaseClass::getRowsObject("

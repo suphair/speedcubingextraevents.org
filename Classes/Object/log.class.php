@@ -51,6 +51,13 @@ Class Log {
         $logs = Log_data::getLogsCron(self::DEEP);
         return $logs;
     }
+    
+    static function getLogsCronObjects() {
+        $objects = Log_data::getLogsCronObjects(self::DEEP);
+        sort($objects);
+        return $objects;
+    }
+    
 
     static function getLogsMail() {
         $logs = Log_data::getLogsMail(self::DEEP);
