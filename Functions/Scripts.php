@@ -1,5 +1,10 @@
 <?php
 
+function Script_TestMail(){
+    SendMail('suphair@gmail.com', 'test subject', 'test message');
+    
+}
+
 function Script_UpdateRecords(){
     echo '<pre>';
     print_r(Attempt::updateRecords());
