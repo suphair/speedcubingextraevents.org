@@ -80,22 +80,21 @@ class Log_data {
     static function getLogsCron($deep) {
         return DataBaseClass::getRowsObject("
                 SELECT 
-                Object object,
-                DateTime timestamp,
-                Details details
-                FROM Logs 
-                WHERE DATE(DateTime) >= DATE_ADD(current_date(),INTERVAL -$deep Day)
-                AND Action='Cron'
-                ORDER BY DateTime DESC
+                    cronName,
+                    cronStart,
+                    cronEnd,
+                    details
+                FROM LogsCron 
+                WHERE DATE(cronStart) >= DATE_ADD(current_date(),INTERVAL -$deep Day)
+                ORDER BY cronStart DESC
            ");
     }
     
-    static function getLogsCronObjects($deep) {
+    static function getLogsCronNames() {
         return DataBaseClass::getColumn("
-                SELECT DISTINCT Object
-                FROM Logs 
-                WHERE DATE(DateTime) >= DATE_ADD(current_date(),INTERVAL -$deep Day)
-                AND Action='Cron'
+                SELECT 
+                    name
+                FROM CronConfig
            ");
     }
     

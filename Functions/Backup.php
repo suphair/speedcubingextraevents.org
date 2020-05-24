@@ -1,6 +1,6 @@
 <?php
 
-function crateBackupTSV($schema,$folder){
+function createBackupTSV($schema,$folder){
     if(strpos($_SERVER['PHP_SELF'],'/'.GetIni('LOCAL','PageBase').'/')!==false){
        $section="DB_LOCAL";
        $folder=$folder."_LOCAL";
@@ -41,9 +41,11 @@ function crateBackupTSV($schema,$folder){
         unlink($filename);
     }
     rmdir($folder);
+    
+    return $zip_name;
 }
 
-function crateBackup($schema,$filename){
+function createBackup($schema,$filename){
     if(strpos($_SERVER['PHP_SELF'],'/'.GetIni('LOCAL','PageBase').'/')!==false){
        $section="DB_LOCAL";
        $filename=str_replace(".sql","_LOCAL.sql",$filename);
@@ -66,6 +68,7 @@ function crateBackup($schema,$filename){
     $zip->addFile($filename);
     $zip->close();
     unlink($filename);
+    return $zip_name;
 }
 
 function generateExportData(){

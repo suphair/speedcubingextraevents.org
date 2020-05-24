@@ -1,11 +1,11 @@
 <?php
 
 $logs = Log::getLogsCron();
-$objects = Log::getLogsCronObjects();
+$names = Log::getLogsCronNames();
 
 $data = (object)[
     'logs'=>$logs,
-    'objects'=>$objects,
+    'names'=>$names,
     
 ];
 IncludeClass::Template('Logs.Cron', $data);

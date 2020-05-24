@@ -2,16 +2,16 @@
 
 function IncluderAction() {
     $request = getRequest();
-    if (sizeof($request) >= 2) {
-        $file = $request[1];
-        if ($request[0] == "crons") {
+
+    if (sizeof($request) >= 1) {
+        if ($request[0] == "cron") {
             if (!(CheckAccess('Scripts') or $_SERVER['HTTP_USER_AGENT'] == 'Wget/1.17.1 (linux-gnu)' or strpos($_SERVER['PHP_SELF'], '/' . GetIni('LOCAL', 'PageBase') . '/') !== false)) {
                 header('HTTP/1.1 401 Unauthorized');
                 echo "<a href='" . PageIndex() . "'>" . GetIni('TEXT', 'title') . "</a>";
                 echo "<h1 style='color:red'>You do not have permission to run [" . $file . "] cron script</h1>";
                 exit();
             } else {
-                if (!IncludeExists("Crons/$file.php")) {
+                if (!IncludeExists("Crons/master.php")) {
                     header('HTTP/1.0 404 not found');
                     echo "<a href='" . PageIndex() . "'>" . GetIni('TEXT', 'title') . "</a>";
                     echo "<h1 style='color:red'>Сron script [" . $file . "] is not found</h1>";
@@ -19,7 +19,10 @@ function IncluderAction() {
                 }
             }
         }
+    }
 
+    if (sizeof($request) >= 2) {
+        $file = $request[1];
         if (strtolower($request[0]) == "actions") {
             SetPostValues($request[1]);
             foreach (scandir('Includes') as $dir) {
@@ -109,7 +112,7 @@ function getPathElement($baseElement, $n) {
     return false;
 }
 
-function getQueryElement($name, $values=false) {
+function getQueryElement($name, $values = false) {
     $value = filter_input(INPUT_GET, $name);
     if (!$values or in_array($value, $values)) {
         return strtolower($value);

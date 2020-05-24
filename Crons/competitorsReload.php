@@ -1,8 +1,5 @@
 <?php
 
-AddLog('CompetitorsReload', 'Cron', 'Start');
-
-$start = date("H:i:s");
 $limitApi = 25;
 $limitBd = 1000;
 $depth = 14;
@@ -168,8 +165,6 @@ if ($limitBd) {
 
 Competitors_RemoveDuplicates();
 
-$end = date("H:i:s");
-
 $countWid = DataBaseClass::getValue("
     SELECT count(*)
     from Competitor 
@@ -215,6 +210,17 @@ $countDb = DataBaseClass::getValue("
         AND TO_DAYS(now()) - TO_DAYS(UpdateTimestamp) > $depth
     ");
 
-AddLog('CompetitorsReload', 'Cron', "End Wid($countWid/$countWidTotal) Wcaid($countWcaid/$countWcaidTotal) Db($countDb) : $start - $end");
 
-exit();
+$_details['wid']=[
+    'total' => $countWidTotal,
+    'current' => $countWid
+];
+
+$_details['wcaid']=[
+    'total' => $countWcaidTotal,
+    'current' => $countWcaid
+];
+
+$_details['db']=[
+    'current' => $countDb
+];

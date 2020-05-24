@@ -1,12 +1,12 @@
-$('[data-select-cron-object]').change(function () {
-    var object = $(this).val();
-    if (object === 'all') {
-        $('[data-table-cron-object] tbody tr').show('fast');
+$('[data-select-cron-name]').change(function () {
+    var name = $(this).val();
+    if (name === 'all') {
+        $('[data-table-cron-name] tbody tr').show('fast');
     } else {
-        $('[data-table-cron-object] tbody tr').hide();
+        $('[data-table-cron-name] tbody tr').hide();
 
         var i = 1;
-        $('[data-table-cron-object] tbody tr[data-cron-object=' + object + ']').each(function () {
+        $('[data-table-cron-name] tbody tr[data-cron-name=' + name + ']').each(function () {
             $(this).show();
             if (i % 2 !== 0) {
                 $(this).addClass('odd');

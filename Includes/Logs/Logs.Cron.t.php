@@ -3,27 +3,31 @@
 <table class="table_info">
     <tr>
         <td>
-            Object
+            <i class="fas fa-filter">
+            Filter
         </td>
         <td>
-            <select data-select-cron-object>
+            <select data-select-cron-name>
                 <option value='all' >All</option>
-                <?php foreach($data->objects as $object){ ?>
-                <option value='<?= $object ?>'><?= $object ?></option>
+                <?php foreach ($data->names as $name) { ?>
+                    <option value='<?= $name ?>'><?= $name ?></option>
                 <?php } ?>
-                </select>
+            </select>
         </td>
-        </tr>
-    </table>
+    </tr>
+</table>
 
-<table class="table_new" data-table-cron-object>
+<table class="table_new" data-table-cron-name>
     <thead>
         <tr>
             <td>
-                DateTime
+                Name
             </td>
             <td>
-                Cron
+                Start
+            </td>
+            <td>
+                End
             </td>
             <td>
                 Details
@@ -32,13 +36,16 @@
     </thead>
     <tbody>
         <?php foreach ($data->logs as $row) { ?>
-            <tr data-cron-object='<?= $row->object ?>'>
+            <tr data-cron-name='<?= $row->cronName ?>'>
                 <td>
-                    <?= $row->timestamp ?>
+                    <?= $row->cronName ?>
                 </td>
                 <td>
-                    <?= $row->object ?>
+                    <?= $row->cronStart ?>
                 </td>
+                <td>
+                    <?= $row->cronEnd ?>
+                </td> 
                 <td>
                     <?= $row->details ?>
                 </td>

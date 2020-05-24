@@ -29,3 +29,31 @@ Function LogsRegistration($EventID,$Action,$Details){
     DataBaseClass::Query("Insert into LogsRegistration (Event,Action,Details,Doing) values"
             . " ($EventID,'$Action','$Details','$Doing') ");
 }
+
+
+
+Function AddLogCronStart($cronId, $cronName){
+    DataBaseClass::Query("
+        INSERT INTO LogsCron 
+            (
+                cronId,
+                cronName
+            ) 
+        VALUES
+            (
+                $cronId,
+                '$cronName'
+            ) 
+    ");
+    return DataBaseClass::getID();
+}
+
+function AddLogCronEnd($cronId,$details){
+    DataBaseClass::Query("
+        UPDATE LogsCron
+        SET
+            details = '$details'
+        WHERE
+            id = $cronId
+    ");
+}

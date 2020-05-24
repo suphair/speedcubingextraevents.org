@@ -52,10 +52,10 @@ Class Log {
         return $logs;
     }
     
-    static function getLogsCronObjects() {
-        $objects = Log_data::getLogsCronObjects(self::DEEP);
-        sort($objects);
-        return $objects;
+    static function getLogsCronNames() {
+        $names = Log_data::getLogsCronNames();
+        sort($names);
+        return $names;
     }
     
 

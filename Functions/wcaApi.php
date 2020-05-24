@@ -83,7 +83,7 @@ function getCompetitionRegistrationsWcaApi($competitionId,$context)
     $registrationsData=json_decode($contents);
     
     $registrationsLog=[];
-    if($registrationsData and !isset($registrationData->error)){     
+    if($registrationsData and !isset($registrationsData->error)){     
         $registrations=$registrationsData;
         foreach($registrations as $r=>$registration){
             unset($registrations[$r]->competition_id);
