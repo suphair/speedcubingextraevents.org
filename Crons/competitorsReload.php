@@ -1,7 +1,7 @@
 <?php
 
 $limitApi = 25;
-$limitBd = 1000;
+$limitBd = 250;
 $depth = 14;
 
 
@@ -20,7 +20,8 @@ $continents = DataBaseClass::getRowsObject("
 $countries = DataBaseClass::getRowsObject("
     SELECT 
         Countries.name countryName,
-        Countries.iso2 countryCode,
+        Countries.iso2 countryISO2,
+        Countries.id countryCode,
         Continents.recordName continentCode 
     FROM Countries
     JOIN Continents 
@@ -45,11 +46,13 @@ foreach ($countries as $country) {
     $country->countryName = DataBaseClass::Escape($country->countryName);
     DataBaseClass::Query("
         REPLACE INTO Country (
+            Code,
             ISO2,
             Name,
             Continent) 
         VALUES (
             '{$country->countryCode}',
+            '{$country->countryISO2}',
             '{$country->countryName}',
             '{$country->continentCode}')
         ");

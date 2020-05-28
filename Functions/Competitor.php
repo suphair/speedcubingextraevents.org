@@ -59,6 +59,7 @@ function Competitors_RemoveDuplicates(){
         DataBaseClass::Query("
             select ID from Competitor
             where WID = '$WID'
+            order by ID desc
         ");
         $Competitors=DataBaseClass::getRows();
 
