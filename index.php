@@ -47,3 +47,4 @@ if (RequestClass::getError(401)) {
 </script>    
 <!-- end index.js -->
 <?php trackVisitor(); ?>
+<?php DataBaseClass::close(); ?>

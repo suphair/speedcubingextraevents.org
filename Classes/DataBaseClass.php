@@ -498,4 +498,8 @@ class DataBaseClassExport {
         return $res;
     }
     
+    public function close(){
+        mysqli_close(self::$connection_see);
+        mysqli_close(self::$connection_wca);
+    }
 }

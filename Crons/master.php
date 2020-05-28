@@ -52,4 +52,5 @@ foreach ($crons as $cron) {
     AddLogCronEnd($logId, json_encode($_details));
 }
 
+DataBaseClass::close();
 exit();
