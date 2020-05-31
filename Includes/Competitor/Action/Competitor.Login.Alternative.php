@@ -19,7 +19,7 @@ if (is_array($Delegate)) {
                 'delegate_status' => null
     ];
     if (isset($_POST['WCA'])) {
-        $competitor->delegate_status = 'TestDelegate';
+        $competitor->delegate_status = 'delegate';
     }
 
     $_SESSION['Competitor'] = $competitor;

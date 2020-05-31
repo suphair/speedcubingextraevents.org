@@ -158,3 +158,33 @@ Function CompetitorReplace($user) {
 
     return $CompetitorID;
 }
+
+function isDelegateWca() {
+    $competitor = getCompetitor();
+    if (!$competitor) {
+        return false;
+    }
+    if (!$competitor->delegate_status) {
+        return false;
+    }
+
+    if ($competitor->delegate_status == 'trainee_delegate') {
+        return false;
+    }
+    return true;
+}
+
+function getCodeCandidate($wcaid = FALSE) {
+    if (!$wcaid) {
+        $competitor = getCompetitor();
+        if ($competitor) {
+            $wcaid = $competitor->wca_id;
+        } else {
+            return FALSE;
+        }
+        if (!$wcaid) {
+            return FALSE;
+        }
+    }
+    return md5($wcaid . GetIni('KEY', 'candidate'));
+}

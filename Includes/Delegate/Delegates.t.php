@@ -4,8 +4,8 @@
         <a href='<?= $data->candidates->link ?>'>
             <?= ml('Delegate.Candidates') ?>
         </a>    
-    <?php } else { ?>
-        <a href="<?= PageIndex() . "Delegate/Candidate" ?>">
+    <?php } elseif ($data->isDelegateWca) { ?>
+        <a href="<?= PageIndex() . "Delegate/Candidate?code=" . $data->delegateCode ?>">
             <?= ml('Delegate.Candidate.Title') ?>
         </a>
     <?php } ?>    

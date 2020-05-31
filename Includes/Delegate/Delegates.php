@@ -1,11 +1,11 @@
 <?php
 
-if(!CheckAccess('Delegates.Arhive')){
+if (!CheckAccess('Delegates.Arhive')) {
     $where = "AND D.Status!='Archive'";
-}else{
-    $where="";
+} else {
+    $where = "";
 }
-    
+
 
 $delegates = DataBaseClass::getRowsObject("
     SELECT 
@@ -78,11 +78,11 @@ foreach ($delegates as &$delegate) {
 }
 unset($delegate);
 
-
+$candidate = false;
 
 
 foreach ($delegatesWca as &$delegate) {
-    $delegate->link = "https://www.worldcubeassociation.org/persons/".$delegate->wcaid;
+    $delegate->link = "https://www.worldcubeassociation.org/persons/" . $delegate->wcaid;
     $delegate->endDate = date_range($delegate->endDate);
     $delegate->country = getObjectCountry($delegate->country);
 }
@@ -94,6 +94,8 @@ $data = arrayToObject([
     'candidates' => [
         "show" => CheckAccess('Delegate.Candidates'),
         "link" => LinkDelegate("Candidates")
-    ]
+    ],
+    'isDelegateWca' => isDelegateWca(),
+    'delegateCode' => getCodeCandidate()
         ]);
 IncludeClass::Template('Delegates', $data);

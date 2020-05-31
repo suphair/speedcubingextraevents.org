@@ -178,8 +178,15 @@ class RequestClass {
                         }
                         break;
                     case 'candidate':
-                        self::$page = 'Delegate.Candidate';
-                        break;
+
+                        $code = getQueryElement('code');
+                        $codeCandidate = getCodeCandidate();
+                        if (!$codeCandidate or $code !== $codeCandidate) {
+                            self::set401("The code [$code] does not match the persons");
+                        } else {
+                            self::$page = 'Delegate.Candidate';
+                            break;
+                        }
                     default:
                 /* $Delegate = DataBaseClass::SelectTableRow('Delegate', "WCA_ID='$DelegateCode'");
 
@@ -400,7 +407,6 @@ class RequestClass {
 
     private static function set404() {
         self::$titles[] = '404';
-
         self::$error[404] = "404 - " . ml('404') . "<br>" . json_encode(getRequest());
         self::$page = "error";
     }
