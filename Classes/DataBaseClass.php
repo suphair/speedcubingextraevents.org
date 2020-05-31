@@ -369,6 +369,10 @@ class DataBaseClass {
         return sizeof(self::$queries);
     }
 
+    public static function close(){
+        mysqli_close(self::$connection_see);
+        mysqli_close(self::$connection_wca);
+    }
 }
 
 class DataBaseClassWCA{
@@ -496,10 +500,5 @@ class DataBaseClassExport {
             $res[] = $r;
         }
         return $res;
-    }
-    
-    public function close(){
-        mysqli_close(self::$connection_see);
-        mysqli_close(self::$connection_wca);
     }
 }
