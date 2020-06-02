@@ -22,7 +22,8 @@ function trackVisitor()
     }    
 
     DataBaseClass::Query("SELECT COUNT(DISTINCT IP) count FROM Visitor WHERE User_Agent='$userAgent' HAVING count>10");
-    if(DataBaseClass::getRow()['count']>10){
+    $row=DataBaseClass::getRow();
+    if(isset($row) and $row['count']>10){
         DataBaseClass::Query("UPDATE Visitor SET Hidden=1 WHERE User_Agent='$userAgent'");
     }
 

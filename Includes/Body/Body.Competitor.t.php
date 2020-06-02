@@ -45,17 +45,17 @@
                 <i class="fas fa-user-tie"></i> 
                 Delegate page
             </a>
+            <?php if ($data->delegate->candidates->show) { ?>
+                <a href='<?= $data->delegate->candidates->link ?>'>
+                    <i class="fas fa-baby"></i>
+                    <?= $data->delegate->candidates->new ?> Candidates for delegates
+                </a>
+            <?php } ?>
         <?php } ?>
-        <?php if ($data->delegate->candidates->show) { ?>
-            <a href='<?= $data->delegate->candidates->link ?>'>
-                <i class="fas fa-baby"></i>
-                <?= $data->delegate->candidates->new ?> Candidates for delegates
-            </a>
-        <?php } ?>
-    <?php } ?>
 
-    <?php foreach ($data->delegate->links as $link) { ?>
-        <a href="<?= $link->link ?>"><?= $link->value ?></a>
+        <?php foreach ($data->delegate->links as $link) { ?>
+            <a href="<?= $link->link ?>"><?= $link->value ?></a>
+        <?php } ?>
     <?php } ?>
 
 </div>     

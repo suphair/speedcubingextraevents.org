@@ -124,7 +124,7 @@ if ($limitBd) {
     foreach ($usersDb as $user) {
 
         DataBaseClass::activateWca();
-        $userWca = DataBaseClassWCA::getRowObject("
+        $userWca = DataBaseClass::getRowObject("
             SELECT 
                 Persons.id wcaid,
                 Countries.iso2 country,

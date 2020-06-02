@@ -7,12 +7,12 @@ Class IncludeClass {
             $filename = "Includes/$dir/$file";
             if (!in_array($dir, ['.', '..']) and file_exists($filename)) {
                 if(strpos($filename,'Scramble.php')===FALSE){
-                    echo "\n<!-- start $filename -->\n";
+                    echo "\n<!-- ".date('Y-m-d H:i:s')." start $filename -->\n";
                     echo $tag ? "<$tag>\n" : "";
                 }
                 include $filename;
                 echo $tag ? "\n</$tag>" : "";
-                echo "\n<!-- end $filename -->\n";
+                echo "\n<!-- ".date('Y-m-d H:i:s')." end $filename -->\n";
                 return true;
             }
         }

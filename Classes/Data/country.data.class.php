@@ -12,7 +12,7 @@ Class Country_data {
                 LOWER(ISO2) code,
                 Continent continentCode
             FROM Country
-            WHERE LOWER(ISO2) = LOWER('" . DataBaseClass::Escape($code) . "')
+            WHERE ISO2 = UPPER('" . DataBaseClass::Escape($code) . "')
         ");
     }
 

@@ -14,6 +14,8 @@ DataBaseInit();
 IncluderAction();
 IncluderScript();
 
+
+
 $languages = getLanguages();
 if (!isset($_SESSION['language_select'])
         or ! in_array($_SESSION['language_select'], $languages)) {
@@ -34,11 +36,11 @@ if (RequestClass::getError(401)) {
         <meta name="Description" content="Speedcubing Extra Events">
         <meta charset="utf-8">
         <title><?= RequestClass::getTitle(); ?></title>
-        <?= IncludeClass::Page('Index.Head') ?>
+        <?php IncludeClass::Page('Index.Head'); ?>
     </head>
     <body> 
         <span id="variables" data-index="<?= PageIndex() ?>" data-title="<?= GetIni('TEXT', 'title') ?>"/>
-        <?php IncludeClass::Page('Body'); ?>
+        <?php IncludeClass::Page('Body');?>
     </body>
 </html> 
 <!-- start index.js -->
@@ -46,5 +48,6 @@ if (RequestClass::getError(401)) {
 <?php include 'index.js' ?>
 </script>    
 <!-- end index.js -->
-<?php trackVisitor(); ?>
-<?php DataBaseClass::close(); ?>
+
+<?php #trackVisitor(); ?>
+<?php #DataBaseClass::close(); ?>

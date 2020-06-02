@@ -1,7 +1,7 @@
 <?php
 
-function getObjCompetitor($wcaid=false) {
-    if($wcaid){
+function getObjCompetitor($wcaid = false) {
+    if ($wcaid) {
         $competitor = DataBaseClass::getRowObject("
             SELECT 
                 Country country,
@@ -12,33 +12,36 @@ function getObjCompetitor($wcaid=false) {
             WHERE WCAID = '$wcaid'
         ");
         $competitor->country = getObjectCountry($competitor->country);
-    }else{
+    } else {
         $competitor = getCompetitor();
     }
-    
+
     if ($competitor) {
         $competitor->link = PageIndex() . "Competitor/{$competitor->local_id}";
     }
     return $competitor;
 }
 
-function getObjDelegate($wcaid=false) {
-    if($wcaid){
-        $delegate= DataBaseClass::SelectTableRow('Delegate', "WCA_ID = '$wcaid'");
-    }else{
+function getObjDelegate($wcaid = false) {
+    if ($wcaid) {
+        $delegate = DataBaseClass::SelectTableRow('Delegate', "WCA_ID = '$wcaid'");
+    } else {
         $delegate = getDelegate();
     }
-    
-    return arrayToObject([
-        'name' => Short_Name($delegate['Delegate_Name']),
-        'status' => $delegate['Delegate_Status'],
-        'wcaid' => $delegate['Delegate_WCA_ID'],
-        'wid' => $delegate['Delegate_WID'],
-        'id' => $delegate['Delegate_ID'],
-        'link' => LinkDelegate($delegate['Delegate_WCA_ID']),
-        'contact' => $delegate['Delegate_Contact'],
-        'competitor' => getObjCompetitor($wcaid)
-    ]);
+    if ($delegate) {
+        return arrayToObject([
+            'name' => Short_Name($delegate['Delegate_Name']),
+            'status' => $delegate['Delegate_Status'],
+            'wcaid' => $delegate['Delegate_WCA_ID'],
+            'wid' => $delegate['Delegate_WID'],
+            'id' => $delegate['Delegate_ID'],
+            'link' => LinkDelegate($delegate['Delegate_WCA_ID']),
+            'contact' => $delegate['Delegate_Contact'],
+            'competitor' => getObjCompetitor($wcaid)
+        ]);
+    } else {
+        return false;
+    }
 }
 
 function getCompetitor() {
