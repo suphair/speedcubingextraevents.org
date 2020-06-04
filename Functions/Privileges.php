@@ -118,10 +118,14 @@ function CheckAccess($type, $competitionID = false) {
         return false;
     }
 
-    $DelegateID = getDelegate()['Delegate_ID'];
+    $delegate=getDelegate();
+    if(!isset($delegate['Delegate_ID']) or !isset($delegate['Delegate_Status'])){
+        return false;
+    }
+    $DelegateID = $delegate['Delegate_ID'];
 
     if (!$Level = ObjectClass::getObject('GrandRole')) {
-        DataBaseClass::Query("Select Level from GrandRole where Name='" . getDelegate()['Delegate_Status'] . "'");
+        DataBaseClass::Query("Select Level from GrandRole where Name='{$delegate['Delegate_Status']}'");
         $row = DataBaseClass::getRow();
         if (isset($row['Level'])) {
             $Level = $row['Level'];

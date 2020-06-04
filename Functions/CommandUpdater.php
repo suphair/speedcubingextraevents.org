@@ -58,10 +58,12 @@ function CommandUpdate($Event = '', $Command = '') {
             } else {
                 $best = 0;
             }
-            if ($best <= 0 or $dateUpdate[$row['Command_ID']]['Sum333'] == 999999) {
-                $dateUpdate[$row['Command_ID']]['Sum333'] = 999999;
-            } else {
-                $dateUpdate[$row['Command_ID']]['Sum333'] += $best;
+            if (isset($row['Command_ID'])) {
+                if ($best <= 0 or $dateUpdate[$row['Command_ID']]['Sum333'] == 999999) {
+                    $dateUpdate[$row['Command_ID']]['Sum333'] = 999999;
+                } else {
+                    $dateUpdate[$row['Command_ID']]['Sum333'] += $best;
+                }
             }
         }
     }
