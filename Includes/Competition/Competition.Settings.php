@@ -399,7 +399,11 @@ foreach($events as $event){
 </table>
 <?php } ?>
 </td></tr></table>
-<?php if(!$Competition['Competition_DelegateWCAOn'] or sizeof($events)<3){?>
+<?php 
+
+if(strtotime($Competition['Competition_StartDate'])>=strtotime('now')){
+    
+    if(!$Competition['Competition_DelegateWCAOn'] or sizeof($events)<3){?>
 <form method="POST" action="<?= PageAction('CompetitionEvents.Add') ?>">
     <input name="Competition" type="hidden" value="<?= $Competition['Competition_ID'] ?>" />
     <select required="" style="width:400px" Name="Events[]" data-placeholder="Select extra events" class="chosen-select" multiple>
@@ -427,6 +431,10 @@ foreach($events as $event){
     </select>
     <button><i class="far fa-plus-square"></i> Add extra events</button>
 </form>
+<?php } ?>
+<?php }else{ ?>
+<i class="fas fa-hand-paper"></i>
+You can't change an event in past competitions
 <?php } ?>
 <?php $error=GetMessage('CompetitionEvents.Add.Error');
 if($error){ ?>
