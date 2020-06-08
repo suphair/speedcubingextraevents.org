@@ -80,13 +80,13 @@ class Log_data {
     static function getLogsCron($deep) {
         return DataBaseClass::getRowsObject("
                 SELECT 
-                    cronName,
-                    cronStart,
-                    cronEnd,
+                    name,
+                    begin,
+                    end,
                     details
-                FROM LogsCron 
-                WHERE DATE(cronStart) >= DATE_ADD(current_date(),INTERVAL -$deep Day)
-                ORDER BY cronStart DESC
+                FROM cron_logs
+                WHERE DATE(begin) >= DATE_ADD(current_date(),INTERVAL -$deep Day)
+                ORDER BY begin DESC
            ");
     }
     
@@ -94,7 +94,7 @@ class Log_data {
         return DataBaseClass::getColumn("
                 SELECT 
                     name
-                FROM CronConfig
+                FROM cron_config
            ");
     }
     

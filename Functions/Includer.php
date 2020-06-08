@@ -11,12 +11,10 @@ function IncluderAction() {
                 echo "<h1 style='color:red'>You do not have permission to run [" . $file . "] cron script</h1>";
                 exit();
             } else {
-                if (!IncludeExists("Crons/master.php")) {
-                    header('HTTP/1.0 404 not found');
-                    echo "<a href='" . PageIndex() . "'>" . GetIni('TEXT', 'title') . "</a>";
-                    echo "<h1 style='color:red'>Сron script [" . $file . "] is not found</h1>";
-                    exit();
-                }
+                $cron = new \Suphair\Cron(DataBaseClass::getConection());
+                $cron->run();
+                DataBaseClass::close();
+                exit();
             }
         }
     }

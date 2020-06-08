@@ -36,15 +36,15 @@
     </thead>
     <tbody>
         <?php foreach ($data->logs as $row) { ?>
-            <tr data-cron-name='<?= $row->cronName ?>'>
+            <tr data-cron-name='<?= $row->name ?>'>
                 <td>
-                    <?= $row->cronName ?>
+                    <?= $row->name ?>
                 </td>
                 <td>
-                    <?= $row->cronStart ?>
+                    <?= $row->begin ?>
                 </td>
                 <td>
-                    <?= $row->cronEnd ?>
+                    <?= $row->end ?>
                 </td> 
                 <td>
                     <?= $row->details ?>
