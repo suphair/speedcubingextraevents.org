@@ -37,9 +37,9 @@
                     </a>
                 </td>    
             </tr>        
-            <tr data-hidden>    
+            <tr data-hidden = 1>    
                 <td colspan="4" class="mail_body">
-                    <?= $row->body ?>
+                    <?= $row->message ?>
                 </td>
             </tr>
         <?php } ?>         

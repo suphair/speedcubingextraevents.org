@@ -104,22 +104,19 @@ class Log_data {
     static function getLogsMail($deep) {
         return DataBaseClass::getRowsObject("
                 SELECT 
-                Id id,
-                `To` 'to',
-                Subject subject,
-                Body body,
-                DateTime timestamp,
-                CASE Result
-                    WHEN 1 THEN null
-                    ELSE Result
-                END result,
+                id,
+                `to`,
+                subject,
+                message,
+                timestamp,
+                result,
                 CASE result
                     WHEN 1 THEN 'send'
                     ELSE 'error'
                 END status
-                FROM LogMail 
-                WHERE DATE(DateTime) >= DATE_ADD(current_date(),INTERVAL -$deep Day)
-                ORDER BY DateTime DESC
+                FROM smtp_logs
+                WHERE DATE(timestamp) >= DATE_ADD(current_date(),INTERVAL -$deep Day)
+                ORDER BY timestamp DESC
            ");
     }
 
