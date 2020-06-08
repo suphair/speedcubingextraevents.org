@@ -20,4 +20,4 @@ SQLError.txt
 /Script/curvycopter_training_out.txt
 /Script/curvycopter_out.txt
 /Export_tsv/
-/database_structure_LOCAL.sql
+database_structure_LOCAL.sql
