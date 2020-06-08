@@ -107,10 +107,12 @@ function CompetitionCompetitorsLoad($ID,$WCA,$Name,$type){
         }
     }
 
-    if($competitors){
-        $str=sizeof($registrations)." / ".sizeof($competitors);
+    if($competitors and $registrations){
+        $str = sizeof($registrations)." / ".sizeof($competitors);
+    }elseif($registrations){
+        $str = sizeof($registrations);
     }else{
-        $str=sizeof($registrations);
+        $str = false;
     }
 
     $end=date('H:i:s');

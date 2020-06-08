@@ -74,7 +74,7 @@ function CommandUpdate($Event = '', $Command = '') {
 
 
     foreach ($dateUpdate as $ID => $data) {
-        if (isset($data['Competitors'])) {
+        if (isset($data['Competitors']) and isset($row['Discipline_Competitors'])) {
             if ($data['Competitors'] != $row['Discipline_Competitors']) {
                 $data['Sum333'] = 999999;
             }
