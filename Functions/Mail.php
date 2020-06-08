@@ -1,4 +1,5 @@
 <?php
+
 function SendMail($to, $subject, $body){
    if(strpos($_SERVER['PHP_SELF'],'/'.GetIni('LOCAL','PageBase').'/')!==false){
         $section="SMTP_LOCAL";
@@ -6,23 +7,21 @@ function SendMail($to, $subject, $body){
         $section="SMTP";
     }
    
-    $mailSMTP = new SendMailSmtpClass(
+    $smpt = new Suphair\Smtp(
+            DataBaseClass::getConection(),
             GetIni($section,'username'),
             GetIni($section,'password'),
             GetIni($section,'host'),
             GetIni($section,'port'));
 
-    $from = array(GetIni($section,'from'), GetIni($section,'username') );
-    $result =  $mailSMTP->send($to, $subject, $body, $from); 
-    
-    $sql = "INSERT INTO `LogMail` (`To`, `Subject`, `Body`, `Result`)
-    VALUES ('$to', '$subject', '".DataBaseClass::Escape($body)."','$result')";
-
-    DataBaseClass::Query ($sql);    
-    
-    
-    
-    
+    $result = $smpt->send(
+            $to
+            , $subject
+            , $body
+            , GetIni($section,'from')
+            , GetIni($section,'username')
+    );
     return $result;
+    
 }
 
