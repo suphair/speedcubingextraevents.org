@@ -103,12 +103,13 @@ var myChart = new Chart(ctx, {
     $CountNew=[];
     $CountOld=[];
     $Total=0;        
-    DataBaseClass::Query("Select count(distinct W.WID) Count,"
-            . " count(distinct W.WID) CountNew,"
-            . " date(W.Timestamp) Date from `WCAauth` W"
-            . " left outer join WCAauth W2 on W2.WID=W.WID and date(W.Timestamp)>date(W2.Timestamp)"
-            . " where W2.WID is null and W.WID is not null"
-            . " group by date(W.Timestamp) order by date(W.Timestamp)");
+    DataBaseClass::Query("Select count(distinct W.me_id) Count,"
+            . " count(distinct W.me_id) CountNew,"
+            . " date(W.timestamp) Date from `wca_oauth_logs` W"
+            . " left outer join wca_oauth_logs W2 on W2.me_id=W.me_id"
+            . "  and date(W.timestamp)>date(W2.timestamp)"
+            . " where W2.me_id is null and W.me_id is not null"
+            . " group by date(W.timestamp) order by date(W.timestamp)");
     foreach(DataBaseClass::getRows() as $row){
         $Dates[]=$row['Date'];
         $CountNew[]=$row['CountNew'];

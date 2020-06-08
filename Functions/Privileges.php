@@ -138,7 +138,6 @@ function CheckAccess($type, $competitionID = false) {
 
     $result = 0;
 
-
     DataBaseClass::Query("Select * from GrandGroupMember GGM join GrandGroup GG on GG.ID=GGM.Group join GrandAccess GA on GA.Group=GG.ID where GGM.Delegate='$DelegateID' and Type='$type'");
     $result += sizeof(DataBaseClass::getRows());
 

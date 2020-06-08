@@ -13,7 +13,7 @@ if ($competitor) {
 
 <h1>Send an application to become a SEE Delegate</h1>
 <?php if (!$competitor) { ?>
-    <i class="fas fa-sign-in-alt"></i> <a href="<?= GetUrlWCA(); ?>"><?= ml('Competitor.SignIn') ?></a>
+    <i class="fas fa-sign-in-alt"></i> You must sign in WCA</a>
 <?php } elseif (!$competitor->wca_id) { ?>
     <h2><i class="fas fa-hand-paper"></i> You must have a WCA ID</h2>
 <?php } elseif (sizeof($RequestCandidateFields) and $RequestCandidateFields[0]['RequestCandidate_Status'] == -1) { ?>

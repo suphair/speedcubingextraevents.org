@@ -381,7 +381,6 @@ if ($Competition['Competition_DelegateWCAOn']) {
                             <td> <?= ml('Competition.Person') ?></td>
                             <td>
                                 <?php if (!$Competitor) { ?>
-                                    <?php $_SESSION['ReferAuth'] = $_SERVER['REQUEST_URI']; ?> 
                                     <a href="<?= GetUrlWCA(); ?>"><i class="fas fa-sign-in-alt"></i> <?= ml('Competitor.SignIn') ?></a>
                         <?php } else { ?>
                             <?= Short_Name($Competitor->name); ?>

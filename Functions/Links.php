@@ -46,16 +46,15 @@ function LinkSettingsBack(){
     return "http://".$_SERVER['HTTP_HOST'].str_replace("/Settings","",$_SERVER['REQUEST_URI']);
 }
 
-function GetUrlWCA(){
-       
-   $url_refer = PageIndex().GetIni('WCA_AUTH','url_refer');
-   if(strpos($_SERVER['PHP_SELF'],'/'.GetIni('LOCAL','PageBase').'/')!==false){
-       $url_refer="http:".$url_refer;
-   }else{
-       $url_refer="https:".$url_refer;
-   }
-    $client_id = GetIni('WCA_AUTH','client_id');
-    $scope=GetIni('WCA_AUTH','scope');
-    
-    return "https://www.worldcubeassociation.org/oauth/authorize?client_id=$client_id&redirect_uri=".urlencode($url_refer)."&response_type=code&scope=$scope";
+
+function GetUrlWCA() {
+    Suphair \ Wca \ Oauth::set(
+            GetIni('WCA_AUTH','client_id')
+            , GetIni('WCA_AUTH', 'client_secret')
+            , GetIni('WCA_AUTH','scope')
+            , PageIndex() . GetIni('WCA_AUTH','url_refer')
+            , DataBaseClass::getConection()
+    );
+
+    return Suphair \ Wca \ Oauth::url();
 }
