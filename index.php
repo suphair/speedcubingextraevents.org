@@ -10,11 +10,11 @@ RequireDir('Functions');
 error_reporting(E_ALL);
 set_error_handler("myErrorHandler");
 
+Suphair \ Error :: register(filter_input(INPUT_SERVER, 'SERVER_NAME')=='localhost');
+
 DataBaseInit();
 IncluderAction();
 IncluderScript();
-
-
 
 $languages = getLanguages();
 if (!isset($_SESSION['language_select'])

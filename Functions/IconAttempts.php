@@ -2,7 +2,7 @@
 
 function IconAttempt($discipline,$n){
     $dir="Image/".$discipline;
-    if(@dir("Image/".$discipline)){
+    if(file_exists($dir)){
         foreach (scandir($dir) as $filename){
             if(strpos($filename,$n."_")===0){
                 return $dir."/".$filename;
