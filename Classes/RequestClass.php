@@ -45,11 +45,11 @@ class RequestClass {
             if (!isset($request[$i])) {
                 $request[$i] = 'null';
             } else {
-                $request[$i] = DataBaseClass::Escape($request[$i]);
+                $request[$i] = strtolower(DataBaseClass::Escape($request[$i]));
             }
         }
 
-        $type = $request[0];
+        $type = strtolower($request[0]);
 
         $typesSimplePage = [
             'competitions', 'competition',

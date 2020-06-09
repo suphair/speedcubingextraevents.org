@@ -4,13 +4,13 @@ function IncluderAction() {
     $request = getRequest();
 
     if (sizeof($request) >= 1) {
-        if ($request[0] == "cron") {
+        if (strtolower($request[0]) == "cron") {
             if (!(CheckAccess('Scripts')
                     or $_SERVER['HTTP_USER_AGENT'] == 'Wget/1.17.1 (linux-gnu)'
                     or Suphair \ Config :: isLocalhost())) {
                 header('HTTP/1.1 401 Unauthorized');
                 echo "<a href='" . PageIndex() . "'>" . PageIndex() . "</a>";
-                echo "<h1 style='color:red'>You do not have permission to run [" . $file . "] cron script</h1>";
+                echo "<h1 style='color:red'>You do not have permission to run cron</h1>";
                 exit();
             } else {
                 $cron = new \Suphair\Cron(DataBaseClass::getConection());
@@ -74,7 +74,7 @@ function getRequest() {
             )
     );
     foreach ($request as $n => $v) {
-        $request[$n] = DataBaseClass::Escape(strtolower(explode('?fbclid', $v)[0]));
+        $request[$n] = DataBaseClass::Escape(explode('?fbclid', $v)[0]);
         if (!$v)
             unset($request[$n]);
     }

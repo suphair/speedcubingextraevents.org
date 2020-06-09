@@ -289,3 +289,26 @@ function generateExportData() {
                 . "'{$row['value1']}','{$row['value2']}','{$row['value3']}','{$row['value4']}','{$row['value5']}','{$row['value6']}','{$row['value7']}','{$row['value8']}','{$row['value9']}','{$row['value10']}','{$row['value11']}')");
     }
 }
+
+function generateStructure($schema) {
+
+    if (Suphair \ Config :: isLocalhost()) {
+        $filename = 'database_structure_LOCAL.sql';
+    } else {
+        $filename = 'database_structure.sql';
+    }
+
+    include_once('ifsnop-mysqldump-php-341050a/src/Ifsnop/Mysqldump/Mysqldump.php');
+    $dump = new Ifsnop\Mysqldump\Mysqldump(
+            'mysql:host=' . Suphair \ Config :: get('DB', 'host') . ';'
+            . 'port=' . Suphair \ Config :: get('DB', 'port') . ';'
+            . 'dbname=' . Suphair \ Config :: get('DB', $schema)
+            , Suphair \ Config :: get('DB', 'username')
+            , Suphair \ Config :: get('DB', 'password')
+            , ['no-data' => true,
+        'reset-auto-increment' => true,
+        'skip-comments' => true
+    ]);
+    $dump->start($filename);
+    return $filename;
+}

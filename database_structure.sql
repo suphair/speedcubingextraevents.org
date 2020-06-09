@@ -700,7 +700,7 @@ CREATE TABLE `cron_config` (
   `schedule` time DEFAULT NULL,
   `argument` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -711,6 +711,21 @@ CREATE TABLE `cron_logs` (
   `begin` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `end` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   `details` text,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `smtp_logs` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `to` varchar(255) DEFAULT NULL,
+  `subject` varchar(255) DEFAULT NULL,
+  `message` text,
+  `timestamp` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `from` varchar(255) DEFAULT NULL,
+  `result` varchar(255) DEFAULT NULL,
+  `version` varchar(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;

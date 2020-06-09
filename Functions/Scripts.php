@@ -10,28 +10,6 @@ function Script_UpdateRecords() {
     echo '</pre>';
 }
 
-function Script_Structure() {
-
-    if (Suphair \ Config :: isLocalhost()) {
-        $filename = 'database_structure_LOCAL.sql';
-    } else {
-        $filename = 'database_structure.sql';
-    }
-
-    include_once('ifsnop-mysqldump-php-341050a/src/Ifsnop/Mysqldump/Mysqldump.php');
-    $dump = new Ifsnop\Mysqldump\Mysqldump(
-            'mysql:host=' . Suphair \ Config :: get('DB', 'host') . ';'
-            . 'port=' . Suphair \ Config :: get('DB', 'port') . ';'
-            . 'dbname=' . Suphair \ Config :: get('DB', $schema)
-            , Suphair \ Config :: get('DB', 'username')
-            , Suphair \ Config :: get('DB', 'password')
-            , ['no-data' => true,
-        'reset-auto-increment' => true,
-        'skip-comments' => true
-    ]);
-    $dump->start($filename);
-}
-
 function Script_phpinfo() {
     phpinfo();
 }
