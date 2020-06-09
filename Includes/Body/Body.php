@@ -8,7 +8,7 @@ $delegate = getObjDelegate();
 $language = $_SESSION['language_select'];
 
 $data = arrayToObject([
-    'title' => GetIni('TEXT', 'title'),
+    'title' => 'Speedcubing Extra Events',
     'competitor' => $competitor,
     'language' => [
         'code' => $language,
