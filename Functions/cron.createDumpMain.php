@@ -7,6 +7,8 @@ function createDumpMain() {
 
     $_details['sql'] = createBackup('schema', $filename);
     $_details['structure'] = generateStructure('schema');
+    $_details['schema_Export'] = generateStructure('schema_Export');
+    $_details['schema_WCA'] = generateStructure('schema_WCA');
 
     return json_encode($_details);
 }
