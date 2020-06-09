@@ -38,12 +38,12 @@ class DataBaseClass {
         
     }
 
-    /*public static function setConection($connection) {
-        self::$connection = $connection;
-        self::$count = 0;
-        self::$queries = array();
-    }*/
-    
+    /* public static function setConection($connection) {
+      self::$connection = $connection;
+      self::$count = 0;
+      self::$queries = array();
+      } */
+
     public static function setConectionSee($connection) {
         self::$connection_see = $connection;
         self::$count = 0;
@@ -56,15 +56,15 @@ class DataBaseClass {
         self::$count = 0;
         self::$queries = array();
     }
-    
-    static function activateSee(){
+
+    static function activateSee() {
         self::$connection = self::$connection_see;
     }
-    
-    static function activateWca(){
+
+    static function activateWca() {
         self::$connection = self::$connection_wca;
     }
-    
+
     public static function getConection() {
         return self::$connection;
     }
@@ -219,20 +219,8 @@ class DataBaseClass {
         self::$count++;
         self::$queries[] = $sql;
         if (!self::$query = mysqli_query(self::$connection, $sql)) {
-
-            $time = date("Y-m-d H:i:s");
-            $handle = fopen("SQLError.txt", "a");
-            fwrite($handle, "\r\n$time\r\n$sql\r\n" . mysqli_error(self::$connection));
-            fwrite($handle, print_r(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS), true));
-            fclose($handle);
-
-            if (strpos($_SERVER['PHP_SELF'], '/' . GetIni('LOCAL', 'PageBase') . '/') !== false) {
-                echo "<p>[SQLError] $sql :" . mysqli_error(self::$connection) . "<br>" . print_r(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS), true) . "</p>";
-            } else {
-                echo '"';
-                echo "<h1><font color='red'>Unexpected error. We'll fix it soon.</font></h1>$time";
-            }
-
+            $error = "Query:<br>$sql<br><br>Error:<br>" . mysqli_error(self::$connection) . "<br>";
+            trigger_error($error, E_USER_ERROR);
             exit();
         }
         if ($out) {
@@ -369,13 +357,14 @@ class DataBaseClass {
         return sizeof(self::$queries);
     }
 
-    public static function close(){
+    public static function close() {
         mysqli_close(self::$connection_see);
         mysqli_close(self::$connection_wca);
     }
+
 }
 
-class DataBaseClassWCA{
+class DataBaseClassWCA {
 
     protected static $_instance;
     protected static $connection;
@@ -441,12 +430,12 @@ class DataBaseClassWCA{
             return (object) [];
         }
     }
-    
+
     public static function getRowAssoc($sql, $key = [], $out = false) {
         self::Query($sql, $out);
         return self::getRow();
     }
-    
+
 }
 
 class DataBaseClassExport {
@@ -501,4 +490,5 @@ class DataBaseClassExport {
         }
         return $res;
     }
+
 }

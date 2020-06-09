@@ -1,10 +1,10 @@
 <?php
 
 Suphair \ Wca \ Oauth::set(
-        GetIni('WCA_AUTH', 'client_id')
-        , GetIni('WCA_AUTH', 'client_secret')
-        , GetIni('WCA_AUTH', 'scope')
-        , PageIndex() . GetIni('WCA_AUTH', 'url_refer')
+        Suphair \ Config :: get('WCA_AUTH', 'client_id')
+        , Suphair \ Config :: get('WCA_AUTH', 'client_secret')
+        , Suphair \ Config :: get('WCA_AUTH', 'scope')
+        , PageIndex() . Suphair \ Config :: get('WCA_AUTH', 'url_refer')
         , DataBaseClass::getConection()
 );
 $competitor = Suphair \ Wca \ Oauth::authorize();

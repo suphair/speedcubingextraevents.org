@@ -50,7 +50,7 @@ function ml($name, $arr = [], $b = true) {
 }
 
 function getLanguages() {
-    return explode(",", GetIni('MultiLanguage', 'languages'));
+    return explode(",", Suphair \ Config :: get('MultiLanguage', 'languages'));
 }
 
 function getObjLanguages() {

@@ -2,16 +2,14 @@
 
 Function DataBaseInit() {
 
-    if (strpos($_SERVER['PHP_SELF'], '/' . GetIni('LOCAL', 'PageBase') . '/') !== false) {
-        $section = "DB_LOCAL";
-    } else {
-        $section = "DB";
-    }
-
-
     $connection = mysqli_init();
     @$success = mysqli_real_connect(
-            $connection, GetIni($section, 'host'), GetIni($section, 'username'), GetIni($section, 'password'), GetIni($section, 'schema'), GetIni($section, 'port')
+            $connection
+            , Suphair \ Config :: get('DB', 'host')
+            , Suphair \ Config :: get('DB', 'username')
+            , Suphair \ Config :: get('DB', 'password')
+            , Suphair \ Config :: get('DB', 'schema')
+            , Suphair \ Config :: get('DB', 'port')
     );
 
     if (!$success) {
@@ -21,12 +19,17 @@ Function DataBaseInit() {
 
     mysqli_query($connection, "SET CHARSET utf8mb4");
     DataBaseClass::setConectionSee($connection);
-    
+
 
 
     $connection2 = mysqli_init();
     @$success = mysqli_real_connect(
-            $connection2, GetIni($section, 'host'), GetIni($section, 'username'), GetIni($section, 'password'), GetIni($section, 'schema_WCA'), GetIni($section, 'port')
+            $connection2
+            , Suphair \ Config :: get('DB', 'host')
+            , Suphair \ Config :: get('DB', 'username')
+            , Suphair \ Config :: get('DB', 'password')
+            , Suphair \ Config :: get('DB', 'schema_WCA')
+            , Suphair \ Config :: get('DB', 'port')
     );
 
     if (!$success) {
@@ -37,11 +40,16 @@ Function DataBaseInit() {
     mysqli_query($connection2, "SET CHARSET utf8mb4");
     DataBaseClassWCA::setConection($connection2);
     DataBaseClass::setConectionWca($connection2);
-    
+
 
     $connection3 = mysqli_init();
     $success = mysqli_real_connect(
-            $connection3, GetIni($section, 'host'), GetIni($section, 'username'), GetIni($section, 'password'), GetIni($section, 'schema_Export'), GetIni($section, 'port')
+            $connection3
+            , Suphair \ Config :: get('DB', 'host')
+            , Suphair \ Config :: get('DB', 'username')
+            , Suphair \ Config :: get('DB', 'password')
+            , Suphair \ Config :: get('DB', 'schema_Export')
+            , Suphair \ Config :: get('DB', 'port')
     );
 
     if (!$success) {

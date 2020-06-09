@@ -1,77 +1,71 @@
 <?php
 
-function createBackupTSV($schema,$folder){
-    if(strpos($_SERVER['PHP_SELF'],'/'.GetIni('LOCAL','PageBase').'/')!==false){
-       $section="DB_LOCAL";
-       $folder=$folder."_LOCAL";
-    }else{
-       $section="DB";
+function createBackupTSV($schema, $folder) {
+    if (Suphair \ Config :: isLocalhost()) {
+        $folder = $folder . "_LOCAL";
     }
-    
-    @mkdir($folder);
+    if (!file_exists($folder)) {
+        mkdir($folder);
+    }
     $zip = new ZipArchive();
-    $zip_name = $folder.".tsv.zip";
-    $zip->open($zip_name, ZIPARCHIVE::CREATE);    
-    $filenames=[];
-    $TABLE_SCHEMA=GetIni($section,$schema);
+    $zip_name = $folder . ".tsv.zip";
+    $zip->open($zip_name, ZIPARCHIVE::CREATE);
+    $filenames = [];
+    $TABLE_SCHEMA = Suphair \ Config :: get('DB', $schema);
     DataBaseClassExport::Query("Select * from information_schema.TABLES where TABLE_SCHEMA='$TABLE_SCHEMA'");
-    foreach(DataBaseClassExport::getRows() as $table){
-        $TABLE_NAME=$table['TABLE_NAME'];
-        $filename="$TABLE_NAME.TSV";
-        $filenames[]=$filename;
+    foreach (DataBaseClassExport::getRows() as $table) {
+        $TABLE_NAME = $table['TABLE_NAME'];
+        $filename = "$TABLE_NAME.TSV";
+        $filenames[] = $filename;
         $f = fopen($filename, "a");
-        $columns=[];
+        $columns = [];
         DataBaseClassExport::Query("Select * from information_schema.COLUMNS where TABLE_SCHEMA='$TABLE_SCHEMA' and TABLE_NAME='$TABLE_NAME' order by ORDINAL_POSITION");
-        foreach(DataBaseClassExport::getRows() as $column){
-            $columns[]=$column['COLUMN_NAME'];
+        foreach (DataBaseClassExport::getRows() as $column) {
+            $columns[] = $column['COLUMN_NAME'];
         }
-        fwrite($f, implode("\t",$columns)."\n");
+        fwrite($f, implode("\t", $columns) . "\n");
         DataBaseClassExport::Query("Select * from $TABLE_NAME");
-        foreach(DataBaseClassExport::getRows() as $row){
-            fwrite($f, str_replace(array("\r\n", "\r", "\n"),"<br>",implode("\t",$row))."\n");    
+        foreach (DataBaseClassExport::getRows() as $row) {
+            fwrite($f, str_replace(array("\r\n", "\r", "\n"), "<br>", implode("\t", $row)) . "\n");
         }
         fclose($f);
-        
+
         $zip->addFile($filename);
     }
-    
+
     $zip->close();
-    
-    foreach($filenames as $filename){
+
+    foreach ($filenames as $filename) {
         unlink($filename);
     }
     rmdir($folder);
-    
+
     return $zip_name;
 }
 
-function createBackup($schema,$filename){
-    if(strpos($_SERVER['PHP_SELF'],'/'.GetIni('LOCAL','PageBase').'/')!==false){
-       $section="DB_LOCAL";
-       $filename=str_replace(".sql","_LOCAL.sql",$filename);
-    }else{
-       $section="DB";
-    }      
-    
+function createBackup($schema, $filename) {
+    if (Suphair \ Config :: isLocalhost()) {
+        $folder = $folder . "_LOCAL";
+    }
+
     include_once('ifsnop-mysqldump-php-341050a/src/Ifsnop/Mysqldump/Mysqldump.php');
     $dump = new Ifsnop\Mysqldump\Mysqldump(
-            'mysql:host='.GetIni($section,'host').';port='.GetIni($section,'port').';dbname='.GetIni($section,$schema), 
-            GetIni($section,'username'),
-            GetIni($section,'password'),
-            ['add-drop-table' => true]);
-    
-    $dump->start($filename);  
-    
+            'mysql:host=' . Suphair \ Config :: get('DB', 'host') . ';'
+            . 'port=' . Suphair \ Config :: get('DB', 'port') . ';'
+            . 'dbname=' . Suphair \ Config :: get('DB', $schema), Suphair \ Config :: get('DB', 'username'), Suphair \ Config :: get('DB', 'password'), ['add-drop-table' => true]);
+
+    $dump->start($filename);
+
     $zip = new ZipArchive();
-    $zip_name = $filename.".zip";
-    $zip->open($zip_name, ZIPARCHIVE::CREATE);    
+    $zip_name = $filename . ".zip";
+    $zip->open($zip_name, ZIPARCHIVE::CREATE);
     $zip->addFile($filename);
     $zip->close();
     unlink($filename);
     return $zip_name;
 }
 
-function generateExportData(){
+function generateExportData() {
     DataBaseClass::Query("
     select * ,
     case 
@@ -98,25 +92,25 @@ function generateExportData(){
     group by Competition,Discipline)Final on Final.Competition=E.Competition and Final.Discipline=DF.Discipline and Final.Final=Round
     )t
     order by 1,2,3 ");
-    foreach(DataBaseClass::getRows() as $row){
+    foreach (DataBaseClass::getRows() as $row) {
         DataBaseClass::Query("Update Event set RoundType='{$row['RoundType']}' where ID={$row['Event']} ");
     }
-                
-    
+
+
     DataBaseClassExport::Query("Delete from Countries");
     DataBaseClassWCA::Query("Select * from Countries");
-    foreach(DataBaseClassWCA::getRows() as $row){
+    foreach (DataBaseClassWCA::getRows() as $row) {
         DataBaseClassExport::Query("Insert into Countries (id,name,continentId,iso2) "
-                . "values ('{$row['id']}','".DataBaseClass::Escape($row['name'])."','{$row['continentId']}','{$row['iso2']}')");
+                . "values ('{$row['id']}','" . DataBaseClass::Escape($row['name']) . "','{$row['continentId']}','{$row['iso2']}')");
     }
-    
+
     DataBaseClassExport::Query("Delete from Continents");
     DataBaseClassWCA::Query("Select * from Continents");
-    foreach(DataBaseClassWCA::getRows() as $row){
+    foreach (DataBaseClassWCA::getRows() as $row) {
         DataBaseClassExport::Query("Insert into Continents (id,name,recordName) "
-                . "values ('{$row['id']}','".DataBaseClass::Escape($row['name'])."','{$row['recordName']}')");
+                . "values ('{$row['id']}','" . DataBaseClass::Escape($row['name']) . "','{$row['recordName']}')");
     }
-    
+
     DataBaseClass::Query("Update Command set exportId=null,exportName=null,exportCountryId=null");
     DataBaseClass::Query("
         Select Com.ID Command,
@@ -132,22 +126,22 @@ function generateExportData(){
         left join Country on Country.ISO2=Com.vCountry
         group by Com.ID,countryId
     ");
-    foreach(DataBaseClass::getRows() as $row){
-        DataBaseClass::Query("Update Command set exportId='{$row['id']}',exportName='".DataBaseClass::Escape($row['name'])."',exportCountryId='{$row['countryId']}' where ID={$row['Command']} ");
+    foreach (DataBaseClass::getRows() as $row) {
+        DataBaseClass::Query("Update Command set exportId='{$row['id']}',exportName='" . DataBaseClass::Escape($row['name']) . "',exportCountryId='{$row['countryId']}' where ID={$row['Command']} ");
     }
-    
-    
- 
+
+
+
     DataBaseClassExport::Query("Delete from Persons");
-    
+
     DataBaseClass::Query("Select distinct exportCountryId,exportName,exportId
                         from Command Com
                         join Event E on E.ID=Com.Event
                         join Competition Cn on Cn.ID=E.Competition and Cn.Unofficial=0 and Cn.WCA not like 't.%'
                         join Attempt A on A.Command=Com.ID and A.Attempt=1");
-    foreach(DataBaseClass::getRows() as $row){
+    foreach (DataBaseClass::getRows() as $row) {
         DataBaseClassExport::Query("Insert into Persons (id,name,countryId) "
-                . "values ('{$row['exportId']}','".DataBaseClass::Escape($row['exportName'])."','{$row['exportCountryId']}')");
+                . "values ('{$row['exportId']}','" . DataBaseClass::Escape($row['exportName']) . "','{$row['exportCountryId']}')");
     }
 
     DataBaseClassExport::Query("Delete from Events");
@@ -166,56 +160,56 @@ function generateExportData(){
     from Discipline D join FormatResult FR on FR.ID=D.FormatResult
     order by Status, Code)
     events, (select @i:=0,@j:=0)X order by rank");
-    
-    foreach(DataBaseClass::getRows() as $row){
+
+    foreach (DataBaseClass::getRows() as $row) {
         DataBaseClassExport::Query("Insert into Events "
-        . "values ('{$row['id']}','{$row['name']}','{$row['rank']}','{$row['format']}')");   
+                . "values ('{$row['id']}','{$row['name']}','{$row['rank']}','{$row['format']}')");
     }
-    
-    
+
+
     DataBaseClass::Query("Select * from Competition where Unofficial=0 and WCA not like 't.%'");
     DataBaseClassExport::Query("Delete from Competitions");
-    
-    foreach(DataBaseClass::getRows() as $row){
-        DataBaseClassWCA::Query("Select * from Competitions where id='".$row['WCA']."'");
-        $c=DataBaseClassWCA::getRow();
-        if(isset($c['id'])){
+
+    foreach (DataBaseClass::getRows() as $row) {
+        DataBaseClassWCA::Query("Select * from Competitions where id='" . $row['WCA'] . "'");
+        $c = DataBaseClassWCA::getRow();
+        if (isset($c['id'])) {
             DataBaseClass::Query("Select group_concat(distinct D.Code order by D.Code separator ' ') Codes from Event E "
                     . " join DisciplineFormat DF on DF.ID=E.DisciplineFormat "
                     . " join Discipline D on D.ID=DF.Discipline "
-                    . "  where E.Competition=".$row['ID'].""
+                    . "  where E.Competition=" . $row['ID'] . ""
                     . " order by D.Code");
-            $codes=DataBaseClass::getRow()['Codes'];
-            foreach($c as $f=>$v){
-                $c[$f]=DataBaseClass::Escape($v);
+            $codes = DataBaseClass::getRow()['Codes'];
+            foreach ($c as $f => $v) {
+                $c[$f] = DataBaseClass::Escape($v);
             }
-            
-            $Delegates=$c['wcaDelegate'];
+
+            $Delegates = $c['wcaDelegate'];
 
             DataBaseClass::Query("Select C.Name,C.Email,C.WCAID from CompetitionDelegate CD "
                     . " join Delegate D on D.ID=CD.Delegate"
                     . " join Competitor C on C.WCAID=D.WCA_ID"
-                    . " where CD.Competition=".$row['ID']."");
+                    . " where CD.Competition=" . $row['ID'] . "");
 
-            foreach(DataBaseClass::getRows() as $d){
-                if($d['Email']){
-                    $Delegates.="[{".$d['Name']."}{mailto:".$d['Email']."}{SEE Delegate}] ";
-                }else{
-                    $Delegates.="[{".$d['Name']."}{}{SEE Delegate}] ";
+            foreach (DataBaseClass::getRows() as $d) {
+                if ($d['Email']) {
+                    $Delegates .= "[{" . $d['Name'] . "}{mailto:" . $d['Email'] . "}{SEE Delegate}] ";
+                } else {
+                    $Delegates .= "[{" . $d['Name'] . "}{}{SEE Delegate}] ";
                 }
             }
-            
-            
+
+
             DataBaseClassExport::Query("INSERT INTO `Competitions` VALUES 
                 ('{$c['id']}', '{$c['name']}', '{$c['cityName']}', '{$c['countryId']}',"
-                . "'{$row['Comment']}', "
-                . "'{$c['year']}', '{$c['month']}', '{$c['day']}', '{$c['endMonth']}', '{$c['endDay']}',"
-                . " '$codes', '{$Delegates}',"
-                . " '{$c['organiser']}')");
+                    . "'{$row['Comment']}', "
+                    . "'{$c['year']}', '{$c['month']}', '{$c['day']}', '{$c['endMonth']}', '{$c['endDay']}',"
+                    . " '$codes', '{$Delegates}',"
+                    . " '{$c['organiser']}')");
         }
     }
-    
-  DataBaseClass::Query("      
+
+    DataBaseClass::Query("      
         update Attempt join(
             select case 
                 when A.IsDNF then -1
@@ -236,8 +230,8 @@ function generateExportData(){
         )T on Attempt.ID=T.ID
         set Attempt.exportValue=T.exportValue
     ");
-    
-    
+
+
     DataBaseClassExport::Query("Delete from Results");
     DataBaseClass::Query("
           select distinct 
@@ -284,17 +278,14 @@ function generateExportData(){
           left join Attempt A11 on A11.Command=Com.ID and A11.Attempt=11
           where Com.exportId is not null 
           ");
-    
-    foreach(DataBaseClass::getRows() as $row){
+
+    foreach (DataBaseClass::getRows() as $row) {
         DataBaseClassExport::Query("Insert into Results"
-        . "(competitionId,eventId,roundTypeId,pos,best,average,"
+                . "(competitionId,eventId,roundTypeId,pos,best,average,"
                 . "personID,personName,personCountryId,formatId,"
                 . "value1,value2,value3,value4,value5,value6,value7,value8,value9,value10,value11) "
-        . "values ('{$row['competitionId']}','{$row['eventId']}','{$row['roundTypeId']}','{$row['pos']}','{$row['best']}','{$row['average']}',"
-        . "'{$row['personID']}','".DataBaseClass::Escape($row['personName'])."','{$row['personCountryId']}','{$row['formatId']}',"
-        . "'{$row['value1']}','{$row['value2']}','{$row['value3']}','{$row['value4']}','{$row['value5']}','{$row['value6']}','{$row['value7']}','{$row['value8']}','{$row['value9']}','{$row['value10']}','{$row['value11']}')");   
+                . "values ('{$row['competitionId']}','{$row['eventId']}','{$row['roundTypeId']}','{$row['pos']}','{$row['best']}','{$row['average']}',"
+                . "'{$row['personID']}','" . DataBaseClass::Escape($row['personName']) . "','{$row['personCountryId']}','{$row['formatId']}',"
+                . "'{$row['value1']}','{$row['value2']}','{$row['value3']}','{$row['value4']}','{$row['value5']}','{$row['value6']}','{$row['value7']}','{$row['value8']}','{$row['value9']}','{$row['value10']}','{$row['value11']}')");
     }
-  
-  
-  
 }

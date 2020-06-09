@@ -102,7 +102,7 @@ if ($_FILES['file']['error'] == 0 and $_FILES['file']['type'] == 'application/pd
     $PagesEvent = ceil($ScramblesEvent / $ScamblesOnePage);
 
     if (strpos($data['Discipline_CodeScript'], 'mguild') !== false) {
-        $data['Discipline_TNoodles'] = GetIni('TNoodles', 'mguild');
+        $data['Discipline_TNoodles'] = Suphair \ Config :: get('TNoodles', 'mguild');
     }
 
     if ($data['Discipline_TNoodlesMult']) {

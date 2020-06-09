@@ -7,10 +7,8 @@ RequireDir('Classes/Data');
 RequireDir('Classes/Object');
 RequireDir('Functions');
 
-error_reporting(E_ALL);
-set_error_handler("myErrorHandler");
-
-Suphair \ Error :: register(filter_input(INPUT_SERVER, 'SERVER_NAME')=='localhost');
+Suphair \ Config :: init('Config');
+Suphair \ Error :: register(Suphair \ Config :: isLocalhost());
 
 DataBaseInit();
 IncluderAction();
@@ -39,8 +37,8 @@ if (RequestClass::getError(401)) {
         <?php IncludeClass::Page('Index.Head'); ?>
     </head>
     <body> 
-        <span id="variables" data-index="<?= PageIndex() ?>" data-title="<?= GetIni('TEXT', 'title') ?>"/>
-        <?php IncludeClass::Page('Body');?>
+        <span id="variables" data-index="<?= PageIndex() ?>" data-title="Speedcubing Extra Events"/>
+        <?php IncludeClass::Page('Body'); ?>
     </body>
 </html> 
 <!-- start index.js -->
@@ -49,5 +47,5 @@ if (RequestClass::getError(401)) {
 </script>    
 <!-- end index.js -->
 
-<?php #trackVisitor(); ?>
-<?php #DataBaseClass::close(); ?>
+<?php trackVisitor(); ?>
+<?php DataBaseClass::close(); ?>

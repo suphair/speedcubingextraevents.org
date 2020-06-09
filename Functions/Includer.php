@@ -5,9 +5,11 @@ function IncluderAction() {
 
     if (sizeof($request) >= 1) {
         if ($request[0] == "cron") {
-            if (!(CheckAccess('Scripts') or $_SERVER['HTTP_USER_AGENT'] == 'Wget/1.17.1 (linux-gnu)' or strpos($_SERVER['PHP_SELF'], '/' . GetIni('LOCAL', 'PageBase') . '/') !== false)) {
+            if (!(CheckAccess('Scripts')
+                    or $_SERVER['HTTP_USER_AGENT'] == 'Wget/1.17.1 (linux-gnu)'
+                    or Suphair \ Config :: isLocalhost())) {
                 header('HTTP/1.1 401 Unauthorized');
-                echo "<a href='" . PageIndex() . "'>" . GetIni('TEXT', 'title') . "</a>";
+                echo "<a href='" . PageIndex() . "'>" . PageIndex() . "</a>";
                 echo "<h1 style='color:red'>You do not have permission to run [" . $file . "] cron script</h1>";
                 exit();
             } else {
@@ -35,7 +37,7 @@ function IncluderAction() {
             };
             if (!IncludeExists($arr)) {
                 header('HTTP/1.0 404 not found');
-                echo "<a href='" . PageIndex() . "'>" . GetIni('TEXT', 'title') . "</a>";
+                echo "<a href='" . PageIndex() . "'>" . PageIndex() . "</a>";
                 echo "<h1 style='color:red'>The action [" . $file . "] is not found </h1>";
                 exit();
             }
@@ -65,24 +67,19 @@ function IncludeExists($file) {
 function getRequest() {
 
     global $request;
-    $request_ = explode('?', $_SERVER['REQUEST_URI'])[0];
-    $request = explode("/", str_replace("/" . getIni("LOCAL", "PageBase") . "/", "/", $request_));
-    unset($request[0]);
+
+    $prefix = str_replace("/index.php", "", filter_input(INPUT_SERVER, 'SCRIPT_NAME'));
+    $request = explode('/', str_replace($prefix, ''
+                    , filter_input(INPUT_SERVER, 'REQUEST_URI')
+            )
+    );
     foreach ($request as $n => $v) {
+        $request[$n] = DataBaseClass::Escape(strtolower(explode('?fbclid', $v)[0]));
         if (!$v)
             unset($request[$n]);
     }
     $request = array_values($request);
-    if (isset($request[0]) and $request[0] != 'Actions') {
-        foreach ($request as $k => $v) {
-            $request[$k] = DataBaseClass::Escape(strtolower($v));
-        }
-    }
     return $request;
-}
-
-function getRequestString() {
-    return str_replace("/" . getIni("LOCAL", "PageBase") . "/", "/", $_SERVER['REQUEST_URI']);
 }
 
 function Request($n = false) {

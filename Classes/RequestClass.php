@@ -30,7 +30,7 @@ class RequestClass {
 
     public static function setRequest() {
 
-        self::$titles[] = GetIni('TEXT', 'title');
+        self::$titles[] = 'Extra Events';
         self::$page = "index";
         self::$error[401] = "";
         self::$error[404] = "";
@@ -441,7 +441,7 @@ class RequestClass {
         $err = self::CheckAccess($page, $type, $competitionID);
         if ($err !== true) {
             header('HTTP/1.1 401 Unauthorized');
-            echo "<a href='" . PageIndex() . "'>" . GetIni('TEXT', 'title') . "</a>";
+            echo "<a href='" . PageIndex() . "'>" . PageIndex() . "</a>";
             echo $err;
             if (sizeof($_POST)) {
                 echo '<hr> Your sent data';

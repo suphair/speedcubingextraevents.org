@@ -1,11 +1,12 @@
 <?php
+
 $mails = [
     'seniors' => [
-        'mail' => urlencode(getini('Seniors', 'email')),
+        'mail' => urlencode(Suphair \ Config :: get('Seniors', 'email')),
         'subject' => $data->title
     ],
     'support' => [
-        'mail' => urlencode(getini('Support', 'email')),
+        'mail' => urlencode(Suphair \ Config :: get('Support', 'email')),
         'subject' => "Support: {$data->title}"
     ]
 ];
