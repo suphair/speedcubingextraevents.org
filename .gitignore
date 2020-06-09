@@ -2,7 +2,6 @@ Image/Scramble
 Scramble/HardTmp
 Scramble/Zip
 config.ini
-database_structure_LOCAL.sql
 .DS_Store
 /SQLlog.txt
 /Script/kilo_out.txt
