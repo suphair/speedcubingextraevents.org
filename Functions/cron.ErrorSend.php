@@ -3,23 +3,39 @@
 function errorSend($daily = 0) {
 
     $errors = Suphair \ Error :: getAll();
-    $count = 0;
+    $counts = [
+        Suphair \ Error :: _NEW => 0,
+        Suphair \ Error :: _WORK => 0,
+        Suphair \ Error :: _SKIP => 0,
+        Suphair \ Error :: _DONE => 0];
     foreach ($errors as $error) {
-        if ($error['status'] == Suphair \ Error :: _NEW) {
-            $count++;
-        }
+        $counts[$error['status']] ++;
     }
 
-    if ($count) {
-        SendMail(
-                Suphair \ Config :: get('Support', 'email'), "SEE error: $count"
-                , "New errors on the site " . PageIndex() . ": $count<br><a href='http:" . PageIndex() . "Classes/suphair_error'>http:" . PageIndex() . "Classes/suphair_error</a>"
-        );
-    } elseif ($daily) {
-        SendMail(
-                Suphair \ Config :: get('Support', 'email'), "SEE NO ERROR"
-                , "No new errors on the site " . PageIndex() . ": $count<br><a href='http:" . PageIndex() . "Classes/suphair_error'>http:" . PageIndex() . "Classes/suphair_error</a>"
-        );
+    $new = $counts[Suphair \ Error :: _NEW];
+    $work = $counts[Suphair \ Error :: _WORK];
+    $skip = $counts[Suphair \ Error :: _SKIP];
+    $done = $counts[Suphair \ Error :: _DONE];
+
+    if ($daily) {
+        if ($new) {
+            SendMail(
+                    Suphair \ Config :: get('Admin', 'email'), "SEE error: $new"
+                    , "New errors on the site http:" . PageIndex() . " $new<br><a href='http:" . PageIndex() . "Classes/suphair_error'>http:" . PageIndex() . "Classes/suphair_error</a>"
+            );
+        }
+    } elseif($counts[Suphair \ Error :: _NEW] == 0){
+        if ($counts[Suphair \ Error :: _WORK] == 0) {
+            SendMail(
+                    Suphair \ Config :: get('Admin', 'email'), "SEE NO ERROR"
+                    , "No new errors on the site http:" . PageIndex() . "<br><a href='http:" . PageIndex() . "Classes/suphair_error'>http:" . PageIndex() . "Classes/suphair_error</a>"
+            );
+        } else {
+            SendMail(
+                    Suphair \ Config :: get('Admin', 'email'), "SEE error in work: $work"
+                    , "Errors in work on site http:" . PageIndex() . " $work<br><a href='http:" . PageIndex() . "Classes/suphair_error'>http:" . PageIndex() . "Classes/suphair_error</a>"
+            );
+        }
     }
-    return $count;
+    return json_encode($counts);
 }
