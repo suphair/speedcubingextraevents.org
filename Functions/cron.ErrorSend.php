@@ -20,19 +20,19 @@ function errorSend($daily = 0) {
     if (!$daily) {
         if ($new) {
             SendMail(
-                    Suphair \ Config :: get('Admin', 'email'), "SEE error: $new"
+                    Suphair \ Config :: get('Support', 'email'), "SEE error: $new"
                     , "New errors on the site http:" . PageIndex() . " $new<br><a href='http:" . PageIndex() . "Classes/suphair_error'>http:" . PageIndex() . "Classes/suphair_error</a>"
             );
         }
     } elseif($counts[Suphair \ Error :: _NEW] == 0){
         if ($counts[Suphair \ Error :: _WORK] == 0) {
             SendMail(
-                    Suphair \ Config :: get('Admin', 'email'), "SEE NO ERROR"
+                    Suphair \ Config :: get('Support', 'email'), "SEE NO ERROR"
                     , "No new errors on the site http:" . PageIndex() . "<br><a href='http:" . PageIndex() . "Classes/suphair_error'>http:" . PageIndex() . "Classes/suphair_error</a>"
             );
         } else {
             SendMail(
-                    Suphair \ Config :: get('Admin', 'email'), "SEE error in work: $work"
+                    Suphair \ Config :: get('Support', 'email'), "SEE error in work: $work"
                     , "Errors in work on site http:" . PageIndex() . " $work<br><a href='http:" . PageIndex() . "Classes/suphair_error'>http:" . PageIndex() . "Classes/suphair_error</a>"
             );
         }

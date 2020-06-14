@@ -40,8 +40,6 @@ if ($data->delegate) {
         }
     }
     $data->delegate->links = arrayToObject($links);
-}else{
-    $data->delegate= arrayToObject(['links'=>[]]);
 }
 
 IncludeClass::Template('Body.Competitor', $data);

@@ -51,10 +51,9 @@
                     <?= $data->delegate->candidates->new ?> Candidates for delegates
                 </a>
             <?php } ?>
-        <?php } ?>
-
-        <?php foreach ($data->delegate->links as $link) { ?>
-            <a href="<?= $link->link ?>"><?= $link->value ?></a>
+            <?php foreach ($data->delegate->links as $link) { ?>
+                <a href="<?= $link->link ?>"><?= $link->value ?></a>
+            <?php } ?>
         <?php } ?>
     <?php } ?>
 
