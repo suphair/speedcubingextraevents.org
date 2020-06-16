@@ -20,7 +20,7 @@ $('[data-event-request]').change(function () {
             }
         }
     });
-    document.location = $('#variables').data('index') + 'event/' + event + '/' + format + '?' + requests.join('&');
+    document.location = $('#variables').data('index') + 'event/' + event + '/' + format + '/?' + requests.join('&');
 });
 
 var number = 1;
