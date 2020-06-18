@@ -52,7 +52,7 @@ $competitors = DataBaseClass::getRowsObject("
     JOIN DisciplineFormat DF ON E.DisciplineFormat=DF.ID 
     JOIN Discipline D ON D.ID=DF.Discipline 
     JOIN Competition Cm ON Cm.ID=E.Competition 
-        AND Cm.WCA NOT LIKE 't.%' 
+        AND Cm.Technical =0 
     WHERE 1 = 1 
     $countryWhere
         AND (COALESCE(C.WCAID,0) != 0 

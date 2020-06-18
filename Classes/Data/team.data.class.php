@@ -52,9 +52,11 @@ Class Team_data {
             FROM Command
             JOIN CommandCompetitor ON CommandCompetitor.Command = Command.ID
             JOIN Event on Event.ID=Command.Event
+            JOIN Competition on Competition.ID=Event.Competition
             JOIN DisciplineFormat on DisciplineFormat.ID=Event.DisciplineFormat
             WHERE CommandCompetitor.Competitor = $competitorId 
                 AND DisciplineFormat.Discipline = $eventId
+                ".Competition_data::COMPETIITON_BASE_FILTER."
         ");
     }
 

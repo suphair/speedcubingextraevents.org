@@ -4,7 +4,7 @@ function competitorsCompetitionLoad() {
     $_details = [];
 
     DataBaseClass::FromTable("Competition", "StartDate>now()");
-    DataBaseClass::Where_current("WCA not like 't.%' ");
+    DataBaseClass::Where_current("Technical = 0");
     $Competitions = DataBaseClass::QueryGenerate();
     foreach ($Competitions as $Competition) {
         $_details[] = $Competition['Competition_WCA'];

@@ -119,7 +119,7 @@ function generateExportData() {
         GROUP_CONCAT(case when C.WCAID<>'' then C.WCAID else CONCAT('NAN0',C.ID) end order by C.Name separator ', ') id 
         from Command Com
         join Event E on E.ID=Com.Event
-        join Competition Cn on Cn.ID=E.Competition and Cn.Unofficial=0 and Cn.WCA not like 't.%'
+        join Competition Cn on Cn.ID=E.Competition and Cn.Unofficial=0 and Cn.Technical = 0
         join Attempt A on A.Command=Com.ID and A.Attempt=1
         join CommandCompetitor CC on CC.Command=Com.ID
         join Competitor C on C.ID=CC.Competitor
@@ -137,7 +137,7 @@ function generateExportData() {
     DataBaseClass::Query("Select distinct exportCountryId,exportName,exportId
                         from Command Com
                         join Event E on E.ID=Com.Event
-                        join Competition Cn on Cn.ID=E.Competition and Cn.Unofficial=0 and Cn.WCA not like 't.%'
+                        join Competition Cn on Cn.ID=E.Competition and Cn.Unofficial=0 and Cn.Technical = 0
                         join Attempt A on A.Command=Com.ID and A.Attempt=1");
     foreach (DataBaseClass::getRows() as $row) {
         DataBaseClassExport::Query("Insert into Persons (id,name,countryId) "
@@ -167,7 +167,7 @@ function generateExportData() {
     }
 
 
-    DataBaseClass::Query("Select * from Competition where Unofficial=0 and WCA not like 't.%'");
+    DataBaseClass::Query("Select * from Competition where Unofficial=0 and Technical = 0");
     DataBaseClassExport::Query("Delete from Competitions");
 
     foreach (DataBaseClass::getRows() as $row) {

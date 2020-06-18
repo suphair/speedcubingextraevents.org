@@ -4,13 +4,13 @@ Class Competition_data {
 
     CONST COMPETIITON_BASE_FILTER = "
         AND Competition.Unofficial = 0  
-        AND Competition.WCA NOT LIKE 't.%'
+        AND Competition.Technical = 0 
     ";
     CONST COMPETIITON_OFFICIAL = "
         AND Competition.Unofficial = 0  
     ";
     CONST COMPETIITON_PUBLIC = "
-        AND Competition.WCA not like 't.%'
+        AND Competition.Technical = 0 
     ";
 
     static function getById($id) {
@@ -38,7 +38,7 @@ Class Competition_data {
                 Unofficial unofficial,
                 Onsite onsite,
                 CASE
-                    WHEN WCA like 't.%' THEN 'technical'
+                    WHEN Technical = 1 THEN 'technical'
                     WHEN Status = -1 THEN 'covid-19'
                     WHEN Status = 0 THEN 'hidden'
                     WHEN current_date < StartDate THEN 'upcoming'
@@ -105,7 +105,7 @@ Class Competition_data {
         }
 
         if (!CheckAccess('Competitions.Secret')) {
-            $where[] = "Competition.WCA NOT LIKE 't.%'";
+            $where[] = "Technical = 0";
         }
         return $where;
     }

@@ -104,7 +104,6 @@
             <td class="table_new_right">
                 <?= ml('Event.' . $data->filter->format->value); ?>
             </td>
-            <td/>
             <td>
                 <?= ml('Event.Country') ?>
             </td>
@@ -158,12 +157,10 @@
                 </td>
                 <td>
                     <?= $competitor->country->image ?>
-
-                </td>
-                <td>
                     <?= $competitor->country->name ?>
                 </td>
                 <td>
+                    <?= $competitor->team->competitionEvent->competition->image ?>
                     <a href='<?= $competitor->team->competitionEvent->competition->link ?>'>
                         <?= $competitor->team->competitionEvent->competition->name ?>
                     </a>

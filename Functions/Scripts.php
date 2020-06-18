@@ -38,10 +38,10 @@ function Script_Load333FT() {
     $hash = [];
     $Comment = '{"EN":"This information is based on competition results owned and maintained by the World Cube Assocation, published at https://worldcubeassociation.org/results as of January 9, 2020."}';
     foreach ([
-['Name' => 'WCA 3x3x3 FT A5', 'Code' => 't.Transfer333ftAverage5', 'Result' => 'Average', 'Attemption' => '5', 'format' => 'average'],
- ['Name' => 'WCA 3x3x3 FT M3', 'Code' => 't.Transfer333ftMean3', 'Result' => 'Mean', 'Attemption' => '3', 'format' => 'average'],
- ['Name' => 'WCA 3x3x3 FT B5', 'Code' => 't.Transfer333ftBest5', 'Result' => 'Average', 'Attemption' => '5', 'format' => 'best'],
- ['Name' => 'WCA 3x3x3 FT B3', 'Code' => 't.Transfer333ftBest3', 'Result' => 'Mean', 'Attemption' => '3', 'format' => 'best'],
+['Name' => 'WCA 3x3x3 FT A5', 'Code' => 'Transfer333ftAverage5', 'Result' => 'Average', 'Attemption' => '5', 'format' => 'average'],
+ ['Name' => 'WCA 3x3x3 FT M3', 'Code' => 'Transfer333ftMean3', 'Result' => 'Mean', 'Attemption' => '3', 'format' => 'average'],
+ ['Name' => 'WCA 3x3x3 FT B5', 'Code' => 'Transfer333ftBest5', 'Result' => 'Average', 'Attemption' => '5', 'format' => 'best'],
+ ['Name' => 'WCA 3x3x3 FT B3', 'Code' => 'Transfer333ftBest3', 'Result' => 'Mean', 'Attemption' => '3', 'format' => 'best'],
     ] as $competition) {
 
         DataBaseClass::Query("Select ID from Competition where WCA ='" . $competition['Code'] . "'");
@@ -50,8 +50,8 @@ function Script_Load333FT() {
             $CompetitionID = $row['ID'];
             DataBaseClass::Query("Update Competition set Name='" . $competition['Name'] . "', Comment='" . $Comment . "' where ID ='" . $CompetitionID . "'");
         } else {
-            DataBaseClass::Query("Insert into Competition (Name,WCA,Comment,StartDate,EndDate) "
-                    . "values ('" . $competition['Name'] . "','" . $competition['Code'] . "','" . $Comment . "','2019-12-31','2019-12-31')");
+            DataBaseClass::Query("Insert into Competition (Name,WCA,Comment,StartDate,EndDate,Technical) "
+                    . "values ('" . $competition['Name'] . "','" . $competition['Code'] . "','" . $Comment . "','2019-12-31','2019-12-31',1)");
             $CompetitionID = DataBaseClass::getID();
         }
 

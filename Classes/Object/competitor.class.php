@@ -151,6 +151,10 @@ Class Competitor {
                 }
             }
 
+            if (!($teams[0] ?? FALSE)) {
+                unset($competitors[$c]);
+                continue;
+            }
             usort($teams, function($a, $b) {
                 $value_a = $a->attemptSpecial->value;
                 $value_b = $b->attemptSpecial->value;
@@ -171,6 +175,7 @@ Class Competitor {
             }
         }
 
+        
         usort($competitors, function($a, $b) {
             $value_a = $a->team->attemptSpecial->value;
             $value_b = $b->team->attemptSpecial->value;
