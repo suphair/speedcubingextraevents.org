@@ -4,7 +4,7 @@ namespace Suphair;
 
 class Error {
 
-    const VERSION = '1.0.4';
+    const VERSION = '1.0.5';
     const _NEW = 'new';
     const _DONE = 'done';
     const _SKIP = 'skip';
@@ -66,7 +66,7 @@ class Error {
             }
             $maxNumber = max([$maxNumber, $explode[0]]);
             if ($explode[2] == $cash
-                    and $explode[3] == self::_NEW) {
+                    and in_array($explode[3], [self::_NEW, self::_WORK])) {
                 $number = $explode[0];
                 $newError = false;
             }
@@ -183,7 +183,7 @@ class Error {
             $explode = explode("_", $file);
             if (sizeof($explode) == 4
                     and ( $explode[3] == $status
-                    or ! $status)) {
+                    or!$status)) {
                 $result[$explode[0]] = [
                     'err' => $explode[1],
                     'hash' => $explode[2],
