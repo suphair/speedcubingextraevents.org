@@ -62,7 +62,7 @@ Function DataBaseInit() {
 
 
 
-    DataBaseClass::AddTable('Competition', 'C', array('ID', 'Name', 'WCA', 'City', 'StartDate', 'EndDate', 'WebSite', 'Registration', 'Country', 'Status', 'MaxCardID', 'CheckDateTime', 'LoadDateTime', 'Comment', 'Onsite', 'Unofficial', 'DelegateWCA', 'DelegateWCAOn', 'Cubingchina'));
+    DataBaseClass::AddTable('Competition', 'C', array('ID', 'Name', 'WCA', 'City', 'StartDate', 'EndDate', 'WebSite', 'Registration', 'Country', 'Status', 'MaxCardID', 'CheckDateTime', 'LoadDateTime', 'Comment', 'Onsite', 'Unofficial', 'DelegateWCA', 'DelegateWCAOn', 'Cubingchina','Technical'));
     DataBaseClass::SetOrder('Competition', ' StartDate desc');
 
     DataBaseClass::AddTable('Discipline', 'D', array('ID', 'Name', 'Code', 'Status', 'Competitors', 'TNoodle', 'TNoodles', 'TNoodlesMult', 'CutScrambles', 'GlueScrambles', 'Simple', 'Inspection', 'CodeScript', 'Comment', 'ScrambleComment', 'Codes'));

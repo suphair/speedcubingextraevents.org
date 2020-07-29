@@ -6,11 +6,13 @@ Class CompetitionEvent {
     public $link = false;
     public $event;
     public $round = false;
+    public $view_round = false;
     public $secret = false;
     public $formats = [];
     public $formatsAmount = 0;
     public $limit;
     public $cutoff;
+    public $scrambles = false;
     public $cumulative = false;
     public $competition;
     public $attemptions = false;
@@ -45,6 +47,8 @@ Class CompetitionEvent {
     function SetbyRow($competitionEvent) {
         $this->id = $competitionEvent->id;
         $this->round = $competitionEvent->round;
+        $this->view_round = $competitionEvent->view_round;
+        
         $this->event->getbyID($competitionEvent->eventId);
         $this->secret = $competitionEvent->secret;
         
@@ -82,6 +86,12 @@ Class CompetitionEvent {
 
         $this->limit->set($competitionEvent->limitMinute, $competitionEvent->limitSecond);
         $this->cutoff->set($competitionEvent->cutoffMinute, $competitionEvent->cutoffSecond);
+    }
+    
+    function getScrambles(){
+        $scrambles = CompetitionEvent_data::getScrambles($this->id);
+        $this->scrambles = json_decode($scrambles);
+        
     }
 
     static function getCompetitionEventIdIdByCompetitionId($competitionId) {

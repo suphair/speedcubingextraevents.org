@@ -8,6 +8,7 @@ Class Event {
     public $image = false;
     public $codes = false;
     public $isCup = false;
+    public $isCut = false;
     public $isTeam = false;
     public $isArchive = false;
     public $codeScript = false;
@@ -19,6 +20,10 @@ Class Event {
     public $competitorsTeam = 0;
     public $countCompetitors = false;
     public $countCompetitions = false;
+    public $scrambleComment = false;
+    public $tnoodle = false;
+    public $tnoodles = false;
+    public $max_attempts = false;
 
     function __construct() {
         $this->formatResult = new formatResult();
@@ -38,6 +43,10 @@ Class Event {
         }
     }
 
+    function getMaxAttempts() {
+        $this->max_attempts = Event_data::getMaxAttempts($this->id);
+    }
+
     function SetbyRow($event) {
         $this->id = $event->id;
         $this->code = $event->code;
@@ -47,6 +56,7 @@ Class Event {
             $this->codes = $codes;
         }
         $this->isCup = strpos($event->codeScript, '_cup');
+        $this->isCut = $event->isCut;
         $this->isTeam = $event->isTeam;
         $this->isArchive = $event->isArchive;
         $this->codeScript = $event->codeScript;
@@ -54,7 +64,10 @@ Class Event {
         $this->formatResultId = $event->formatResultId;
         $this->longInspection = $event->longInspection;
         $this->competitorsTeam = $event->competitorsTeam;
-        
+        $this->scrambleComment = $event->scrambleComment;
+        $this->tnoodle = $event->tnoodle;
+        $this->tnoodles = $event->tnoodles;
+
         $this->getCompetitorsCount();
         $this->getCompetitionsCount();
 
@@ -64,9 +77,9 @@ Class Event {
             $this->image = "<i title='{$this->name}' class='fas fa-question-circle'></i>";
         }
     }
-    
-    function getFormatResult(){
-        if($this->formatResultId){
+
+    function getFormatResult() {
+        if ($this->formatResultId) {
             $formatResult = new formatResult();
             $formatResult->getById($this->formatResultId);
             $this->formatResult = $formatResult;

@@ -401,7 +401,7 @@ foreach($events as $event){
 </td></tr></table>
 <?php 
 
-if(strtotime($Competition['Competition_StartDate'])>=strtotime('now')){
+if(strtotime($Competition['Competition_StartDate'])>=strtotime('now') or $Competition['Competition_Technical']){
     
     if(!$Competition['Competition_DelegateWCAOn'] or sizeof($events)<3){?>
 <form method="POST" action="<?= PageAction('CompetitionEvents.Add') ?>">

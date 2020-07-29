@@ -21,6 +21,7 @@ Class CompetitionEvent_data {
             SELECT 
                 Event.ID id,
                 Event.Round round,
+                Event.vRound view_round,
                 Event.Secret secret,
                 Event.Cumulative cumulative,
                 Event.LimitSecond limitSecond,
@@ -64,6 +65,10 @@ Class CompetitionEvent_data {
         ");
         
         
+    }
+    
+    public static function getScrambles($id){
+        return DataBaseClass::getRowObject(" SELECT scrambles FROM Event WHERE ID=$id ")->scrambles ?? FALSE;
     }
     
 }

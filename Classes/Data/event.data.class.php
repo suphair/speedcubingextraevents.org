@@ -22,6 +22,9 @@ Class Event_data {
         return DataBaseClass::getRowObject("
             SELECT 
                 CodeScript codeScript,
+                ScrambleComment scrambleComment,
+                TNoodle tnoodle,
+                TNoodles tnoodles,
                 Name name,
                 ID id,
                 LOWER(Code) code,
@@ -38,6 +41,7 @@ Class Event_data {
                     WHEN Competitors > 1 then true
                     ELSE false
                 END isTeam,
+                CutScrambles isCut,
                 Competitors competitorsTeam,
                 CASE
                     WHEN Inspection = 20 then true
@@ -244,6 +248,17 @@ Class Event_data {
             FROM Regulation
             WHERE Regulation.Event = $eventId"
                         , 'language');
+    }
+
+    static function getMaxAttempts($eventId) {
+        if (!is_numeric($eventId)) {
+            return 0;
+        }
+        return DataBaseClass::getValue("
+            SELECT `Format`.`Attemption` from `DisciplineFormat`
+            JOIN `Format`ON `Format`.`ID` = `DisciplineFormat`.`Format`
+            WHERE DisciplineFormat.Discipline = $eventId
+        ");
     }
 
 }

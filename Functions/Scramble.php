@@ -27,7 +27,7 @@ function GetLinkScrambes($event){
             if(file_exists('Functions/Generate_'.$event['Discipline_CodeScript'].'.php')){
                 return PageAction('CompetitionEvent.Scramble.Generate');
             }else{
-                if(!$event['Discipline_GlueScrambles'] and file_exists('Includes/Action.CompetitionEvent/CompetitionEvent.Scramble.'.$event['Discipline_CodeScript'].'.php') ){
+                if(!$event['Discipline_GlueScrambles'] and file_exists('Includes/CompetitionEvent/Action/CompetitionEvent.Scramble.'.$event['Discipline_CodeScript'].'.php') ){
                     return PageAction('CompetitionEvent.Scramble.'.$event['Discipline_CodeScript']);
                 }else{
                     return PageAction('CompetitionEvent.Scramble.Page');
