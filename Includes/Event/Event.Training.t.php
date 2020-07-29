@@ -104,8 +104,8 @@ if ($data->event->generate->function or $data->event->generate->script) {
                     </td>
                     <td>
                         <select name="attemptions" data-selected ="<?= $data->event->max_attempts ?>">
-                            <option value="3">1</option>
-                            <option value="3">2</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
                             <option value="3">3</option>
                             <option value="5">5</option>
                         </select>

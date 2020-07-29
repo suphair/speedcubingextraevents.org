@@ -90,7 +90,7 @@ class ScramblePrint {
 
                 $y0 = 43;
 
-                if ($attempt == $attemptions - 1 and!$event_isCup) {
+                if ($attempt == $attemptions +1  and!$event_isCup) {
                     $pdf->SetFont('Arial', '', 12);
                     $pdf->SetFillColor(230, 230, 230);
                     $pdf->Rect(17, $Y, $X_IMG_1 - 17, 6, 'DF');
