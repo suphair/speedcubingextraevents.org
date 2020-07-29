@@ -74,7 +74,7 @@ if ($data->event->generate->function or $data->event->generate->script) {
     </table> 
 
     <?php if ($data->event->generate->function) { ?>
-        <h3>Generate PDF with scrambles</h3>
+        <h3>Generate scramble sets PDF</h3>
         <form target="_blank" method="POST" action="<?= PageAction("Event.Training.Scramble.Print") ?>">
             <table class="table_info">
                 <input hidden name="code" value="<?= $data->event->code ?>">
