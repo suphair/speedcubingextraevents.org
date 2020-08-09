@@ -4,7 +4,7 @@ namespace Suphair;
 
 class Config {
 
-    const VERSION = '1.0.0';
+    const VERSION = '1.0.0_1';
 
     protected static $dir;
     protected static $server;
@@ -33,7 +33,7 @@ class Config {
 
     static function init($dir) {
         self::$dir = $dir;
-        self::$server = strtolower(filter_input(INPUT_SERVER, 'SERVER_NAME'));
+        self::$server = str_replace("www.","",strtolower(filter_input(INPUT_SERVER, 'SERVER_NAME')));
 
         if (!file_exists($dir)) {
             trigger_error("config: direcory [$dir] is not exists", E_USER_ERROR);
