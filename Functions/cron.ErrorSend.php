@@ -21,19 +21,19 @@ function errorSend($daily = 0) {
         if ($new) {
             SendMail(
                     Suphair \ Config :: get('Support', 'email'), "SEE error: $new"
-                    , "New errors on the site http:" . PageIndex() . " $new<br><a href='http:" . PageIndex() . "Classes/suphair_error'>http:" . PageIndex() . "Classes/suphair_error</a>"
+                    , "New errors on the site http:" . PageIndex() . " $new<br><a href='http:" . PageIndex() . "Classes/errors'>http:" . PageIndex() . "Classes/errors</a>"
             );
         }
     } elseif($counts[Suphair \ Error :: _NEW] == 0){
         if ($counts[Suphair \ Error :: _WORK] == 0) {
             SendMail(
                     Suphair \ Config :: get('Support', 'email'), "SEE NO ERROR"
-                    , "No new errors on the site http:" . PageIndex() . "<br><a href='http:" . PageIndex() . "Classes/suphair_error'>http:" . PageIndex() . "Classes/suphair_error</a>"
+                    , "No new errors on the site http:" . PageIndex() . "<br><a href='http:" . PageIndex() . "Classes/errors'>http:" . PageIndex() . "Classes/errors</a>"
             );
         } else {
             SendMail(
                     Suphair \ Config :: get('Support', 'email'), "SEE error in work: $work"
-                    , "Errors in work on site http:" . PageIndex() . " $work<br><a href='http:" . PageIndex() . "Classes/suphair_error'>http:" . PageIndex() . "Classes/suphair_error</a>"
+                    , "Errors in work on site http:" . PageIndex() . " $work<br><a href='http:" . PageIndex() . "Classes/errors'>http:" . PageIndex() . "Classes/errors</a>"
             );
         }
     }

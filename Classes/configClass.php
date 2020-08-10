@@ -1,10 +1,8 @@
 <?php
 
-namespace Suphair;
+class config {
 
-class Config {
-
-    const VERSION = '1.0.0_1';
+    const VERSION = '2.0.2';
 
     protected static $dir;
     protected static $server;
@@ -49,7 +47,7 @@ class Config {
         if (!file_exists(self::$configServer)) {
             trigger_error("config: file .ini [" . self::$configServer . "] not exists", E_USER_ERROR);
         }
-        
+
         $serverKey = self::$dir . "/" . self::$server . ".key";
         if (!file_exists($serverKey)) {
             trigger_error("config: file. key [$serverKey] not exists", E_USER_ERROR);
@@ -75,6 +73,23 @@ class Config {
         } else {
             trigger_error("config: value $section/$param not found", E_USER_ERROR);
         }
+    }
+
+    static function template($dir) {
+        $configDefault = parse_ini_file(self::$configDefault, true);
+        $configServer = parse_ini_file(self::$configServer, true);
+        $config = '';
+        $config .= ';version ' . self::VERSION . "\n";
+        $config .= ';' . date('d M Y') . "\n";
+        foreach (array_merge($configDefault, $configServer) as $section => $values) {
+            $config .= "[$section]\n";
+            foreach ($values as $key => $value) {
+                $config .= "    $key=\n";
+            }
+        }
+        $handle = fopen("$dir/config_template.ini", "w+");
+        fwrite($handle, $config);
+        fclose($handle);
     }
 
 }

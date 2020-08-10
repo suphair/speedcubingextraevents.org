@@ -1,11 +1,9 @@
 <?php
 
-namespace Suphair;
+class cron {
 
-const COMMAND_FUNCTION = 'function';
-const VERSION = '1.1.0';
-
-class Cron {
+    const COMMAND_FUNCTION = 'function';
+    const VERSION = '2.0.1';
 
     protected $connection;
     protected $id;
@@ -15,7 +13,7 @@ class Cron {
     }
 
     public function run() {
-        $id = $this->logBegin("suphair.cron " . VERSION);
+        $id = $this->logBegin("cron " . self::VERSION);
 
         $querySelect = "
             SELECT name, command, type, argument
@@ -51,7 +49,7 @@ class Cron {
     private function execCommand($name, $command, $type, $argument) {
         $id = $this->logBegin($name);
         switch ($type) {
-            case COMMAND_FUNCTION:
+            case self::COMMAND_FUNCTION:
                 if (!function_exists($command)) {
                     $details = "ERROR: $type $command not found";
                 } else {

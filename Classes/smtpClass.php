@@ -1,8 +1,6 @@
 <?php
 
-namespace Suphair;
-
-class Smtp {
+class smtp {
 
     private $host;
     private $port;
@@ -10,7 +8,7 @@ class Smtp {
     private $password;
     private $connection;
 
-    const VERSION = '1.0.0';
+    const VERSION = '2.0.0';
 
     public function __construct($connection, $username, $password, $host, $port = 25) {
         $this->host = $host;

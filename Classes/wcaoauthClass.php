@@ -1,8 +1,6 @@
 <?php
 
-namespace Suphair \ Wca;
-
-class Oauth {
+class wcaoauth {
 
     protected static $scope = 'public';
     protected static $clientId;
@@ -10,7 +8,8 @@ class Oauth {
     protected static $clientSecret;
     protected static $connection;
 
-    const VERSION = '1.1.1';
+    const VERSION = '2.0.0';
+    const ME = 'wca.oauth.me';
 
     private function __construct() {
         
@@ -42,7 +41,7 @@ class Oauth {
     }
 
     static function url() {
-        $_SESSION['suphair.wca.oauth.request_uri'] = filter_input(INPUT_SERVER, 'REQUEST_URI');
+        $_SESSION['wcaoauth.request_uri'] = filter_input(INPUT_SERVER, 'REQUEST_URI');
 
         return "https://www.worldcubeassociation.org/oauth/authorize?"
                 . "client_id=" . self::$clientId . "&"
@@ -52,7 +51,7 @@ class Oauth {
     }
 
     static function location() {
-        header("Location: {$_SESSION['suphair.wca.oauth.request_uri']}");
+        header("Location: {$_SESSION['wcaoauth.request_uri']}");
         exit();
     }
 
@@ -84,11 +83,11 @@ class Oauth {
             curl_close($ch);
 
             if (isset(json_decode($result)->error)) {
-                trigger_error("wca.oauth.getToken: $result <br>" . print_r($postdata, true), E_USER_ERROR);
+                trigger_error("wcaoauth.getToken: $result <br>" . print_r($postdata, true), E_USER_ERROR);
             }
 
             if ($status != 200) {
-                trigger_error("wca.oauth.getToken: $status<br>$url", E_USER_ERROR);
+                trigger_error("wcaoauth.getToken: $status<br>$url", E_USER_ERROR);
             }
 
             $accessToken = json_decode($result)->access_token;
@@ -107,16 +106,16 @@ class Oauth {
             curl_close($ch);
 
             if ($status != 200) {
-                trigger_error("wca.oauth.getMe: $status<br>$url", E_USER_ERROR);
+                trigger_error("wcaoauth.getMe: $status<br>$url", E_USER_ERROR);
             }
 
             if (isset(json_decode($result)->me->id)) {
                 $me = json_decode($result)->me;
                 self::log($me);
-                $_SESSION['suphair.wca.oauth.me'] = $me;
+                $_SESSION[self::ME] = $me;
                 return $me;
             } else {
-                $_SESSION['suphair.wca.oauth.me'] = false;
+                $_SESSION[self::ME] = false;
                 self::location();
             }
         }
@@ -190,8 +189,16 @@ class Oauth {
         }
 
         if (sizeof($errors)) {
-            trigger_error("wca.oauth.createTables: " . json_encode($errors), E_USER_ERROR);
+            trigger_error("wcaoauth.createTables: " . json_encode($errors), E_USER_ERROR);
         }
+    }
+
+    static function out() {
+        $_SESSION[self::ME] = FALSE;
+    }
+
+    static function me() {
+        return $_SESSION[self::ME] ??= FALSE;
     }
 
 }
