@@ -18,6 +18,5 @@ config.ini
 /Script/curvycopter_training_out.txt
 /Script/curvycopter_out.txt
 /Export_tsv/
-/Classes/suphair_error/
+/Classes/errors/
 /Config/
-*localhost*
