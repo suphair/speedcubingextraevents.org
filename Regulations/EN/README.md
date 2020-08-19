@@ -1,3 +1,4 @@
+
 #Speedcubing: Extra Events
 SEE organizes events that are not currently held by the WCA. The organization of these events is based on the [WCA Regulations](https://www.worldcubeassociation.org/regulations/) and [SEE Regulations](https://speedcubingextraevents.org/Regulations).
 SEE is a non-profit organization (not yet officially registered).
