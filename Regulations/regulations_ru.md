@@ -3,6 +3,7 @@
 Проведение дисциплин, не проводимых в WCA. Организация дисциплин опирается на [Положения WCA](https://www.worldcubeassociation.org/regulations/translations/russian/)  и [Положения SEE](https://speedcubingextraevents.org/Regulations).
 
 SEE является некоммерческой организацией (не зарегистрированной официально).
+
  
 **Основные дисциплины** - проводимые WCA.
 
