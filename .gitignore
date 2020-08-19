@@ -20,3 +20,4 @@ config.ini
 /Export_tsv/
 /Classes/errors/
 /Config/
+/.well-known/
