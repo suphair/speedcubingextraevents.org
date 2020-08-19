@@ -4,7 +4,7 @@ SEE organizes events that are not currently held by the WCA. The organization of
 
 SEE is a non-profit organization (not yet officially registered).
 
- 
+
 **Main events** - WCA events.
 
 **Extra events** (EE) - SEE events.
@@ -105,5 +105,5 @@ Possible options for registering a competitor to extra events:
 
 4.1. All SEE Delegates must send reports within 2 weeks of the SEE competition they organized.
 
- 
+
 *Procedures not outlined in this document are to be carried out according to WCA Regulations.*
