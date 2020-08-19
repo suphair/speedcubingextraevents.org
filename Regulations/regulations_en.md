@@ -4,7 +4,6 @@ SEE organizes events that are not currently held by the WCA. The organization of
 
 SEE is a non-profit organization (not yet officially registered).
 
-
 **Main events** - WCA events.
 
 **Extra events** (EE) - SEE events.
@@ -12,7 +11,6 @@ SEE is a non-profit organization (not yet officially registered).
 **Unofficial events** - those held by other organizers with their own regulations.
 
 **SEE Delegate** (or Delegate of Extra Events) - the person responsible for the organization of extra events.
-
 
 Website: [SpeedcubingExtraEvents.org](https://SpeedcubingExtraEvents.org)
 
@@ -104,6 +102,5 @@ Possible options for registering a competitor to extra events:
 **Senior Delegate** - organizes extra events and edits information related to any SEE competition.
 
 4.1. All SEE Delegates must send reports within 2 weeks of the SEE competition they organized.
-
 
 *Procedures not outlined in this document are to be carried out according to WCA Regulations.*
