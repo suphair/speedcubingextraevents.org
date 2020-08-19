@@ -6,11 +6,8 @@ SEE is a non-profit organization (not yet officially registered).
 
  
 **Main events** - WCA events.
-
 **Extra events** (EE) - SEE events.
-
 **Unofficial events** - those held by other organizers with their own regulations.
-
 **SEE Delegate** (or Delegate of Extra Events) - the person responsible for the organization of extra events.
 
  
