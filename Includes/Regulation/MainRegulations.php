@@ -1,7 +1,19 @@
 <?php
 
 $language = $_SESSION['language_select'];
-$regulationBlock = getBlockText("MainRegulation", $language);
+
+$language_default= getLanguages()[0];
+$regulation_file_language=__DIR__."/MainRegulations.".$language.".md";
+$regulation_file_default=__DIR__."/MainRegulations.".$language_default.".md";
+if(file_exists($regulation_file_language)){
+    $regulationBlock= file_get_contents($regulation_file_language);
+}elseif(file_exists($regulation_file_default)){
+    $regulationBlock= file_get_contents($regulation_file_default);
+}else{
+    die("not found MainRegulations $language_default");
+}
+
+//$regulationBlock = getBlockText("MainRegulation", $language);
 
 $data = arrayToObject([
     'language' => $language,
