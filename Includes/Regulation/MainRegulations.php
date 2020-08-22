@@ -13,8 +13,6 @@ if(file_exists($regulation_file_language)){
     die("not found MainRegulations $language_default");
 }
 
-//$regulationBlock = getBlockText("MainRegulation", $language);
-
 $data = arrayToObject([
     'language' => $language,
     'accessEdit' => CheckAccess('MainRegulations.Edit'),
