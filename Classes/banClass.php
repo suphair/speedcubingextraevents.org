@@ -2,7 +2,7 @@
 
 class ban {
 
-    const VERSION = '1.1.1';
+    const VERSION = '1.1.2';
     const SESSION_NAME = 'ban.ban_user';
 
     public static function add_db($connection, $wcaid, $reason, $start_date, $end_date) {
@@ -42,6 +42,26 @@ class ban {
 
         $result = mysqli_query($connection, $query);
         return $result->fetch_assoc();
+    }
+    
+    public static function get_db_list($connection) {
+        $query = "
+            SELECT 
+                wca_id,
+                reason,
+                start_date,
+                end_date
+            FROM ban_users
+            WHERE end_date >= current_date()
+            ORDER by wca_id
+        ";
+
+        $result = mysqli_query($connection, $query);
+        $users=[];
+        while ($row = $result->fetch_object()) {
+            $users[] = $row;
+        }
+        return $users;
     }
 
     public static function is_ban() {

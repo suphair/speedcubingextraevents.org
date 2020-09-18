@@ -9,7 +9,9 @@ if ($prefixType == 'Delegate'
         or $prefixType == 'Delegates') {
     $type = 'Delegates';
 }
-if ($prefixType == 'Competitor') {
+
+if ($prefixType == 'Competitor'
+        or $prefixType =='Ban') {
     $type = 'Competitors';
 }
 if ($prefixType == 'Event') {

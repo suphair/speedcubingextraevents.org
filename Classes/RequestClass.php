@@ -62,7 +62,8 @@ class RequestClass {
             'multilanguage', '401',
             'news', 'anews',
             'scramble', 'scrambleszip',
-            'scoretaker', 'mainregulations', 'registrations', 'scrambles', 'access', 'reports', 'api', 'logs', 'export'
+            'scoretaker', 'mainregulations', 'registrations', 'scrambles', 'access', 'reports', 'api', 'logs', 'export',
+            'ban'
         ];
 
         if (substr($type, 0, 1) != '?') {
@@ -80,7 +81,6 @@ class RequestClass {
         }
 
         switch ($type):
-
             case 'mainregulations':
                 self::$page = 'MainRegulations';
                 break;
@@ -398,6 +398,11 @@ class RequestClass {
                 }
                 break;
 
+            case 'ban':
+                self::$titles[1] = 'Banned members';
+                self::CheckAccess('Ban.List','Ban.View');
+                break;
+            
             case '401':
                 self::set401(ml('401'));
                 break;
@@ -420,7 +425,7 @@ class RequestClass {
     public static function getPage() {
 
         if (ban::is_ban()) {
-            return 'Ban';
+            return 'Ban.Page';
         }
 
         return self::$page;
