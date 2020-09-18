@@ -1,13 +1,22 @@
 <span class="hidden" data-block-name='body_competitor_panel'>
     <form class='form_inline' method="POST" action="<?= PageAction('Language.Set') ?> "> 
+
         <?php if ($data->competitor) { ?>
             <a href="#" id="competitor_panel" class="local_link competitor_panel_link">
-                <?php if ($data->delegate) { ?>
+
+                <?php if ($data->competitor->ban->ban) { ?>
+                    <i class="fas fa-user-slash"></i>
+                <?php } elseif ($data->delegate) { ?>
                     <i class="fas fa-user-tie"></i>
                 <?php } else { ?>
                     <i class="fas fa-user"></i>    
                 <?php } ?>
                 <?= $data->competitor->name ?>
+                <?php if ($data->competitor->ban->ban) { ?>
+                    <span class="error">
+                        - Banned!
+                    </span>
+                <?php } ?>
             </a>
             <a href="<?= PageIndex() ?>Actions/Competitor.Logout">
                 <i class="fas fa-sign-out-alt"></i> 
@@ -32,6 +41,14 @@
 
 <div class="competitor-panel">
     <?php if ($data->competitor) { ?>
+
+        <?php if ($data->competitor->ban->ban) { ?>
+            <span class="error">
+                <i class="fas fa-user-slash"></i>
+                You are banned (<?= date_range($data->competitor->ban->start_date, $data->competitor->ban->end_date) ?>)
+                - <?= $data->competitor->ban->reason ?>
+            </span>
+        <?php } ?>
         <a href="<?= $data->competitor->link ?>">
             <i class="fas fa-user"></i>
             <?= ml('Competitor.MyResults') ?>

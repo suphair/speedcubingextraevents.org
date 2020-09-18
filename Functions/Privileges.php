@@ -17,6 +17,10 @@ function getObjCompetitor($wcaid = false) {
     }
 
     if ($competitor) {
+        $ban_class = new ban(DataBaseClass::getConection());
+        $ban = $ban_class->get($competitor->wcaid ?? FALSE);
+        $competitor->ban = (object) json_decode($ban);
+
         $competitor->link = PageIndex() . "Competitor/{$competitor->local_id}";
     }
     return $competitor;
@@ -51,9 +55,15 @@ function getCompetitor() {
             $competitor = false;
         }
         $competitor = $_SESSION['Competitor'];
+        if ($competitor) {
+            $ban_class = new ban(DataBaseClass::getConection());
+            $ban = $ban_class->get($competitor->wca_id ?? FALSE);
+            $competitor->ban = (object) json_decode($ban);
+        }
     } else {
         $competitor = false;
     }
+
     return $competitor;
 }
 
@@ -114,12 +124,12 @@ function getDelegate() {
 }
 
 function CheckAccess($type, $competitionID = false) {
-    if (!getCompetitor() and ! getDelegate()) {
+    if (!getCompetitor() and!getDelegate()) {
         return false;
     }
 
-    $delegate=getDelegate();
-    if(!isset($delegate['Delegate_ID']) or !isset($delegate['Delegate_Status'])){
+    $delegate = getDelegate();
+    if (!isset($delegate['Delegate_ID']) or!isset($delegate['Delegate_Status'])) {
         return false;
     }
     $DelegateID = $delegate['Delegate_ID'];

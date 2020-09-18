@@ -21,13 +21,13 @@ where E.Competition='" . $Competition['Competition_ID'] . "'
 group by Cn.ID");
 $data = DataBaseClass::getRow();
 
-$count_competitors = $data['count'] + 0;
-$attempts_exists = ($data['Attempts'] > 0 or $data['Start']);
+$count_competitors = $data['count'] ?? 0;
+$attempts_exists = ($data['Attempts'] ?? 0 > 0 or $data['Start'] ?? 0);
 ?>
 
 <h1>
     <?= ImageCountry($Competition['Competition_Country']) ?></span>
-    <?= $Competition['Competition_Name'] ?>
+<?= $Competition['Competition_Name'] ?>
 </h1>    
 
 
@@ -91,78 +91,83 @@ if ($Competition['Competition_DelegateWCAOn']) {
                 <?php } ?>
                 <?php if (strtotime($Competition['Competition_EndDate']) >= strtotime(date('Y-m-d'))) { ?>
                     <tr>    
-                        <?php if (!$attempts_exists) {
-                            $reg_out = true; ?>
+                        <?php
+                        if (!$attempts_exists) {
+                            $reg_out = true;
+                            ?>
                             <td><?= ml('Competition.Registration') ?></td>
                             <td>
                                 <?php if ($Competition['Competition_Registration']) { ?>
                                     <i class="fas fa-check-circle"></i> <?= ml('Competition.Registration.True') ?>
                                 <?php } else { ?>
                                     <i class="fas fa-times-circle"></i> <?= ml('Competition.Registration.False') ?>
-                            <?php } ?>
+                                <?php } ?>
                             </td>        
-                    <?php } ?>
+                        <?php } ?>
                     </tr>
-    <?php if ($Competition['Competition_Onsite']) { ?>
+                    <?php if ($Competition['Competition_Onsite']) { ?>
                         <tr>
                             <td></td>
                             <td><i class="fas fa-check-circle"></i> <?= ml('Competition.Onsite.True') ?></td>
                         </tr>        
                     <?php } ?>
                 <?php } ?>   
-<?php if (strtotime($Competition['Competition_StartDate']) <= strtotime(date('Y-m-d')) and $Competition['Competition_Unofficial']) { ?>
+                <?php if (strtotime($Competition['Competition_StartDate']) <= strtotime(date('Y-m-d')) and $Competition['Competition_Unofficial']) { ?>
                     <tr>
                         <td><?= ml('Competition.Results') ?></td>
                         <td>
-    <?= svg_red(); ?> <?= $Competition['Competition_DelegateWCAOn'] ? ml('Competition.Unofficial.TrueTemp') : ml('Competition.Unofficial.True') ?>
+                            <?= svg_red(); ?> <?= $Competition['Competition_DelegateWCAOn'] ? ml('Competition.Unofficial.TrueTemp') : ml('Competition.Unofficial.True') ?>
                         </td>
                     </tr>    
-<?php } ?>   
+                <?php } ?>   
                 <tr>
                     <td><?= ml('Competition.ExtraEvents') ?></td>
                     <td>
                         <?php if (!sizeof($CompetitionEvents)) { ?>
                             <i class="fas fa-ban"></i>
                         <?php } ?>
-                        <?php if (sizeof($CompetitionEvents) == 1) {
+                        <?php
+                        if (sizeof($CompetitionEvents) == 1) {
                             $competition_event = $CompetitionEvents[0];
                             ?>
                             <?= ImageEvent($competition_event['Discipline_CodeScript'], 1.3, $competition_event['Discipline_Name']) ?>
-    <?= $competition_event['Discipline_Name'] ?>
-                <?php } ?>
+                            <?= $competition_event['Discipline_Name'] ?>
+                        <?php } ?>
                     </td>
                 </tr>    
-<?php if (sizeof($CompetitionEvents) > 1) foreach ($CompetitionEvents as $competition_event) { ?>
+                <?php if (sizeof($CompetitionEvents) > 1) foreach ($CompetitionEvents as $competition_event) { ?>
                         <tr>
                             <td><?= ImageEvent($competition_event['Discipline_CodeScript'], 1.3, $competition_event['Discipline_Name']) ?></td>
                             <td>
                                 <a class="<?= $competition_event['Event_ID'] == $CompetitionEvent['Event_ID'] ? "list_select" : "" ?>"  href="<?= LinkEvent($competition_event['Event_ID'], $competition_event['Event_Round']) ?>"><?= $competition_event['Discipline_Name'] ?><?= $competition_event['Event_vRound'] ?></a>
                             </td>
                         </tr>
-    <?php } ?>        
+                    <?php } ?>        
             </table>  
         </td>
         <td> 
             <table class="table_info" >
-<?php if (CheckAccess('Competition.Settings', $Competition['Competition_ID'])) { ?>
+                <?php if (CheckAccess('Competition.Settings', $Competition['Competition_ID'])) { ?>
                     <tr>
                         <td><i class="fas fa-cog"></i></td>
                         <td><a href="<?= LinkCompetition($Competition['Competition_WCA']) ?>/Settings">Competition settings</a></td>    
                     </tr>
                 <?php } ?> 
-<?php if (strtotime($Competition['Competition_StartDate']) <= strtotime(date('Y-m-d'))) {
-    if (CheckAccess('Competition.Report.Create', $Competition['Competition_ID'])) {
-        ?>    
+                <?php
+                if (strtotime($Competition['Competition_StartDate']) <= strtotime(date('Y-m-d'))) {
+                    if (CheckAccess('Competition.Report.Create', $Competition['Competition_ID'])) {
+                        ?>    
                         <tr>
                             <td><i class="far fa-file-alt"></i></td>
                             <td><a href="<?= LinkCompetition($Competition['Competition_WCA']) ?>/Report">Reports</a></td>
                         </tr>        
-    <?php } elseif (CheckAccess('Competition.Report', $Competition['Competition_ID']) and sizeof(DataBaseClass::SelectTableRows("CompetitionReport", "Competition=" . $Competition['Competition_ID']))) { ?>
+                    <?php } elseif (CheckAccess('Competition.Report', $Competition['Competition_ID']) and sizeof(DataBaseClass::SelectTableRows("CompetitionReport", "Competition=" . $Competition['Competition_ID']))) { ?>
                         <tr>
                             <td><i class="far fa-file-alt"></i></td>
                             <td><a href="<?= LinkCompetition($Competition['Competition_WCA']) ?>/Report">Reports</a></td>
                         </tr>                
-                    <?php }
+                        <?php
+                    }
                 }
                 ?>
 
@@ -171,13 +176,13 @@ if ($Competition['Competition_DelegateWCAOn']) {
                         <td><i class="fas fa-eye-slash"></i></td>
                         <td><?= ml('Competition.Status.Show.False') ?></td>
                     </tr>   
-<?php } ?>
+                <?php } ?>
                 <?php if ($Competition['Competition_Status'] == -1) { ?>
                     <tr>    
                         <td> <i class="fas fa-clinic-medical"></i></td>
                         <td class=" table_new_bold color_red">Competition canceled because of COVID-19</td>
                     </tr>   
-<?php } ?>
+                <?php } ?>
 
 
                 <?php if ($comment = Parsedown(ml_json($Competition['Competition_Comment']), false)) { ?>
@@ -185,7 +190,7 @@ if ($Competition['Competition_DelegateWCAOn']) {
                         <td><?= ml('Competition.Information') ?></td>
                         <td style="word-wrap: normal"><?= $comment ?></td>
                     </tr>    
-<?php } ?>
+                <?php } ?>
                 <tr>
                     <td><?= ml('Competition.Competitors') ?></td>
                     <td><?= $count_competitors ?></td>
@@ -193,17 +198,17 @@ if ($Competition['Competition_DelegateWCAOn']) {
             </table>    
         </td></tr></table>     
 
-    <?php if (sizeof($CompetitionEvents)) { ?>
+<?php if (sizeof($CompetitionEvents)) { ?>
     <h2>
         <?= ImageEvent($CompetitionEvent['Discipline_CodeScript']) ?>
         <?= $CompetitionEvent['Discipline_Name'] ?><?= $CompetitionEvent['Event_vRound'] ?>
         <?php if ($attempts_exists) { ?>
             / <?= ml('Competition_PsychSheet.Results') ?>
         <?php } else { ?>
-        <?php if ($Competition['Competition_Registration'] != 0) { ?>
+            <?php if ($Competition['Competition_Registration'] != 0) { ?>
                 / <?= ml('Competition_PsychSheet.Register') ?>
-        <?php } ?>
-    <?php } ?>     
+            <?php } ?>
+        <?php } ?>     
     </h2>
 
     <?php
@@ -221,18 +226,19 @@ if ($Competition['Competition_DelegateWCAOn']) {
     <table width="100%"><tr><td>     
                 <table class="table_info">
 
-    <?php if (CheckAccess('Competition.Event.Settings', $Competition['Competition_ID'])) { ?>
-        <?php $comment = ml_json($CompetitionEvent['Discipline_Comment']);
-        if ($comment) {
-            ?>
+                    <?php if (CheckAccess('Competition.Event.Settings', $Competition['Competition_ID'])) { ?>
+                        <?php
+                        $comment = ml_json($CompetitionEvent['Discipline_Comment']);
+                        if ($comment) {
+                            ?>
                             <tr>
                                 <td>For delegates</td>
                                 <td> <i class="fas fa-exclamation-circle"></i> <?= $comment; ?></td>
                             </tr>
-        <?php } ?>    
-    <?php } ?>  
+                        <?php } ?>    
+                    <?php } ?>  
 
-    <?php if (CheckAccess('Competition.Event.Settings', $Competition['Competition_ID'])) { ?>
+                    <?php if (CheckAccess('Competition.Event.Settings', $Competition['Competition_ID'])) { ?>
                         <tr>
                             <td><i class="fas fa-cog"></i></td>
                             <td><a href="<?= LinkEvent($CompetitionEvent['Event_ID']) ?>/Settings">Competition event settings</a></td>
@@ -247,15 +253,15 @@ if ($Competition['Competition_DelegateWCAOn']) {
                                 <a target="_blank" href="<?= PageAction('CompetitonEvent.Results.Print') ?>/<?= $CompetitionEvent['Event_ID'] ?>">Print the results</a>
                             </td>
                         </tr>    
-                            <?php } ?>     
-                            <?php if ($CompetitionEvent['Event_Competitors'] != 500) { ?>        
+                    <?php } ?>     
+                    <?php if ($CompetitionEvent['Event_Competitors'] != 500) { ?>        
                         <tr>
                             <td>
-        <?php if ($CompetitionEvent['Discipline_Competitors'] > 1) { ?>
-            <?= ml('Competition.LimitTeam') ?>                
-                        <?php } else { ?>
-                            <?= ml('Competition.LimitCompetitors') ?>
-                        <?php } ?>             
+                                <?php if ($CompetitionEvent['Discipline_Competitors'] > 1) { ?>
+                                    <?= ml('Competition.LimitTeam') ?>                
+                                <?php } else { ?>
+                                    <?= ml('Competition.LimitCompetitors') ?>
+                                <?php } ?>             
                             </td>
                             <td><?= $CompetitionEvent['Event_Competitors'] ?></td>
                         </tr>    
@@ -286,33 +292,33 @@ if ($Competition['Competition_DelegateWCAOn']) {
                     ?> 
 
 
-                            <?php if ($CompetitionEvent['Event_Round'] > 1 and $CompetitionEvent['Event_Competitors'] == 500) { ?>
+                    <?php if ($CompetitionEvent['Event_Round'] > 1 and $CompetitionEvent['Event_Competitors'] == 500) { ?>
                         <tr>
                             <td>
                                 <?php if ($CompetitionEvent['Discipline_Competitors'] > 1) { ?>
-            <?= ml('Competition.LimitTeam') ?>                
+                                    <?= ml('Competition.LimitTeam') ?>                
                                 <?php } else { ?>
                                     <?= ml('Competition.LimitCompetitors') ?>
-        <?php } ?>             
+                                <?php } ?>             
                             </td>    
                             <td>
-        <?= ml('Competition.NextRound', 75) ?>
+                                <?= ml('Competition.NextRound', 75) ?>
                             </td>
                         </tr>
-                            <?php } ?>        
+                    <?php } ?>        
 
                     <tr>
                         <td>
                             <?php if ($CompetitionEvent['Discipline_Competitors'] > 1) { ?>
-        <?= ml('Competition.RegisteredTeam') ?>                
+                                <?= ml('Competition.RegisteredTeam') ?>                
                             <?php } else { ?>
                                 <?= ml('Competition.RegisteredCompetitors') ?>
                             <?php } ?>          
                         </td>
                         <td><?= $countCommands ?>
-    <?php if ($registrartionLimit) { ?>
+                            <?php if ($registrartionLimit) { ?>
                                 <i class="fas fa-hand-paper"></i> <?= ml('Competition.LimitRegistration') ?>
-                    <?php } ?>
+                            <?php } ?>
                         </td>
                     </tr>         
 
@@ -322,7 +328,7 @@ if ($Competition['Competition_DelegateWCAOn']) {
                             <td><?= ml('Competition.TeamEvent') ?></td>
                             <td><?= $CompetitionEvent['Discipline_Competitors'] ?> <?= ml('Competition.CompetitorsTeam') ?></td>
                         </tr>    
-                            <?php } ?> 
+                    <?php } ?> 
                     <tr>
                         <td><?= ml('Competition.Format') ?></td>
                         <td>
@@ -334,32 +340,32 @@ if ($Competition['Competition_DelegateWCAOn']) {
                             <?php } ?>
                             <?php if ($CompetitionEvent['Format_Result'] == 'Best') { ?>
                                 <?= ml('Competition.Best') ?> <?= $CompetitionEvent['Format_Attemption'] ?> 
-    <?php } ?>
-                    <?php if ($CompetitionEvent['Format_Result'] == 'Sum') { ?>
-                        <?= ml('Competition.Sum') ?> <?= $CompetitionEvent['Format_Attemption'] ?> 
-    <?php } ?>
+                            <?php } ?>
+                            <?php if ($CompetitionEvent['Format_Result'] == 'Sum') { ?>
+                                <?= ml('Competition.Sum') ?> <?= $CompetitionEvent['Format_Attemption'] ?> 
+                            <?php } ?>
                         </td>
                     </tr>         
-                            <?php if ($CompetitionEvent['Event_CutoffMinute'] + $CompetitionEvent['Event_CutoffSecond'] > 0) { ?>
+                    <?php if ($CompetitionEvent['Event_CutoffMinute'] + $CompetitionEvent['Event_CutoffSecond'] > 0) { ?>
                         <tr>
                             <td><?= ml('Competition.Cutoff') ?></td>
                             <td>
-                        <?= $CompetitionEvent['Event_CutoffMinute'] ?> <?= ml('Competition.Minutes') ?> 
-        <?= $CompetitionEvent['Event_CutoffSecond'] ?> <?= ml('Competition.Seconds') ?>
+                                <?= $CompetitionEvent['Event_CutoffMinute'] ?> <?= ml('Competition.Minutes') ?> 
+                                <?= $CompetitionEvent['Event_CutoffSecond'] ?> <?= ml('Competition.Seconds') ?>
                             </td>
                         </tr>         
-                            <?php } ?>
+                    <?php } ?>
                     <tr>
                         <td>
                             <?php if ($CompetitionEvent['Event_Cumulative']) { ?>
-        <?= ml('Competition.CumulativeLimit') ?>
+                                <?= ml('Competition.CumulativeLimit') ?>
                             <?php } else { ?>
                                 <?= ml('Competition.Limit') ?>
                             <?php } ?>
                         </td>
                         <td>
-                    <?= $CompetitionEvent['Event_LimitMinute'] ?> <?= ml('Competition.Minutes') ?> 
-    <?= $CompetitionEvent['Event_LimitSecond'] ?> <?= ml('Competition.Seconds') ?>
+                            <?= $CompetitionEvent['Event_LimitMinute'] ?> <?= ml('Competition.Minutes') ?> 
+                            <?= $CompetitionEvent['Event_LimitSecond'] ?> <?= ml('Competition.Seconds') ?>
                         </td>
                     </tr>   
                     <?php if ($comment = Parsedown(ml_json($CompetitionEvent['Event_Comment']), false)) { ?>
@@ -367,31 +373,32 @@ if ($Competition['Competition_DelegateWCAOn']) {
                             <td><?= ml('Competition.Information') ?></td>
                             <td style="word-wrap: normal"><?= $comment ?></td>
                         </tr>
-    <?php } ?>
+                    <?php } ?>
                     <?php if ($CompetitionEvent['Event_ScramblePublic']) { ?>
                         <tr>
                             <td><i class="fas fa-random"></i></td>
                             <td><a href="<?= PageIndex() ?>Scramble/<?= $CompetitionEvent['Event_ScramblePublic'] ?>" target="_blank"><?= ml('Competition_Results.ScrambleShare') ?></a> </td>
                         </tr>    
-    <?php } ?>
+                    <?php } ?>
 
 
-                            <?php if ($isRegisterOpen) { ?>        
+                    <?php if ($isRegisterOpen) { ?>        
                         <tr>
                             <td> <?= ml('Competition.Person') ?></td>
                             <td>
                                 <?php if (!$Competitor) { ?>
                                     <a href="<?= GetUrlWCA(); ?>"><i class="fas fa-sign-in-alt"></i> <?= ml('Competitor.SignIn') ?></a>
-                        <?php } else { ?>
-                            <?= Short_Name($Competitor->name); ?>
-                        <?php } ?>
+                                <?php } else { ?>
+                                    <?= Short_Name($Competitor->name); ?>
+                                <?php } ?>
                             </td>    
                         </tr>         
-    <?php } ?>        
+                    <?php } ?>        
 
-    <?php $err = GetMessage("RegistrationError");
-    if ($err) {
-        ?>
+                    <?php
+                    $err = GetMessage("RegistrationError");
+                    if ($err) {
+                        ?>
                         <tr>
                             <td></td>
                             <td><?= svg_red() ?> <?= $err ?></td>
@@ -412,61 +419,75 @@ if ($Competition['Competition_DelegateWCAOn']) {
                                 $RegisterID = false;
                             }
                             ?>        
-        <?php if ($isTeamPartly and ! $RegisterID) { ?>
+                            <?php if ($isTeamPartly and!$RegisterID) { ?>
                             <tr>
                                 <td><?= ml('CompetitionEvent.SelfRegistration.Team.Submit', false) ?></td>
                                 <td>
                                     <form method="POST" action="<?= PageAction('CompetitionEvent.SelfRegistration.Add') ?>"> 
                                         <input name="ID" type="hidden" value="<?= $CompetitionEvent['Event_ID'] ?>" />
                                         <i class="fas fa-lock"></i> <input type="text" required style="width: 100px;" placeholder="<?= ml('CompetitionEvent.SelfRegistration.Team.Placeholder', false) ?>" name="Secret" >
-                                        <button><i class="fas fa-sm fa-user-plus"></i> join</button>
-            <?php $err = GetMessage("CompetitionRegistrationKey");
-            if ($err) {
-                ?>
+                                        <?php if ($Competitor->ban->ban) { ?>
+                                            <span class="error">
+                                                <i class="fas fa-user-slash"></i>
+                                                You are banned
+                                                <p><?= $Competitor->ban->reason ?></p>  
+                                            </span> 
+                                        <?php } else { ?>
+                                            <button><i class="fas fa-sm fa-user-plus"></i> join</button>
+                                        <?php } ?>
+                                        <?php
+                                        $err = GetMessage("CompetitionRegistrationKey");
+                                        if ($err) {
+                                            ?>
                                             <p><?= svg_red() ?> <?= $err ?></p>
-                            <?php } ?>        
+                                        <?php } ?>        
                                     </form>      
                                 </td>        
                             </tr>
-                            </script>
-        <?php } ?>                
+                        <?php } ?>                
 
-                                    <?php if ($isRegisterOpen and ! $RegisterID) { ?>
+                        <?php if ($isRegisterOpen and!$RegisterID) { ?>
                             <form method="POST" action="<?= PageAction('CompetitionEvent.SelfRegistration.Add') ?>"> 
                                 <input name="ID" type="hidden" value="<?= $CompetitionEvent['Event_ID'] ?>" />
                                 <tr>
                                     <td><?= ml('Competition.Registration') ?></td>
                                     <td>
-            <?php if ($CompetitionEvent['Discipline_Competitors'] == 1) { ?>
+                                        <?php if ($Competitor->ban->ban) { ?>
+                                            <span class="error">
+                                                <i class="fas fa-user-slash"></i>
+                                                You are banned
+                                                <p><?= $Competitor->ban->reason ?></p>  
+                                            </span> 
+                                        <?php } elseif ($CompetitionEvent['Discipline_Competitors'] == 1) { ?>
                                             <button><i class="fas fa-user-check"></i> <?= ml('Competition.Register'); ?></button>
-                            <?php } else { ?>
+                                        <?php } else { ?>
                                             <button><i class="fas fa-sm fa-user-friends"></i> <?= ml('Competition.Create'); ?></button>
-                            <?php } ?>    
+                                        <?php } ?>    
                                     </td>    
                                 </tr>    
                             </form>
-        <?php } ?>
-                                <?php if ($RegisterID) { ?>
-                                    <?php if ($CompetitionEvent['Discipline_Competitors'] != $RegisterCompetitiorTeam) { ?>
-                                        <?php if ($isRegisterOpen) { ?>
+                        <?php } ?>
+                        <?php if ($RegisterID) { ?>
+                            <?php if ($CompetitionEvent['Discipline_Competitors'] != $RegisterCompetitiorTeam) { ?>
+                                <?php if ($isRegisterOpen) { ?>
                                     <tr>
                                         <td><?= ml('Competition.Registration') ?></td>
                                         <td>
                                             <i class="fas fa-hourglass-half"></i> <?= ml('Competition.WaitTeam') ?>
-                    <?php for ($i = $CompetitionEvent['Discipline_Competitors'] - $RegisterCompetitiorTeam; $i < $CompetitionEvent['Discipline_Competitors']; $i++) { ?>    
+                                            <?php for ($i = $CompetitionEvent['Discipline_Competitors'] - $RegisterCompetitiorTeam; $i < $CompetitionEvent['Discipline_Competitors']; $i++) { ?>    
                                                 <i class="fas fa-user"></i>
-                    <?php } ?>    
+                                            <?php } ?>    
                                             <?php for ($i = 0; $i < $CompetitionEvent['Discipline_Competitors'] - $RegisterCompetitiorTeam; $i++) { ?>
                                                 <i class="far fa-user"></i>
-                    <?php } ?>
+                                            <?php } ?>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
-                                    <?= ml('CompetitionEvent.SelfRegistration.Team.Key') ?>
+                                            <?= ml('CompetitionEvent.SelfRegistration.Team.Key') ?>
                                         </td>
                                         <td>
-                    <?= ml('Competition.PassTeammate') ?><br>
+                                            <?= ml('Competition.PassTeammate') ?><br>
                                             <i class="fas fa-key"></i> <?= $competitorevent_row['Command_Secret'] ?>
                                         </td>
                                     </tr>    
@@ -475,19 +496,18 @@ if ($Competition['Competition_DelegateWCAOn']) {
                                         <td><?= ml('Competition.Registration') ?></td>
                                         <td><?= svg_red() ?> <?= ml('Competition.TeamIncomplete') ?></td>
                                     </tr>
-                <?php } ?>
+                                <?php } ?>
                             <?php } else { ?>
                                 <tr>
                                     <td><?= ml('Competition.Registration') ?></td>
                                     <td>
-                                <?= svg_green() ?> <?= ml('Competition.Complete') ?>
+                                        <?= svg_green() ?> <?= ml('Competition.Complete') ?>
                                     </td>
                                 </tr>
-            <?php } ?>        
-        <?php } ?>
+                            <?php } ?>        
+                        <?php } ?>
 
-        <?php if ($isRegisterOpen and $RegisterID) { ?>
-
+                        <?php if ($isRegisterOpen and $RegisterID) { ?>
                             <tr>
                                 <td><?= ml('Competition.CancelRegistration') ?></td>
                                 <td>
@@ -497,11 +517,11 @@ if ($Competition['Competition_DelegateWCAOn']) {
                                     </form>
                                 </td>
                             </tr>
-        <?php } ?>
-    <?php } ?>
+                        <?php } ?>
+                    <?php } ?>
                 </table>    
             </td><td>    
-    <?= EventBlockLinks($CompetitionEvent); ?>
+                <?= EventBlockLinks($CompetitionEvent); ?>
             </td></tr></table> 
 
     <?php
