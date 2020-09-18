@@ -2,9 +2,9 @@
 
 class ban {
 
-    const VERSION = '1.1.0';
-    const SESSION_NAME='ban.ban_user';
- 
+    const VERSION = '1.1.1';
+    const SESSION_NAME = 'ban.ban_user';
+
     public static function add_db($connection, $wcaid, $reason, $start_date, $end_date) {
         $wcaid_escape = strtoupper(mysqli_real_escape_string($connection, $wcaid));
         $reason_escape = mysqli_real_escape_string($connection, $reason);
@@ -25,8 +25,8 @@ class ban {
         mysqli_query($connection, $query);
     }
 
-    public static function get_db($connection,$wcaid) {
-        if(!$wcaid){
+    public static function get_db($connection, $wcaid) {
+        if (!$wcaid) {
             return FALSE;
         }
         $wcaid_escape = strtoupper(mysqli_real_escape_string($connection, $wcaid));
@@ -44,23 +44,26 @@ class ban {
         return $result->fetch_assoc();
     }
 
-    public static function is_ban(){
+    public static function is_ban() {
         return $_SESSION[self::SESSION_NAME] ?? FALSE != FALSE;
     }
-    
-    public static function get_data(){
+
+    public static function get_data() {
         return $_SESSION[self::SESSION_NAME] ?? FALSE;
     }
-    
-    public static function clear_data(){
+
+    public static function clear_data() {
         unset($_SESSION[self::SESSION_NAME]);
     }
-    
-    public static function set_data($connection, $wcaid, $competitor){
-        $_SESSION[self::SESSION_NAME] = self::get_db($connection, $wcaid);
-        $_SESSION[self::SESSION_NAME]['competitor'] = $competitor;
+
+    public static function set_data($connection, $wcaid, $competitor) {
+        $ban_db = self::get_db($connection, $wcaid);
+        if ($ban_db) {
+            $_SESSION[self::SESSION_NAME] = $ban_db;
+            $_SESSION[self::SESSION_NAME]['competitor'] = $competitor;
+        }
     }
-    
+
     public static function init($connection) {
         $queries = [];
         $errors = [];
