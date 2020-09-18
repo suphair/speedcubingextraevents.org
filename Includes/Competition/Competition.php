@@ -426,15 +426,7 @@ if ($Competition['Competition_DelegateWCAOn']) {
                                     <form method="POST" action="<?= PageAction('CompetitionEvent.SelfRegistration.Add') ?>"> 
                                         <input name="ID" type="hidden" value="<?= $CompetitionEvent['Event_ID'] ?>" />
                                         <i class="fas fa-lock"></i> <input type="text" required style="width: 100px;" placeholder="<?= ml('CompetitionEvent.SelfRegistration.Team.Placeholder', false) ?>" name="Secret" >
-                                        <?php if ($Competitor->ban->ban) { ?>
-                                            <span class="error">
-                                                <i class="fas fa-user-slash"></i>
-                                                You are banned
-                                                <p><?= $Competitor->ban->reason ?></p>  
-                                            </span> 
-                                        <?php } else { ?>
-                                            <button><i class="fas fa-sm fa-user-plus"></i> join</button>
-                                        <?php } ?>
+                                        <button><i class="fas fa-sm fa-user-plus"></i> join</button>
                                         <?php
                                         $err = GetMessage("CompetitionRegistrationKey");
                                         if ($err) {
@@ -452,13 +444,7 @@ if ($Competition['Competition_DelegateWCAOn']) {
                                 <tr>
                                     <td><?= ml('Competition.Registration') ?></td>
                                     <td>
-                                        <?php if ($Competitor->ban->ban) { ?>
-                                            <span class="error">
-                                                <i class="fas fa-user-slash"></i>
-                                                You are banned
-                                                <p><?= $Competitor->ban->reason ?></p>  
-                                            </span> 
-                                        <?php } elseif ($CompetitionEvent['Discipline_Competitors'] == 1) { ?>
+                                        <?php if ($CompetitionEvent['Discipline_Competitors'] == 1) { ?>
                                             <button><i class="fas fa-user-check"></i> <?= ml('Competition.Register'); ?></button>
                                         <?php } else { ?>
                                             <button><i class="fas fa-sm fa-user-friends"></i> <?= ml('Competition.Create'); ?></button>

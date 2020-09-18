@@ -17,10 +17,6 @@ function getObjCompetitor($wcaid = false) {
     }
 
     if ($competitor) {
-        $ban_class = new ban(DataBaseClass::getConection());
-        $ban = $ban_class->get($competitor->wcaid ?? FALSE);
-        $competitor->ban = (object) json_decode($ban);
-
         $competitor->link = PageIndex() . "Competitor/{$competitor->local_id}";
     }
     return $competitor;
@@ -55,11 +51,6 @@ function getCompetitor() {
             $competitor = false;
         }
         $competitor = $_SESSION['Competitor'];
-        if ($competitor) {
-            $ban_class = new ban(DataBaseClass::getConection());
-            $ban = $ban_class->get($competitor->wca_id ?? FALSE);
-            $competitor->ban = (object) json_decode($ban);
-        }
     } else {
         $competitor = false;
     }

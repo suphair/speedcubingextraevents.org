@@ -418,6 +418,11 @@ class RequestClass {
     }
 
     public static function getPage() {
+
+        if (ban::is_ban()) {
+            return 'Ban';
+        }
+
         return self::$page;
     }
 
