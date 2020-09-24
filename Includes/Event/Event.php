@@ -1,5 +1,14 @@
 <?php
 
+$max_attempt = Attempt::MAX_ATTEMPT;
+
+$select_attempts = "";
+$join_attempts = "";
+foreach (range(1, $max_attempt) as $a) {
+    $select_attempts .= "Attemp{$a}.ID attemp{$a}Id, Attemp{$a}.vOut attemp{$a}Out, Attemp{$a}.Except attemp{$a}Except,";
+    $join_attempts .= " left outer join Attempt Attemp{$a} on Attemp{$a}.Command=Attempt.Command and Attemp{$a}.Attempt={$a}";
+}
+
 $sql = "
 select
 Competitor.Name competitorName, Competitor.WCAID competitorWcaid,  Competitor.ID competitorId,
@@ -10,11 +19,7 @@ Continent.Code continentCode,Continent.Name continentName,
 CountryCompetitor.Name countryCompetitorName, CountryCompetitor.ISO2 countryCompetitorCode,
 CountryCompetition.Name countryCompetitionName, CountryCompetition.ISO2 countryCompetitionCode,
 Attempt.vOut attemptOut, Attempt.Special attemptSpecial, Attempt.vOrder attemptOrder,
-Attemp1.ID attemp1Id, Attemp1.vOut attemp1Out, Attemp1.Except attemp1Except,
-Attemp2.ID attemp2Id, Attemp2.vOut attemp2Out, Attemp2.Except attemp2Except,
-Attemp3.ID attemp3Id, Attemp3.vOut attemp3Out, Attemp3.Except attemp3Except,
-Attemp4.ID attemp4Id, Attemp4.vOut attemp4Out, Attemp4.Except attemp4Except,
-Attemp5.ID attemp5Id, Attemp5.vOut attemp5Out, Attemp5.Except attemp5Except,
+$select_attempts
 Competition.Name competitionName, Competition.WCA competitionWca,
 Command.Video video
 from Competitor
@@ -28,12 +33,8 @@ join Attempt on Attempt.Command=Command.ID
 join Country CountryCompetitor on Competitor.Country=CountryCompetitor.ISO2
 join Continent Continent on Continent.Code=CountryCompetitor.Continent
 left outer join Country CountryCompetition on Competition.Country=CountryCompetition.ISO2
-left outer join Attempt Attemp1 on Attemp1.Command=Attempt.Command and Attemp1.Attempt=1
-left outer join Attempt Attemp2 on Attemp2.Command=Attempt.Command and Attemp2.Attempt=2
-left outer join Attempt Attemp3 on Attemp3.Command=Attempt.Command and Attemp3.Attempt=3
-left outer join Attempt Attemp4 on Attemp4.Command=Attempt.Command and Attemp4.Attempt=4
-left outer join Attempt Attemp5 on Attemp5.Command=Attempt.Command and Attemp5.Attempt=5
-
+$join_attempts
+    
 left outer join CommandCompetitor CommandCompetitor2 on CommandCompetitor2.Command=Command.ID and CommandCompetitor2.ID!=CommandCompetitor.ID
 left outer join Competitor Competitor2 on Competitor2.ID = CommandCompetitor2.Competitor and Competitor.ID!=Competitor2.ID
 
@@ -114,20 +115,11 @@ foreach ($rows_uniq as $c => $row) {
     $competitor['team']['video'] = $row['video'];
 
     $competitor['team']['attempts'] = [];
-    if ($row['attemp1Id']) {
-        $competitor['team']['attempts'][] = ['except' => $row['attemp1Except'], 'out' => $row['attemp1Out']];
-    }
-    if ($row['attemp2Id']) {
-        $competitor['team']['attempts'][] = ['except' => $row['attemp2Except'], 'out' => $row['attemp2Out']];
-    }
-    if ($row['attemp3Id']) {
-        $competitor['team']['attempts'][] = ['except' => $row['attemp3Except'], 'out' => $row['attemp3Out']];
-    }
-    if ($row['attemp4Id']) {
-        $competitor['team']['attempts'][] = ['except' => $row['attemp4Except'], 'out' => $row['attemp4Out']];
-    }
-    if ($row['attemp5Id']) {
-        $competitor['team']['attempts'][] = ['except' => $row['attemp5Except'], 'out' => $row['attemp5Out']];
+
+    foreach (range(1, $max_attempt) as $a) {
+        if ($row["attemp{$a}Id"]) {
+            $competitor['team']['attempts'][] = ['except' => $row["attemp{$a}Except"], 'out' => $row["attemp{$a}Out"]];
+        }
     }
 
     $competitor['team']['competitors'] = [];

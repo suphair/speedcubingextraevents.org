@@ -4,6 +4,8 @@ Class Attempt {
 
     CONST SINGLE = 'single';
     CONST AVERAGE = 'average';
+    CONST SUM = 'sum';
+    CONST MAX_ATTEMPT = 11;
 
     public $out = false;
     public $team = false;
@@ -43,15 +45,15 @@ Class Attempt {
         $attempt = Attempt_data::getByTeamIdNumber($teamId, $number);
         if ($attempt and $attempt != new stdClass()) {
             $this->out = $attempt->out;
-            if($attempt->isDnf){
-               $this->time = 'DNF'; 
-            }elseif($attempt->isDns){
+            if ($attempt->isDnf) {
+                $this->time = 'DNF';
+            } elseif ($attempt->isDns) {
                 $this->time = 'DNS';
-            }else{
-                $this->time = sprintf("%d:%'.02d.%'.02d", $attempt->minute, $attempt->second,$attempt->millisecond);
+            } else {
+                $this->time = sprintf("%d:%'.02d.%'.02d", $attempt->minute, $attempt->second, $attempt->millisecond);
             }
             $this->except = $attempt->except;
-            $this->amount = (int)$attempt->amount;
+            $this->amount = (int) $attempt->amount;
         }
     }
 

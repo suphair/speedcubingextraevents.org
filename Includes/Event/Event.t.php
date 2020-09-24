@@ -115,8 +115,8 @@
                     Solves
                 </td>
             <?php } ?>
-            <?php if ($data->filter->format->value == 'Sum') { ?>
-                <?php if ($event->codes) { ?>                
+            <?php if ($data->event->codeScript == 'all_scr') { ?>
+                <?php if ($data->event->codes) { ?>                
                     <?php for ($i = 0; $i < $data->event->attemptionCount; $i++) { ?>
                         <td class="table_new_center">             
                             <span class=" cubing-icon event-<?= $data->event->codes[$i] ?>"></span>
@@ -165,8 +165,7 @@
                         <?= $competitor->team->competitionEvent->competition->name ?>
                     </a>
                 </td>
-
-                <?php if ($data->filter->format->value == Attempt::AVERAGE) { ?>
+                <?php if ($data->filter->format->value == Attempt::AVERAGE or $data->event->codeScript == 'all_scr') { ?>
                     <?php foreach ($competitor->team->attempts as $attempt) { ?>
                         <td class='table_new_attempt'
                             data-attempt-except='<?= $attempt->except ?>'>
