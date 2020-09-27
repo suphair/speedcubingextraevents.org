@@ -1,6 +1,6 @@
 <?php
 $requests = getRequest();
-if (!isset($requests[2]) or ! is_numeric($requests[2])) {
+if (!isset($requests[2]) or!is_numeric($requests[2])) {
     echo 'Wrong event ID';
     exit();
 } else {
@@ -26,7 +26,7 @@ DataBaseClass::Join('DisciplineFormat', 'Format');
 Databaseclass::Join('Event', 'Competition');
 $data = Databaseclass::QueryGenerate(false);
 
-if (!$data['Discipline_GlueScrambles'] or ! $data['Discipline_TNoodles']) {
+if (!$data['Discipline_GlueScrambles'] or!$data['Discipline_TNoodles']) {
     exit();
 }
 ?>
@@ -67,7 +67,7 @@ $link = "http://localhost:2014/scramble-legacy/#competitionName=" . $FileName . 
         implode("_", $event_requests)
         . "!&version=1.0";
 ?>
-1. Prepare TNoodle WCA Scrambler according to the <a target="_blank" href="https://www.worldcubeassociation.org/regulations/scrambles/">instructions</a><br><br>    
+1. Prepare TNoodle WCA Scrambler {TNoodle-WCA-0.15.1} according to the <a target="_blank" href="https://www.worldcubeassociation.org/regulations/scrambles/">instructions</a><br><br>    
 2. Click the button "<b>Sramble!</b>" in the <a target="_blank" href="<?= $link ?>">TNoodle WCA Scrambler</a> (open at this link).
 Using <?= $Pages_event ?> <?= $Pages_event == 1 ? 'page' : "pages" ?> for each events <?= $data['Discipline_TNoodles'] ?> <?= $data['Discipline_TNoodlesMult'] > 1 ? (' * ' . $data['Discipline_TNoodlesMult']) : '' ?>.
 <br><br>
