@@ -13,7 +13,7 @@ function random_string($length) {
 }
 
 function PageIndex() {
-    return "//" . $_SERVER['HTTP_HOST'] . str_replace("index.php", "", $_SERVER['PHP_SELF']);
+    return "//" . $_SERVER['HTTP_HOST'] . str_replace("/index.php", "", $_SERVER['PHP_SELF']);
 }
 
 function PageAction($file) {
