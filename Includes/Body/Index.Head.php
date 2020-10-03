@@ -8,4 +8,4 @@
 
 <script src="<?= PageIndex(); ?>jQuery/jquery-3.4.1.min.js" type="text/javascript"></script>
 <script src="<?= PageIndex(); ?>jQuery/chosen_v1/chosen.jquery.js" type="text/javascript"></script>
-<script src="<?= PageLocal() ?>jQuery/maskedinput/jquery.maskedinput.js?4" type="text/javascript"></script>
+<script src="<?= PageIndex(); ?>jQuery/maskedinput/jquery.maskedinput.js?4" type="text/javascript"></script>
