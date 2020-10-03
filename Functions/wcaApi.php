@@ -142,3 +142,12 @@ function logUseWcaApi($request,$response,$method,$context)
     $context=DataBaseClass::Escape($context);
     DataBaseClass::Query("Insert into LogWcaApi (request,response,method,context) values ('$request','$response','$method','$context')");    
 }
+
+function getTnoodleVersion($context)
+{
+    $contents = file_get_contents_curl("https://www.worldcubeassociation.org/api/v0/scramble-program"); 
+    $scramble_info=json_decode($contents);
+    
+    logUseWcaApi('', json_encode($scramble_info),'scramble-program',$context);
+    return $scramble_info;
+}

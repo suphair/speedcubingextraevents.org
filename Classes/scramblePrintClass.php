@@ -7,22 +7,22 @@ class ScramblePrint {
     const LETTER = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'];
 
     public static function getPDF(
-            $competition_name
-            , $scrambles
-            , $event_codeScript
-            , $event_scrambleComment
-            , $event_name
-            , $event_isCup
-            , $event_isCut
-            , $view_round
-            , $attemptions
+    $competition_name
+    , $scrambles
+    , $event_codeScript
+    , $event_scrambleComment
+    , $event_name
+    , $event_isCup
+    , $event_isCut
+    , $view_round
+    , $attemptions
     ) {
 
         $rand = random_string(20);
         $dir = "Scramble/ScramblePrintTmp/$rand";
         mkdir($dir);
 
-        $Scramble_Timestamp = date("Y-m-d H:i:s");
+        $timestamp_pdf = date("Y-m-d H:i:s (P)");
 
         $Y_Content_S = 33;
         $Y_Content_E = 275;
@@ -69,19 +69,28 @@ class ScramblePrint {
             }
 
             //Header
-            $pdf->SetFont('Arial', '', 24);
+            $pdf->SetFont('Arial', '', 22);
             $pdf->Text(10, 13, $event_name . $view_round);
             $pdf->SetFont('Arial', '', 16);
-            $pdf->Text(10, 20, 'Group ' . self::LETTER[$group]);
+            if ($event_isCup) {
+                if ($group + 1 == sizeof($scrambles)) {
+                    $pdf->Text(10, 20, 'Duel Extra');
+                } else {
+                    $pdf->Text(10, 20, 'Duel # ' . ($group + 1));
+                }
+            } else {
+                $pdf->Text(10, 20, 'Group ' . self::LETTER[$group]);
+            }
             $pdf->Text(10, 27, $competition_name);
 
             //Footer
             $pdf->SetFont('Arial', '', 10);
             $pdf->SetTextColor(0, 0, 0);
-            $pdf->Text(10, 286, $Scramble_Timestamp);
+            $pdf->Text(10, 286, $timestamp_pdf . ' #' . $pdf->PageNo());
             $Y = $Y_Content_S;
 
             foreach ($group_scrambles as $attempt => $scramble) {
+                $page = 1;
                 $im = ScrambleImage($scramble);
                 $filename = "$dir/{$group}_{$attempt}.png";
                 imagePNG($im, $filename);
@@ -90,7 +99,7 @@ class ScramblePrint {
 
                 $y0 = 43;
 
-                if ($attempt == $attemptions +1  and!$event_isCup) {
+                if ($attempt == $attemptions + 1 and ! $event_isCup) {
                     $pdf->SetFont('Arial', '', 12);
                     $pdf->SetFillColor(230, 230, 230);
                     $pdf->Rect(17, $Y, $X_IMG_1 - 17, 6, 'DF');
@@ -162,15 +171,15 @@ class ScramblePrint {
                         $scramble_row = 1;
 
                     if ($event_isCup) {
-                        $scramble_size = 12;
-                        $scramble_row = 2;
+                        $scramble_size = 11;
+                        $scramble_row = 1;
                     }
 
                     $r = [];
                     for ($i = 1; $i < $scramble_row; $i++) {
                         $r[$i] = ceil($scramble_len / $scramble_row * $i);
                         while (substr($scramble, $r[$i], 1) != " ") {
-                            $r[$i]--;
+                            $r[$i] --;
                         }
                     }
                     $r[$scramble_row] = $scramble_len;
@@ -211,7 +220,7 @@ class ScramblePrint {
                 if ($D_Att < 33)
                     $D_Att = 33;
                 if ($event_isCup)
-                    $D_Att = 20;
+                    $D_Att = 16;
 
                 $t = 0;
                 if (sizeof($texts) == 1) {
@@ -228,7 +237,11 @@ class ScramblePrint {
                         $pdf->SetFillColor(230, 230, 230);
                         $pdf->Rect(17, $Y + $D_Att / $scramble_row * ($r + 1) - $scramble_size / 2 - 2 + $t, $X_IMG_0 - 10, $scramble_size / 2, 'F');
                     }
-                    $pdf->Text(20, $Y + $D_Att / $scramble_row * ($r + 1) - $scramble_size * .3 + $t, $text);
+                    if (!$event_isCup) {
+                        $pdf->Text(20, $Y + $D_Att / $scramble_row * ($r + 1) - $scramble_size * .3 + $t, $text);
+                    } else {
+                        $pdf->Text(20, $Y + $D_Att / 2, $text);
+                    }
                 }
 
                 $pdf->SetFont('times', 'B', 16);
@@ -239,7 +252,7 @@ class ScramblePrint {
                         $pdf->Text(8, $Y + $D_Att / 2, self::LETTER[$group] . "" . ($attempt ));
                     }
                 } else {
-                    if ($attempt > $attemptions and!$event_isCup) {
+                    if ($attempt > $attemptions and ! $event_isCup) {
                         $pdf->Text(10, $Y + $D_Att / 2, "E" . ($attempt - $attemptions));
                     } else {
                         if ($event_isCup) {
@@ -267,14 +280,18 @@ class ScramblePrint {
                     $pdf->AddPage();
                     $pdf->SetFont('Arial', '', 10);
                     $pdf->SetTextColor(0, 0, 0);
-                    $pdf->Text(10, 286, $Scramble_Timestamp);
+                    $pdf->Text(10, 286, $timestamp_pdf . ' #' . $pdf->PageNo());
                     $Y = $Y_Content_S;
 
                     $pdf->SetFont('Arial', '', 24);
                     $pdf->Text(10, 13, $event_name . $view_round);
                     $pdf->Text(170, 13, "Page $page");
                     $pdf->SetFont('Arial', '', 16);
-                    $pdf->Text(10, 20, 'Group ' . self::LETTER[$group]);
+                    if ($event_isCup) {
+                        $pdf->Text(10, 20, 'Duel # ' . ($group + 1));
+                    } else {
+                        $pdf->Text(10, 20, 'Group ' . self::LETTER[$group]);
+                    }
                     $pdf->Text(10, 27, $competition_name);
                 }
             }

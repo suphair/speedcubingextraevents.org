@@ -23,11 +23,11 @@ $pdf = ScramblePrint::getPDF(
                 , $competition_event->attemptions);
 
 $rand = random_string(20);
-$Scramble_Timestamp = date("Y-m-d H:i:s");
+$timestamp_sql = date("Y-m-d H:i:s");
 DataBaseClass::Query("Update Event set ScrambleSalt='$rand' where ID='" . $competition_event->id . "'");
 $file = "Image/Scramble/$rand.pdf";
 $pdf->Output($file, 'F');
 $pdf->Close();
-DataBaseClass::Query("Insert into ScramblePdf (Event,Secret,Delegate,Timestamp, Action) values ('" . $competition_event->id . "','$rand','" . getDelegate()['Delegate_ID'] . "','$Scramble_Timestamp','Generation')");
+DataBaseClass::Query("Insert into ScramblePdf (Event,Secret,Delegate,Timestamp, Action) values ('" . $competition_event->id . "','$rand','" . getDelegate()['Delegate_ID'] . "','$timestamp_sql','Generation')");
 header('Location: ' . PageIndex() . "Scramble/" . $competition_event->id);
 exit();
