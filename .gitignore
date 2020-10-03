@@ -21,3 +21,4 @@ config.ini
 /Classes/errors/
 /Config/
 /.well-known/
+/Scramble/ScramblePrintTmp/
