@@ -82,7 +82,6 @@ foreach (explode(",", $see_option->tnoodles . $see_option->tnoodle) as $tnoodle)
     ];
 
     while ($wca_option->groups > 26) {
-        $round++;
         $wca_option_add = clone $wca_option;
         $wca_option_add->groups = 26;
         $wca_options[] = $wca_option_add;
