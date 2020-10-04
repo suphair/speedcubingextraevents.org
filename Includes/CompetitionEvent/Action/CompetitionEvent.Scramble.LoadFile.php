@@ -1,5 +1,4 @@
 <?php
-
 $scrs = json_decode(file_get_contents($_FILES['file']['tmp_name']), true);
 
 $see_option = json_decode($_POST['see_option'], false);
@@ -18,24 +17,12 @@ foreach ($scrs['wcif']['events'] as $event) {
     }
 }
 
-#DataBaseClass::FromTable("Event", "ID=$ID");
-#$row = DataBaseClass::QueryGenerate(false);
-
 if (isset($row['Event_Competition'])) {
     $Competition = $row['Event_Competition'];
 } else {
     $Competition = -1;
 }
 RequestClass::CheckAccessExit(__FILE__, 'Competition.Settings', $Competition);
-
-
-#Databaseclass::FromTable('Event', "ID='$ID'");
-#Databaseclass::Join_current('DisciplineFormat');
-#Databaseclass::Join_current('Discipline');
-#Databaseclass::Join('DisciplineFormat', 'Format');
-#Databaseclass::Join('Event', 'Competition');
-#$data = Databaseclass::QueryGenerate(false);
-#$Discipline = $data['Discipline_Code'];
 
 $r = 0;
 
@@ -79,7 +66,9 @@ if ($see_option->cup) {
 
     DataBaseClass::Query("Update Event set scrambles = '" . DataBaseClass::Escape(json_encode($scrambles)) . "' WHERE ID = $see_option->id ");
     SetMessage();
-    header('Location: ' . PageAction('CompetitionEvent.Scramble.Print') . "/" . $see_option->id);
+    
+    $date = filter_input(INPUT_POST, 'date');
+    header('Location: ' . PageAction('CompetitionEvent.Scramble.Print') . "/" . $see_option->id. "/?date=" . $date);
     exit();
 }
 
@@ -100,5 +89,6 @@ DataBaseClass::Query("Update Event set scrambles = '" . DataBaseClass::Escape(js
 
 
 SetMessage();
-header('Location: ' . PageAction('CompetitionEvent.Scramble.Print') . "/" . $see_option->id);
+    $date = filter_input(INPUT_POST, 'date');
+    header('Location: ' . PageAction('CompetitionEvent.Scramble.Print') . "/" . $see_option->id. "/?date=" . $date);
 exit();

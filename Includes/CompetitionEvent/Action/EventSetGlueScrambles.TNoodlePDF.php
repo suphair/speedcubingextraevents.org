@@ -9,7 +9,7 @@ if ($_FILES['file']['error'] == 0 and $_FILES['file']['type'] == 'application/pd
     RequestClass::CheckAccessExit(__FILE__, 'Competition.Settings', $see_option->competition_id);
 
     $timestamp_sql = date("Y-m-d H:i:s");
-    $timestamp_pdf = date("Y-m-d H:i:s (P)");
+    $timestamp_pdf = filter_input(INPUT_POST, 'date');
 
     $pdf_file = $_FILES['file']['tmp_name'];
     $rand = random_string(20);

@@ -12,7 +12,7 @@
             <i class='fas fa-cog'></i>
         </td>
         <td data-selected-condition='settings'>
-            <a href='<?= "{$data->pageIndex}Event/{$data->code}/Settings" ?>'>
+            <a href='<?= "{$data->pageIndex}/Event/{$data->code}/Settings" ?>'>
                 Main event setting
             </a>
         </td>
@@ -22,7 +22,7 @@
             <i class='fas fa-book'></i>
         </td>
         <td data-selected-condition='regulations'>
-            <a href='<?= "{$data->pageIndex}Regulations/{$data->code}" ?>'>
+            <a href='<?= "{$data->pageIndex}/Regulations/{$data->code}" ?>'>
                 <?= ml('Competition.Regulation'); ?>
             </a>
         </td>
@@ -32,7 +32,7 @@
             <i class='fas fa-trophy'></i>
         </td>
         <td data-selected-condition='records'>
-            <a href='<?= "{$data->pageIndex}Records/?event={$data->code}" ?>'>
+            <a href='<?= "{$data->pageIndex}/Records/?event={$data->code}" ?>'>
                 <?= ml('Event.Records'); ?>
             </a>
         </td>
@@ -42,7 +42,7 @@
             <i class='fas fa-signal fa-rotate-90'></i>
         </td>
         <td data-selected-condition='rankings'>
-            <a href='<?= "{$data->pageIndex}Event/{$data->code}" ?>'>
+            <a href='<?= "{$data->pageIndex}/Event/{$data->code}" ?>'>
                 <?= ml('Competition.Rankings'); ?>
             </a>
         </td>    
@@ -63,7 +63,7 @@
                 <i class='fas fa-random'></i>
             </td>
             <td data-selected-condition='training'>
-                <a href='<?= "{$data->pageIndex}Event/{$data->code}" ?>/Training'>
+                <a href='<?= "{$data->pageIndex}/Event/{$data->code}" ?>/Training'>
                     <?= ml('TrainingScrambling.Title') ?>
                 </a>
             </td>            

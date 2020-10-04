@@ -515,7 +515,9 @@ if ($error) {
                     <td class="table_new_right"><?= $losts ? $losts : ''; ?></td>
                     <td class="table_new_left">
                         <?php if ($LinkScrambes = GetLinkScrambes($event)) { ?>
-                            <a target="_blank" href="<?= $LinkScrambes ?>/<?= $event['Event_ID'] ?>"><i title="Generate scrambles" class="fas fa-random"></i></a>
+                            <a target="_blank" data-add-date href="<?= $LinkScrambes ?>/<?= $event['Event_ID'] ?>">
+                                <i title="Generate scrambles" class="fas fa-random"></i>
+                            </a>
                         <?php } ?>
                         <?php if (isset($scrambles[$event['Event_ID']])) { ?>
                             <?= $scrambles[$event['Event_ID']]['Timestamp'] ?>

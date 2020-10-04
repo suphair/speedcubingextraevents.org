@@ -230,7 +230,7 @@ $scramble_allowed = json_encode($scramble_info->allowed);
 <h3>Step 3. Unpack the downloaded archive</h3>
 <h3>Step 4. Upload <?= $see_option->format ?> file</h3>
 [ <?= $upload_instructions[$see_option->format] ?> ]
-<form name="EventSetScrambleFile" enctype="multipart/form-data" method="POST" action="<?= PageAction($upload_action[$see_option->format]) ?>">           
+<form name="EventSetScrambleFile" data-add-date enctype="multipart/form-data" method="POST" action="<?= PageAction($upload_action[$see_option->format]) ?>">           
     <input type="file" required="" accept="application/<?= strtolower($see_option->format) ?>" name="file" multiple="false"/>
     <input name="ID" type="hidden" value="<?= $see_option->id ?>" />
     <button>Upload <?= $see_option->format ?></button> 
@@ -238,3 +238,5 @@ $scramble_allowed = json_encode($scramble_info->allowed);
     <input hidden value='<?= json_encode($wca_options) ?>' name='wca_options'>
     <input hidden value='<?= json_encode($data_tnoodle) ?>' name='data_tnoodle'>
 </form>     
+
+<script src='<?= PageIndex() ?>/index.js'></script>

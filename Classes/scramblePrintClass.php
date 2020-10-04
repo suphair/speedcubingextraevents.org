@@ -16,13 +16,15 @@ class ScramblePrint {
     , $event_isCut
     , $view_round
     , $attemptions
+    ,$timestamp_pdf=false
     ) {
 
         $rand = random_string(20);
         $dir = "Scramble/ScramblePrintTmp/$rand";
         mkdir($dir);
-
+if(!$timestamp_pdf){
         $timestamp_pdf = date("Y-m-d H:i:s (P)");
+}
 
         $Y_Content_S = 33;
         $Y_Content_E = 275;

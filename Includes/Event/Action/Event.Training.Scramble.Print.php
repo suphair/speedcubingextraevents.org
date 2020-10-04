@@ -37,7 +37,8 @@ $pdf = ScramblePrint::getPDF(
                 , $event->isCup
                 , $event->isCut
                 , ''
-                , $attemptions);
+                , $attemptions,
+                filter_input(INPUT_POST, 'date'));
 
 $pdf->Output($name . $code . ".pdf");
 $pdf->Close();

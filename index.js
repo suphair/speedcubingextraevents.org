@@ -73,3 +73,26 @@ $('[data-attempt-except]').each(function () {
         $(this).html("\u00A0" + html + "\u00A0");
     }
 });
+
+
+var date = new Date();
+                            var options = {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+  timezone: 'UTC',
+  timeZoneName: 'short',
+  hour: '2-digit',
+  minute: '2-digit',
+  second: '2-digit',
+  hour12: false
+};
+var date_str=date.toLocaleString("en-US", options);
+
+$('a[data-add-date]').click(function () {
+    $(this).attr('href',$(this).attr('href') + '/?date=' + date_str);
+});
+
+$('form[data-add-date]').submit(function () {
+    $(this).append('<input hidden value="' + date_str +'" name="date">');
+});

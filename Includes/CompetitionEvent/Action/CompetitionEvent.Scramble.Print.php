@@ -1,5 +1,4 @@
 <?php
-
 $competition_event_id = Request(2);
 $competition_event = new CompetitionEvent;
 $competition_event->getById($competition_event_id);
@@ -10,7 +9,6 @@ if (!$competition_event->id) {
 RequestClass::CheckAccessExit(__FILE__, 'Competition.Event.Settings', $competition_event->competition->id);
 
 $competition_event->getScrambles();
-
 $pdf = ScramblePrint::getPDF(
                 $competition_event->competition->name
                 , $competition_event->scrambles
@@ -20,7 +18,8 @@ $pdf = ScramblePrint::getPDF(
                 , $competition_event->event->isCup
                 , $competition_event->event->isCut
                 , $competition_event->view_round
-                , $competition_event->attemptions);
+                , $competition_event->attemptions,
+                filter_input(INPUT_GET, 'date'));
 
 $rand = random_string(20);
 $timestamp_sql = date("Y-m-d H:i:s");
