@@ -1,14 +1,14 @@
 <?php
 
 function LinkDiscipline($code) {
-    return PageIndex() . "Event/$code";
+    return PageIndex() . "/Event/$code";
 }
 
 function setLinkEvent($CompetitionWCA, $EventCode, $eventRound) {
     if ($eventRound > 1) {
-        return PageIndex() . "Competition/$CompetitionWCA/$EventCode/$eventRound";
+        return PageIndex() . "/Competition/$CompetitionWCA/$EventCode/$eventRound";
     } else {
-        return PageIndex() . "Competition/$CompetitionWCA/$EventCode";
+        return PageIndex() . "/Competition/$CompetitionWCA/$EventCode";
     }
 }
 
@@ -18,27 +18,27 @@ function LinkEvent($ID) {
     DataBaseClass::Join('Event', 'DisciplineFormat');
     DataBaseClass::Join_current('Discipline');
     $event = DataBaseClass::QueryGenerate(false);
-    return PageIndex() . "Competition/" . $event['Competition_WCA'] . "/" . $event['Discipline_Code'] . "/" . $event['Event_Round'];
+    return PageIndex() . "/Competition/" . $event['Competition_WCA'] . "/" . $event['Discipline_Code'] . "/" . $event['Event_Round'];
 }
 
 function LinkCompetitor($ID, $WCAID = "") {
-    return PageIndex() . "Competitor/" . ($WCAID ? $WCAID : $ID);
+    return PageIndex() . "/Competitor/" . ($WCAID ? $WCAID : $ID);
 }
 
 function LinkCompetition($WCA) {
-    return PageIndex() . "Competition/$WCA";
+    return PageIndex() . "/Competition/$WCA";
 }
 
 function LinkLogin() {
-    return PageIndex() . "Login";
+    return PageIndex() . "/Login";
 }
 
 function LinkDelegate($WCAID) {
-    return PageIndex() . "Delegate/$WCAID";
+    return PageIndex() . "/Delegate/$WCAID";
 }
 
 function LinkDelegateAdd() {
-    return PageIndex() . "Delegate/Add";
+    return PageIndex() . "/Delegate/Add";
 }
 
 function LinkSettingsBack() {
@@ -50,7 +50,7 @@ function GetUrlWCA() {
             Suphair \ Config :: get('WCA_AUTH', 'client_id')
             , Suphair \ Config :: get('WCA_AUTH', 'client_secret')
             , Suphair \ Config :: get('WCA_AUTH', 'scope')
-            , PageIndex() . Suphair \ Config :: get('WCA_AUTH', 'url_refer')
+            , PageIndex() .'/'. Suphair \ Config :: get('WCA_AUTH', 'url_refer')
             , DataBaseClass::getConection()
     );
 

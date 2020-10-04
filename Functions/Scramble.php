@@ -13,7 +13,7 @@ function scramble_block($ID){
         if ($date['Event_ScrambleSalt'] and file_exists($file)){ ?>
             <tr>
                 <td><i class="fas fa-print"></i></td>
-                <td><a target="_blank"  href="<?= PageIndex() ?>Scramble/<?= $date['Event_ID']?>"> <?= ml('Function.Scramble') ?></a></td>
+                <td><a target="_blank"  href="<?= PageIndex() ?>/Scramble/<?= $date['Event_ID']?>"> <?= ml('Function.Scramble') ?></a></td>
             </tr>    
     <?php } ?>
     <?php

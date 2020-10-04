@@ -21,7 +21,7 @@
     <table class="table_info">
         <tr>
             <td><i class="fas fa-cog"></i></td>
-            <td><a href="<?= PageIndex() ?>Delegate/Candidates/Settings"> Settings application</a></td>
+            <td><a href="<?= PageIndex() ?>/Delegate/Candidates/Settings"> Settings application</a></td>
         <tr>
     </table>
 <?php } ?>
@@ -130,7 +130,7 @@ $RequestCandidateFields = DataBaseClass::QueryGenerate();
                             <p><b>Date</b> <?= date_range(date('Y-m-d', strtotime($RequestCandidate['RequestCandidate_Datetime']))); ?></p>
                             <p><b>Invited by</b> <?= implode(",", DataBaseClass::getColumn("Select distinct Delegate from CandidateCode where Candidate='{$RequestCandidate['Competitor_WCAID']}'")); ?></p>
                             <p><b>WCA Profile</b> <a target="_blank" href="https://www.worldcubeassociation.org/persons/<?= $RequestCandidate['Competitor_WCAID'] ?>"><?= $RequestCandidate['Competitor_WCAID'] ?> <i class="fas fa-external-link-alt"></i></a></p>
-                            <p><b>SEE Profile</b> <a target="_blank" href="<?= PageIndex() . "Competitor/" . $RequestCandidate['Competitor_WCAID'] ?>">SEE Profile</a></p>
+                            <p><b>SEE Profile</b> <a target="_blank" href="<?= PageIndex() . "/Competitor/" . $RequestCandidate['Competitor_WCAID'] ?>">SEE Profile</a></p>
                             <?php
                             foreach ($RequestCandidateFields as $RequestCandidateField) {
                                 if ($RequestCandidateField['RequestCandidateField_RequestCandidate'] == $RequestCandidate['RequestCandidate_ID']) {

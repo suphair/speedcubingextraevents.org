@@ -74,9 +74,9 @@ $competitors = DataBaseClass::getRowsObject("
 
 foreach ($competitors as &$competitor) {
     if ($competitor->wcaid) {
-        $competitor->link = PageIndex() . "Competitor/" . $competitor->wcaid;
+        $competitor->link = PageIndex() . "/Competitor/" . $competitor->wcaid;
     } else {
-        $competitor->link = PageIndex() . "Competitor/" . $competitor->id;
+        $competitor->link = PageIndex() . "/Competitor/" . $competitor->id;
     }
 
     $country = new Country();

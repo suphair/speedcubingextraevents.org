@@ -49,7 +49,7 @@ function EventBlockLinks($Event,$current="",$table_exists=false){
                     <?php if($current=='regulations'){ ?>
                         <?= ml('Competition.Regulation'); ?>
                     <?php }else{  ?>
-                        <a href="<?= PageIndex()?>Regulations/<?= $Event['Discipline_Code'] ?>"><?= ml('Competition.Regulation'); ?></a>
+                        <a href="<?= PageIndex()?>/Regulations/<?= $Event['Discipline_Code'] ?>"><?= ml('Competition.Regulation'); ?></a>
                     <?php } ?>
                 </td>
             </tr>    
@@ -60,7 +60,7 @@ function EventBlockLinks($Event,$current="",$table_exists=false){
                 <?php if($current=='records'){ ?>
                     <?= ml('Event.Records'); ?>
                 <?php }else{  ?>
-                    <a href="<?= PageIndex()?>Records/all/?event=<?= $Event['Discipline_Code'] ?>"><?= ml('Event.Records'); ?></a>
+                    <a href="<?= PageIndex()?>/Records/all/?event=<?= $Event['Discipline_Code'] ?>"><?= ml('Event.Records'); ?></a>
                 <?php } ?>
             </td>
         </tr>    
@@ -86,7 +86,7 @@ function EventBlockLinks($Event,$current="",$table_exists=false){
         if($exists_ScrambleImage and ($exists_GenerateTraining or $exists_Generate or $exists_ScriptGenerate)){ ?>
         <tr>
             <td><i class="fas fa-random"></i></td>
-            <td><a class="<?= $current=='training'?'select':''?>" href="<?= PageIndex()?>Event/<?= $Event['Discipline_Code'] ?>/Training"><?= ml('TrainingScrambling.Title') ?></a></td>            
+            <td><a class="<?= $current=='training'?'select':''?>" href="<?= PageIndex()?>/Event/<?= $Event['Discipline_Code'] ?>/Training"><?= ml('TrainingScrambling.Title') ?></a></td>            
         <?php } ?>
     <?php if(!$table_exists){ ?></table><?php } ?>
 <?php $return = ob_get_contents();

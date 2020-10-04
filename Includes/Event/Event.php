@@ -109,7 +109,7 @@ foreach ($rows_uniq as $c => $row) {
     $competitor['country']['name'] = $row['countryCompetitorName'];
     $competitor['team']['attemptSpecial']['value'] = $row['attemptOrder'];
     $competitor['team']['attemptSpecial']['out'] = $row['attemptOut'];
-    $competitor['link'] = PageIndex() . "Competitor/" . ($row['competitorWcaid'] ?: $row['competitorId']);
+    $competitor['link'] = PageIndex() . "/Competitor/" . ($row['competitorWcaid'] ?: $row['competitorId']);
     $competitor['name'] = $row['competitorName'];
     $competitor['id'] = $row['competitorId'];
     $competitor['team']['video'] = $row['video'];
@@ -126,23 +126,23 @@ foreach ($rows_uniq as $c => $row) {
     if ($row['competitor2Id']) {
         $competitor['team']['competitors'][] = [
             'id' => $row['competitor2Id'],
-            'link' => PageIndex() . "Competitor/" . ($row['competitor2Wcaid'] ?: $row['competitor2Id']),
+            'link' => PageIndex() . "/Competitor/" . ($row['competitor2Wcaid'] ?: $row['competitor2Id']),
             'name' => $row['competitor2Name']];
     }
     if ($row['competitor3Id']) {
         $competitor['team']['competitors'][] = [
             'id' => $row['competitor3Id'],
-            'link' => PageIndex() . "Competitor/" . ($row['competitor3Wcaid'] ?: $row['competitor3Id']),
+            'link' => PageIndex() . "/Competitor/" . ($row['competitor3Wcaid'] ?: $row['competitor3Id']),
             'name' => $row['competitor3Name']];
     }
     if ($row['competitor4Id']) {
         $competitor['team']['competitors'][] = [
             'id' => $row['competitor4Id'],
-            'link' => PageIndex() . "Competitor/" . ($row['competitor4Wcaid'] ?: $row['competitor4Id']),
+            'link' => PageIndex() . "/Competitor/" . ($row['competitor4Wcaid'] ?: $row['competitor4Id']),
             'name' => $row['competitor4Name']];
     }
 
-    $competitor['team']['competitionEvent']['competition']['link'] = PageIndex() . "Competition/" . $row['competitionWca'];
+    $competitor['team']['competitionEvent']['competition']['link'] = PageIndex() . "/Competition/" . $row['competitionWca'];
     $competitor['team']['competitionEvent']['competition']['name'] = $row['competitionName'];
     $competitor['team']['competitionEvent']['competition']['image'] = "<span class='flag-icon flag-icon-" . strtolower($row['countryCompetitionCode']) . "'></span>";
     ;

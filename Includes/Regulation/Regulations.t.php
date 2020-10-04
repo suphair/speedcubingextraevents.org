@@ -12,7 +12,7 @@
             Speecubing Extra Events
         </td>
         <td>
-            <a href = "<?= PageIndex() ?>MainRegulations">
+            <a href = "<?= PageIndex() ?>/MainRegulations">
                 <i class="fas fa-book"></i>
                 SEE Regulations
             </a>    
@@ -56,7 +56,7 @@
                         </td>
                         <td>
                             <a  data-regulations-event-list = '<?= $event->code ?>'
-                                href = '<?= PageIndex() ?>Regulations/<?= $event->code ?>'>
+                                href = '<?= PageIndex() ?>/Regulations/<?= $event->code ?>'>
                                     <?= $event->name ?>
                             </a>
                         </td>

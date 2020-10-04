@@ -35,7 +35,7 @@ if ($data->delegate) {
     foreach ($delegateLinks as $link) {
         if (CheckAccess($link[0])) {
             $links[] = [
-                'link' => PageIndex() . $link[1],
+                'link' => PageIndex().'/' . $link[1],
                 'value' => "{$link[3]} {$link[2]}"
             ];
         }

@@ -13,11 +13,18 @@ function random_string($length) {
 }
 
 function PageIndex() {
-    return "//" . $_SERVER['HTTP_HOST'] . str_replace("/index.php", "", $_SERVER['PHP_SELF']);
+    $index = "//" . $_SERVER['HTTP_HOST'] . str_replace("index.php", "", $_SERVER['PHP_SELF']);
+    if(substr("$index", -1)=='/'){
+        $index=substr_replace($index,'',-1);
+    }
+    if(substr("$index", -1)=='/'){
+        $index=substr_replace($index,'',-1);
+    }
+    return $index;
 }
 
 function PageAction($file) {
-    return PageIndex() . "Actions/" . $file;
+    return PageIndex() . "/Actions/" . $file;
 }
 
 function PageLocal() {

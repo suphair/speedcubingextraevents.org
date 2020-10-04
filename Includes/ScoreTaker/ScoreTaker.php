@@ -65,7 +65,7 @@
             <?php if (CheckAccess('Competition.Event.Settings', $competitionEvent->competition->id)) { ?>
                 <?php $competitionEvent->competition->getCompetitionEvents(); ?>
                 <?php foreach ($competitionEvent->competition->competitionEvents as $competitionEventSelect) { ?>
-                    <a  href="<?= PageIndex() ?>ScoreTaker/<?= $competitionEventSelect->secret ?>">
+                    <a  href="<?= PageIndex() ?>/ScoreTaker/<?= $competitionEventSelect->secret ?>">
                         <span data-competitionevent-list='<?= $competitionEventSelect->id ?>'>
                             <?= $competitionEventSelect->event->image ?>
                         </span>
@@ -547,4 +547,4 @@
 </html>
 
 <?php IncludeClass::Template('ScoreTaker'); ?>
-<script src="<?= PageIndex(); ?>index.js" type="text/javascript"></script>
+<script src="<?= PageIndex(); ?>/index.js" type="text/javascript"></script>

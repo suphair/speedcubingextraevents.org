@@ -26,12 +26,12 @@ $Rounds=isset($CommandsCup['Round'])?$CommandsCup['Round']:5;
 $MaxTeams=pow(2,$Rounds);
 ?>
 <head>
-    <script src="<?= PageIndex() ?>jQuery/jquery-3.3.1.min.js" type="text/javascript"></script>
+    <script src="<?= PageIndex() ?>/jQuery/jquery-3.3.1.min.js" type="text/javascript"></script>
     <title><?= $data['Discipline']?><?= $data['vRound']?></title>
-    <link rel="stylesheet" href="<?= PageIndex() ?>style.css" type="text/css"/>
-    <link rel="stylesheet" href="<?= PageIndex() ?>fontawesome-free-5.12.0-web/css/all.css?t=3" type="text/css"/>
-    <link rel="stylesheet" href="<?= PageIndex() ?>icons-extra-event/css/Extra-Events.css?t=3" type="text/css"/>    
-    <link rel="stylesheet" href="<?= PageIndex() ?>jQuery/chosen_v1/chosen.css" type="text/css"/>
+    <link rel="stylesheet" href="<?= PageIndex() ?>/style.css" type="text/css"/>
+    <link rel="stylesheet" href="<?= PageIndex() ?>/fontawesome-free-5.12.0-web/css/all.css?t=3" type="text/css"/>
+    <link rel="stylesheet" href="<?= PageIndex() ?>/icons-extra-event/css/Extra-Events.css?t=3" type="text/css"/>    
+    <link rel="stylesheet" href="<?= PageIndex() ?>/jQuery/chosen_v1/chosen.css" type="text/css"/>
 </head>  
 <body>
 <?php

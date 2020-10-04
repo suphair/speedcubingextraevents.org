@@ -13,5 +13,5 @@ foreach($Anews as $c=>$anews){
 DataBaseClass::Query("Insert `News` (Date,Text,Delegate)"
         . " values (now(),'". DataBaseClass::Escape(json_encode($Anews,JSON_UNESCAPED_UNICODE))."',". getCompetitor()->id.")");
 
-header('Location: '. PageIndex()."News");
+header('Location: '. PageIndex()."/News");
 exit();  

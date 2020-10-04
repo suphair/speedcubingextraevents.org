@@ -86,11 +86,11 @@ $CompetitionDelegates=ObjectClass::getObject('PageCompetitionDelegates');
     if($CompetitionEvent['Event_ScrambleSalt'] and file_exists($file)){ ?>
         <tr>
             <td><i class="fas fa-print"></i></td>
-            <td><a target="_blank"  href="<?= PageIndex()?>Scramble/<?= $CompetitionEvent['Event_ID'] ?>">Print scrambles</font></a></td>
+            <td><a target="_blank"  href="<?= PageIndex()?>/Scramble/<?= $CompetitionEvent['Event_ID'] ?>">Print scrambles</font></a></td>
         </tr>    
         <tr>
             <td><i class="fas fa-download"></i></td>
-            <td><a target="_blank"  href="<?= PageIndex()?>Scramble/<?= $CompetitionEvent['Event_ID'] ?>/Download">Download scrambles</font></a></td>
+            <td><a target="_blank"  href="<?= PageIndex()?>/Scramble/<?= $CompetitionEvent['Event_ID'] ?>/Download">Download scrambles</font></a></td>
         </tr>
     <?php }else{ ?>
         <tr>
@@ -116,7 +116,7 @@ $CompetitionDelegates=ObjectClass::getObject('PageCompetitionDelegates');
         <tr>
             <td><i class="fas fa-edit"></i></td>
             <td>
-                Enter the results  <a target="_blank" href="<?= PageIndex()?>ScoreTaker/<?= $CompetitionEvent['Event_Secret'] ?>">[link <?= $CompetitionEvent['Event_Secret'] ?>]</a>
+                Enter the results  <a target="_blank" href="<?= PageIndex()?>/ScoreTaker/<?= $CompetitionEvent['Event_Secret'] ?>">[link <?= $CompetitionEvent['Event_Secret'] ?>]</a>
             </td>
         </tr>
         <tr>

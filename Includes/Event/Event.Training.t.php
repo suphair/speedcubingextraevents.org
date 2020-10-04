@@ -67,7 +67,7 @@ if ($data->event->generate->function or $data->event->generate->script) {
                 </table> 
             </td><td>            
                 <div style="width:400px;height:300px">
-                    <img ID="ScrambleImage" style="max-width: 100%; max-height: 100%;" src="<?= !$data->event->generate->script ? (PageIndex() . $data->event->generate->scrambleImage . '?t=' . time()) : '' ?>">
+                    <img ID="ScrambleImage" style="max-width: 100%; max-height: 100%;" src="<?= !$data->event->generate->script ? (PageIndex().'/'. $data->event->generate->scrambleImage . '?t=' . time()) : '' ?>">
                 </div>   
             </td>
         </tr>

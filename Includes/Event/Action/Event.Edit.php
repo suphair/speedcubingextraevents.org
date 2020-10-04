@@ -104,6 +104,6 @@ foreach(DataBaseClass::SelectTableRows('Format') as $row){
 
 SetMessage();
 
-$link= PageIndex().'Event/'.$Code.'/Settings';
+$link= PageIndex().'/Event/'.$Code.'/Settings';
 header('Location: '.$link);
 exit();  

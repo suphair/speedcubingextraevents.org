@@ -1,5 +1,5 @@
 <h1>
-    <a href="<?= PageIndex() ?>news">
+    <a href="<?= PageIndex() ?>/news">
         News
     </a>
 </h1>

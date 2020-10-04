@@ -17,7 +17,7 @@ if (!$person) {
 
 $code = getCodeCandidate($wcaid);
 $delegate = getCompetitor()->wca_id;
-$message = "The link only works for {$person->name} ({$person->wca_id}):<br> https:" . PageIndex() . "Delegate/Candidate?code=" . $code;
+$message = "The link only works for {$person->name} ({$person->wca_id}):<br> https:" . PageIndex() . "/Delegate/Candidate?code=" . $code;
 SetMessageName('Candidate.GenerateCode', $message);
 
 DataBaseClass::Query("

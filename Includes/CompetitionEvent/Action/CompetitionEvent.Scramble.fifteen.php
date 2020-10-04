@@ -27,7 +27,7 @@ $s = $data['Event_Groups'] * ($data['Format_Attemption'] + 2);
 ?>
 
 <head>
-    <script src="<?= PageIndex() ?>Script/fifteen_generator.js" type="text/javascript"></script>
+    <script src="<?= PageIndex() ?>/Script/fifteen_generator.js" type="text/javascript"></script>
 </head>
 <form hidden method="POST" ID="form" action="<?= PageAction('CompetitionEvent.Scramble.Edit') ?>">
     <input name="ID" type="hidden" value="<?= $data['Event_ID'] ?>" />

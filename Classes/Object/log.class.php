@@ -39,7 +39,7 @@ Class Log {
             $log->delegate = $delegate;
 
             if (file_exists("Image/Scramble/{$log->secret}.pdf")) {
-                $log->fileScramble = PageIndex() . "Scramble/{$log->secret}";
+                $log->fileScramble = PageIndex() . "/Scramble/{$log->secret}";
             } else {
                 $log->fileScramble = false;
             }

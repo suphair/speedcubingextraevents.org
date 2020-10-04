@@ -24,7 +24,7 @@
                     <?= $news->author->competitor->name ?>
                 </td>
                 <td data-news-edit>
-                    <button data-href = '<?= PageIndex() ?>aNews/<?= $news->id ?>'>
+                    <button data-href = '<?= PageIndex() ?>/aNews/<?= $news->id ?>'>
                         <i class="fas fa-edit"></i>
                         Edit
                     </button>

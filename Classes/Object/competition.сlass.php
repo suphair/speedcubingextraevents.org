@@ -42,7 +42,7 @@ Class Competition {
         $this->name = $competition->name;
         $this->city = $competition->city;
         $this->date = date_range($competition->startDate, $competition->endDate);
-        $this->link = PageIndex() . "Competition/$competition->wca";
+        $this->link = PageIndex() . "/Competition/$competition->wca";
         $this->onsite = $competition->onsite;
         $this->status = $competition->status;
         $this->endDate = $competition->endDate;

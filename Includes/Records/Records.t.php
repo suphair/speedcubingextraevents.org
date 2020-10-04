@@ -114,7 +114,7 @@
                 </td> 
                 <td>
                     <?= $record->team->competitionEvent->event->image ?> 
-                    <a href="<?= PageIndex() ?>Event/<?= $record->team->competitionEvent->event->code ?>">
+                    <a href="<?= PageIndex() ?>/Event/<?= $record->team->competitionEvent->event->code ?>">
                         <?= $record->team->competitionEvent->event->name ?>
                     </a>
                 </td>

@@ -89,7 +89,7 @@ if ($_FILES['file']['error'] == 0 and $_FILES['file']['type'] == 'application/pd
         $pdf->Text(10, 286, $timestamp_pdf . ' #' . $pdf->PageNo());
 
         $pdf_img_Y = $pdf_img_Y0;
-        for ($attempt = 1; $attempt <= $ScamblesOnePage; $attempt++) {
+        for ($attempt = 1; $attempt <= $see_option->attemption + $see_option->extra; $attempt++) {
 
             $StartLine = $lines[$group][$attempt][0];
             $EndLine = $lines[$group][$attempt][1];
@@ -113,11 +113,36 @@ if ($_FILES['file']['error'] == 0 and $_FILES['file']['type'] == 'application/pd
                     $att = $attempt;
                 }
 
-                $pdf->SetFont('times', 'B', 20);
                 if ($see_option->cut) {
-                    $pdf->Text(6, $pdf_img_Y + 20, $Letter[$group + 1] . $att);
+                    if ($attempt > $see_option->attemption) {
+                        if ($see_option->extra > 1) {
+                            $attemp_str = ($attempt - $see_option->attemption) . ' extra';
+                        } else {
+                            $attemp_str = 'extra';
+                        }
+                    } else {
+                        $attemp_str = $attempt . ' attempt';
+                    }
+
+                    $pdf->SetFont('times', '', 10);
+                    $pdf->SetDash(1, 1);
+                    $pdf->Line(8, $pdf_img_Y - 0.5, $pdf->w - 6, $pdf_img_Y - 0.5);
+                    $pdf->SetDash(false, false);
+                    $pdf->Image('Image/cut-solid.png', 6, $pdf_img_Y - 0.5 - 2, 4, 4);
+                    $pdf->Text(6, $pdf_img_Y + 5, $Letter[$group + 1] . ' group');
+                    $pdf->Text(6, $pdf_img_Y + 10, $attemp_str);
                 } else {
-                    $pdf->Text(10, $pdf_img_Y + 20, $att);
+                    if ($attempt > $see_option->attemption) {
+                        if ($see_option->extra > 1) {
+                            $attemp_str = 'E' . ($attempt - $see_option->attemption);
+                        } else {
+                            $attemp_str = 'E';
+                        }
+                    } else {
+                        $attemp_str = $attempt;
+                    }
+                    $pdf->SetFont('times', '', 20);
+                    $pdf->Text(10, $pdf_img_Y + 20, $attemp_str);
                 }
             }
 
@@ -137,6 +162,6 @@ if ($_FILES['file']['error'] == 0 and $_FILES['file']['type'] == 'application/pd
     DeleteFolder("Scramble/HardTmp/$rand");
     DataBaseClass::Query("Insert into ScramblePdf (Event,Secret,Delegate,Timestamp,Action) values ('" . $see_option->id . "','$rand','" . getDelegate()['Delegate_ID'] . "','$timestamp_sql','Generation')");
 
-    header('Location: ' . PageIndex() . "Scramble/" . $see_option->id);
+    header('Location: ' . PageIndex() . "/Scramble/" . $see_option->id);
     exit();
 }

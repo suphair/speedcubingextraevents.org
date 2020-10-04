@@ -59,10 +59,10 @@ Class Competitor {
             $this->email = $competitor->email;
         }
         if ($this->wcaid) {
-            $this->link = PageIndex() . "Competitor/$this->wcaid";
+            $this->link = PageIndex() . "/Competitor/$this->wcaid";
             $this->linkWca = "https://www.worldcubeassociation.org/persons/{$this->wcaid}";
         } else {
-            $this->link = PageIndex() . "Competitor/$this->id";
+            $this->link = PageIndex() . "/Competitor/$this->id";
         }
 
         if ($this->wid) {

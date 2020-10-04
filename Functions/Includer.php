@@ -78,6 +78,7 @@ function getRequest() {
         if (!$v)
             unset($request[$n]);
     }
+    
     $request = array_values($request);
     return $request;
 }

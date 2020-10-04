@@ -149,7 +149,7 @@ if ($Competition['Competition_DelegateWCAOn']) {
             <table class="table_info" >
                 <?php if (CheckAccess('Competition.Settings', $Competition['Competition_ID'])) { ?>
                     <tr>
-                        <td><i class="fas fa-cog"></i></td>
+                        <td><i class="fas fa-cog"></i> <?= PageIndex();?></td>
                         <td><a href="<?= LinkCompetition($Competition['Competition_WCA']) ?>/Settings">Competition settings</a></td>    
                     </tr>
                 <?php } ?> 
@@ -245,7 +245,7 @@ if ($Competition['Competition_DelegateWCAOn']) {
                         </tr>        
                         <tr>
                             <td><i class="fas fa-edit"></i></td>
-                            <td><a target="_blank" href="<?= PageIndex() ?>ScoreTaker/<?= $CompetitionEvent['Event_Secret'] ?>">Enter the results</a></td>
+                            <td><a target="_blank" href="<?= PageIndex() ?>/ScoreTaker/<?= $CompetitionEvent['Event_Secret'] ?>">Enter the results</a></td>
                         </tr>
                         <tr>        
                             <td><i class="fas fa-print"></i></td>
@@ -377,7 +377,7 @@ if ($Competition['Competition_DelegateWCAOn']) {
                     <?php if ($CompetitionEvent['Event_ScramblePublic']) { ?>
                         <tr>
                             <td><i class="fas fa-random"></i></td>
-                            <td><a href="<?= PageIndex() ?>Scramble/<?= $CompetitionEvent['Event_ScramblePublic'] ?>" target="_blank"><?= ml('Competition_Results.ScrambleShare') ?></a> </td>
+                            <td><a href="<?= PageIndex() ?>/Scramble/<?= $CompetitionEvent['Event_ScramblePublic'] ?>" target="_blank"><?= ml('Competition_Results.ScrambleShare') ?></a> </td>
                         </tr>    
                     <?php } ?>
 

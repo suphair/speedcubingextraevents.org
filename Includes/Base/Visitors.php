@@ -26,8 +26,8 @@
     ?>
 <h1>Visiters (<?= end($Mean) ?> a day) </h1>
 
-<script src="<?= PageIndex() ?>Script/Chart.js?t=1"></script>
-<script src="<?= PageIndex() ?>Script/Chart.min.js"></script>
+<script src="<?= PageIndex() ?>/Script/Chart.js?t=1"></script>
+<script src="<?= PageIndex() ?>/Script/Chart.min.js"></script>
 <canvas id="myChart_Visiters" width=800px height=400px></canvas>
 <script>
 var ctx = document.getElementById("myChart_Visiters").getContext('2d');

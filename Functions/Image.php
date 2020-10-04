@@ -22,7 +22,7 @@ function ImageCompetition($competition,$size=100,$name=""){
     if(!$name)$name=$competition;
     $filenameLocal= "./Image/Competition/".$competition.".jpg";
     if(file_exists($filenameLocal)){
-        return  "<img align='center' title='$name'  width='".$size."px' src='".PageIndex()."Image/Competition/".$competition.".jpg'>";
+        return  "<img align='center' title='$name'  width='".$size."px' src='".PageIndex()."/Image/Competition/".$competition.".jpg'>";
     }else{
         return "";
     }
@@ -38,16 +38,16 @@ function ImageConfig($link,$config=false,$size=100){
         onmouseover="this.className='config_select',
                     this.style.cursor='pointer';"
         onmouseout="this.className='<?= $class ?>'"
-        src='<?= PageIndex() ?>Image/Config.jpg'>
+        src='<?= PageIndex() ?>/Image/Config.jpg'>
     <?php
 }
 
 function ImageAdd($size=100){
-  return  "<img width='".$size."px' src='".PageIndex()."Image/Add.png'>";  
+  return  "<img width='".$size."px' src='".PageIndex()."/Image/Add.png'>";  
 }
 
 function ImageConfigurate($size=100){
-  return  "<img width='".$size."px' src='".PageIndex()."Image/Config.jpg'>";  
+  return  "<img width='".$size."px' src='".PageIndex()."/Image/Config.jpg'>";  
 }
 
 

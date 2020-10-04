@@ -29,5 +29,5 @@ $file = "Image/Scramble/$rand.pdf";
 $pdf->Output($file, 'F');
 $pdf->Close();
 DataBaseClass::Query("Insert into ScramblePdf (Event,Secret,Delegate,Timestamp, Action) values ('" . $competition_event->id . "','$rand','" . getDelegate()['Delegate_ID'] . "','$timestamp_sql','Generation')");
-header('Location: ' . PageIndex() . "Scramble/" . $competition_event->id);
+header('Location: ' . PageIndex() . "/Scramble/" . $competition_event->id);
 exit();

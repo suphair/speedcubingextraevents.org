@@ -17,5 +17,5 @@ foreach ($Anews as $c => $anews) {
 
 DataBaseClass::Query("Update `News` set Text ='" . DataBaseClass::Escape(json_encode($Anews, JSON_UNESCAPED_UNICODE)) . "' where ID=$ID");
 
-header('Location: ' . PageIndex() . "News");
+header('Location: ' . PageIndex() . "/News");
 exit();

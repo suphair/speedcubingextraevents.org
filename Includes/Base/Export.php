@@ -15,7 +15,7 @@ foreach ($directories as $format => $directory) {
         $files[] = (object) [
                     'format' => $format,
                     'name' => $file,
-                    'link' => PageIndex() . $filename,
+                    'link' => PageIndex() .'/'. $filename,
                     'time' => date('F d Y H:i:s', filectime($filename)),
                     'size' => round(filesize($filename) / 1024, 1)
         ];

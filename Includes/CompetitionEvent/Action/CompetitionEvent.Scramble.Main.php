@@ -224,7 +224,7 @@ $scramble_allowed = json_encode($scramble_info->allowed);
     Detailed Instructions for TNoodle
 </a>
 <h3>Step 2. Download ZIP archive from TNoodle</h3>
-<a target='_blank'href='http:<?= PageIndex() ?>tnoodle_redirect.php/?data=<?= json_encode($data_tnoodle) ?>&filename=<?= $filename ?>&allowed=<?= $scramble_allowed ?>'>
+<a target='_blank'href='http:<?= PageIndex() ?>/tnoodle_redirect.php/?data=<?= json_encode($data_tnoodle) ?>&filename=<?= $filename ?>&allowed=<?= $scramble_allowed ?>'>
     Generate and download
 </a>
 <h3>Step 3. Unpack the downloaded archive</h3>

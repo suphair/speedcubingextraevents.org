@@ -1,4 +1,4 @@
-<h1><a href="<?= PageIndex()?>Delegate/Candidates">Applications to become a SEE Delegate</a> / Settings</h1>
+<h1><a href="<?= PageIndex()?>/Delegate/Candidates">Applications to become a SEE Delegate</a> / Settings</h1>
 <?php
 $languages= getLanguages();
 DataBaseClass::FromTable("RequestCandidateTemplate");

@@ -28,7 +28,7 @@ if(isset($request[1])){
         <tr>
             <td class="<?= $block_id==$block['BlockText_ID']?'list_select':''?>"></td>
             <td><?= $block['BlockText_ID'] ?></td>
-            <td><a class="<?= $block_id==$block['BlockText_ID']?'select':''?>" href="<?= PageIndex()?>Texts/<?= $block['BlockText_ID'] ?>"><?= $block['BlockText_Name'] ?></a><span>
+            <td><a class="<?= $block_id==$block['BlockText_ID']?'select':''?>" href="<?= PageIndex()?>/Texts/<?= $block['BlockText_ID'] ?>"><?= $block['BlockText_Name'] ?></a><span>
             </td>
             <td><?= ImageCountry($block['BlockText_Country'])?> <?= CountryName($block['BlockText_Country'],true) ?></td>
          </tr>   

@@ -7,7 +7,7 @@
         <i class="far fa-envelope"></i>
         <?= ml('Footer.Contact.Support') ?>
     </a>
-    <a href="<?= PageIndex() ?>Icons">
+    <a href="<?= PageIndex() ?>/Icons">
         <i class="fas fa-image"></i>
         <?= ml('Footer.Icons') ?>
     </a>
@@ -15,7 +15,7 @@
         <i class="fab fa-github"></i>
         GitHub
     </a>
-    <a href="<?= PageIndex() ?>Export">
+    <a href="<?= PageIndex() ?>/Export">
         <i class="fas fa-download"></i>
         <?= ml('Footer.Export') ?>
     </a>

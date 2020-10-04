@@ -50,7 +50,7 @@ if (!DataBaseClass::rowsCount()) {
     $ID = DataBaseClass::getID();
     DataBaseClass::Query("Insert into `CompetitionDelegate` (Competition,Delegate) values ($ID,$DelegateID)");
 
-    SendMail(Suphair \ Config :: get('Seniors', 'email'), 'SEE: New competition ' . $Name, "<pre>" . $Delegate['Delegate_Name'] . " <br>SEE <a href='https://" . PageIndex() . "Competition/$WCA'>$Name</a><br>WCA <a href='https://www.worldcubeassociation.org/competitions/$WCA'>$WCA</a><br>" . date_range($StartDate, $EndDate));
+    SendMail(Suphair \ Config :: get('Seniors', 'email'), 'SEE: New competition ' . $Name, "<pre>" . $Delegate['Delegate_Name'] . " <br>SEE <a href='https://" . PageIndex() . "/Competition/$WCA'>$Name</a><br>WCA <a href='https://www.worldcubeassociation.org/competitions/$WCA'>$WCA</a><br>" . date_range($StartDate, $EndDate));
     AddLog("Competition", "Create", $Delegate['Delegate_Name'] . ' / ' . $WCA);
 
     CompetitionCompetitorsLoad($ID, $WCA, $Name, 'Create');
@@ -60,5 +60,5 @@ if (!DataBaseClass::rowsCount()) {
 }
 
 SetMessage();
-header('Location: ' . PageIndex() . 'Competition/' . $WCA);
+header('Location: ' . PageIndex() . '/Competition/' . $WCA);
 exit();

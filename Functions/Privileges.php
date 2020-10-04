@@ -17,7 +17,7 @@ function getObjCompetitor($wcaid = false) {
     }
 
     if ($competitor) {
-        $competitor->link = PageIndex() . "Competitor/{$competitor->local_id}";
+        $competitor->link = PageIndex() . "/Competitor/{$competitor->local_id}";
     }
     return $competitor;
 }

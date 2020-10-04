@@ -224,6 +224,6 @@ if ($_FILES['file']['error'] == 0 and $_FILES['file']['type'] == 'application/pd
     $pdf->Close();
     DeleteFolder("Scramble/HardTmp/$rand");
     DataBaseClass::Query("Insert into ScramblePdf (Event,Secret,Delegate,Timestamp,Action) values ('" . $see_option->id . "','$rand','" . getDelegate()['Delegate_ID'] . "','$timestamp_sql','Generation')");
-    header('Location: ' . PageIndex() . "Scramble/" . $see_option->id);
+    header('Location: ' . PageIndex() . "/Scramble/" . $see_option->id);
     exit();
 }

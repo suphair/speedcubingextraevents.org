@@ -17,7 +17,7 @@ $ScrambleImageFilename='Scramble/Training/'.session_id().'_'.$CodeScript.'.png';
 include "Scramble/$CodeScript.php";
 $ScrambleImage=ScrambleImage($Scramble);
 imagepng($ScrambleImage,$ScrambleImageFilename);
-echo PageIndex().$ScrambleImageFilename;
+echo PageIndex().'/'.$ScrambleImageFilename;
 exit();
 ?>        
 

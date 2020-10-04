@@ -31,7 +31,7 @@ $disciplines=DataBaseClass::QueryGenerate();
         <tr>
             <td><?= ImageEvent($discipline_row['Discipline_CodeScript'],1) ?></td>
             <td>
-                <a class="<?= $discipline['Discipline_Code'] ==$discipline_row['Discipline_Code']?'list_select':''?>" href="<?= PageIndex()?>Event/<?= $discipline_row['Discipline_Code'] ?>/Settings"><?= $discipline_row['Discipline_Name'] ?></a>
+                <a class="<?= $discipline['Discipline_Code'] ==$discipline_row['Discipline_Code']?'list_select':''?>" href="<?= PageIndex()?>/Event/<?= $discipline_row['Discipline_Code'] ?>/Settings"><?= $discipline_row['Discipline_Name'] ?></a>
                 <?php if($discipline_row['Discipline_Status']!='Active'){ ?>
                    <i class="fas fa-ban"></i>
                 <?php } ?>

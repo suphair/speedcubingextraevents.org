@@ -8,7 +8,7 @@
                 <i class="fas fa-plus-square"></i>
             </td>
             <td>
-                <a href='<?= PageIndex() ?>Event/Add'>
+                <a href='<?= PageIndex() ?>/Event/Add'>
                     Add Event
                 </a>
             </td>
@@ -91,7 +91,7 @@
                     <span data-event-archive="<?= $event->isArchive ?>"></span>
                 </td>
                 <td data-event-settings>
-                    <a href="<?= PageIndex() ?>Event/<?= $event->code ?>/Settings">
+                    <a href="<?= PageIndex() ?>/Event/<?= $event->code ?>/Settings">
                         <i class="fas fa-cog"></i>
                     </a>
                 </td>
@@ -123,13 +123,13 @@
                     <?= $event->countCompetitions ?>
                 </td>
                 <td>
-                    <a href="<?= PageIndex() ?>Regulations/<?= $event->code ?>">
+                    <a href="<?= PageIndex() ?>/Regulations/<?= $event->code ?>">
                         <i class="fas fa-book"></i>
                         <?= ml('Events.Regulations') ?>
                     </a>
                 </td>
                 <td>
-                    <a href="<?= PageIndex() ?>Event/<?= $event->code ?>">
+                    <a href="<?= PageIndex() ?>/Event/<?= $event->code ?>">
                         <i class="fas fa-signal fa-rotate-90"></i>
                         <?= ml('Events.Rankings') ?>
                     </a>

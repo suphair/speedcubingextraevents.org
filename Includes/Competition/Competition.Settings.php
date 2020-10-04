@@ -233,7 +233,7 @@ foreach ($events as $event) {
                     <td>Scrambles</td>
                     <td>
                         <?php if (sizeof($scrambles) == sizeof($events)) { ?>
-                            <i class="fas fa-download"></i> <a href="<?= PageIndex() ?>ScramblesZip/<?= $Competition['Competition_ID'] ?>">Download zip with all scrambles</a>
+                            <i class="fas fa-download"></i> <a href="<?= PageIndex() ?>/ScramblesZip/<?= $Competition['Competition_ID'] ?>">Download zip with all scrambles</a>
                         <?php } else { ?>
                             <i class="fas fa-exclamation-triangle"></i> Not all scrambles are ready
                         <?php } ?>
@@ -245,7 +245,7 @@ foreach ($events as $event) {
                 </tr>
                 <tr>
                     <td>Results</td>
-                    <td><i class="fas fa-file-export"></i> <a target="_blank" href="<?= PageIndex() ?>api/v0/competitions/<?= $Competition['Competition_WCA'] ?>/results">Export results as json</a></td>
+                    <td><i class="fas fa-file-export"></i> <a target="_blank" href="<?= PageIndex() ?>/api/v0/competitions/<?= $Competition['Competition_WCA'] ?>/results">Export results as json</a></td>
                 </tr>
             </table>
         </td><td>
@@ -519,10 +519,10 @@ if ($error) {
                         <?php } ?>
                         <?php if (isset($scrambles[$event['Event_ID']])) { ?>
                             <?= $scrambles[$event['Event_ID']]['Timestamp'] ?>
-                            <a  target="_blank" href="<?= PageIndex() ?>Scramble/<?= $event['Event_ID'] ?>">
+                            <a  target="_blank" href="<?= PageIndex() ?>/Scramble/<?= $event['Event_ID'] ?>">
                                 <i title="Print scrambles" class="fas fa-print"></i>
                             </a>
-                            <a  target="_blank" href="<?= PageIndex() ?>Scramble/<?= $event['Event_ID'] ?>/Download">
+                            <a  target="_blank" href="<?= PageIndex() ?>/Scramble/<?= $event['Event_ID'] ?>/Download">
                                 <i title="Download scrambles" class="fas fa-download"></i>
                             </a>
                         <?php } ?>
@@ -557,7 +557,7 @@ if ($error) {
                             <tr>
                                 <td><i class="fas fa-cog"></i></td>
                                 <td>
-                                    <a href="<?= PageIndex() ?>Competition/<?= $Competition['Competition_WCA'] ?>/<?= $event['Discipline_Code'] ?>/<?= $event['Event_Round'] ?>/Settings">Competition event settings</a>
+                                    <a href="<?= PageIndex() ?>/Competition/<?= $Competition['Competition_WCA'] ?>/<?= $event['Discipline_Code'] ?>/<?= $event['Event_Round'] ?>/Settings">Competition event settings</a>
                                 </td>
                             </tr>
                             <tr>
@@ -772,7 +772,7 @@ if ($error) {
         <tr>
             <td>
                 <?php if (file_exists("Image/Scramble/" . $row['Secret'] . ".pdf")) { ?>
-                    <a target="_blank" href="<?= PageIndex() ?>Scramble/<?= $row['Secret'] ?>"><?= $row['Secret'] ?></a>
+                    <a target="_blank" href="<?= PageIndex() ?>/Scramble/<?= $row['Secret'] ?>"><?= $row['Secret'] ?></a>
                 <?php } else { ?>
                     <?= $row['Secret'] ?>
                 <?php } ?>    
@@ -856,4 +856,4 @@ if ($error) {
                 </tr>
             <?php } ?>
         </table>
-        <script src="<?= PageIndex(); ?>jQuery/chosen_v1/docsupport/init.js" type="text/javascript" charset="utf-8"></script>
+        <script src="<?= PageIndex(); ?>/jQuery/chosen_v1/docsupport/init.js" type="text/javascript" charset="utf-8"></script>

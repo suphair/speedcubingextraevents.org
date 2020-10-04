@@ -11,7 +11,7 @@
                 <?php } ?>
                 <?= $data->competitor->name ?>
             </a>
-            <a href="<?= PageIndex() ?>Actions/Competitor.Logout">
+            <a href="<?= PageIndex() ?>/Actions/Competitor.Logout">
                 <i class="fas fa-sign-out-alt"></i> 
                 <?= ml('Competitor.SignOut') ?>
             </a>
@@ -38,7 +38,7 @@
             <i class="fas fa-user"></i>
             <?= ml('Competitor.MyResults') ?>
         </a>
-        <a href="<?= PageIndex() ?>Competitions/Mine">
+        <a href="<?= PageIndex() ?>/Competitions/Mine">
             <i class="fas fa-cube"></i>
             <?= ml('Competitor.MyCompetitions') ?>
         </a>

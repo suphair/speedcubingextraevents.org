@@ -40,7 +40,7 @@ Class Delegate {
     function SetbyRow($delegate) {
         $this->id = $delegate->id;
         $this->wid = $delegate->wid;
-        $this->link = PageIndex() . "Delegate/$delegate->wcaid";
+        $this->link = PageIndex() . "/Delegate/$delegate->wcaid";
         $this->wcaid = $delegate->wcaid;
         $this->status = $delegate->status;
         $this->secret = $delegate->secret;

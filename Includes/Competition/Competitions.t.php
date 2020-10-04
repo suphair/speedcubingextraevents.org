@@ -13,7 +13,7 @@
                 <?php if ($data->competitionAdd) { ?>
                     <tr>
                         <td><i class="fas fa-plus-square"></i></td>
-                        <td><a href='<?= PageIndex() ?>Competition/Add'>Add Competition</a></td>
+                        <td><a href='<?= PageIndex() ?>/Competition/Add'>Add Competition</a></td>
                     </tr>    
                 <?php } ?>
                 <?php if($data->competitor->id){ ?>    

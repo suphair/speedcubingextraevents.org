@@ -72,7 +72,7 @@ $report=DataBaseClass::getRow(); ?>
         <?php if(isset($reports[$delegate['Delegate_ID']])){ ?>
         <td><i class="far fa-check-circle"></i></td>
         <td>
-            <a class="<?= $delegateSelected==$delegate['Delegate_WCA_ID']?'list_select':''?>" href="<?= PageIndex() ?>Competition/<?= $Competition['Competition_WCA'] ?>/Report/<?= $delegate['Delegate_WCA_ID'] ?>"><?= short_name($delegate['Delegate_Name']); ?></a>
+            <a class="<?= $delegateSelected==$delegate['Delegate_WCA_ID']?'list_select':''?>" href="<?= PageIndex() ?>/Competition/<?= $Competition['Competition_WCA'] ?>/Report/<?= $delegate['Delegate_WCA_ID'] ?>"><?= short_name($delegate['Delegate_Name']); ?></a>
         </td>  
      <?php }else{ ?>
         <td><i class="fas fa-hourglass-half"></i></td>
@@ -92,7 +92,7 @@ $report=DataBaseClass::getRow(); ?>
     <tr>
         <td><i class="fas fa-check-circle"></i></td>
         <td>
-            <a class="<?= $delegateSelected==$delegate['Delegate_WCA_ID']?'list_select':''?>" href="<?= PageIndex() ?>Competition/<?= $Competition['Competition_WCA'] ?>/Report/<?= $delegate['Delegate_WCA_ID'] ?>"><?= short_name($delegate['Competitor_Name']); ?></a>
+            <a class="<?= $delegateSelected==$delegate['Delegate_WCA_ID']?'list_select':''?>" href="<?= PageIndex() ?>/Competition/<?= $Competition['Competition_WCA'] ?>/Report/<?= $delegate['Delegate_WCA_ID'] ?>"><?= short_name($delegate['Competitor_Name']); ?></a>
         </td>
     </tr>        
     <?php } ?>

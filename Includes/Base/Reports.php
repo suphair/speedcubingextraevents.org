@@ -66,7 +66,7 @@ foreach(DataBaseClass::getRows() as $row){
             <tr>
                 <td>
                     <?php if(isset($CompetitionReport[$competition['Competition_ID']][$delegate['Delegate']])){ ?>
-                        <a href="<?= PageIndex()?>Competition/<?= $competition['Competition_WCA'] ?>/Report/<?= $delegate['WCAID'] ?>"><i class="far fa-eye"></i> View</a> 
+                        <a href="<?= PageIndex()?>/Competition/<?= $competition['Competition_WCA'] ?>/Report/<?= $delegate['WCAID'] ?>"><i class="far fa-eye"></i> View</a> 
                     <?php }else{ ?>
                         <i class="fas fa-eye-slash"></i>
                         <?php $r=true; ?>
@@ -89,7 +89,7 @@ foreach(DataBaseClass::getRows() as $row){
             foreach($CompetitionReportWCA[$competition['Competition_ID']] as $report){ ?>
                 <tr>
                     <td>
-                        <a href="<?= PageIndex()?>Competition/<?= $competition['Competition_WCA'] ?>/Report/<?= $report['WCAID'] ?>"><i class="far fa-eye"></i> View</a> 
+                        <a href="<?= PageIndex()?>/Competition/<?= $competition['Competition_WCA'] ?>/Report/<?= $report['WCAID'] ?>"><i class="far fa-eye"></i> View</a> 
                     </td>
                     <td><?= ImageCountry($competition['Competition_Country'])?></td>
                     <td><a href="<?= LinkCompetition($competition['Competition_WCA'])?>"><?= $competition['Competition_Name']?></a></td>    

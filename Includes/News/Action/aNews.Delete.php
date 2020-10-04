@@ -9,5 +9,5 @@ $ID = $_POST['ID'];
 
 DataBaseClass::Query("Delete from `News` where ID=$ID");
 
-header('Location: ' . PageIndex() . "News");
+header('Location: ' . PageIndex() . "/News");
 exit();

@@ -8,7 +8,7 @@ $('.navigator div').each(function () {
     });
 
     $(this).each(function () {
-        var href = $('#variables').data('index') + $(this).data('section');
+        var href = $('#variables').data('index') + '/' + $(this).data('section');
         $(this).find('a').attr('href', href);
         $(this).on("click", function () {
             document.location.href = href;

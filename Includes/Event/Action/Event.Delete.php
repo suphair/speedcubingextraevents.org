@@ -11,5 +11,5 @@ DataBaseClass::Query("Delete from `Discipline` where `ID`='$ID'");
 SetMessage("Delegate Deleted $ID");
 
 
-header('Location: '. PageIndex()."Events");
+header('Location: '. PageIndex()."/Events");
 exit();  
