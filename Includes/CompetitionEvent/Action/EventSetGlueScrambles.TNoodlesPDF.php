@@ -150,12 +150,21 @@ if ($_FILES['file']['error'] == 0 and $_FILES['file']['type'] == 'application/pd
                 imagepng($image_cut, $file_tmp);
 
                 if ($see_option->cut) {
-                    $pdf->SetFont('times', '', 16);
-                    if ($attemption < $see_option->attemption) {
-                        $pdf->Text(10, $pdf_img_Y + 10, $Letter[$group] . ($attemption + 1));
+
+                    if ($attemption >= $see_option->attemption) {
+                        $attemp_str = 'extra';
                     } else {
-                        $pdf->Text(10, $pdf_img_Y + 10, $Letter[$group] . 'E');
+                        $attemp_str = 'attempt';
                     }
+
+                    $pdf->SetFont('times', '', 10);
+                    $pdf->SetDash(1, 1);
+                    $pdf->Line(8, $pdf_img_Y - 0.5, $pdf->w - 6, $pdf_img_Y - 0.5);
+                    $pdf->SetDash(false, false);
+                    $pdf->Image('Image/cut-solid.png', 6, $pdf_img_Y - 0.5 - 2, 4, 4);
+                    $pdf->Text(6, $pdf_img_Y + 5, $Letter[$group] . ' group');
+                    $pdf->Text(6, $pdf_img_Y + 10, $attemp_str);
+
                 } else {
                     if ($see_option->tnoodles_mult > 1) {
                         $pdf->SetFont('times', '', 16);
