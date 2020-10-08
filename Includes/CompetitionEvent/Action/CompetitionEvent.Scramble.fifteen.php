@@ -1,3 +1,4 @@
+<?php IncludeClass::Page('Index.Head') ?>
 <?php
 $requests = getRequest();
 if (!isset($requests[2]) or!is_numeric($requests[2])) {
@@ -29,17 +30,17 @@ $s = $data['Event_Groups'] * ($data['Format_Attemption'] + 2);
 <head>
     <script src="<?= PageIndex() ?>/Script/fifteen_generator.js" type="text/javascript"></script>
 </head>
-<form hidden method="POST" ID="form" action="<?= PageAction('CompetitionEvent.Scramble.Edit') ?>">
+<form method="POST" action="<?= PageAction('CompetitionEvent.Scramble.Edit') ?>">
     <input name="ID" type="hidden" value="<?= $data['Event_ID'] ?>" />
+    <input data-add-date>
     <textarea id="Scrambles" cols="60" rows="30" name="Scrambles"></textarea><br>
-    <input style="background-color:lightgreen" type="submit" value="Set new scrambles">
 </form>
 
+<script src='<?= PageIndex() ?>/index.js'></script>
 <script>
     scrambles = getscrambles(<?= $s ?>);
     document.getElementById('Scrambles').value = scrambles.join('\n');
-    document.getElementById('form').submit();
+    $('form').submit();
 </script>  
-
 <?php
 exit();

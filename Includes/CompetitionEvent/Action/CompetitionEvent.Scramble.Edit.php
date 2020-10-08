@@ -46,5 +46,6 @@ for ($g = 0; $g < $data['Event_Groups']; $g++) {
 DataBaseClass::Query("UPDATE Event SET scrambles='" . DataBaseClass::Escape(json_encode($scrambles)) . "' WHERE ID = $ID");
 
 SetMessage();
-header('Location: ' . PageAction('CompetitionEvent.Scramble.Print') . "/$ID");
+$date = filter_input(INPUT_POST, 'date');
+header('Location: ' . PageAction('CompetitionEvent.Scramble.Print') . "/" . $ID . "/?date=" . $date);
 exit();

@@ -3,7 +3,6 @@ $('select[data-selected]').each(function () {
     $(this).find('option[value="' + selected + '"]').prop('selected', true);
 });
 
-
 $('[data-block-name]').each(function () {
     var name = $(this).data('block-name');
     $(this).appendTo('[data-block-from=' + name + ']');
@@ -76,23 +75,28 @@ $('[data-attempt-except]').each(function () {
 
 
 var date = new Date();
-                            var options = {
-  year: 'numeric',
-  month: 'long',
-  day: 'numeric',
-  timezone: 'UTC',
-  timeZoneName: 'short',
-  hour: '2-digit',
-  minute: '2-digit',
-  second: '2-digit',
-  hour12: false
+var options = {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    timezone: 'UTC',
+    timeZoneName: 'short',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false
 };
-var date_str=date.toLocaleString("en-US", options);
+var date_str = date.toLocaleString("en-US", options);
 
 $('a[data-add-date]').click(function () {
-    $(this).attr('href',$(this).attr('href') + '/?date=' + date_str);
+    $(this).attr('href', $(this).attr('href') + '/?date=' + date_str);
 });
 
 $('form[data-add-date]').submit(function () {
-    $(this).append('<input hidden value="' + date_str +'" name="date">');
+    $(this).append('<input hidden value="' + date_str + '" name="date">');
+});
+
+$('input[data-add-date]').each(function () {
+    $(this).attr('name', 'date');
+    $(this).attr('value', date_str);
 });
