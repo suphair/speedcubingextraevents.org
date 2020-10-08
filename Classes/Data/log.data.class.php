@@ -5,11 +5,15 @@ class Log_data {
     static function getLogsAuthorisations($deep) {
         return DataBaseClass::getRowsObject(" 
             SELECT * FROM (
-                SELECT 
+                SELECT
+                id,
                 CASE
-                    WHEN Action='Login' AND Object='WCA_Auth' THEN 'login' 
-                    WHEN Action='Login' AND Object='Alternative' THEN 'alternative' 
-                    WHEN Action='Logout' AND Object='WCA_Auth' THEN 'logout'
+                    WHEN Action = 'Login' AND Object = 'WCA_Auth' THEN 'login' 
+                    WHEN Action = 'Login' AND Object = 'Alternative' THEN 'alternative' 
+                    WHEN Action = 'Login' AND Object = 'BackDoor' THEN 'backdoor' 
+                    WHEN Action = 'Use' AND Object = 'BackDoor' THEN 'backdoor_use' 
+                    WHEN Action = 'Login' AND Object = 'Ban' THEN 'ban' 
+                    WHEN Action = 'Logout' AND Object = 'WCA_Auth' THEN 'logout'
                 END action,
                 DateTime timestamp,
                 Competitor competitorWid
@@ -17,7 +21,7 @@ class Log_data {
                 WHERE DATE(DateTime) >= DATE_ADD(current_date(),INTERVAL -$deep Day)
                 )t 
             WHERE action IS NOT NULL
-            ORDER BY Timestamp DESC
+            ORDER BY Timestamp DESC, Id desc
         ");
     }
 
@@ -89,7 +93,7 @@ class Log_data {
                 ORDER BY begin DESC
            ");
     }
-    
+
     static function getLogsCronNames() {
         return DataBaseClass::getColumn("
                 SELECT 
@@ -97,9 +101,6 @@ class Log_data {
                 FROM cron_config
            ");
     }
-    
-    
-    
 
     static function getLogsMail($deep) {
         return DataBaseClass::getRowsObject("

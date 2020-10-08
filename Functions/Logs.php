@@ -1,38 +1,34 @@
 <?php
-Function AddLog($Object,$Action,$Details){
-    if(getCompetitor()){
-        $CompetitorID=getCompetitor()->id;
-    }else{
-        $CompetitorID=0;
+
+Function AddLog($Object, $Action, $Details, $CompetitorID = 0) {
+    if (!$CompetitorID and getCompetitor()) {
+        $CompetitorID = getCompetitor()->id;
     }
-    $Object= DataBaseClass::Escape($Object);
-    $Action= DataBaseClass::Escape($Action);
-    $Details= DataBaseClass::Escape($Details);
+    $Object = DataBaseClass::Escape($Object);
+    $Action = DataBaseClass::Escape($Action);
+    $Details = DataBaseClass::Escape($Details);
     DataBaseClass::Query("Insert into Logs (Competitor,Object,Action,Details,IP) values"
-            . " ($CompetitorID,'$Object','$Action','$Details','".$_SERVER['REMOTE_ADDR']."') ");
-    
+            . " ($CompetitorID,'$Object','$Action','$Details','" . $_SERVER['REMOTE_ADDR'] . "') ");
 }
 
-Function LogsRegistration($EventID,$Action,$Details){
-    $Action= DataBaseClass::Escape($Action);
-    $Details= DataBaseClass::Escape($Details);
-    $Doing='ScoreTaker';
-            
-    if($Competitor= getCompetitor()){
-        $Doing='Competitor: '.Short_Name($Competitor->name);
+Function LogsRegistration($EventID, $Action, $Details) {
+    $Action = DataBaseClass::Escape($Action);
+    $Details = DataBaseClass::Escape($Details);
+    $Doing = 'ScoreTaker';
+
+    if ($Competitor = getCompetitor()) {
+        $Doing = 'Competitor: ' . Short_Name($Competitor->name);
     }
-    
-    if($Delegate= getDelegate()){
-        $Doing='Delegate: '.Short_Name($Delegate['Delegate_Name']);
+
+    if ($Delegate = getDelegate()) {
+        $Doing = 'Delegate: ' . Short_Name($Delegate['Delegate_Name']);
     }
-    
+
     DataBaseClass::Query("Insert into LogsRegistration (Event,Action,Details,Doing) values"
             . " ($EventID,'$Action','$Details','$Doing') ");
 }
 
-
-
-Function AddLogCronStart($cronId, $cronName){
+Function AddLogCronStart($cronId, $cronName) {
     DataBaseClass::Query("
         INSERT INTO LogsCron 
             (
@@ -48,7 +44,7 @@ Function AddLogCronStart($cronId, $cronName){
     return DataBaseClass::getID();
 }
 
-function AddLogCronEnd($cronId,$details){
+function AddLogCronEnd($cronId, $details) {
     DataBaseClass::Query("
         UPDATE LogsCron
         SET

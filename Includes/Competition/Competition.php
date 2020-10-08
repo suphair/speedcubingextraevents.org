@@ -149,7 +149,7 @@ if ($Competition['Competition_DelegateWCAOn']) {
             <table class="table_info" >
                 <?php if (CheckAccess('Competition.Settings', $Competition['Competition_ID'])) { ?>
                     <tr>
-                        <td><i class="fas fa-cog"></i> <?= PageIndex();?></td>
+                        <td><i class="fas fa-cog"></i></td>
                         <td><a href="<?= LinkCompetition($Competition['Competition_WCA']) ?>/Settings">Competition settings</a></td>    
                     </tr>
                 <?php } ?> 

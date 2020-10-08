@@ -115,6 +115,10 @@ function getDelegate() {
 }
 
 function CheckAccess($type, $competitionID = false) {
+    if (config::isLocalhost() and $type == 'BackDoor') {
+        return true;
+    }
+
     if (!getCompetitor() and!getDelegate()) {
         return false;
     }

@@ -4,7 +4,7 @@ Suphair \ Wca \ Oauth::set(
         Suphair \ Config :: get('WCA_AUTH', 'client_id')
         , Suphair \ Config :: get('WCA_AUTH', 'client_secret')
         , Suphair \ Config :: get('WCA_AUTH', 'scope')
-        , PageIndex(). '/'. Suphair \ Config :: get('WCA_AUTH', 'url_refer')
+        , PageIndex() . '/' . Suphair \ Config :: get('WCA_AUTH', 'url_refer')
         , DataBaseClass::getConection()
 );
 $competitor = Suphair \ Wca \ Oauth::authorize();
@@ -24,6 +24,8 @@ if ($competitor) {
         if ($Language) {
             $_SESSION['language_select'] = $Language;
         }
+    } else {
+        AddLog('Ban', 'Login', $competitor->name, $competitor->id);
     }
 }
 Suphair \ Wca \ Oauth::location();

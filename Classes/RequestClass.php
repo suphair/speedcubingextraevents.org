@@ -63,7 +63,7 @@ class RequestClass {
             'news', 'anews',
             'scramble', 'scrambleszip',
             'scoretaker', 'mainregulations', 'registrations', 'scrambles', 'access', 'reports', 'api', 'logs', 'export',
-            'ban'
+            'ban', 'backdoor'
         ];
 
         if (substr($type, 0, 1) != '?') {
@@ -188,20 +188,7 @@ class RequestClass {
                             break;
                         }
                     default:
-                /* $Delegate = DataBaseClass::SelectTableRow('Delegate', "WCA_ID='$DelegateCode'");
 
-                  ObjectClass::setObjects('PageDelegate', $Delegate);
-                  if($Delegate){
-                  self::$titles[2] = Short_Name($Delegate['Delegate_Name']);
-                  if($request[2]=='settings'){
-                  self::$titles[]="Settings";
-                  self::CheckAccess("Delegate.Settings");
-                  }elseif($request[2]!='null'){
-                  self::set404();
-                  }
-                  }else{
-                  self::set404();
-                  } */
                 endswitch; #$DelegateCode
                 break;
 
@@ -400,9 +387,14 @@ class RequestClass {
 
             case 'ban':
                 self::$titles[1] = 'Banned members';
-                self::CheckAccess('Ban.List','Ban.View');
+                self::CheckAccess('Competitor.Ban.List', 'Ban.View');
                 break;
-            
+
+            case 'backdoor':
+                self::$titles[1] = 'Back door';
+                self::CheckAccess('Competitor.BackDoor', 'BackDoor');
+                break;
+
             case '401':
                 self::set401(ml('401'));
                 break;
@@ -423,11 +415,9 @@ class RequestClass {
     }
 
     public static function getPage() {
-
         if (ban::is_ban()) {
-            return 'Ban.Page';
+            return 'Competitor.Ban.Page';
         }
-
         return self::$page;
     }
 

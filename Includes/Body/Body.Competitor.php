@@ -13,7 +13,7 @@ if ($data->delegate) {
         } else {
             $data->delegate->candidates->new = $count;
         }
-    }else{
+    } else {
         $data->delegate->candidates->show = false;
     }
 
@@ -25,6 +25,7 @@ if ($data->delegate) {
         ['MultiLanguage', 'MultiLanguage', 'Multi language', '<i class="fas fa-language"></i>'],
         ['Access', 'Access', 'Access', '<i class="fas fa-id-badge"></i>'],
         ['Ban.View', 'Ban', 'Banned members', '<i class="fas fa-user-slash"></i>'],
+        ['BackDoor', 'BackDoor', 'Back door', '<i class="fas fa-key"></i>'],
         ['Logs.Authorisations', 'Logs/Authorisations', 'Logs authorisations', '<i class="fas fa-list"></i>'],
         ['Logs.Registrations', 'Logs/Registrations', 'Logs registrations', '<i class="fas fa-list"></i>'],
         ['Logs.Scrambles', 'Logs/Scrambles', 'Logs scrambles', '<i class="fas fa-list"></i>'],
@@ -35,7 +36,7 @@ if ($data->delegate) {
     foreach ($delegateLinks as $link) {
         if (CheckAccess($link[0])) {
             $links[] = [
-                'link' => PageIndex().'/' . $link[1],
+                'link' => PageIndex() . '/' . $link[1],
                 'value' => "{$link[3]} {$link[2]}"
             ];
         }

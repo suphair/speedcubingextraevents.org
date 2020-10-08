@@ -7,24 +7,24 @@ class ScramblePrint {
     const LETTER = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'];
 
     public static function getPDF(
-    $competition_name
-    , $scrambles
-    , $event_codeScript
-    , $event_scrambleComment
-    , $event_name
-    , $event_isCup
-    , $event_isCut
-    , $view_round
-    , $attemptions
-    ,$timestamp_pdf=false
+            $competition_name
+            , $scrambles
+            , $event_codeScript
+            , $event_scrambleComment
+            , $event_name
+            , $event_isCup
+            , $event_isCut
+            , $view_round
+            , $attemptions
+            , $timestamp_pdf = false
     ) {
 
         $rand = random_string(20);
         $dir = "Scramble/ScramblePrintTmp/$rand";
         mkdir($dir);
-if(!$timestamp_pdf){
-        $timestamp_pdf = date("Y-m-d H:i:s (P)");
-}
+        if (!$timestamp_pdf) {
+            $timestamp_pdf = date("Y-m-d H:i:s (P)");
+        }
 
         $Y_Content_S = 33;
         $Y_Content_E = 275;
@@ -101,7 +101,7 @@ if(!$timestamp_pdf){
 
                 $y0 = 43;
 
-                if ($attempt == $attemptions + 1 and ! $event_isCup) {
+                if ($attempt == $attemptions + 1 and!$event_isCup) {
                     $pdf->SetFont('Arial', '', 12);
                     $pdf->SetFillColor(230, 230, 230);
                     $pdf->Rect(17, $Y, $X_IMG_1 - 17, 6, 'DF');
@@ -181,7 +181,7 @@ if(!$timestamp_pdf){
                     for ($i = 1; $i < $scramble_row; $i++) {
                         $r[$i] = ceil($scramble_len / $scramble_row * $i);
                         while (substr($scramble, $r[$i], 1) != " ") {
-                            $r[$i] --;
+                            $r[$i]--;
                         }
                     }
                     $r[$scramble_row] = $scramble_len;
@@ -254,7 +254,7 @@ if(!$timestamp_pdf){
                         $pdf->Text(8, $Y + $D_Att / 2, self::LETTER[$group] . "" . ($attempt ));
                     }
                 } else {
-                    if ($attempt > $attemptions and ! $event_isCup) {
+                    if ($attempt > $attemptions and!$event_isCup) {
                         $pdf->Text(10, $Y + $D_Att / 2, "E" . ($attempt - $attemptions));
                     } else {
                         if ($event_isCup) {
@@ -283,6 +283,7 @@ if(!$timestamp_pdf){
                     $pdf->SetFont('Arial', '', 10);
                     $pdf->SetTextColor(0, 0, 0);
                     $pdf->Text(10, 286, $timestamp_pdf . ' #' . $pdf->PageNo());
+                    $pdf->Text(100, 286, 'page ' . $pdf->PageNo());
                     $Y = $Y_Content_S;
 
                     $pdf->SetFont('Arial', '', 24);
