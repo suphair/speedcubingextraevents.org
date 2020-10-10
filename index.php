@@ -7,7 +7,7 @@ RequireDir('Classes/Data');
 RequireDir('Classes/Object');
 RequireDir('Functions');
 
-Suphair \ Config :: init('Config');
+config :: init('Config');
 Suphair \ Error :: register(Suphair \ Config :: isLocalhost());
 
 DataBaseInit();

@@ -46,13 +46,7 @@ function LinkSettingsBack() {
 }
 
 function GetUrlWCA() {
-    Suphair \ Wca \ Oauth::set(
-            Suphair \ Config :: get('WCA_AUTH', 'client_id')
-            , Suphair \ Config :: get('WCA_AUTH', 'client_secret')
-            , Suphair \ Config :: get('WCA_AUTH', 'scope')
-            , PageIndex() .'/'. Suphair \ Config :: get('WCA_AUTH', 'url_refer')
-            , DataBaseClass::getConection()
-    );
+    wcaoauth::set(PageIndex() .'/', DataBaseClass::getConection());
 
     return Suphair \ Wca \ Oauth::url();
 }

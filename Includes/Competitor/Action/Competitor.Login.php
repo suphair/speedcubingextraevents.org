@@ -1,13 +1,7 @@
 <?php
 
-Suphair \ Wca \ Oauth::set(
-        Suphair \ Config :: get('WCA_AUTH', 'client_id')
-        , Suphair \ Config :: get('WCA_AUTH', 'client_secret')
-        , Suphair \ Config :: get('WCA_AUTH', 'scope')
-        , PageIndex() . '/' . Suphair \ Config :: get('WCA_AUTH', 'url_refer')
-        , DataBaseClass::getConection()
-);
-$competitor = Suphair \ Wca \ Oauth::authorize();
+wcaoauth::set(PageIndex() .'/', DataBaseClass::getConection());
+$competitor = wcaoauth::authorize();
 
 unset($_SESSION['Competitor']);
 ban::clear_data();

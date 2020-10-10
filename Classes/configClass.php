@@ -2,12 +2,13 @@
 
 class config {
 
-    const VERSION = '2.0.2';
+    const VERSION = '2.1.0';
+    const DEFAULT = 'default';
+    private const TEMPLATE = 'config_template';
+    private const LOCALHOST = 'localhost';
 
-    protected static $dir;
     protected static $server;
-    protected static $configDefault;
-    protected static $configServer;
+    protected static $config;
 
     private function __construct() {
         
@@ -30,64 +31,68 @@ class config {
     }
 
     static function init($dir) {
-        self::$dir = $dir;
-        self::$server = str_replace("www.","",strtolower(filter_input(INPUT_SERVER, 'SERVER_NAME')));
+        $server = str_replace('www.', '', strtolower(filter_input(INPUT_SERVER, 'SERVER_NAME')));
+        $default = self::DEFAULT;
 
-        if (!file_exists($dir)) {
-            trigger_error("config: direcory [$dir] is not exists", E_USER_ERROR);
+        if (self::check_file("$dir/.key") !== $server) {
+            self::error("wrong key");
         }
 
-        self::$configDefault = self::$dir . "/default.ini";
-
-        if (!file_exists(self::$configDefault)) {
-            trigger_error("config: file .ini[" . self::$configDefault . "] not exists", E_USER_ERROR);
-        }
-
-        self::$configServer = self::$dir . "/" . self::$server . ".ini";
-        if (!file_exists(self::$configServer)) {
-            trigger_error("config: file .ini [" . self::$configServer . "] not exists", E_USER_ERROR);
-        }
-
-        $serverKey = self::$dir . "/" . self::$server . ".key";
-        if (!file_exists($serverKey)) {
-            trigger_error("config: file. key [$serverKey] not exists", E_USER_ERROR);
-        }
-    }
-
-    static function info() {
-        return "config(" . self::VERSION . "): " . self::$server;
-    }
-
-    static function isLocalhost() {
-        return self::$server == 'localhost';
+        self::$config = self::get_config(["$dir/$server", "$dir/$default"]);
+        self::$server = $server;
     }
 
     static function get($section, $param) {
-        $configDefault = parse_ini_file(self::$configDefault, true);
-        $configServer = parse_ini_file(self::$configServer, true);
+        $value = trim(self::$config[$section][$param] ?? FALSE);
+        if (!$value) {
+            self::error("value [$section/$param] not found");
+        }
+        return $value;
+    }
 
-        if (isset($configDefault[$section][$param])) {
-            return trim($configDefault[$section][$param]);
-        } elseif (isset($configServer[$section][$param])) {
-            return trim($configServer[$section][$param]);
-        } else {
-            trigger_error("config: value $section/$param not found", E_USER_ERROR);
+    static function info() {
+        return 'config [' . self::VERSION . '/' . self::$server . ']';
+    }
+
+    static function isLocalhost() {
+        return self::$server == self::LOCALHOST;
+    }
+
+    static private function get_config($folders) {
+        $config = [];
+        foreach ($folders as $folder) {
+            self::check_file($folder);
+            foreach (glob($folder . "/*.ini") as $file) {
+                $config = array_merge($config, parse_ini_file($file, true));
+            }
+        }
+        return $config;
+    }
+
+    static private function check_file($file) {
+        if (!file_exists($file)) {
+            self::error("[$file] not exists");
+        }
+        if (is_file($file)) {
+            return file_get_contents($file);
         }
     }
 
+    static private function error($error) {
+        trigger_error(self::info() . ' : ' . $error, E_USER_ERROR);
+    }
+
     static function template($dir) {
-        $configDefault = parse_ini_file(self::$configDefault, true);
-        $configServer = parse_ini_file(self::$configServer, true);
         $config = '';
         $config .= ';version ' . self::VERSION . "\n";
         $config .= ';' . date('d M Y') . "\n";
-        foreach (array_merge($configDefault, $configServer) as $section => $values) {
+        foreach (self::$config as $section => $values) {
             $config .= "[$section]\n";
             foreach ($values as $key => $value) {
                 $config .= "    $key=\n";
             }
         }
-        $handle = fopen("$dir/config_template.ini", "w+");
+        $handle = fopen("$dir/" . self::TEMPLATE . ".ini", "w+");
         fwrite($handle, $config);
         fclose($handle);
     }
