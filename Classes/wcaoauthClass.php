@@ -14,8 +14,8 @@ class wcaoauth {
     CONST ME = 'wcaoauth.me';
     CONST CONFIG = 'wcaoauth';
     CONST NAME = 'wcaoauth';
-    CONST TABLE_LOGS = 'wca_oauth_logs';
-    CONST VERSION = '2.1.0';
+    CONST TABLE_LOGS = 'wcaoauth_logs';
+    CONST VERSION = '2.1.1';
     CONST SESSION_REQUEST_URI = 'wcaoauth.request_uri';
 
     private function __construct() {
@@ -89,7 +89,7 @@ class wcaoauth {
             self::location();
         }
 
-        self::getMeCurl($accessToken);
+        return self::getMeCurl($accessToken);
     }
 
     private static function buildQueryForAccessToken($code) {
