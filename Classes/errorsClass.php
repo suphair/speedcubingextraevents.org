@@ -2,11 +2,12 @@
 
 class errors {
 
-    const VERSION = '2.0.1';
-    const _NEW = 'new';
-    const _DONE = 'done';
-    const _SKIP = 'skip';
-    const _WORK = 'work';
+    CONST VERSION = '2.0.2';
+    CONST _NEW = 'new';
+    CONST _DONE = 'done';
+    CONST _SKIP = 'skip';
+    CONST _WORK = 'work';
+    CONST LOGS = 'logs';
 
     private static $echo;
 
@@ -45,7 +46,7 @@ class errors {
                 unset($backtrace[$key]);
             }
             if (isset($value['class'])
-                    and $value['class'] == 'Suphair\Error') {
+                    and $value['class'] == 'errors') {
                 unset($backtrace[$key]);
             }
         }
@@ -139,7 +140,7 @@ class errors {
     }
 
     private static function dir() {
-        return __DIR__ . "/" . self::DIR . "/logs/";
+        return __DIR__ . "/" . self::DIR . "/" . self::LOGS . "/";
     }
 
     static function register($echo = false) {
@@ -186,7 +187,7 @@ class errors {
                     'err' => $explode[1],
                     'hash' => $explode[2],
                     'status' => $explode[3],
-                    'file' => 'logs/' . $file,
+                    'file' => self::LOGS . '/' . $file,
                     'time' => filectime("$dir/$file")
                 ];
             }

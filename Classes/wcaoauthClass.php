@@ -1,21 +1,17 @@
 <?php
 
 require_once 'configClass.php';
+require_once 'corelogClass.php';
 
 class wcaoauth {
 
-    protected static $scope = 'public';
-    protected static $config = [];
-    protected static $clientId;
+    protected static $config;
     protected static $urlRefer;
-    protected static $connection;
-    protected static $clientSecret;
 
     CONST ME = 'wcaoauth.me';
-    CONST CONFIG = 'wcaoauth';
+    CONST CONFIG = 'WCAOAUTH';
     CONST NAME = 'wcaoauth';
-    CONST TABLE_LOGS = 'wcaoauth_logs';
-    CONST VERSION = '2.1.1';
+    CONST VERSION = '2.2.0';
     CONST SESSION_REQUEST_URI = 'wcaoauth.request_uri';
 
     private function __construct() {
@@ -38,35 +34,32 @@ class wcaoauth {
         
     }
 
-    static function set($prefix_url_refer, $connection) {
-        $keys = [
-            'url_refer',
-            'client_id',
-            'client_secret',
-            'scope',
-            'wca_url_authorize',
-            'wca_url_token',
-            'wca_url_me'
-        ];
+    static function set($prefix_url_refer) {
 
-        foreach ($keys as $key) {
-            self::$config[$key] = config::get(self::CONFIG, $key);
-        }
+        self::$config = config::get_section(self::CONFIG,
+                        [
+                            'url_refer',
+                            'client_id',
+                            'client_secret',
+                            'scope',
+                            'wca_url_authorize',
+                            'wca_url_token',
+                            'wca_url_me'
+                        ]
+        );
 
         $http = config::isLocalhost() ? "http" : "https";
-        self::$urlRefer = $http . ':' . $prefix_url_refer . self::$config['url_refer'];
-        self::$connection = $connection;
-        self::check_db();
+        self::$urlRefer = $http . ':' . $prefix_url_refer . self::$config->url_refer;
     }
 
     static function url() {
         $_SESSION[self::SESSION_REQUEST_URI] = filter_input(INPUT_SERVER, 'REQUEST_URI');
 
-        return self::$config['wca_url_authorize'] . '?'
-                . "client_id=" . self::$config['client_id'] . "&"
+        return self::$config->wca_url_authorize . '?'
+                . "client_id=" . self::$config->client_id . "&"
                 . "redirect_uri=" . urlencode(self::$urlRefer) . "&"
                 . "response_type=code&"
-                . "scope=" . self::$config['scope'] . "";
+                . "scope=" . self::$config->scope . "";
     }
 
     static function location() {
@@ -96,8 +89,8 @@ class wcaoauth {
         return http_build_query(
                 [
                     'grant_type' => 'authorization_code',
-                    'client_id' => self::$config['client_id'],
-                    'client_secret' => self::$config['client_secret'],
+                    'client_id' => self::$config->client_id,
+                    'client_secret' => self::$config->client_secret,
                     'code' => $code,
                     'redirect_uri' => self::$urlRefer
         ]);
@@ -105,7 +98,7 @@ class wcaoauth {
 
     private static function getAccessTokenCurl($code) {
         $postdata = self::buildQueryForAccessToken($code);
-        $ch = curl_init(self::$config['wca_url_token']);
+        $ch = curl_init(self::$config->wca_url_token);
         curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/x-www-form-urlencoded', '"Accept-Language: en-us,en;q=0.5";']);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POST, true);
@@ -127,7 +120,7 @@ class wcaoauth {
     }
 
     private static function getMeCurl($accessToken) {
-        $ch = curl_init(self::$config['wca_url_me']);
+        $ch = curl_init(self::$config->wca_url_me);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', "Authorization: Bearer $accessToken"));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $result = curl_exec($ch);
@@ -141,40 +134,12 @@ class wcaoauth {
 
         if (isset(json_decode($result)->me->id)) {
             $me = json_decode($result)->me;
-            self::log($me);
+            corelog::put(self::NAME,$me);
             $_SESSION[self::ME] = $me;
             return $me;
         } else {
             $_SESSION[self::ME] = false;
             self::location();
-        }
-    }
-
-    private static function log($details) {
-        $query = " INSERT INTO `" . self::TABLE_LOGS . "` "
-                . "(`details`,`version`) "
-                . "VALUES ('" . json_encode($details) . "','" . self::VERSION . "')";
-        mysqli_query(self::$connection, $query);
-    }
-
-    private static function check_db() {
-        $errors = [];
-
-        $tables[self::TABLE_LOGS] = "
-            CREATE TABLE `" . self::TABLE_LOGS . "` (
-                `id` int(11) NOT NULL AUTO_INCREMENT,
-                `details` text DEFAULT NULL,
-                `timestamp` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-                `version` varchar(11) DEFAULT NULL,
-                PRIMARY KEY (`id`)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='" . SELF::VERSION . "';
-        ";
-
-        foreach ($tables as $table => $query) {
-            $result = mysqli_query(self::$connection, "SHOW TABLES like '$table'");
-            if (!mysqli_num_rows($result) and!mysqli_query(self::$connection, $query)) {
-                trigger_error(self::NAME . ". " . json_encode(mysqli_error(self::$connection)), E_USER_ERROR);
-            }
         }
     }
 
@@ -187,14 +152,3 @@ class wcaoauth {
     }
 
 }
-
-/*
-[wcaoauth]
-    url_refer = 
-    client_id = 
-    client_secret = 
-    scope = 
-    wca_url_authorize = 
-    wca_url_token = 
-    wca_url_me = 
- */

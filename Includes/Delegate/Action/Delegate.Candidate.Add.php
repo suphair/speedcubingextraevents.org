@@ -45,7 +45,7 @@ if ($competitor->delegate_status) {
 }
 
 if ($new) {
-    SendMail(Suphair \ Config :: get('Seniors', 'email'), 'SEE: New application to become a SEE Delegate', '<pre>' . ($competitor->url) . '<br>' . $competitor->name . '<hr>' . print_r($Fields, true) . '</pre><br>https://speedcubingextraevents.org/Delegate/Candidates');
+    notification::put('application.new', 'SEE: New application to become a SEE Delegate', '<pre>' . ($competitor->url) . '<br>' . $competitor->name . '<hr>' . print_r($Fields, true) . '</pre><br>https://speedcubingextraevents.org/Delegate/Candidates');
 }
 header('Location: ' . $_SERVER['HTTP_REFERER']);
 exit();

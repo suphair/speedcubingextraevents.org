@@ -7,13 +7,13 @@ function IncluderAction() {
         if (strtolower($request[0]) == "cron") {
             if (!(CheckAccess('Scripts')
                     or $_SERVER['HTTP_USER_AGENT'] == 'Wget/1.17.1 (linux-gnu)'
-                    or Suphair \ Config :: isLocalhost())) {
+                    or config :: isLocalhost())) {
                 header('HTTP/1.1 401 Unauthorized');
                 echo "<a href='" . PageIndex() . "'>" . PageIndex() . "</a>";
                 echo "<h1 style='color:red'>You do not have permission to run cron</h1>";
                 exit();
             } else {
-                $cron = new \Suphair\Cron(DataBaseClass::getConection());
+                $cron = new cron(DataBaseClass::getConection());
                 $cron->run();
                 DataBaseClass::close();
                 exit();

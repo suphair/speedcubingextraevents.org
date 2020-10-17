@@ -1,7 +1,7 @@
 <?php
 
 function Script_TestMail() {
-    SendMail('suphair@gmail.com', 'test subject', 'test message');
+    notification::put('test', 'test subject', 'test message');
 }
 
 function Script_UpdateRecords() {
@@ -15,22 +15,22 @@ function Script_phpinfo() {
 }
 
 function checkColumn($table, $column) {
-    DataBaseClass::Query("select count(*) count from information_schema.`COLUMNS` where `TABLE_SCHEMA`='" . Suphair \ Config :: get('DB', 'schema') . "' and `TABLE_NAME`='$table' and `COLUMN_NAME`='$column'");
+    DataBaseClass::Query("select count(*) count from information_schema.`COLUMNS` where `TABLE_SCHEMA`='" . config :: get('DB', 'schema') . "' and `TABLE_NAME`='$table' and `COLUMN_NAME`='$column'");
     return DataBaseClass::getrow()['count'];
 }
 
 function checkTable($table) {
-    DataBaseClass::Query("select count(*) count from information_schema.`TABLES` where `TABLE_SCHEMA`='" . Suphair \ Config :: get('DB', 'schema') . "' and `TABLE_NAME`='$table'");
+    DataBaseClass::Query("select count(*) count from information_schema.`TABLES` where `TABLE_SCHEMA`='" . config :: get('DB', 'schema') . "' and `TABLE_NAME`='$table'");
     return DataBaseClass::getrow()['count'];
 }
 
 function checkConstraint($table, $constraint) {
-    DataBaseClass::Query("select count(*) count from information_schema.`TABLE_CONSTRAINTS` where `CONSTRAINT_SCHEMA`='" . Suphair \ Config :: get('DB', 'schema') . "' and `TABLE_NAME`='$table' and `CONSTRAINT_NAME`='$constraint'");
+    DataBaseClass::Query("select count(*) count from information_schema.`TABLE_CONSTRAINTS` where `CONSTRAINT_SCHEMA`='" . config :: get('DB', 'schema') . "' and `TABLE_NAME`='$table' and `CONSTRAINT_NAME`='$constraint'");
     return DataBaseClass::getrow()['count'];
 }
 
 function checkIndex($table, $index) {
-    DataBaseClass::Query("select count(*) count from information_schema.`STATISTICS` where `TABLE_SCHEMA`='" . Suphair \ Config :: get('DB', 'schema') . "' and `TABLE_NAME`='$table' and `INDEX_NAME`='$index'");
+    DataBaseClass::Query("select count(*) count from information_schema.`STATISTICS` where `TABLE_SCHEMA`='" . config :: get('DB', 'schema') . "' and `TABLE_NAME`='$table' and `INDEX_NAME`='$index'");
     return DataBaseClass::getrow()['count'];
 }
 

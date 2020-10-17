@@ -42,7 +42,7 @@ if (!trim($Report)) {
         $Competition = DataBaseClass::QueryGenerate(false);
         $Name = getCompetitor()->name;
 
-        SendMail(Suphair \ Config :: get('Seniors', 'email'), 'SEE: New report ' . $Competition['Competition_Name'] . ' / ' . $Name, "<pre>" . $Competition['Competition_Name'] . " / " . $Name . "<br><a href='https://" . PageIndex() . "/Competition/" . $Competition['Competition_WCA'] . "/Report'>View report</a>");
+        notification::put('report.new', 'SEE: New report ' . $Competition['Competition_Name'] . ' / ' . $Name, "<pre>" . $Competition['Competition_Name'] . " / " . $Name . "<br><a href='https://" . PageIndex() . "/Competition/" . $Competition['Competition_WCA'] . "/Report'>View report</a>");
     }
 }
 

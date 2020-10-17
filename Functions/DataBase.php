@@ -5,11 +5,11 @@ Function DataBaseInit() {
     $connection = mysqli_init();
     @$success = mysqli_real_connect(
             $connection
-            , Suphair \ Config :: get('DB', 'host')
-            , Suphair \ Config :: get('DB', 'username')
-            , Suphair \ Config :: get('DB', 'password')
-            , Suphair \ Config :: get('DB', 'schema')
-            , Suphair \ Config :: get('DB', 'port')
+            , config :: get('DB', 'host')
+            , config :: get('DB', 'username')
+            , config :: get('DB', 'password')
+            , config :: get('DB', 'schema')
+            , config :: get('DB', 'port')
     );
 
     if (!$success) {
@@ -25,11 +25,11 @@ Function DataBaseInit() {
     $connection2 = mysqli_init();
     @$success = mysqli_real_connect(
             $connection2
-            , Suphair \ Config :: get('DB', 'host')
-            , Suphair \ Config :: get('DB', 'username')
-            , Suphair \ Config :: get('DB', 'password')
-            , Suphair \ Config :: get('DB', 'schema_WCA')
-            , Suphair \ Config :: get('DB', 'port')
+            , config :: get('DB', 'host')
+            , config :: get('DB', 'username')
+            , config :: get('DB', 'password')
+            , config :: get('DB', 'schema_WCA')
+            , config :: get('DB', 'port')
     );
 
     if (!$success) {
@@ -45,11 +45,11 @@ Function DataBaseInit() {
     $connection3 = mysqli_init();
     $success = mysqli_real_connect(
             $connection3
-            , Suphair \ Config :: get('DB', 'host')
-            , Suphair \ Config :: get('DB', 'username')
-            , Suphair \ Config :: get('DB', 'password')
-            , Suphair \ Config :: get('DB', 'schema_Export')
-            , Suphair \ Config :: get('DB', 'port')
+            , config :: get('DB', 'host')
+            , config :: get('DB', 'username')
+            , config :: get('DB', 'password')
+            , config :: get('DB', 'schema_Export')
+            , config :: get('DB', 'port')
     );
 
     if (!$success) {

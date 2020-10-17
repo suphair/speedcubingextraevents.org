@@ -1,7 +1,7 @@
 <?php
 
 function createBackupTSV($schema, $folder) {
-    if (Suphair \ Config :: isLocalhost()) {
+    if (config :: isLocalhost()) {
         $folder = $folder . "_localhost";
     }
     if (!file_exists($folder)) {
@@ -11,7 +11,7 @@ function createBackupTSV($schema, $folder) {
     $zip_name = $folder . ".tsv.zip";
     $zip->open($zip_name, ZIPARCHIVE::CREATE);
     $filenames = [];
-    $TABLE_SCHEMA = Suphair \ Config :: get('DB', $schema);
+    $TABLE_SCHEMA = config :: get('DB', $schema);
     DataBaseClassExport::Query("Select * from information_schema.TABLES where TABLE_SCHEMA='$TABLE_SCHEMA'");
     foreach (DataBaseClassExport::getRows() as $table) {
         $TABLE_NAME = $table['TABLE_NAME'];
@@ -44,15 +44,15 @@ function createBackupTSV($schema, $folder) {
 }
 
 function createBackup($schema, $filename) {
-    if (Suphair \ Config :: isLocalhost()) {
+    if (config :: isLocalhost()) {
         $filename=str_replace(".sql","_localhost.sql",$filename);
     }
 
     include_once('ifsnop-mysqldump-php-341050a/src/Ifsnop/Mysqldump/Mysqldump.php');
     $dump = new Ifsnop\Mysqldump\Mysqldump(
-            'mysql:host=' . Suphair \ Config :: get('DB', 'host') . ';'
-            . 'port=' . Suphair \ Config :: get('DB', 'port') . ';'
-            . 'dbname=' . Suphair \ Config :: get('DB', $schema), Suphair \ Config :: get('DB', 'username'), Suphair \ Config :: get('DB', 'password'), ['add-drop-table' => true]);
+            'mysql:host=' . config :: get('DB', 'host') . ';'
+            . 'port=' . config :: get('DB', 'port') . ';'
+            . 'dbname=' . config :: get('DB', $schema), config :: get('DB', 'username'), config :: get('DB', 'password'), ['add-drop-table' => true]);
 
     $dump->start($filename);
 
@@ -292,8 +292,8 @@ function generateExportData() {
 
 function generateStructure($schema) {
 
-    $dbname = Suphair \ Config :: get('DB', $schema);
-    if (Suphair \ Config :: isLocalhost()) {
+    $dbname = config :: get('DB', $schema);
+    if (config :: isLocalhost()) {
         $filename = "Structure/database_localhost_$dbname.sql";
     } else {
         $filename = "Structure/database_$dbname.sql";
@@ -301,11 +301,11 @@ function generateStructure($schema) {
 
     include_once('ifsnop-mysqldump-php-341050a/src/Ifsnop/Mysqldump/Mysqldump.php');
     $dump = new Ifsnop\Mysqldump\Mysqldump(
-            'mysql:host=' . Suphair \ Config :: get('DB', 'host') . ';'
-            . 'port=' . Suphair \ Config :: get('DB', 'port') . ';'
+            'mysql:host=' . config :: get('DB', 'host') . ';'
+            . 'port=' . config :: get('DB', 'port') . ';'
             . 'dbname=' . $dbname
-            , Suphair \ Config :: get('DB', 'username')
-            , Suphair \ Config :: get('DB', 'password')
+            , config :: get('DB', 'username')
+            , config :: get('DB', 'password')
             , ['no-data' => true,
         'reset-auto-increment' => true
     ]);

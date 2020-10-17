@@ -2,37 +2,34 @@
 
 function errorSend($daily = 0) {
 
-    $errors = Suphair \ Error :: getAll();
+    $errors = errors :: getAll();
     $counts = [
-        Suphair \ Error :: _NEW => 0,
-        Suphair \ Error :: _WORK => 0,
-        Suphair \ Error :: _SKIP => 0,
-        Suphair \ Error :: _DONE => 0];
+        errors :: _NEW => 0,
+        errors :: _WORK => 0,
+        errors :: _SKIP => 0,
+        errors :: _DONE => 0];
     foreach ($errors as $error) {
-        $counts[$error['status']] ++;
+        $counts[$error['status']]++;
     }
 
-    $new = $counts[Suphair \ Error :: _NEW];
-    $work = $counts[Suphair \ Error :: _WORK];
-    $skip = $counts[Suphair \ Error :: _SKIP];
-    $done = $counts[Suphair \ Error :: _DONE];
+    $new = $counts[errors :: _NEW];
+    $work = $counts[errors :: _WORK];
+    $skip = $counts[errors :: _SKIP];
+    $done = $counts[errors :: _DONE];
 
     if (!$daily) {
         if ($new) {
-            SendMail(
-                    Suphair \ Config :: get('Support', 'email'), "SEE error: $new"
+            notification::put('error', "SEE error: $new"
                     , "New errors on the site http:" . PageIndex() . " $new<br><a href='http:" . PageIndex() . "/Classes/errors'>http:" . PageIndex() . "/Classes/errors</a>"
             );
         }
-    } elseif($counts[Suphair \ Error :: _NEW] == 0){
-        if ($counts[Suphair \ Error :: _WORK] == 0) {
-            SendMail(
-                    Suphair \ Config :: get('Support', 'email'), "SEE NO ERROR"
+    } elseif ($counts[errors :: _NEW] == 0) {
+        if ($counts[errors :: _WORK] == 0) {
+            notification::put('error', "SEE NO ERROR"
                     , "No new errors on the site http:" . PageIndex() . "<br><a href='http:" . PageIndex() . "/Classes/errors'>http:" . PageIndex() . "/Classes/errors</a>"
             );
         } else {
-            SendMail(
-                    Suphair \ Config :: get('Support', 'email'), "SEE error in work: $work"
+            notification::put('error', "SEE error in work: $work"
                     , "Errors in work on site http:" . PageIndex() . " $work<br><a href='http:" . PageIndex() . "/Classes/errors'>http:" . PageIndex() . "/Classes/errors</a>"
             );
         }

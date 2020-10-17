@@ -1,0 +1,20 @@
+2020-10-17 14:28:37 "{\"event\":\"test\",\"mails_key\":[\"seniordelegates@localhost\",\"support@localhost\"],\"mails_value\":[\"seniordelegates@localhost\",\"support@localhost\"],\"message\":\"put\"}"
+2020-10-17 14:29:01 {"event":"test","mails_key":["seniordelegates@localhost","support@localhost"],"mails_value":["seniordelegates@localhost","support@localhost"],"message":"put"}
+2020-10-17 14:31:24 {"event":"test","mails_key":["seniors","support"],"mails_value":{"seniors":"seniordelegates@localhost","support":"support@localhost"},"message":"put"}
+2020-10-17 14:35:59 {"event":"test","mails":{"seniors":["seniordelegates@localhost"],"support":["support@localhost"]},"message":"put"}
+2020-10-17 14:37:51 {"event":"test","mails":{"seniors":["seniordelegates@localhost"],"support":["support@localhost"]},"message":"put"}
+2020-10-17 14:38:07 {"event":"test","mails":{"seniors":["seniordelegates@localhost"],"support":["support@localhost","seniordelegates@localhost"]},"message":"put"}
+2020-10-17 14:38:19 {"event":"test","mails":{"seniors":["seniordelegates@localhost"],"support":["support@localhost","seniordelegates@localhost"],"2":["2","support@localhost","seniordelegates@localhost"]},"message":"put"}
+2020-10-17 14:38:30 {"event":"test","mails":{"seniors":["seniordelegates@localhost"],"support":["support@localhost"]},"message":"put"}
+2020-10-17 14:38:34 {"event":"test","mails":{"seniors":["seniordelegates@localhost"],"support":["support@localhost"]},"message":"put"}
+2020-10-17 14:47:47 {"event":"test","mails":{"seniors":["seniordelegates@localhost"],"support":["support@localhost"]},"message":"put"}
+2020-10-17 14:48:50 {"event":"test","mails":{"seniors":["seniordelegates@localhost"],"support":["support@localhost"]},"message":"put"}
+2020-10-17 14:49:49 {"event":"test","mails":{"seniors":["seniordelegates@localhost"],"support":["support@localhost"]},"message":"put"}
+2020-10-17 14:50:43 {"event":"test","mails":{"seniors":["seniordelegates@localhost"],"support":["support@localhost"]},"message":"put"}
+2020-10-17 14:57:06 {"event":"event.new","mails":{"seniors":["seniordelegates@localhost"]},"message":"message"}
+2020-10-17 15:03:22 {"event":"event.new","mails":{"seniors":["seniordelegates@localhost"]},"message":"message"}
+2020-10-17 15:03:24 {"event":"event.new","mails":{"seniors":["seniordelegates@localhost"]},"message":"message"}
+2020-10-17 15:03:28 {"event":"event.new","mails":{"seniors":["seniordelegates@localhost"]},"message":"message"}
+2020-10-17 15:03:28 {"event":"event.new","mails":{"seniors":["seniordelegates@localhost"]},"message":"<pre>Konstantin Solovev <br>Event <a href='\/\/localhost:8882\/speedcubingextraevents.org\/Event\/www'>www<\/a>"}
+2020-10-17 15:03:28 {"event":"event.new","mails":{"seniors":["seniordelegates@localhost"]},"message":"message"}
+2020-10-17 15:38:05 {"event":"event.new","mails":{"seniors":["seniordelegates@localhost"]},"message":"<pre>Konstantin Solovev <br>Event <a href='\/\/localhost:8882\/speedcubingextraevents.org\/Event\/dddd'>dddd<\/a>"}

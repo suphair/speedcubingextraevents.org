@@ -50,7 +50,7 @@ function ml($name, $arr = [], $b = true) {
 }
 
 function getLanguages() {
-    return explode(",", Suphair \ Config :: get('MultiLanguage', 'languages'));
+    return explode(",", config :: get('LANGUAGE', 'languages'));
 }
 
 function getObjLanguages() {

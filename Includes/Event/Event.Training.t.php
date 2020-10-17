@@ -34,10 +34,7 @@ if ($data->event->generate->function or $data->event->generate->script) {
         <script>
             var scramble = getscrambles(1);
         </script>
-
     <?php } ?>
-
-
     <table width="100%">
         <tr>
             <td>

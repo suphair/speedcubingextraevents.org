@@ -1,6 +1,6 @@
 <?php
 
-wcaoauth::set(PageIndex() .'/', DataBaseClass::getConection());
+wcaoauth::set(PageIndex() .'/');
 $competitor = wcaoauth::authorize();
 
 unset($_SESSION['Competitor']);
@@ -22,4 +22,4 @@ if ($competitor) {
         AddLog('Ban', 'Login', $competitor->name, $competitor->id);
     }
 }
-Suphair \ Wca \ Oauth::location();
+wcaoauth::location();

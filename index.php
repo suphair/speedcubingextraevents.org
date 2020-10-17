@@ -8,15 +8,17 @@ RequireDir('Classes/Object');
 RequireDir('Functions');
 
 config :: init('Config');
-Suphair \ Error :: register(Suphair \ Config :: isLocalhost());
+errors :: register(config :: isLocalhost());
 
 DataBaseInit();
+corelog::init(DataBaseClass::getConection());
+
 IncluderAction();
 IncluderScript();
 
 $languages = getLanguages();
 if (!isset($_SESSION['language_select'])
-        or ! in_array($_SESSION['language_select'], $languages)) {
+        or!in_array($_SESSION['language_select'], $languages)) {
     $_SESSION['language_select'] = $languages[0];
 }
 RequestClass::setRequest();

@@ -186,5 +186,5 @@ function getCodeCandidate($wcaid = FALSE) {
             return FALSE;
         }
     }
-    return md5($wcaid . Suphair \ Config :: get('KEY', 'candidate'));
+    return md5($wcaid . config :: get('CANDIDATE', 'key'));
 }

@@ -49,6 +49,19 @@ class config {
         }
         return $value;
     }
+    
+    static function get_array($section, $param) {
+        $value = trim(self::$config[$section][$param] ?? FALSE);
+        return array_map("trim",  explode(',',$value));
+    }
+
+    static function get_section($section, $keys) {
+        $config = new stdClass();
+        foreach ($keys as $key) {
+            $config->$key = self::get($section, $key);
+        }
+        return $config;
+    }
 
     static function info() {
         return 'config [' . self::VERSION . '/' . self::$server . ']';

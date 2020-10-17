@@ -46,7 +46,7 @@ function LinkSettingsBack() {
 }
 
 function GetUrlWCA() {
-    wcaoauth::set(PageIndex() .'/', DataBaseClass::getConection());
+    wcaoauth::set(PageIndex() .'/');
 
-    return Suphair \ Wca \ Oauth::url();
+    return wcaoauth::url();
 }

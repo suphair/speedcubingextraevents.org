@@ -19,7 +19,7 @@ if ($data['RequestCandidate_ID']) {
 
     $WCAID = $data['Competitor_WCAID'];
     $Name = $data['Competitor_Name'];
-    SendMail(Suphair \ Config :: get('Seniors', 'email'), 'SEE: New delegate ' . $Name, "<pre>" . $Name . " <br>SEE <a href='https://" . PageIndex() . "/Delegate/$WCAID'>$Name</a><br>WCA <a href='https://www.worldcubeassociation.org/persons/$WCAID'>$WCAID</a><br>");
+    notification::put('delegate.new', 'SEE: New delegate ' . $Name, "<pre>" . $Name . " <br>SEE <a href='https://" . PageIndex() . "/Delegate/$WCAID'>$Name</a><br>WCA <a href='https://www.worldcubeassociation.org/persons/$WCAID'>$WCAID</a><br>");
 }
 
 header('Location: ' . $_SERVER['HTTP_REFERER']);
